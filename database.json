@@ -1,0 +1,54 @@
+{
+    "answer": [
+        {
+            "id": "1",
+            "content": "Sơn Tùng MTV",
+            "isCorrect": true
+        },
+        {
+            "id": "2",
+            "content": "Jack",
+            "isCorrect": true
+        },
+        {
+            "id": "3",
+            "content": "Không biết",
+            "isCorrect": true
+        }
+    ],
+    "QuestionExam": [
+        {
+            "id": "1",
+            "content": "Đây là ai",
+            "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdanviet.vn%2Fson-tung-m-tp-vinh-quang-doc-nhat-vo-nhi-va-nhung-not-tram-trong-su-nghiep-20240613072517408.htm&psig=AOvVaw12Qh6eOV_wg6dQ6DiGAplE&ust=1729867926959000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOD2gayip4kDFQAAAAAdAAAAABAE",
+            "answer": [
+                "1",
+                "2",
+                "3"
+            ],
+            "exId": "1"
+        },
+        {
+            "id": "2",
+            "content": "Đây là ai",
+            "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdanviet.vn%2Fson-tung-m-tp-vinh-quang-doc-nhat-vo-nhi-va-nhung-not-tram-trong-su-nghiep-20240613072517408.htm&psig=AOvVaw12Qh6eOV_wg6dQ6DiGAplE&ust=1729867926959000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOD2gayip4kDFQAAAAAdAAAAABAE",
+            "answer": [
+                "1",
+                "2",
+                "3"
+            ],
+            "exId": "1"
+        },
+        {
+            "id": "4",
+            "content": "Đây là ai",
+            "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdanviet.vn%2Fson-tung-m-tp-vinh-quang-doc-nhat-vo-nhi-va-nhung-not-tram-trong-su-nghiep-20240613072517408.htm&psig=AOvVaw12Qh6eOV_wg6dQ6DiGAplE&ust=1729867926959000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOD2gayip4kDFQAAAAAdAAAAABAE",
+            "answer": [
+                "1",
+                "2",
+                "3"
+            ],
+            "exId": "1"
+        }
+    ]
+}
