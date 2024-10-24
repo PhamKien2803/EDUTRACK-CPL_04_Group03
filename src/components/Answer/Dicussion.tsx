@@ -1,67 +1,94 @@
-import { useState } from "react";
-import { Card, CardContent, Typography, IconButton, TextField } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+import { Fragment, useState } from "react";
+import { Box, Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Comment from '../../components/Answer/Comment'
+
+
+const modules = {
+  toolbar: [
+    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['link', 'image', 'video'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }],
+    ['clean']
+  ],
+};
+
+const formats = [ //Update format font and size
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet',
+  'link', 'image', 'video',
+  'color', 'background', 'align'
+];
 
 const Dicussion = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [answer, setAnswer] = useState("");
+  const [text, setText] = useState<string>("");
 
-  const handleEdit = () => {
-    setIsEditing(true);
+  const handleTextChange = (value: string) => {
+    setText(value);
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-  };
-
-  const handleDelete = () => {
-    setAnswer("");
+  const handleSubmit = () => {
+    console.log("Your comment:", text);
   };
 
   return (
-    <div style={{ marginTop: "3rem" }}>
-      <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>123</h1>
-      <Card style={{ border: "2px solid grey" }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            Answer
-          </Typography>
-          <hr />
-          
-          {isEditing ? (
-            <TextField
-              fullWidth
-              multiline
-              rows={4}
-              variant="outlined"
-              value={answer}
-              // onChange={(e) => setAnswer(e.target.value)}
-            />
-          ) : (
-            <Typography variant="body2" style={{ marginBottom: "1rem" }}>
-              {answer}
-            </Typography>
-          )}
-
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            {isEditing ? (
-              <IconButton onClick={handleSave}>
-                <SaveIcon />
-              </IconButton>
-            ) : (
-              <IconButton onClick={handleEdit}>
-                <EditIcon />
-              </IconButton>
-            )}
-            <IconButton onClick={handleDelete}>
-              <DeleteIcon />
-            </IconButton>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Fragment>
+      <Box
+        sx={{
+          maxWidth: "850px",
+          margin: "10px",
+          padding: "10px",
+          border: "1px solid lightgray",
+          borderRadius: "10px",
+          backgroundColor: "#fff",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <ReactQuill
+          value={text}
+          onChange={handleTextChange}
+          modules={modules}
+          formats={formats}
+          placeholder="Write your answer here...."
+          style={{
+            height: "110px",
+            marginBottom: "20px",
+            borderRadius: "10px",
+            backgroundColor: "#f9f9f9",
+          }}
+        />
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            endIcon={<SendIcon />}
+            color="primary"
+            onClick={handleSubmit}
+            sx={{
+              padding: "10px 20px",
+              fontWeight: "bold",
+              textTransform: "none",
+              borderRadius: "20px",
+            }}
+          >
+            SEND
+          </Button>
+        </div>
+      </Box>
+      <div style={{margin: "1rem"}}>
+        <span>Your Comments Here</span>
+      </div>
+      
+      <Comment />
+      <Comment />
+      <Comment />
+    </Fragment>
   );
 };
 

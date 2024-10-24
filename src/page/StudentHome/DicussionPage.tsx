@@ -1,8 +1,7 @@
 import Breadcrumb from '../../components/HeaderNav/Breadcrumb'
 import Question from '../../components/Answer/Question'
-import Dicussion from '../../components/Answer/Dicussion'
-import Comment from '../../components/Answer/Comment'
 import ProgressTracker from '../../components/Answer/ProgressTracker'
+import NavTabs from '../../components/Answer/NavTabs'
 
 function DicussionPage() {
 
@@ -13,8 +12,7 @@ function DicussionPage() {
                 <div className='row'>
                     <div className='col-8'>
                         <Question />
-                        <Dicussion />
-                        <Comment />
+                        <NavTabs/>
                     </div>
                     <div className='col-4'>
                         <ProgressTracker />

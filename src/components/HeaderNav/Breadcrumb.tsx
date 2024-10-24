@@ -46,7 +46,7 @@ function Breadcrumb() {
 
   return (
     <Fragment>
-      <AppBar position="static">
+      <AppBar sx={{ backgroundColor: '#6A5ACD' }} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
