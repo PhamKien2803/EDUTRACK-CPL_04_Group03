@@ -7,17 +7,18 @@ import ProgressTracker from '../../components/Answer/ProgressTracker'
 function DicussionPage() {
 
     return (
-        
-        <div style={{width: '98%'}} className='container-fluid'>
+        <div>
             <Breadcrumb />
-            <div className='row'>
-                <div className='col-8'>
-                    <Question />
-                    <Dicussion />
-                    <Comment />
-                </div>
-                <div className='col-4'>
-                    <ProgressTracker />
+            <div style={{ width: '98%' }} className='container-fluid'>
+                <div className='row'>
+                    <div className='col-8'>
+                        <Question />
+                        <Dicussion />
+                        <Comment />
+                    </div>
+                    <div className='col-4'>
+                        <ProgressTracker />
+                    </div>
                 </div>
             </div>
         </div>

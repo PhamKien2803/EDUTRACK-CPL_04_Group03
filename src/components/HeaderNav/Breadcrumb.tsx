@@ -133,7 +133,7 @@ function Breadcrumb() {
                       underline="hover"
                       color="inherit"
                       href={item.url}
-                      sx={{ color: 'white' }} // Đặt màu chữ Breadcrumbs
+                      sx={{ color: 'white' }} 
                     >
                       {item.label}
                     </Link>
