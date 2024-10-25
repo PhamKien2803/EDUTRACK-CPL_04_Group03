@@ -1,0 +1,17 @@
+.exam-container{
+    .exam-content{
+        display: flex;
+        gap: 20px;
+        padding: 50px;
+        .left-content{
+            width: 70%;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        .right-content{
+            width: 30%;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    }
+}
