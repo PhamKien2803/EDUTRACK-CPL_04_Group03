@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import '../../Sass/QestionQuiz.scss'
 import { getDataExam } from "../../service/ApiSErvice"
+import '../../Sass/ExamDetail.scss'
+import Question from './Question/Question';
+import { Button } from '@mui/material';
 
 type Data = {
     id: string;
@@ -12,6 +14,7 @@ type Data = {
 
 export const ExamDetail = () => {
     const [dataExam, setDataExam] = useState<Data[]>([]);
+    const [index, setIndex] = useState<number>(0);
 
     useEffect(() => {
         fetchData();
@@ -19,18 +22,26 @@ export const ExamDetail = () => {
 
     const fetchData = async () => {
         const res = await getDataExam();
-        setDataExam(res)
+        if (res) {
+            setDataExam(res);
+        }
 
     }
 
     return (
-        <div className='Question-container'>
+        <div className='exam-container'>
             <div className="title">
                 title
             </div>
-            <div className='question-content'>
+            <div className='exam-content'>
                 <div className="left-content">
-                    left content
+                    <div className="q-content">
+                        <Question index={index} data={dataExam && dataExam.length > 0 ? dataExam[index] : []} />
+                    </div>
+                    <div className="q-button">
+                        <Button variant="contained" onClick={() => setIndex(index - 1)}>BACK</Button>
+                        <Button variant="contained" onClick={() => setIndex(index + 1)}>NEXT</Button>
+                    </div>
                 </div>
                 <div className="right-content">
                     right content
