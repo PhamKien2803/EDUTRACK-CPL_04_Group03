@@ -3,7 +3,8 @@ import { Box, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import Comment from '../../components/Answer/Comment'
+import Comment from "./Comment";
+
 
 
 const modules = {

@@ -3,13 +3,13 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import Dicussion from '../../components/Answer/Dicussion';
+import Dicussion from '../Dicussions/Dicussion';
 
 function NavTabs() {
   const [value, setValue] = useState<string>('one'); 
   const [loading, setLoading] = useState<boolean>(false); 
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setLoading(true); 
     setValue(newValue);
 
