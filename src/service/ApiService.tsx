@@ -3,4 +3,9 @@ import axios from "../utils/axiosCustomiz"
 const getDataExam = () => {
     return axios.get("QuestionExam")
 }
-export { getDataExam } 
+
+const getAnswerForQuestionExam = () => {
+    return axios.get("answer")
+}
+
+export { getDataExam, getAnswerForQuestionExam } 

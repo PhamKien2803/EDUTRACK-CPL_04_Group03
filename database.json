@@ -8,12 +8,42 @@
         {
             "id": "2",
             "content": "Jack",
-            "isCorrect": true
+            "isCorrect": false
         },
         {
             "id": "3",
             "content": "Không biết",
+            "isCorrect": false
+        },
+        {
+            "id": "4",
+            "content": "Sơn Tùng MTV",
             "isCorrect": true
+        },
+        {
+            "id": "5",
+            "content": "aaa",
+            "isCorrect": false
+        },
+        {
+            "id": "6",
+            "content": "bv",
+            "isCorrect": false
+        },
+        {
+            "id": "7",
+            "content": "Sơn Tùng MTV",
+            "isCorrect": true
+        },
+        {
+            "id": "8",
+            "content": "ccc",
+            "isCorrect": false
+        },
+        {
+            "id": "9",
+            "content": "ccss",
+            "isCorrect": false
         }
     ],
     "QuestionExam": [
@@ -33,20 +63,19 @@
             "content": "Đây là ai",
             "image": "https://images2.thanhnien.vn/528068263637045248/2024/6/8/son-tung-1717856487185589758415.jpg",
             "answer": [
-                "1",
-                "2",
-                "3"
+                "4",
+                "5",
+                "6"
             ],
             "exId": "1"
         },
         {
             "id": "4",
             "content": "Đây là ai",
-            "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdanviet.vn%2Fson-tung-m-tp-vinh-quang-doc-nhat-vo-nhi-va-nhung-not-tram-trong-su-nghiep-20240613072517408.htm&psig=AOvVaw12Qh6eOV_wg6dQ6DiGAplE&ust=1729867926959000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOD2gayip4kDFQAAAAAdAAAAABAE",
             "answer": [
-                "1",
-                "2",
-                "3"
+                "7",
+                "8",
+                "9"
             ],
             "exId": "1"
         }
