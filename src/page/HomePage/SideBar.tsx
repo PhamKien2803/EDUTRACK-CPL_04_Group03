@@ -227,11 +227,11 @@ export default function SideBar() {
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      justifyContent: "initial",
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      justifyContent: "center",
+                    },
                 ]}
               >
                 <ListItemIcon
@@ -242,11 +242,11 @@ export default function SideBar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -256,11 +256,11 @@ export default function SideBar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 />
               </ListItemButton>
@@ -279,11 +279,11 @@ export default function SideBar() {
                   },
                   open
                     ? {
-                        justifyContent: "initial",
-                      }
+                      justifyContent: "initial",
+                    }
                     : {
-                        justifyContent: "center",
-                      },
+                      justifyContent: "center",
+                    },
                 ]}
               >
                 <ListItemIcon
@@ -294,11 +294,11 @@ export default function SideBar() {
                     },
                     open
                       ? {
-                          mr: 3,
-                        }
+                        mr: 3,
+                      }
                       : {
-                          mr: "auto",
-                        },
+                        mr: "auto",
+                      },
                   ]}
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -308,11 +308,11 @@ export default function SideBar() {
                   sx={[
                     open
                       ? {
-                          opacity: 1,
-                        }
+                        opacity: 1,
+                      }
                       : {
-                          opacity: 0,
-                        },
+                        opacity: 0,
+                      },
                   ]}
                 />
               </ListItemButton>
