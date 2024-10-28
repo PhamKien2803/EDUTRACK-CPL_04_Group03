@@ -1,4 +1,4 @@
-import Breadcrumb from '../../components/HeaderNav/Breadcrumb'
+// import Breadcrumb from '../../components/HeaderNav/Breadcrumb'
 import Question from '../../components/Answer/Question'
 import ProgressTracker from '../../components/Answer/ProgressTracker'
 import NavTabs from '../../components/Answer/NavTabss/NavTabs'
@@ -7,7 +7,7 @@ function DicussionPage() {
 
     return (
         <div>
-            <Breadcrumb />
+            {/* <Breadcrumb /> */}
             <div style={{ width: '98%' }} className='container-fluid'>
                 <div className='row'>
                     <div className='col-8'>
