@@ -79,5 +79,21 @@
             ],
             "exId": "1"
         }
+    ],
+    "Examination": [
+        {
+            "examID": "1",
+            "examContent": "Test nhận diện  ",
+            "courseSemesterID": "1",
+            "timeLimit": "1500",
+            "status": true
+        },
+        {
+            "examID": "2",
+            "examContent": "Test nhận diện  ",
+            "courseSemesterID": "1",
+            "timeLimit": "1500",
+            "status": true
+        }
     ]
 }

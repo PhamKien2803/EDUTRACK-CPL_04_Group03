@@ -8,4 +8,8 @@ const getAnswerForQuestionExam = () => {
     return axios.get("answer")
 }
 
-export { getDataExam, getAnswerForQuestionExam } 
+const getExamList = () => {
+    return axios.get("Examination")
+}
+
+export { getDataExam, getAnswerForQuestionExam, getExamList } 
