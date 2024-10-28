@@ -4,12 +4,18 @@
         gap: 20px;
         padding: 50px;
         .left-content{
-            width: 70%;
+            width: 80%;
             border: 1px solid black;
             border-radius: 5px;
+            .q-button{
+                text-align: center;
+                .btn-back{
+                    margin-right: 20px;
+                }
+            }
         }
         .right-content{
-            width: 30%;
+            width: 20%;
             border: 1px solid black;
             border-radius: 5px;
         }

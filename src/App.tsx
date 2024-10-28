@@ -1,3 +1,4 @@
+
 import { Fragment } from "react/jsx-runtime"
 
 import Lession from "./page/lession/Lession"
@@ -8,8 +9,8 @@ import Lession from "./page/lession/Lession"
 
 
 function App() {
-
   return (
+
     <Fragment>
       <Lession />
 
@@ -20,6 +21,8 @@ function App() {
       {/* <DicussionPage /> */}
       {/* <ExamDetail /> */}
     </Fragment>
+
+
   )
 }
 
