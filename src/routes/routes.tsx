@@ -1,10 +1,17 @@
-const routesStudentHome = [
+interface router {
+    name?: string,
+    key: string,
+    path: string,
+    component?: React.ReactNode
+}
+
+
+const routesStudentHome: router[] = [
     {
         name: "HomePage",
         key: "homepage",
-        exact: true,
         path: "/",
-        // component: HomePage
+        //  component: <HomePage
     }
 ]
 

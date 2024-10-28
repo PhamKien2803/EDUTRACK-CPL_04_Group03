@@ -1,4 +1,24 @@
 {
+    "class": [
+        {
+            "ClassID": "String",
+            "ClassName": "SE222",
+            "Student": [
+                "he1223",
+                "hs1122"
+            ],
+            "Status": true
+        },
+        {
+            "ClassID": "sss",
+            "ClassName": "SE222",
+            "Student": [
+                "he1223",
+                "he1223"
+            ],
+            "Status": true
+        }
+    ],
     "answer": [
         {
             "id": "1",
@@ -93,7 +113,7 @@
             "examContent": "Test nhận diện  ",
             "courseSemesterID": "1",
             "timeLimit": "1500",
-            "status": true
+            "status": false
         }
     ]
 }

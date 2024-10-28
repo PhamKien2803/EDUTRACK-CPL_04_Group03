@@ -1,13 +1,11 @@
 import { Fragment } from "react/jsx-runtime"
-// import DicussionPage from "./page/StudentHome/DicussionPage"
-import { ExamList } from "./components/Exam/ExamList"
+import DicussionPage from "./page/StudentHome/DicussionPage"
 
 function App() {
 
   return (
     <Fragment>
-      {/* <DicussionPage /> */}
-      <ExamList />
+      <DicussionPage />
     </Fragment>
   )
 }
