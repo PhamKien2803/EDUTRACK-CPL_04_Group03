@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Typography, Avatar, Paper, Rating, TextField, Button } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
@@ -21,7 +21,7 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<CommentProps> = ({ username, text, time }) => {
+function Comment({ username, text, time }: CommentProps) {
   const [rating, setRating] = useState<number | null>(2);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false); 
@@ -66,8 +66,8 @@ const Comment: React.FC<CommentProps> = ({ username, text, time }) => {
           name="hover-feedback"
           value={rating}
           precision={0.5}
-          onChange={(event, newValue) => setRating(newValue)}
-          onChangeActive={(event, newHover) => setHover(newHover)}
+          onChange={(_event, newValue) => setRating(newValue)}
+          onChangeActive={(_event, newHover) => setHover(newHover)}
           getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
           emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
         />
