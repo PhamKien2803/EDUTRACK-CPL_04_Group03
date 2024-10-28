@@ -46,7 +46,7 @@ function Breadcrumb() {
 
   return (
     <Fragment>
-      <AppBar position="static">
+      <AppBar sx={{ backgroundColor: '#6A5ACD' }} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -133,7 +133,7 @@ function Breadcrumb() {
                       underline="hover"
                       color="inherit"
                       href={item.url}
-                      sx={{ color: 'white' }} // Đặt màu chữ Breadcrumbs
+                      sx={{ color: 'white' }} 
                     >
                       {item.label}
                     </Link>

@@ -1,5 +1,4 @@
-
-function Comment() {
+function Login() {
   return (
     <div>
       
@@ -7,4 +6,4 @@ function Comment() {
   )
 }
 
-export default Comment
+export default Login

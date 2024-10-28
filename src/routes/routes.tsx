@@ -1,7 +1,9 @@
+import HomePage from "../page/HomePage/HomePage"
+
 interface router {
     name?: string,
     key: string,
-    path: string,
+    path?: string,
     component?: React.ReactNode
 }
 
@@ -10,12 +12,13 @@ const routesStudentHome: router[] = [
     {
         name: "HomePage",
         key: "homepage",
-        path: "/",
-        //  component: <HomePage
+        path: "/homePage",
+        component: <HomePage />
     }
+
 ]
 
-const routesLecturersHome = [
+const routesLecturersHome: router[] = [
     {
         exact: true,
         path: "/",
@@ -23,7 +26,7 @@ const routesLecturersHome = [
     }
 ]
 
-const routesStaffHome = [
+const routesStaffHome: router[] = [
     {
         exact: true,
         path: "/",

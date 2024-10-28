@@ -1,14 +1,9 @@
-import { Fragment } from "react/jsx-runtime"
-import DicussionPage from "./page/StudentHome/DicussionPage"
-import { ExamDetail } from "./components/Exam/ExamDetail"
+import { ExamDetail } from './components/Exam/ExamDetail'
+import HomePage from './page/HomePage/HomePage'
+import SideBar from './page/HomePage/SideBar'
 
-function App() {
-
+export const App = () => {
   return (
-    <Fragment>
-      <ExamDetail />
-    </Fragment>
+    <HomePage />
   )
 }
-
-export default App
