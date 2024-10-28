@@ -1,17 +1,22 @@
 .Question-container{
-    .question-content{
-        display: flex;
-        gap: 20px;
-        padding: 50px;
-        .left-content{
-            width: 70%;
-            border: 1px solid black;
-            border-radius: 5px;
+    
+    .q-content{
+        
+        .image{
+            display: flex;
+            justify-content: center;
+            img{
+                height: 200px;
+            }
+            .img-2{
+                height: 200px;
+            }
         }
-        .right-content{
-            width: 30%;
-            border: 1px solid black;
-            border-radius: 5px;
+        .q-description{
+            margin: 20px 0 0 50px;
+        }
+        .q-answer{
+            margin: 20px 0 10px 50px;
         }
     }
 }

@@ -4,7 +4,8 @@ import DicussionPage from "./page/StudentHome/DicussionPage"
 function App() {
   return (
     <Fragment>
-      <DicussionPage/>
+      {/* <DicussionPage /> */}
+      <ExamDetail />
     </Fragment>
   );
 }
