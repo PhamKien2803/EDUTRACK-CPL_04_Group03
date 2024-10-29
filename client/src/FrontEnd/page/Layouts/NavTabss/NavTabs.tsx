@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import Dicussion from '../Dicussions/Dicussion';
+import Dicussion from '../../../components/Answer/Dicussions/Dicussion';
 
 function NavTabs() {
   const [value, setValue] = useState<string>('one'); 

@@ -3,8 +3,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import Content from '../QuestionContent/Content';
-import StudentList from '../StudentsList/StudentList';
+import Content from '../../../components/Lession/Content';
+import StudentList from '../../../components/SessionInfor/StudentsList/StudentList';
+
 
 function NavTabsSession() {
   const [value, setValue] = useState<string>('one');
