@@ -1,12 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { routes } from './routes/routes';
+import HomePage from './page/HomePage/HomePage';
+import LecturersHomePage from './page/LecturersHome/LecturersHomePage';
+import StaffHomePage from './page/StaffHome/StaffHomePage';
 
-import { Fragment } from "react/jsx-runtime"
-
-import Lession from "./page/lession/Lession"
-
-// import DicussionPage from "./page/StudentHome/DicussionPage"
-
-// import { ExamDetail } from "./components/Exam/ExamDetail"
-
+interface RouteType {
+  key?: string;
+  path?: string;
+  component: React.ComponentType;
+}
 
 function App() {
 
@@ -21,20 +23,21 @@ function App() {
   };
 
   return (
-
-    <Fragment>
-      <Lession />
-
-      {/* Header Nav */}
-      {/* <Breadcrumb /> */}
-
-      {/* <SessionInforPage/> */}
-      {/* <DicussionPage /> */}
-      {/* <ExamDetail /> */}
-    </Fragment>
-
-
-  )
+    <BrowserRouter>
+      <Routes>
+        {showRoutes(HomePage, routes)}
+        {showRoutes(LecturersHomePage, routes)}
+        {showRoutes(StaffHomePage, routes)}
+        {routes.map((route: RouteType) => (
+          <Route
+            key={route?.key}
+            path={route?.path}
+            element={<route.component />}
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
