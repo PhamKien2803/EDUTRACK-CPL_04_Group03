@@ -1,3 +1,4 @@
+import LoginPage from "../Auth/login/Login";
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
@@ -15,6 +16,13 @@ interface Router {
 }
 
 const routesStudentHome: Router[] = [
+    {
+        name: "login",
+        key: "LoginPage",
+        path: "/login",
+        component: LoginPage
+    },
+
     {
         name: "student_home",
         key: "StudentHomePage",
