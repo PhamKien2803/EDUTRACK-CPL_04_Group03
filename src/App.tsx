@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routes } from './routes/routes';
 
-export const App = () => {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
