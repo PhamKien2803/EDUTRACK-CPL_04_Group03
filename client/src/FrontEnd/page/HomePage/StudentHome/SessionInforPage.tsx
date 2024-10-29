@@ -1,6 +1,6 @@
-import CourseOutline from "../../components/SessionInfor/CourseOutline"
-import NavTabsSession from "../../components/SessionInfor/NavTabsSession/NavTabsSession"
-import TrackingOnline from "../../components/SessionInfor/StudentTracking/TrackingOnline"
+import CourseOutline from "../../../components/SessionInfor/CourseOutline"
+import NavTabsSession from "../../../components/SessionInfor/NavTabsSession/NavTabsSession"
+import TrackingOnline from "../../../components/SessionInfor/StudentTracking/TrackingOnline"
 
 function SessionInforPage() {
     return (

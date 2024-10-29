@@ -1,7 +1,7 @@
 // import Breadcrumb from '../../components/HeaderNav/Breadcrumb'
-import Question from '../../components/Answer/Question'
-import ProgressTracker from '../../components/Answer/ProgressTracker'
-import NavTabs from '../../components/Answer/NavTabss/NavTabs'
+import Question from '../../../components/Answer/Question'
+import ProgressTracker from '../../../components/Answer/ProgressTracker'
+import NavTabs from '../../../components/Answer/NavTabss/NavTabs'
 
 function DicussionPage() {
 

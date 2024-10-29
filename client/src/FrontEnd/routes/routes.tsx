@@ -1,9 +1,9 @@
-import StudentHome from "../page/StudentHome/StudentHome";
-import LecturersHomePage from "../page/LecturersHome/LecturersHomePage";
-import Lession from "../page/lession/Lession";
-import StaffHomePage from "../page/StaffHome/StaffHomePage";
-import DicussionPage from "../page/StudentHome/DicussionPage";
-import SessionInforPage from "../page/StudentHome/SessionInforPage";
+import StudentHome from "../page/HomePage/StudentHome/StudentHome";
+import LecturersHomePage from "../page/HomePage/LecturersHome/LecturersHomePage";
+import Lession from "../page/HomePage/StudentHome/Lession";
+import StaffHomePage from "../page/HomePage/StaffHome/StaffHomePage";
+import DicussionPage from "../page/HomePage/StudentHome/DicussionPage";
+import SessionInforPage from "../page/HomePage/StudentHome/SessionInforPage";
 
 interface Router {
     name?: string;
