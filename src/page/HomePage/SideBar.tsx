@@ -1,5 +1,4 @@
 import * as React from "react";
-<<<<<<< Updated upstream
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -13,21 +12,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-=======
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
->>>>>>> Stashed changes
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-<<<<<<< Updated upstream
-import Subject from "./Subject";
 import Grid from "@mui/material/Grid";
 import {
   FormControl,
@@ -236,11 +226,11 @@ export default function SideBar() {
                   },
                   open
                     ? {
-                      justifyContent: "initial",
-                    }
+                        justifyContent: "initial",
+                      }
                     : {
-                      justifyContent: "center",
-                    },
+                        justifyContent: "center",
+                      },
                 ]}
               >
                 <ListItemIcon
@@ -251,11 +241,11 @@ export default function SideBar() {
                     },
                     open
                       ? {
-                        mr: 3,
-                      }
+                          mr: 3,
+                        }
                       : {
-                        mr: "auto",
-                      },
+                          mr: "auto",
+                        },
                   ]}
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -265,11 +255,11 @@ export default function SideBar() {
                   sx={[
                     open
                       ? {
-                        opacity: 1,
-                      }
+                          opacity: 1,
+                        }
                       : {
-                        opacity: 0,
-                      },
+                          opacity: 0,
+                        },
                   ]}
                 />
               </ListItemButton>
@@ -288,11 +278,11 @@ export default function SideBar() {
                   },
                   open
                     ? {
-                      justifyContent: "initial",
-                    }
+                        justifyContent: "initial",
+                      }
                     : {
-                      justifyContent: "center",
-                    },
+                        justifyContent: "center",
+                      },
                 ]}
               >
                 <ListItemIcon
@@ -303,11 +293,11 @@ export default function SideBar() {
                     },
                     open
                       ? {
-                        mr: 3,
-                      }
+                          mr: 3,
+                        }
                       : {
-                        mr: "auto",
-                      },
+                          mr: "auto",
+                        },
                   ]}
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -317,11 +307,11 @@ export default function SideBar() {
                   sx={[
                     open
                       ? {
-                        opacity: 1,
-                      }
+                          opacity: 1,
+                        }
                       : {
-                        opacity: 0,
-                      },
+                          opacity: 0,
+                        },
                   ]}
                 />
               </ListItemButton>
@@ -348,69 +338,7 @@ export default function SideBar() {
             <MenuItem value="FA23">Fall 2023</MenuItem>
           </Select>
         </FormControl>
-
-        <Grid container spacing={2}>
-          {filteredSubjects.map((subject, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Subject
-                code={subject.code}
-                name={subject.name}
-                lecturer={subject.lecturer}
-                credits={subject.credits}
-              />
-            </Grid>
-          ))}
-        </Grid>
       </Box>
     </Box>
   );
 }
-=======
-
-export default function TemporaryDrawer() {
-  const [open, setOpen] = React.useState(false);
-
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
-  };
-
-  const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </div>
-  );
-}
->>>>>>> Stashed changes
