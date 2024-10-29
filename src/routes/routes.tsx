@@ -1,4 +1,4 @@
-import HomePage from "../page/HomePage/HomePage";
+import StudentHome from "../page/StudentHome/StudentHome";
 import LecturersHomePage from "../page/LecturersHome/LecturersHomePage";
 import Lession from "../page/lession/Lession";
 import StaffHomePage from "../page/StaffHome/StaffHomePage";
@@ -14,21 +14,21 @@ interface Router {
 
 const routesStudentHome: Router[] = [
     {
-        name: "StudentHome",
+        name: "student_home",
         key: "StudentHomePage",
         path: "/homePage",
-        component: HomePage
+        component: StudentHome
     },
 
     {
-        name: "Lession",
+        name: "lession",
         key: "LessionPage",
         path: "/lessioncourse",
         component: Lession
     },
 
     {
-        name: "LessionInfor",
+        name: "lession_infor",
         key: "LessionInforPage",
         path: "/lessioninfor",
         component: SessionInforPage
@@ -47,7 +47,7 @@ const routesStudentHome: Router[] = [
 const routesLecturersHome: Router[] = [
     {
         key: "homepage_lecturer",
-        path: "/",
+        path: "/lecturer/homePage",
         component: LecturersHomePage
     }
 ];
@@ -55,10 +55,11 @@ const routesLecturersHome: Router[] = [
 const routesStaffHome: Router[] = [
     {
         key: "homepage_staff",
-        path: "/",
+        path: "/staff/homePage",
         component: StaffHomePage
     }
 ];
+
 
 const routes: Router[] = [...routesStudentHome, ...routesLecturersHome, ...routesStaffHome];
 
