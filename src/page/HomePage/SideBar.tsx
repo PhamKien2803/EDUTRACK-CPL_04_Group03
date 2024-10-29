@@ -19,165 +19,19 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import {
-  FormControl,
-  InputLabel,
+  Menu,
   MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+  ProSidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SubMenu,
+} from 'react-pro-sidebar';
+import 'react-pro-sidebar/dist/css/styles.css';
+import sidebarBg from '../../assets/bg2.jpg';
 
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        ...openedMixin(theme),
-        "& .MuiDrawer-paper": openedMixin(theme),
-      },
-    },
-    {
-      props: ({ open }) => !open,
-      style: {
-        ...closedMixin(theme),
-        "& .MuiDrawer-paper": closedMixin(theme),
-      },
-    },
-  ],
-}));
-
-export default function SideBar() {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [semester, setSemester] = React.useState("all");
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const handleSemesterChange = (event: SelectChangeEvent) => {
-    setSemester(event.target.value);
-  };
-
-  // Thêm thông tin kỳ học vào mỗi môn
-  const subjects = [
-    {
-      code: "FER201m",
-      name: "Front-End Web Development",
-      lecturer: "John Doe",
-      credits: 3,
-      semester: "SP23",
-    },
-    {
-      code: "PRJ301",
-      name: "Java Web Application Development",
-      lecturer: "Jane Smith",
-      credits: 4,
-      semester: "SU23",
-    },
-    {
-      code: "SWP391",
-      name: "Software Development Project",
-      lecturer: "Bob Johnson",
-      credits: 5,
-      semester: "FA23",
-    },
-    {
-      code: "SWR302",
-      name: "Software Requirements",
-      lecturer: "Alice Brown",
-      credits: 3,
-      semester: "SP23",
-    },
-    {
-      code: "SWT301",
-      name: "Software Testing",
-      lecturer: "Charlie Davis",
-      credits: 4,
-      semester: "SU23",
-    },
-    {
-      code: "PRN211",
-      name: ".NET Programming",
-      lecturer: "Eva Wilson",
-      credits: 4,
-      semester: "FA23",
-    },
-  ];
-
-  // Lọc subjects theo kỳ học
-  const filteredSubjects =
-    semester === "all"
-      ? subjects
-      : subjects.filter((subject) => subject.semester === semester);
+function SideBar(props) {
+  const { collapsed, toggled, handleToggleSidebar } = props;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -341,3 +195,5 @@ export default function SideBar() {
     </Box>
   );
 }
+
+export default SideBar;

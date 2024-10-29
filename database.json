@@ -1,25 +1,25 @@
 {
-    "class": [
+    "Class": [
         {
-            "ClassID": "String",
+            "ClassID": "c123",
             "ClassName": "SE222",
             "Student": [
-                "he1223",
-                "hs1122"
+                "he171694",
+                "he173077"
             ],
             "Status": true
         },
         {
-            "ClassID": "sss",
+            "ClassID": "c124",
             "ClassName": "SE222",
             "Student": [
-                "he1223",
-                "he1223"
+                "he170155",
+                "he170569"
             ],
             "Status": true
         }
     ],
-    "answer": [
+    "AnswerQuestionExam": [
         {
             "id": "1",
             "content": "Sơn Tùng MTV",
@@ -114,6 +114,213 @@
             "courseSemesterID": "1",
             "timeLimit": "1500",
             "status": false
+        }
+    ],
+    "UserAnswer": [
+        {
+            "id": "a11",
+            "answer": [
+                "1",
+                "2"
+            ],
+            "QuestionID": "1",
+            "UserID": "he173077"
+        },
+        {
+            "id": "a12",
+            "answer": [
+                "1"
+            ],
+            "QuestionID": "2",
+            "UserID": "he173077"
+        },
+        {
+            "id": "a13",
+            "answer": [
+                "1",
+                "2"
+            ],
+            "QuestionID": "3",
+            "UserID": "he173077"
+        }
+    ],
+    "Participants": [
+        {
+            "UserID": "he173077",
+            "UserName": "Do Dang Phuong",
+            "Age": 21,
+            "Gender": true,
+            "Address": "Bac Giang",
+            "Email": "phuongddhe173077@fpt.edu.vn",
+            "Password": "1223@",
+            "Image": "",
+            "Role": 0,
+            "isOnline": true,
+            "Status": true
+        },
+        {
+            "UserID": "he171694",
+            "UserName": "Nguyen Duc Long",
+            "Age": 21,
+            "Gender": true,
+            "Address": "Ha Noi",
+            "Email": "longndhe171694@fpt.edu.vn",
+            "Password": "1223@",
+            "Image": "",
+            "Role": 0,
+            "isOnline": true,
+            "Status": true
+        },
+        {
+            "UserID": "he170569",
+            "UserName": "Nguyễn Trung Nghĩa ",
+            "Age": 21,
+            "Gender": true,
+            "Address": "Ha Noi",
+            "Email": "nghianthe170569@fpt.edu.vn",
+            "Password": "1223@",
+            "Image": "",
+            "Role": 0,
+            "isOnline": true,
+            "Status": true
+        },
+        {
+            "UserID": "he170155",
+            "UserName": "Phạm Duy Kiên ",
+            "Age": 21,
+            "Gender": true,
+            "Address": "Ha Noi",
+            "Email": "kienpdhe170155@fpt.edu.vn",
+            "Password": "1223@",
+            "Image": "",
+            "Role": 0,
+            "isOnline": true,
+            "Status": true
+        },
+        {
+            "UserID": "lt12345",
+            "UserName": "Tọ",
+            "Age": 21,
+            "Gender": true,
+            "Address": "Ha Noi",
+            "Email": "THOPN3@FPT.EDU.VN",
+            "Password": "1223@",
+            "Image": "",
+            "Role": 1,
+            "isOnline": true,
+            "Status": true
+        }
+    ],
+    "Semester": [
+        {
+            "SemesterID": "fall24",
+            "SemesterName": "FALL 24",
+            "StartDate": "01/09/2024",
+            "EndDate": "01/12/2024",
+            "Status": true
+        },
+        {
+            "SemesterID": "sum24",
+            "SemesterName": "SUMMER 24",
+            "StartDate": "01/09/2024",
+            "EndDate": "01/12/2024",
+            "Status": true
+        }
+    ],
+    "CourseSemester": [
+        {
+            "CourseSemesterID": "cs11",
+            "SemesterID": "fall24",
+            "SlotID": [
+                "s11",
+                "s12"
+            ],
+            "CourseID": "FER201",
+            "StudentID": "he173077",
+            "LecturersID": "lt12345",
+            "ClassID": "c123"
+        },
+        {
+            "CourseSemesterID": "cs12",
+            "SemesterID": "fall24",
+            "SlotID": [
+                "s21",
+                "s22"
+            ],
+            "CourseID": "ENW492c",
+            "StudentID": "he173077",
+            "LecturersID": "lt12345",
+            "ClassID": "c123"
+        }
+    ],
+    "Course": [
+        {
+            "CourseID": "FER201",
+            "CourseName": "Front-End web development with React_Phát triển web Front-End với React",
+            "Status": true
+        },
+        {
+            "CourseID": "ENW492c",
+            "CourseName": "Academic Writing Skills_Kỹ năng viết học thuật",
+            "Status": true
+        }
+    ],
+    "Slot": [
+        {
+            "SlotID": "s11",
+            "SlotName": "slot 1",
+            "Description": "Course Introduction 1.1 Full Stack Web Development",
+            "TimeStart": "01/09/2024",
+            "TimeEnd": "01/12/2024",
+            "Status": true
+        },
+        {
+            "SlotID": "s12",
+            "SlotName": "slot 2",
+            "Description": "Rendering with ES6 + JSX",
+            "TimeStart": "01/09/2024",
+            "TimeEnd": "01/12/2024",
+            "Status": true
+        },
+        {
+            "SlotID": "s21",
+            "SlotName": "slot 1",
+            "Description": "Introduction online ENW492c",
+            "TimeStart": "01/09/2024",
+            "TimeEnd": "01/12/2024",
+            "Status": true
+        },
+        {
+            "SlotID": "s22",
+            "SlotName": "slot 2",
+            "Description": "Moc3: Writting Compare",
+            "TimeStart": "01/09/2024",
+            "TimeEnd": "01/12/2024",
+            "Status": true
+        }
+    ],
+    "QuestionSLot": [
+        {
+            "QuestionID": "q111",
+            "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
+            "TimeLimit": "1500",
+            "Slotid": "s11",
+            "Status": 0
+        },
+        {
+            "QuestionID": "q112",
+            "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
+            "TimeLimit": "1500",
+            "Slotid": "s11",
+            "Status": 0
+        }
+    ],
+    "AnswerQuestionSlot": [
+        {
+            "id": "aq1",
+            "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
+            "QuestionID": "q111",
+            "UserID": "he173077"
         }
     ]
 }

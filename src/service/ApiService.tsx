@@ -5,7 +5,7 @@ const getDataExam = () => {
 }
 
 const getAnswerForQuestionExam = () => {
-    return axios.get("answer")
+    return axios.get("AnswerQuestionExam")
 }
 
 const getExamList = () => {
