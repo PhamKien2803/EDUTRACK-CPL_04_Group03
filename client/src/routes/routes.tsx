@@ -1,9 +1,11 @@
-import StudentHome from "../page/HomePage/StudentHome/StudentHome";
-import LecturersHomePage from "../page/HomePage/LecturersHome/LecturersHomePage";
-import Lession from "../page/HomePage/StudentHome/Lession";
-import StaffHomePage from "../page/HomePage/StaffHome/StaffHomePage";
-import DicussionPage from "../page/HomePage/StudentHome/DicussionPage";
-import SessionInforPage from "../page/HomePage/StudentHome/SessionInforPage";
+import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
+import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
+import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
+import DicussionPage from "../page/home-page/student-home/DicussionPage";
+import Lession from "../page/home-page/student-home/Lession";
+import LessionInfor from "../page/home-page/student-home/LessionInfor";
+import StudentHome from "../page/home-page/student-home/StudentHome";
+
 
 interface Router {
     name?: string;
@@ -28,10 +30,17 @@ const routesStudentHome: Router[] = [
     },
 
     {
+        name: "examtest",
+        key: "ExamTestPage",
+        path:"/examtest",
+        component: ExamDetail
+    },
+
+    {
         name: "lession_infor",
         key: "LessionInforPage",
         path: "/lessioninfor",
-        component: SessionInforPage
+        component: LessionInfor
     },
 
     {
