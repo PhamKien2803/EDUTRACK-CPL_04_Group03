@@ -19,35 +19,35 @@ const routesStudentHome: Router[] = [
     {
         name: "student_home",
         key: "StudentHomePage",
-        path: "/homepage",
+        path: "/home-page",
         component: StudentHome
     },
 
     {
         name: "lession",
         key: "LessionPage",
-        path: "/lessioncourse",
+        path: "/lession-course",
         component: Lession
     },
 
     {
         name: "examtest",
         key: "ExamTestPage",
-        path:"/examtest",
+        path:"/exam-test",
         component: ExamDetail
     },
 
     {
         name: "lession_infor",
         key: "LessionInforPage",
-        path: "/lessioninfor",
+        path: "/lession-infor",
         component: LessionInfor
     },
 
     {
         name: "Dicussion",
         key: "DicussionPage",
-        path: "/dicussion",
+        path: "/dicussion-page",
         component: DicussionPage
     }
 

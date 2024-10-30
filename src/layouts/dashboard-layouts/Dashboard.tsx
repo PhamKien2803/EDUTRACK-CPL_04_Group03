@@ -15,7 +15,7 @@ import { Box, CircularProgress } from '@mui/material';
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
   {
-    segment: 'homepage',
+    segment: 'home-page',
     title: 'Dashboard',
     icon: <DashboardIcon />,
   },
