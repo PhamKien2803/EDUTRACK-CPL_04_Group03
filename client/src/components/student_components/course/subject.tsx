@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 interface Subject {
   id: number;
   name: string;
@@ -90,6 +90,10 @@ const subjects: Subject[] = [
 ];
 
 export default function Subject() {
+  const navigate = useNavigate();
+  const handleSubjectClick = () => {
+    navigate("/lessioncourse");
+  }
   return (
     <Box
       sx={{
@@ -102,7 +106,7 @@ export default function Subject() {
       <Typography variant="h4" sx={{ mb: 5, fontWeight: 600 }}>
         Course
       </Typography>
-      <Grid container spacing={3}>
+      <Grid onClick={() => handleSubjectClick()} container spacing={3}>
         {subjects.map((subject) => (
           <Grid
             item
