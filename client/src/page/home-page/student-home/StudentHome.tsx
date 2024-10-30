@@ -1,16 +1,18 @@
-function StudentHome() {
+import Subject from "../../../components/student_components/course/subject";
+import SideBar from "../../../layouts/side-bar/SideBar";
+
+function HomePage() {
   return (
-    <div className="admin-container" style={{ display: "flex" }}>
-      <div className="admin-sidebar" style={{ height: "100%" }}>
-      </div>
-      <div className="admin-main" style={{ width: "100%" }}>
-        <div className="collapsed">
-        </div>
-        <div>
-        </div>
+    <div className="admin-container">
+      <div className="admin-sidebar"></div>
+      <SideBar />
+
+      <div className="admin-main">
+        <div className="collapsed"></div>
+        <Subject />
       </div>
     </div>
   );
 }
 
-export default StudentHome;
+export default HomePage;
