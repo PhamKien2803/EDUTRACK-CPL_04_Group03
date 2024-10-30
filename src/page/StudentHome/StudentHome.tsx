@@ -1,13 +1,16 @@
+import SideBar from "../HomePage/SideBar";
+import Subject from "../HomePage/Subject";
+
 function HomePage() {
   return (
-    <div className="admin-container" style={{ display: "flex" }}>
-      <div className="admin-sidebar" style={{ height: "100%" }}>
-      </div>
-      <div className="admin-main" style={{ width: "100%" }}>
-        <div className="collapsed">
-        </div>
-        <div>
-        </div>
+    <div className="admin-container">
+      <div className="admin-sidebar"></div>
+      <SideBar></SideBar>
+
+      <div className="admin-main">
+        <div className="collapsed"></div>
+        <Subject />
+        <div></div>
       </div>
     </div>
   );
