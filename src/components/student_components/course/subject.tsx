@@ -92,7 +92,7 @@ const subjects: Subject[] = [
 export default function Subject() {
   const navigate = useNavigate();
   const handleSubjectClick = () => {
-    navigate("/lessioncourse");
+    navigate("/lession-course");
   }
   return (
     <Box
