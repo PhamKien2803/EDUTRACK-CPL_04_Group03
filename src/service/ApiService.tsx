@@ -12,4 +12,8 @@ const getExamList = () => {
     return axios.get("Examination")
 }
 
-export { getDataExam, getAnswerForQuestionExam, getExamList } 
+const getPaticipants = () => {
+    return axios.get("Participants")
+}
+
+export { getDataExam, getAnswerForQuestionExam, getExamList, getPaticipants }
