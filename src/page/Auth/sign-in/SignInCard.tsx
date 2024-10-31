@@ -32,11 +32,16 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-    const [emailError, setEmailError] = React.useState(false);
-    const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-    const [passwordError, setPasswordError] = React.useState(false);
-    const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-    const [open, setOpen] = React.useState(false);
+    const [emailError, setEmailError] = React.useState<boolean>(false);
+    const [emailErrorMessage, setEmailErrorMessage] = React.useState<string>('');
+    const [passwordError, setPasswordError] = React.useState<boolean>(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = React.useState<string>('');
+    const [open, setOpen] = React.useState<boolean>(false);
+    const [signin, setSignIn] = React.useState({
+        email: '',
+        password: '',
+        errors: {} as Record<string, string>, // Initializing errors
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -46,9 +51,20 @@ export default function SignInCard() {
         setOpen(false);
     };
 
+    const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setSignIn((prevSignIn) => ({
+            ...prevSignIn,
+            [name]: value,
+            errors: { ...prevSignIn.errors, [name]: '' }
+        }));
+    };
+
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!validateInputs()) return;
+
         const data = new FormData(event.currentTarget);
         console.log({
             email: data.get('email'),
@@ -57,20 +73,27 @@ export default function SignInCard() {
     };
 
     const validateInputs = () => {
-        const email = document.getElementById('email') as HTMLInputElement;
-        const password = document.getElementById('password') as HTMLInputElement;
         let isValid = true;
-
-        if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!signin.email || emailRegex.test(signin.email)) {
             setEmailError(true);
             setEmailErrorMessage('Please enter a valid email address.');
             isValid = false;
+        } else if (!signin.email.trim()) {
+            setEmailError(true);
+            setEmailErrorMessage('Email is required');
+            isValid = false;
+        } else if (!emailRegex.test(signin.email)) {
+            setEmailError(true);
+            setEmailErrorMessage('Invalid email address');
+            isValid = false;
         } else {
             setEmailError(false);
-            setEmailErrorMessage('');
+            setEmailErrorMessage(''); 
         }
 
-        if (!password.value || password.value.length < 6) {
+
+        if (!signin.password || signin.password.length < 6) {
             setPasswordError(true);
             setPasswordErrorMessage('Password must be at least 6 characters long.');
             isValid = false;
@@ -104,6 +127,7 @@ export default function SignInCard() {
                 <FormControl>
                     <TextField
                         id="email"
+                        name="email"
                         label="Email"
                         error={emailError}
                         helperText={emailErrorMessage}
@@ -113,6 +137,7 @@ export default function SignInCard() {
                         variant="outlined"
                         color={emailError ? 'error' : 'primary'}
                         InputProps={{ style: { borderRadius: '12px' } }}
+                        onChange={handleChangeValue}
                     />
                 </FormControl>
                 <FormControl>
@@ -129,6 +154,7 @@ export default function SignInCard() {
                         variant="outlined"
                         color={passwordError ? 'error' : 'primary'}
                         InputProps={{ style: { borderRadius: '12px' } }}
+                        onChange={handleChangeValue}
                     />
                     <Link
                         component="button"
@@ -149,7 +175,6 @@ export default function SignInCard() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    onClick={validateInputs}
                     sx={{
                         py: 1.5,
                         borderRadius: '12px',
