@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Content() {
     const navigate = useNavigate();
     const handleClicktoDicussion = () => {
-        navigate("/dicussion");
+        navigate("/dicussion-page");
     }
     const items = ["Q1", "Q2", "Q3", "Q4"];
 

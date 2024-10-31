@@ -7,11 +7,11 @@ const Content: React.FC = () => {
     const navigate = useNavigate();
 
     const handleClicktoDicussion = () => {
-        navigate("/dicussion");
+        navigate("/dicussion-page");
     }
 
     const handleClicktoLessionInfor = () => {
-        navigate("/lessioninfor");
+        navigate("/lession-infor");
     }
 
     const toggleVisibility = () => {

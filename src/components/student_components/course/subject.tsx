@@ -1,9 +1,17 @@
 import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Carousel from 'react-bootstrap/Carousel';
+
 interface Subject {
-  id: number;
-  name: string;
-  code: string;
+  id?: number;
+  name?: string;
+  code?: string;
+  image?: string;
+}
+
+interface Image {
+  id?: number;
+  image?: string;
 }
 
 const subjects: Subject[] = [
@@ -11,89 +19,62 @@ const subjects: Subject[] = [
     id: 1,
     name: "Mathematics for Computing",
     code: "MAS291",
+    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
   },
   {
     id: 2,
     name: "Software Development Project",
     code: "SWP391",
+    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
   },
   {
     id: 3,
-    name: "Basic Cross-Platform Application Programming With .NET",
-    code: "PRN211",
+    name: "Mathematics for Computing",
+    code: "MAS291",
+    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
   },
   {
     id: 4,
-    name: "Software Requirement",
-    code: "SWR302",
+    name: "Software Development Project",
+    code: "SWP391",
+    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
   },
   {
     id: 5,
-    name: "Web Design",
-    code: "WED201c",
+    name: "Mathematics for Computing",
+    code: "MAS291",
+    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
   },
   {
     id: 6,
-    name: "Introduction to Computing",
-    code: "CEA201",
+    name: "Software Development Project",
+    code: "SWP391",
+    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
+  },
+];
+
+const imageCarousel: Image[] = [
+  {
+    id: 1,
+    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
   },
   {
-    id: 7,
-    name: "Data Structures and Algorithms",
-    code: "CSD201",
+    id: 2,
+    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
   },
   {
-    id: 8,
-    name: "Database Systems",
-    code: "DBI202",
-  },
-  {
-    id: 9,
-    name: "Object-Oriented Programming",
-    code: "PRO192",
-  },
-  {
-    id: 10,
-    name: "Basic Web Programming",
-    code: "WEB201c",
-  },
-  {
-    id: 11,
-    name: "Software Testing",
-    code: "SWT301",
-  },
-  {
-    id: 12,
-    name: "Mobile Programming",
-    code: "PRM392",
-  },
-  {
-    id: 13,
-    name: "Java Web Application Development",
-    code: "PRJ301",
-  },
-  {
-    id: 14,
-    name: "Information Assurance Overview",
-    code: "IAO202",
-  },
-  {
-    id: 15,
-    name: "Computer Organization",
-    code: "CSI104",
-  },
-  {
-    id: 16,
-    name: "Software Architecture and Design",
-    code: "SWD392",
+    id: 3,
+    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
   },
 ];
 
 export default function Subject() {
   const navigate = useNavigate();
+
   const handleSubjectClick = () => {
-    navigate("/lessioncourse");
-  }
+    navigate('/lession-course');
+  };
+
   return (
     <Box
       sx={{
@@ -103,10 +84,40 @@ export default function Subject() {
         ml: { sm: `${65}px` },
       }}
     >
-      <Typography variant="h4" sx={{ mb: 5, fontWeight: 600 }}>
+      <Carousel interval={3000} indicators={true} controls={true} style={{
+        borderRadius: "12px",
+        overflow: "hidden",
+        width: "85%", 
+        margin: "0 auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        {imageCarousel.map((image) => (
+          <Carousel.Item key={image.id}>
+            <Box
+              sx={{
+                backgroundColor: "white",
+                color: "white",
+                padding: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <Box>
+                <img src={image.image} alt="image" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </Box>
+            </Box>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+
+      <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
         Course
       </Typography>
-      <Grid onClick={() => handleSubjectClick()} container spacing={3}>
+      <Grid container spacing={2} justifyContent="center">
         {subjects.map((subject) => (
           <Grid
             item
@@ -114,13 +125,13 @@ export default function Subject() {
             sm={6}
             md={3}
             key={subject.id}
-            sx={{
-              p: 1.5,
-            }}
+            onClick={() => handleSubjectClick()}
+            sx={{ p: 1.5 }}
           >
             <Card
               sx={{
                 height: 180,
+                maxWidth: 250,
                 display: "flex",
                 flexDirection: "column",
                 transition: "all 0.3s ease",
@@ -132,18 +143,31 @@ export default function Subject() {
                     color: "white",
                   },
                 },
-                borderRadius: 3,
+                borderRadius: 2,
                 cursor: "pointer",
                 border: "1px solid #e0e0e0",
+                margin: "0 auto",
               }}
             >
+              <Box
+                component="img"
+                src={subject.image}
+                alt={`${subject.name} thumbnail`}
+                sx={{
+                  height: 80,
+                  width: "100%",
+                  objectFit: "cover",
+                  borderTopLeftRadius: 12,
+                  borderTopRightRadius: 12,
+                }}
+              />
               <CardContent
                 sx={{
                   flexGrow: 1,
-                  p: 3,
+                  p: 1,
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   alignItems: "center",
                   textAlign: "center",
                 }}
@@ -153,14 +177,14 @@ export default function Subject() {
                   component="h2"
                   sx={{
                     fontWeight: 500,
-                    fontSize: "1rem",
-                    lineHeight: 1.4,
+                    fontSize: "0.85rem",
+                    lineHeight: 1.3,
                     maxHeight: "2.8em",
                     overflow: "hidden",
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical",
-                    mb: 2,
+                    mb: 0.5,
                   }}
                 >
                   {subject.name}
@@ -168,10 +192,10 @@ export default function Subject() {
                 <Typography
                   variant="body1"
                   sx={{
-                    fontSize: "1.25rem",
+                    fontSize: "0.9rem",
                     fontWeight: "600",
                     color: "primary.main",
-                    p: 1,
+                    p: 0.5,
                     borderRadius: 1,
                     bgcolor: "rgba(25, 118, 210, 0.08)",
                   }}
