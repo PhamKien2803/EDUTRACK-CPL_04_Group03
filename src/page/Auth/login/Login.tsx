@@ -73,12 +73,12 @@ const Login: React.FC = () => {
     );
 
     if (user) {
-      
+
       toast.success("Login successful");
       setTimeout(() => {
         nav("/homepage");
       }, 2000);
-     
+
     } else {
       setEmail("");
       setPassword("");
@@ -89,6 +89,11 @@ const Login: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
+
+<Box display="flex" minHeight="100vh" bgcolor="background.default" p={4}>
+        {/* Left Side - Features */}
+        
+
       <Box
         display="flex"
         minHeight="100vh"
@@ -116,9 +121,9 @@ const Login: React.FC = () => {
             The social constructive learning tool. Please enter your email and
             password to sign in.
           </Typography>
-  
+
           <form style={{ width: "100%" }}>
-<Stack spacing={2}>
+            <Stack spacing={2}>
               <TextField
                 label="Email"
                 type="email"
@@ -138,7 +143,7 @@ const Login: React.FC = () => {
                 required
               />
             </Stack>
-  
+
             <Button
               variant="contained"
               color="primary"
@@ -149,9 +154,9 @@ const Login: React.FC = () => {
               Login
             </Button>
           </form>
-  
+
           <Divider sx={{ width: "100%", mt: 2, mb: 2 }}>or</Divider>
-  
+
           <Stack direction="row" spacing={1} width="100%">
             <Button
               variant="outlined"
@@ -172,8 +177,8 @@ const Login: React.FC = () => {
           </Stack>
         </Box>
       </Box>
-  
-      {/* Đặt ToastContainer ngay đây */}
+      </Box>
+      
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -186,9 +191,10 @@ const Login: React.FC = () => {
         pauseOnHover
         theme="colored"
       />
+
     </ThemeProvider>
   );
-  
+
 };
 
 export default Login;
