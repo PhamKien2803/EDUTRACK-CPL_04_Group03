@@ -6,10 +6,10 @@ interface Subject {
   id?: number;
   name?: string;
   code?: string;
-  image?: string; 
+  image?: string;
 }
 
-interface Image{
+interface Image {
   id?: number;
   image?: string;
 }
@@ -23,6 +23,30 @@ const subjects: Subject[] = [
   },
   {
     id: 2,
+    name: "Software Development Project",
+    code: "SWP391",
+    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
+  },
+  {
+    id: 3,
+    name: "Mathematics for Computing",
+    code: "MAS291",
+    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
+  },
+  {
+    id: 4,
+    name: "Software Development Project",
+    code: "SWP391",
+    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
+  },
+  {
+    id: 5,
+    name: "Mathematics for Computing",
+    code: "MAS291",
+    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
+  },
+  {
+    id: 6,
     name: "Software Development Project",
     code: "SWP391",
     image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
@@ -48,7 +72,7 @@ export default function Subject() {
   const navigate = useNavigate();
 
   const handleSubjectClick = () => {
-    navigate("/lesson-course");
+    navigate('/lession-course');
   };
 
   return (
@@ -60,41 +84,46 @@ export default function Subject() {
         ml: { sm: `${65}px` },
       }}
     >
-      {/* Bootstrap Carousel */}
-      <Carousel interval={3000} indicators={true} controls={true} style={{ borderRadius: "12px", overflow: "hidden" }}>
+      <Carousel interval={3000} indicators={true} controls={true} style={{
+        borderRadius: "12px",
+        overflow: "hidden",
+        width: "85%", 
+        margin: "0 auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
         {imageCarousel.map((image) => (
           <Carousel.Item key={image.id}>
             <Box
               sx={{
-                backgroundColor: "#7800FF",
+                backgroundColor: "white",
                 color: "white",
-                padding: "30px",
+                padding: "15px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 width: "100%",
               }}
             >
               <Box>
-                <img src={image.image} alt="image" style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
+                <img src={image.image} alt="image" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </Box>
-              
             </Box>
           </Carousel.Item>
         ))}
       </Carousel>
 
-      {/* Card Grid */}
       <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
         Course
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {subjects.map((subject) => (
           <Grid
             item
             xs={12}
             sm={6}
-            md={4}
+            md={3}
             key={subject.id}
             onClick={() => handleSubjectClick()}
             sx={{ p: 1.5 }}
@@ -102,6 +131,7 @@ export default function Subject() {
             <Card
               sx={{
                 height: 180,
+                maxWidth: 250,
                 display: "flex",
                 flexDirection: "column",
                 transition: "all 0.3s ease",
@@ -116,6 +146,7 @@ export default function Subject() {
                 borderRadius: 2,
                 cursor: "pointer",
                 border: "1px solid #e0e0e0",
+                margin: "0 auto",
               }}
             >
               <Box
