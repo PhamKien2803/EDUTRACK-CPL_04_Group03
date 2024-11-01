@@ -43,16 +43,9 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
     const handleClicktoDicussion = () => {
         navigate("/dicussion-page");
     }
-
-    const handleClicktoLessionInfor = () => {
-        navigate("/lession-infor");
-    }
-
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
     };
-
-    // console.log(slot);
 
     return (
         <>
@@ -62,36 +55,33 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
                         <div className="boder2">
                             <div className="slot-header">
                                 <div className="slot-number">slot {index + 1}</div>
-                                <div onClick={() => handleClicktoLessionInfor()} style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "flex-end",
-                                    fontSize: "18px",
-                                    fontWeight: "bold",
-                                    color: "blue",
-                                    marginRight: "2rem",
-                                    cursor: "pointer"
-                                }}>View Slots</div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "flex-end",
+                                        fontSize: "18px",
+                                        fontWeight: "bold",
+                                        color: "blue",
+                                        marginRight: "2rem",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    <Link
+                                        style={{ textDecoration: "none" }}
+                                        to={`/lession-infor/details/${sl}`}
+                                    >
+                                        View Slots
+                                    </Link>
+                                </div>
                                 <div className="date-time">
                                     {slot.find(s => s.id === sl)?.TimeStart} - {slot.find(s => s.id === sl)?.TimeEnd}
                                 </div>
                             </div>
 
+
                             <div className="course-content">
                                 <h3>{slot.find(s => s.id === sl)?.Description} </h3>
-                                {/* <p><strong>MOOC 1:</strong></p>
-                                <ul>
-                                    <li>Week 1: Course Introduction</li>
-                                    <li>Week 2: Verb Tenses and Conjunctions</li>
-                                    <li>Week 3: Compound and Complex Sentences</li>
-                                    <li>Week 4: More Commas, Parallel Structure, and Sentence Variety</li>
-                                </ul>
-                                <p><strong>MOOC 2:</strong></p>
-                                <ul>
-                                    <li>Week 1: Course Introduction</li>
-                                    <li>Week 2: Essay Writing</li>
-                                </ul>
-                                <p>Review MOOC1</p> */}
                             </div>
                         </div>
 

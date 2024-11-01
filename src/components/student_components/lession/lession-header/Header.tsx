@@ -43,7 +43,7 @@ interface Props {
   setselected: (id: string) => void
 }
 
-const Header: React.FC<Props> = ({ lession, partcipants, classes }) => {
+const Header: React.FC<Props> = ({ lession, classes }) => {
   // State to track the selected option from the dropdown
   const [activityFilter, setActivityFilter] = useState('All Activities');
   const [isVisible, setIsVisible] = useState(true);

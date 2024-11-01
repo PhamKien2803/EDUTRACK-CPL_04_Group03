@@ -45,6 +45,10 @@ const getQuestionSLot = () => {
     return axios.get("QuestionSLot")
 }
 
+const getQuestionSlotBySlotId = (id:string) => {
+    return axios.get(`QuestionSLot/${id}`)
+}
+
 const getClass = () => {
     return axios.get("Class")
 }
@@ -52,5 +56,5 @@ const getClass = () => {
 export {
     getDataExam, getAnswerForQuestionExam, getExamList, getSLot,
     getCourseSemester, getCourseSemesterById, getParticipantsById, getParticipants,
-    getSLotById, getCourseById, getQuestionSLot, getClass
+    getSLotById, getCourseById, getQuestionSLot, getClass, getQuestionSlotBySlotId
 } 
