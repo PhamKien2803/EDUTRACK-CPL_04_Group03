@@ -6,20 +6,20 @@ import "react-toastify/dist/ReactToastify.css";
 import {
     Box,
     Button,
-    TextField,
-    Stack,
-    Divider,
-    
-    
-    FormControlLabel,
     Checkbox,
+    Divider,
+
+
+    FormControlLabel,
     Link,
+    Stack,
+    TextField,
 } from "@mui/material";
 
-import { getPaticipants } from "../../../service/ApiService";
 import { useNavigate } from "react-router-dom";
-import {  GoogleIcon, SitemarkIcon } from "../icons/CustomIcon";
+import { getParticipants } from "../../../service/ApiService";
 import ForgotPassword from "../forgot-password/Forgot";
+import { GoogleIcon, SitemarkIcon } from "../icons/CustomIcon";
 
 import SchoolIcon from '@mui/icons-material/School';
 import MuiCard from '@mui/material/Card';
@@ -62,14 +62,14 @@ const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [user, setUser] = useState<Participant | null>(null);
     const [userList, setUserList] = useState<Participant[]>([]);
-    
+
 
     const nav = useNavigate();
 
     useEffect(() => {
         const fetchDataUser = async () => {
             try {
-                const users = await getPaticipants();
+                const users = await getParticipants();
                 if (Array.isArray(users)) {
                     setUserList(users);
                 }

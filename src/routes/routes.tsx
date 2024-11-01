@@ -1,4 +1,5 @@
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
+import { ExamList } from "../components/student_components/examtest/ExamList";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
@@ -33,7 +34,13 @@ const routesStudentHome: Router[] = [
     {
         name: "examtest",
         key: "ExamTestPage",
-        path:"/exam-test",
+        path: "/exam-test",
+        component: ExamList
+    },
+    {
+        name: "examtest",
+        key: "ExamTestPage",
+        path: "/examDetail",
         component: ExamDetail
     },
 

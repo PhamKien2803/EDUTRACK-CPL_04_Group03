@@ -1,5 +1,4 @@
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,8 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from "react";
 import { getExamList } from "../../../service/ApiService";
-import UsingStylesUtils from '../../../utils/Button/UsingStylesUtils';
 import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
+import { Link } from 'react-router-dom';
 
 interface Exam {
     examID: string;
@@ -64,9 +63,17 @@ export const ExamList = () => {
                                     {exam.status ? 'Start' : 'Done'}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {exam.status ? <UsingStylesUtils color='#7F00FF' string="Start" icon={<ModeEditIcon />} />
+                                    {exam.status ?
+                                        <Link to={`/examDetail?exID=${exam.examID}`}>
+                                            <Button
+                                                variant="contained" >
+                                                EXAM
+                                            </Button></Link>
                                         :
-                                        <UsingStylesUtils color='#4eb1ce' string="View" icon={<ModeEditIcon />} />}
+                                        <Button
+                                            variant="contained" >
+                                            VIEW
+                                        </Button>}
 
                                 </TableCell>
                             </TableRow>

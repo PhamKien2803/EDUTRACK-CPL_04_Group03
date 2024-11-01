@@ -1,9 +1,11 @@
 import { Button } from '@mui/material';
-import { useEffect, useState, useCallback } from 'react';
-import '../../../sass/ExamDetail.scss';
-import { getAnswerForQuestionExam, getDataExam } from '../../../service/ApiService';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../../../Sass/ExamDetail.scss';
+import { getAnswerForQuestionExam, getDataExam, getExamList } from '../../../service/ApiService';
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
+
 
 interface Data {
     id: string;
@@ -18,9 +20,21 @@ interface Answer {
     content: string;
     isCorrect: boolean;
 }
+interface Exam {
+    examID: string;
+    examContent: string;
+    courseSemesterID: string;
+    timeLimit: string;
+    status: boolean;
+}
 
 export const ExamDetail = () => {
+    const location = useLocation();
+    const param = new URLSearchParams(location.search);
+    const exId = param.get('exID');
+
     const [dataExam, setDataExam] = useState<Data[]>([]);
+    const [exam, setExam] = useState<Exam | null>(null);
     const [index, setIndex] = useState(0);
     const [answerQs, setAnswerQs] = useState<Answer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -29,13 +43,15 @@ export const ExamDetail = () => {
     useEffect(() => {
         fetchData();
         fetchAnswerQuestionExam();
+        fetchDataExamByID();
     }, []);
 
     const fetchData = async () => {
         try {
             const res = await getDataExam();
             if (Array.isArray(res)) {
-                const formattedData = res.map((question) => ({
+                const data = res.filter(item => item.exId === exId)
+                const formattedData = data.map((question) => ({
                     ...question,
                     answer: question.answer.map((id: string) => ({ id, isSelected: false })),
                 }));
@@ -49,10 +65,26 @@ export const ExamDetail = () => {
         }
     };
 
+    const fetchDataExamByID = async () => {
+        try {
+            const res = await getExamList();
+            if (Array.isArray(res)) {
+                const data = res.find(item => item.examID === exId)
+                if (data) {
+                    setExam(data);
+                } else {
+                    setError('Exam not found.');
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch exam:', error);
+            setError('Could not load exam. Please try again later.');
+        }
+    }
     const fetchAnswerQuestionExam = async () => {
         try {
             const res = await getAnswerForQuestionExam();
-            if (Array.isArray(res)) setAnswerQs(res as Answer[]);
+            if (Array.isArray(res)) setAnswerQs(res);
         } catch (error) {
             console.error('Failed to fetch answers:', error);
             setError('Could not load answers. Please try again later.');
@@ -75,9 +107,12 @@ export const ExamDetail = () => {
         });
     }, []);
 
+    console.log(exam);
+
+
     return (
         <div className="exam-container">
-            <div className="title">Exam Title</div>
+            <div className="title">{exam?.examContent}</div>
             <div className="exam-content">
                 <div className="left-content">
                     <div className="q-content">
@@ -115,7 +150,10 @@ export const ExamDetail = () => {
                     </div>
                 </div>
                 <div className="right-content">
-                    <RightContent dataExam={dataExam} setIndex={setIndex} />
+                    {
+                        exam ? <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} /> : <></>
+                    }
+
                 </div>
             </div>
         </div>

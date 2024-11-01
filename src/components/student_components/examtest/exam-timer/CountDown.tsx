@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ToHHMMSS } from '../../../../utils/Timer/ToHHMMSS';
 
-export const CountDown = () => {
-    const [count, setCount] = useState<string>("1500");
+interface Props {
+    timer?: string
+}
+export const CountDown: React.FC<Props> = ({ timer }) => {
+    const [count, setCount] = useState<string>(timer);
 
     useEffect(() => {
         if (count == '0') return (alert(`Finish`));

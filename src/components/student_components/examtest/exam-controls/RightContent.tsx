@@ -12,9 +12,10 @@ interface Data {
 interface Props {
     dataExam: Data[],
     setIndex: (id: number) => void
+    timer?: string
 }
 export const RightContent: React.FC<Props> = (props) => {
-    const { dataExam, setIndex } = props
+    const { dataExam, setIndex, timer } = props
 
     const getClassNameQs = (item: Data): string => {
         const checkedAnswer = item.answer.every(item => item.isSelected === false)
@@ -24,7 +25,7 @@ export const RightContent: React.FC<Props> = (props) => {
     return (
         <>
             <div className="main-timer">
-                <CountDown />
+                <CountDown timer={timer} />
             </div>
             <div className="main-question">
                 {dataExam.map((item, index) => (

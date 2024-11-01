@@ -57,7 +57,7 @@ const Header: React.FC<Props> = ({ lession, partcipants, classes }) => {
   };
 
   const navigateToExam = () => {
-    navigate("/examtest");
+    navigate("/exam-test");
   }
   console.log(lession);
 
