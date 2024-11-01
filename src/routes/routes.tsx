@@ -40,7 +40,7 @@ const routesStudentHome: Router[] = [
     {
         name: "lession_infor",
         key: "LessionInforPage",
-        path: "/lession-infor",
+        path: "/lession-infor/details/:id",
         component: LessionInfor
     },
 

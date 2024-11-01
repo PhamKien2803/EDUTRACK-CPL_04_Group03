@@ -311,7 +311,7 @@
             "QuestionID": "q112",
             "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
             "TimeLimit": "1500",
-            "Slotid": "s11",
+            "Slotid": "s12",
             "Status": 0
         }
     ],

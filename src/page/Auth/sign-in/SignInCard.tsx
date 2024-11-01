@@ -16,7 +16,7 @@ import {
     Link,
 } from "@mui/material";
 
-import { getPaticipants } from "../../../service/ApiService";
+import { getParticipants } from "../../../service/ApiService";
 import { useNavigate } from "react-router-dom";
 import {  GoogleIcon, SitemarkIcon } from "../icons/CustomIcon";
 import ForgotPassword from "../forgot-password/Forgot";
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         const fetchDataUser = async () => {
             try {
-                const users = await getPaticipants();
+                const users = await getParticipants();
                 if (Array.isArray(users)) {
                     setUserList(users);
                 }
