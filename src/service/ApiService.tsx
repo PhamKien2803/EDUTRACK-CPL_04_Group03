@@ -1,3 +1,4 @@
+import { UserAnswer } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 const getDataExam = () => {
@@ -45,7 +46,7 @@ const getQuestionSLot = () => {
     return axios.get("QuestionSLot")
 }
 
-const getQuestionSlotBySlotId = (id:string) => {
+const getQuestionSlotBySlotId = (id: string) => {
     return axios.get(`QuestionSLot/${id}`)
 }
 
@@ -53,8 +54,17 @@ const getClass = () => {
     return axios.get("Class")
 }
 
+const postAnswer = (ua: UserAnswer) => {
+    return axios.post('UserAnswer', {
+        answer: ua.answer,
+        QuestionID: ua.QuestionID,
+        UserID: ua.UserID
+    })
+}
+
 export {
     getDataExam, getAnswerForQuestionExam, getExamList, getSLot,
     getCourseSemester, getCourseSemesterById, getParticipantsById, getParticipants,
-    getSLotById, getCourseById, getQuestionSLot, getClass, getQuestionSlotBySlotId
+    getSLotById, getCourseById, getQuestionSLot, getClass, getQuestionSlotBySlotId,
+    postAnswer
 } 

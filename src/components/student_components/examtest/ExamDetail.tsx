@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../../../Sass/ExamDetail.scss';
-import { getAnswerForQuestionExam, getDataExam, getExamList } from '../../../service/ApiService';
+import { getAnswerForQuestionExam, getDataExam, getExamList, postAnswer } from '../../../service/ApiService';
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
 
@@ -39,6 +39,7 @@ export const ExamDetail = () => {
     const [answerQs, setAnswerQs] = useState<Answer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const nav = useNavigate()
 
     useEffect(() => {
         fetchData();
@@ -107,7 +108,32 @@ export const ExamDetail = () => {
         });
     }, []);
 
-    console.log(exam);
+    const handleFinish = async () => {
+        if (dataExam) {
+            for (const ques of dataExam) {
+                const answer = {
+                    id: '1',
+                    answer: ques.answer.filter(item => item.isSelected).map(item => item.id),
+                    QuestionID: ques.id,
+                    UserID: 'he171694'
+                };
+                try {
+                    const req = await postAnswer(answer);
+                    if (req) {
+                        alert('Finish Exam');
+                        setTimeout(() => {
+                            nav('/exam-test');
+                        }, 0);
+                    }
+                } catch (error) {
+                    console.error("Error posting answer:", error);
+                }
+            }
+        } else {
+            console.log('abc');
+        }
+    };
+
 
 
     return (
@@ -151,7 +177,7 @@ export const ExamDetail = () => {
                 </div>
                 <div className="right-content">
                     {
-                        exam ? <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} /> : <></>
+                        exam ? <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} handleFinish={handleFinish} /> : <></>
                     }
 
                 </div>
