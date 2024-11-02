@@ -40,8 +40,8 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     const navigate = useNavigate();
 
-    const handleClicktoDicussion = () => {
-        navigate("/dicussion-page");
+    const handleClicktoDicussion = (questionid: string, slotId: string) => {
+        navigate(`/dicussion-page/question?slotID=${slotId}&id=${questionid}`);
     }
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
@@ -88,20 +88,21 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
                         {isVisible && (
                             <div>
                                 <div className="tile" style={{ margin: "10px 0px 0px 0px" }}>QUESTION:</div>
-                                <div style={{ cursor: "pointer" }} className="question-container" onClick={() => handleClicktoDicussion()}>
+                                {questionSlot.map((qs, index) => (
+                                    <div style={{ cursor: "pointer" }} className="question-container" onClick={() => handleClicktoDicussion(qs.QuestionID, sl)}>
 
-                                    {questionSlot.map((qs, index) => (
-                                        // <Link to={`/dicussion?qid=${qs.QuestionID}`} className="question-item">
+                                        {/* <Link to={`/dicussion-page/question/${qs.QuestionID}`} className="question-item"> */}
                                         <div key={`qs-${index}`} className="question-item">
                                             <div className="question-icon">Q{index + 1}</div>
                                             <div className="question-text">{qs.content.substring(0, 50)}...</div>
                                             {qs.Status === 0 ? <div className="question-status not-started">Not start</div> : <div className="question-status started">Go</div>}
                                         </div>
-                                        // </Link>
+                                        {/* </Link> */}
 
-                                    ))}
 
-                                </div>
+                                    </div>
+                                ))}
+
                             </div>
                         )}
 
