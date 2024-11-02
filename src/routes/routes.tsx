@@ -54,7 +54,7 @@ const routesStudentHome: Router[] = [
     {
         name: "Dicussion",
         key: "DicussionPage",
-        path: "/dicussion-page",
+        path: "/dicussion-page/question",
         component: DicussionPage
     }
 

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routes } from './routes/routes';
 import DashboardLayoutBranding from './layouts/dashboard-layouts/Dashboard';
 import LoginPage from './page/Auth/login/Login';

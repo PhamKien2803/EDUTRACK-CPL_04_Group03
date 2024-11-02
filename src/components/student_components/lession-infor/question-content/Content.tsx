@@ -14,9 +14,10 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
     const { id: SlotId } = useParams<{ id: string }>(); 
 
     const filteredQuestions = questionSlot.filter(qs => qs.Slotid === SlotId);
+    console.log(filteredQuestions);
+    const handleClickToDiscussion = (questionId: string, slotId: string) => {
+        navigate(`/dicussion-page/question?slotID=${slotId}&id=${questionId}`);
 
-    const handleClickToDiscussion = (questionId: string) => {
-        navigate(`/discussion-page/${questionId}`);
     };
 
     return (
@@ -24,7 +25,7 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
             {filteredQuestions.map((qs, index) => (
                 <Box
                     key={qs.QuestionID}
-                    onClick={() => handleClickToDiscussion(qs.QuestionID)}
+                    onClick={() => handleClickToDiscussion(qs.QuestionID, qs.Slotid)}
                     sx={{
                         display: "flex",
                         alignItems: "center",
