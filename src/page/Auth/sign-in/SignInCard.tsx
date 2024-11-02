@@ -106,7 +106,7 @@ const Login: React.FC = () => {
             setEmailErrorMessage("");
         }
         const user = userList.find(
-            (u) => u.Email === email && u.Password === password
+            (u) => u.Email === email && u.Password === password 
         );
 
         if (user) {
