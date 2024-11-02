@@ -25,7 +25,8 @@ import SchoolIcon from '@mui/icons-material/School';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 
-
+import { useDispatch } from 'react-redux';
+import { doLogin } from "../../../redux/action/userAction";
 
 interface Participant {
     UserID: string;
@@ -87,6 +88,7 @@ const Login: React.FC = () => {
 
     console.log(error, user, userList, setUser, setPasswordError, setPasswordErrorMessage);
 
+    const dispatch = useDispatch();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -107,11 +109,11 @@ const Login: React.FC = () => {
             setEmailErrorMessage("");
         }
         const user = userList.find(
-            (u) => u.Email === email && u.Password === password
+            (u) => u.Email === email && u.Password === password 
         );
 
         if (user) {
-
+            dispatch(doLogin(user));
             toast.success("Login successful");
             setTimeout(() => {
                 nav("/home-page");
@@ -121,7 +123,7 @@ const Login: React.FC = () => {
             setEmail("");
             setPassword("");
 
-            toast.error("Invalid email or password");
+            toast.error("Invalid email, password or status is not active! Please try again");
         }
     };
 
