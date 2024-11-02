@@ -51,6 +51,7 @@ const Login: React.FC = () => {
   const [user, setUser] = useState<Participant | null>(null);
   const [userList, setUserList] = useState<Participant[]>([]);
 
+  console.log(error, user, setUser);
   const nav = useNavigate();
 
   useEffect(() => {

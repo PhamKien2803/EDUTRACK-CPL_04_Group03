@@ -63,6 +63,7 @@ const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [user, setUser] = useState<Participant | null>(null);
     const [userList, setUserList] = useState<Participant[]>([]);
+    
 
     const nav = useNavigate();
 
@@ -84,6 +85,8 @@ const Login: React.FC = () => {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [open, setOpen] = React.useState(false);
+
+    console.log(error, user, userList, setUser, setPasswordError, setPasswordErrorMessage);
 
     const dispatch = useDispatch();
     const handleClickOpen = () => {
