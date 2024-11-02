@@ -1,11 +1,10 @@
-import { Button } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../../Sass/ExamDetail.scss';
 import { getAnswerForQuestionExam, getDataExam, getExamList } from '../../../service/ApiService';
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
-
 
 interface Data {
     id: string;
@@ -69,7 +68,7 @@ export const ExamDetail = () => {
         try {
             const res = await getExamList();
             if (Array.isArray(res)) {
-                const data = res.find(item => item.examID === exId)
+                const data = res.find(item => item.examID === exId);
                 if (data) {
                     setExam(data);
                 } else {
@@ -80,7 +79,8 @@ export const ExamDetail = () => {
             console.error('Failed to fetch exam:', error);
             setError('Could not load exam. Please try again later.');
         }
-    }
+    };
+
     const fetchAnswerQuestionExam = async () => {
         try {
             const res = await getAnswerForQuestionExam();
@@ -96,30 +96,29 @@ export const ExamDetail = () => {
             const dataClone = [...prevDataExam];
             const question = dataClone.find(item => item.id === qid);
             if (question) {
-                question.answer = question.answer.map(item => {
-                    if (item.id === aid) {
-                        item.isSelected = !item.isSelected;
-                    }
-                    return item;
-                });
+                question.answer = question.answer.map(item => ({
+                    ...item,
+                    isSelected: item.id === aid ? !item.isSelected : item.isSelected,
+                }));
             }
             return dataClone;
         });
     }, []);
 
-    console.log(exam);
-
-
     return (
-        <div className="exam-container">
-            <div className="title">{exam?.examContent}</div>
-            <div className="exam-content">
-                <div className="left-content">
-                    <div className="q-content">
+        <Box className="exam-container" sx={{ padding: 3 }}>
+            <Typography variant="h4" component="div" sx={{ mb: 2, fontWeight: 'bold' }}>
+                {exam?.examContent || 'Exam'}
+            </Typography>
+
+            <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
+                {/* Left Content (Questions) */}
+                <Box flex={1} sx={{ borderRight: { md: '1px solid lightgray' }, pr: { md: 2 } }}>
+                    <Box className="q-content" sx={{ mb: 2 }}>
                         {isLoading ? (
-                            <p>Loading questions...</p>
+                            <CircularProgress />
                         ) : error ? (
-                            <p>{error}</p>
+                            <Typography color="error">{error}</Typography>
                         ) : dataExam.length > 0 ? (
                             <Question
                                 index={index}
@@ -128,12 +127,13 @@ export const ExamDetail = () => {
                                 handleCheckbox={handleCheckbox}
                             />
                         ) : (
-                            <p>No questions available.</p>
+                            <Typography>No questions available.</Typography>
                         )}
-                    </div>
-                    <div className="q-button">
+                    </Box>
+
+                    {/* Navigation Buttons */}
+                    <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
                         <Button
-                            className="btn-back"
                             variant="contained"
                             onClick={() => setIndex(prev => Math.max(prev - 1, 0))}
                             disabled={index === 0}
@@ -147,15 +147,18 @@ export const ExamDetail = () => {
                         >
                             NEXT
                         </Button>
-                    </div>
-                </div>
-                <div className="right-content">
-                    {
-                        exam ? <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} /> : <></>
-                    }
+                    </Box>
+                </Box>
 
-                </div>
-            </div>
-        </div>
+                {/* Right Content (Question Navigation and Timer) */}
+                <Box className="right-content" sx={{ width: { xs: '100%', md: '30%' } }}>
+                    {exam ? (
+                        <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} />
+                    ) : (
+                        <></>
+                    )}
+                </Box>
+            </Box>
+        </Box>
     );
 };
