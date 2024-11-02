@@ -1,19 +1,30 @@
+import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { slot as Slot, questionSlot } from "../../../../models/Interface";
 
-function Content() {
+interface Props {
+    questionSlot: questionSlot[];
+    slots: Slot[];
+}
+
+const Content: React.FC<Props> = ({ questionSlot }) => {
     const navigate = useNavigate();
-    const handleClicktoDicussion = () => {
-        navigate("/dicussion-page");
-    }
-    const items = ["Q1", "Q2", "Q3", "Q4"];
+    const { id: SlotId } = useParams<{ id: string }>(); 
+
+    const filteredQuestions = questionSlot.filter(qs => qs.Slotid === SlotId);
+
+    const handleClickToDiscussion = (questionId: string) => {
+        navigate(`/discussion-page/${questionId}`);
+    };
 
     return (
-        <Container sx={{padding: "10px 10px"}}>
-            {items.map((item, index) => (
-                <Box onClick={() => handleClicktoDicussion()}
-                    key={index}
+        <Container sx={{ padding: "10px 10px" }}>
+            {filteredQuestions.map((qs, index) => (
+                <Box
+                    key={qs.QuestionID}
+                    onClick={() => handleClickToDiscussion(qs.QuestionID)}
                     sx={{
                         display: "flex",
                         alignItems: "center",
@@ -28,13 +39,27 @@ function Content() {
                     }}
                 >
                     <QuestionAnswerIcon sx={{ marginRight: "8px", color: "#4285F4" }} />
-                    <Typography variant="body1" fontWeight="bold">
-                        {item}
-                    </Typography>
+                    <Box>
+                        <Typography variant="body1" fontWeight="bold">
+                            Question {index + 1}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {qs.content.length > 50 ? `${qs.content.substring(0, 50)}...` : qs.content}
+                        </Typography>
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                color: qs.Status === 0 ? "red" : "green",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {qs.Status === 0 ? "Not Started" : "In Progress"}
+                        </Typography>
+                    </Box>
                 </Box>
             ))}
         </Container>
     );
-}
+};
 
 export default Content;

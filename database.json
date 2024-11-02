@@ -146,7 +146,7 @@
     ],
     "Participants": [
         {
-            "UserID": "he173077",
+            "id": "he173077",
             "UserName": "Do Dang Phuong",
             "Age": 21,
             "Gender": true,
@@ -159,7 +159,7 @@
             "Status": true
         },
         {
-            "UserID": "he171694",
+            "id": "he171694",
             "UserName": "Nguyen Duc Long",
             "Age": 21,
             "Gender": true,
@@ -172,7 +172,7 @@
             "Status": true
         },
         {
-            "UserID": "he170569",
+            "id": "he170569",
             "UserName": "Nguyễn Trung Nghĩa ",
             "Age": 21,
             "Gender": true,
@@ -185,7 +185,7 @@
             "Status": true
         },
         {
-            "UserID": "he170155",
+            "id": "he170155",
             "UserName": "Phạm Duy Kiên ",
             "Age": 21,
             "Gender": true,
@@ -198,7 +198,7 @@
             "Status": true
         },
         {
-            "UserID": "lt12345",
+            "id": "lt12345",
             "UserName": "Tọ",
             "Age": 21,
             "Gender": true,
@@ -229,7 +229,7 @@
     ],
     "CourseSemester": [
         {
-            "CourseSemesterID": "cs11",
+            "id": "cs11",
             "SemesterID": "fall24",
             "SlotID": [
                 "s11",
@@ -241,7 +241,7 @@
             "ClassID": "c123"
         },
         {
-            "CourseSemesterID": "cs12",
+            "id": "cs12",
             "SemesterID": "fall24",
             "SlotID": [
                 "s21",
@@ -255,19 +255,19 @@
     ],
     "Course": [
         {
-            "CourseID": "FER201",
+            "id": "FER201",
             "CourseName": "Front-End web development with React_Phát triển web Front-End với React",
             "Status": true
         },
         {
-            "CourseID": "ENW492c",
+            "id": "ENW492c",
             "CourseName": "Academic Writing Skills_Kỹ năng viết học thuật",
             "Status": true
         }
     ],
     "Slot": [
         {
-            "SlotID": "s11",
+            "id": "s11",
             "SlotName": "slot 1",
             "Description": "Course Introduction 1.1 Full Stack Web Development",
             "TimeStart": "01/09/2024",
@@ -275,7 +275,7 @@
             "Status": true
         },
         {
-            "SlotID": "s12",
+            "id": "s12",
             "SlotName": "slot 2",
             "Description": "Rendering with ES6 + JSX",
             "TimeStart": "01/09/2024",
@@ -283,7 +283,7 @@
             "Status": true
         },
         {
-            "SlotID": "s21",
+            "id": "s21",
             "SlotName": "slot 1",
             "Description": "Introduction online ENW492c",
             "TimeStart": "01/09/2024",
@@ -291,7 +291,7 @@
             "Status": true
         },
         {
-            "SlotID": "s22",
+            "id": "s22",
             "SlotName": "slot 2",
             "Description": "Moc3: Writting Compare",
             "TimeStart": "01/09/2024",
@@ -311,7 +311,7 @@
             "QuestionID": "q112",
             "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
             "TimeLimit": "1500",
-            "Slotid": "s11",
+            "Slotid": "s12",
             "Status": 0
         }
     ],
