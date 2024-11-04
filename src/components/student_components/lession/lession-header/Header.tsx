@@ -17,53 +17,29 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SchoolIcon from '@mui/icons-material/School';
 import HomeIcon from '@mui/icons-material/Home';
-import { lession as Lession, participants as Participants, classRoom as ClassRoom } from "../../../../models/Interface"
-
-// interface Lession {
-//   id: string;
-//   SemesterID: string;
-//   SlotID: string[];
-//   CourseID: string;
-//   StudentID: string;
-//   LecturersID: string;
-//   ClassID: string;
-// }
-
-// interface Participants {
-//   id: string;
-//   UserName: string;
-//   Age: number;
-//   Gender: boolean;
-//   Address: string;
-//   Email: string;
-//   Password: string;
-//   Image: string;
-//   Role: number;
-//   isOnline: boolean;
-//   Status: boolean;
-// }
-
-// interface ClassRoom {
-//   ClassID: string;
-//   ClassName: string;
-//   Student: string[];
-//   Status: boolean;
-// }
+import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot } from "../../../../models/Interface";
 
 interface Props {
+  questionSlot: QuestionSlot[];
+  slot: Slot[];
   lession: Lession;
   participants: Participants[];
   classes: ClassRoom[];
   setSelected: (id: string) => void;
 }
 
-const Header: React.FC<Props> = ({ lession, classes }) => {
+const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, questionSlot }) => {
   const [activityFilter, setActivityFilter] = useState('All Activities');
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setActivityFilter(event.target.value as string);
+  };
+
+  const handleSlotChange = (event: SelectChangeEvent<string>) => {
+    const selectedSlotId = event.target.value;
+    setSelected(selectedSlotId);
   };
 
   const navigateToExam = () => {
@@ -73,6 +49,23 @@ const Header: React.FC<Props> = ({ lession, classes }) => {
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
+  
+  const filterSlotName = (slotid: string): string | undefined => {
+    const slotName = slot.find((s) => s.id === questionSlot.find((q) => q.Slotid === slotid)?.Slotid)?.SlotName;
+    return slotName;
+  }
+
+  const filterSlotName2 = (slotId: string): string | undefined => {
+    const question = questionSlot.find(q => q.Slotid === slotId);
+    if (question) {
+      const slotFound = slot.find(s => s.id === question.Slotid);
+      return slotFound ? slotFound.SlotName : undefined; // Trả về SlotName hoặc undefined
+    }
+    return undefined; // Nếu không tìm thấy câu hỏi
+  };
+  console.log(filterSlotName2("s11"));
+
+  console.log(filterSlotName("s11"));
 
   return (
     <Box p={3}>
@@ -111,18 +104,19 @@ const Header: React.FC<Props> = ({ lession, classes }) => {
             <MenuItem value="Assignment or Feedback">Assignment or Feedback</MenuItem>
           </Select>
 
-          {/* SlotID Select with "Select Slot" placeholder */}
+          {/* Slot Select with SlotName */}
           <Select
             variant="outlined"
             sx={{ minWidth: 120, color: "black" }}
             size="small"
             displayEmpty
+            onChange={handleSlotChange}
             defaultValue=""
           >
             <MenuItem value="" disabled>Select Slot</MenuItem>
-            {lession.SlotID.map((id, index) => (
-              <MenuItem key={`slot-${id}`} value={id}>
-                Slot {index + 1}
+            {slot?.map(slotItem => (
+              <MenuItem key={slotItem.id} value={slotItem.id}>
+                {slotItem.SlotName}
               </MenuItem>
             ))}
           </Select>

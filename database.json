@@ -287,7 +287,7 @@
     {
       "id": "s11",
       "SlotName": "slot 1",
-      "Description": "Course Introduction 1.1 Full Stack Web Development",
+      "Description": "Course Introduction\n\n1.1 Full Stack Web Development: The Big Picture\n\n1.2 React 18 Introduction\n\n1.3 Git\n- Setting up Git\n- Basic Git Commands\n- Setting up an Online Git repository\n\n1.4 Node.js and NPM\n- Setting up Node.js and NPM\n- Basics of Node.js and NPM",
       "TimeStart": "01/09/2024",
       "TimeEnd": "01/12/2024",
       "Status": true
