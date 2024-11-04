@@ -237,7 +237,7 @@ export default function Subject() {
                     >
                       {dataCourse?.find(item => item.id === subject.CourseID)?.CourseName}
                     </Typography>
-                    <Link to={`/lession-course?subjectId=${subject.CourseID}`}>
+                    <Link to={`/lession-course?subjectId=${subject.id}`}>
                       <Typography
                         variant="body1"
                         sx={{
