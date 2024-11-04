@@ -83,7 +83,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
                                     component={Link}
                                     to={`/lession-infor/details/${sl}`}
                                     variant="outlined"
-                                    color="primary"
+                                    color="secondary"
                                     size="small"
                                 >
                                     View Slot
@@ -113,6 +113,11 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 cursor: 'pointer',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                                    transform: 'scale(1.02)',
+                                                },
+                                                transition: 'background-color 0.3s, transform 0.3s',
                                             }}
                                         >
                                             <ListItemIcon>
