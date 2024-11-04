@@ -1,79 +1,85 @@
-import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Carousel from 'react-bootstrap/Carousel';
+import Carousel from "react-bootstrap/Carousel";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  getCourseSemesterByUserId,
+  getSemester,
+} from "../../../service/ApiService";
 
-interface Subject {
-  id?: number;
-  name?: string;
-  code?: string;
-  image?: string;
+import dataCarousel from "../../../../database.json";
+
+interface CourseSemester {
+  id: string;
+  SemesterID: string;
+  SlotID: string[];
+  CourseID: string;
+  StudentID: string;
+  LecturersID: string;
+  ClassID: string;
 }
 
-interface Image {
-  id?: number;
-  image?: string;
+interface Semester {
+  SemesterID: string;
+  SemesterName: string;
+  StartDate: string;
+  EndDate: string;
+  Status: boolean;
 }
-
-const subjects: Subject[] = [
-  {
-    id: 1,
-    name: "Mathematics for Computing",
-    code: "MAS291",
-    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
-  },
-  {
-    id: 2,
-    name: "Software Development Project",
-    code: "SWP391",
-    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
-  },
-  {
-    id: 3,
-    name: "Mathematics for Computing",
-    code: "MAS291",
-    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
-  },
-  {
-    id: 4,
-    name: "Software Development Project",
-    code: "SWP391",
-    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
-  },
-  {
-    id: 5,
-    name: "Mathematics for Computing",
-    code: "MAS291",
-    image: "https://d1e4pidl3fu268.cloudfront.net/2f9c984e-4c8c-47ca-a9a5-e25342688410/RobotMathwithText.png",
-  },
-  {
-    id: 6,
-    name: "Software Development Project",
-    code: "SWP391",
-    image: "https://waydev.co/wp-content/uploads/2021/07/Effective-Software-Development-Projects.png",
-  },
-];
-
-const imageCarousel: Image[] = [
-  {
-    id: 1,
-    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
-  },
-  {
-    id: 2,
-    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
-  },
-  {
-    id: 3,
-    image: "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg",
-  },
-];
 
 export default function Subject() {
   const navigate = useNavigate();
+  const [data, setData] = useState<CourseSemester[]>([]);
+  const [dataSemester, setDataSemester] = useState<Semester[]>([]);
+  const [semesterId, setSemesterId] = useState<string>("");
 
-  const handleSubjectClick = () => {
-    navigate('/lession-course');
+  // const account = useSelector((state) => state.account.account);
+  // const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+
+  // console.log(account);
+  // console.log(isAuthenticated);
+
+  useEffect(() => {
+    fetchCourseSemester();
+    fetchDataSemester();
+  }, [semesterId]);
+
+  const fetchCourseSemester = async () => {
+    const res = await getCourseSemesterByUserId("he173077");
+    if (Array.isArray(res)) {
+      if (semesterId) {
+        const datas = res.filter((item) => item.SemesterID === semesterId);
+        console.log("data", datas);
+      } else {
+        setData(res);
+      }
+    }
   };
+
+  const fetchDataSemester = async () => {
+    const res = await getSemester();
+    if (Array.isArray(res)) {
+      setSemesterId(res[res.length - 1].SemesterID);
+      setDataSemester(res);
+    }
+  };
+
+  // console.log(semesterId);
+
+  // const handleSubjectClick = () => {
+  //   navigate("/lession-course");
+  // };
 
   return (
     <Box
@@ -84,17 +90,22 @@ export default function Subject() {
         ml: { sm: `${65}px` },
       }}
     >
-      <Carousel interval={3000} indicators={true} controls={true} style={{
-        borderRadius: "12px",
-        overflow: "hidden",
-        width: "85%", 
-        margin: "0 auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
-        {imageCarousel.map((image) => (
-          <Carousel.Item key={image.id}>
+      <Carousel
+        interval={3000}
+        indicators={true}
+        controls={true}
+        style={{
+          borderRadius: "12px",
+          overflow: "hidden",
+          width: "85%",
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {dataCarousel.Carousel.map((item) => (
+          <Carousel.Item key={item?.id}>
             <Box
               sx={{
                 backgroundColor: "white",
@@ -107,7 +118,11 @@ export default function Subject() {
               }}
             >
               <Box>
-                <img src={image.image} alt="image" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img
+                  src={item.image}
+                  alt="image"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               </Box>
             </Box>
           </Carousel.Item>
@@ -117,17 +132,27 @@ export default function Subject() {
       <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
         Course
       </Typography>
-      <Grid container spacing={2} justifyContent="center">
-        {subjects.map((subject) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={3}
-            key={subject.id}
-            onClick={() => handleSubjectClick()}
-            sx={{ p: 1.5 }}
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Year</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="year"
+            sx={{ width: "100%", maxWidth: "200px", marginBottom: "30px" }} // Adjusted to make the select box smaller
+            defaultValue="summer 2024"
           >
+            <MenuItem value="summer 2024" selected>
+              Summer 2024
+            </MenuItem>
+            <MenuItem value="summer 2023">Summer 2023</MenuItem>
+            <MenuItem value="summer 2022">Summer 2022</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Grid container spacing={2} justifyContent="center">
+        {data?.map((subject) => (
+          <Grid item xs={12} sm={6} md={3} key={subject.id} sx={{ p: 1.5 }}>
             <Card
               sx={{
                 height: 180,
@@ -151,8 +176,9 @@ export default function Subject() {
             >
               <Box
                 component="img"
-                src={subject.image}
-                alt={`${subject.name} thumbnail`}
+                src={
+                  "https://ippeducation.vn/wp-content/uploads/2022/10/23.jpg"
+                }
                 sx={{
                   height: 80,
                   width: "100%",
@@ -187,7 +213,7 @@ export default function Subject() {
                     mb: 0.5,
                   }}
                 >
-                  {subject.name}
+                  {subject.ClassID}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -200,7 +226,7 @@ export default function Subject() {
                     bgcolor: "rgba(25, 118, 210, 0.08)",
                   }}
                 >
-                  {subject.code}
+                  {subject.CourseID}
                 </Typography>
               </CardContent>
             </Card>

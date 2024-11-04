@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Content from "../../../components/student_components/lession/lession-content/Content";
 import Header from "../../../components/student_components/lession/lession-header/Header";
 import Items from "../../../components/student_components/lession/lession-items/Items";
-import { getClass, getCourseSemester, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot } from "../../../service/ApiService";
+import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot } from "../../../service/ApiService";
 
 interface lession {
     id: string,
@@ -59,6 +59,7 @@ function Lession() {
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [slotSelected, setSlotSelected] = useState<string>();
+    console.log(slotSelected);
 
     useEffect(() => {
         getLession();
