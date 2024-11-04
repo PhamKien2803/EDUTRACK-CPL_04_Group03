@@ -1,4 +1,4 @@
-import { UserAnswer } from "../models/Interface"
+import { UserAnswer, answerQuestionSlot } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -91,6 +91,14 @@ const postAnswer = (ua: UserAnswer) => {
   })
 }
 
+const postComment = (user: answerQuestionSlot) => {
+  return axios.post('AnswerQuestionSlot', {
+    comment: user.comment,
+    QuestionID: user.QuestionID,
+    UserID: user.UserID,
+  })
+}
+
 export {
   getDataExam,
   getAnswerForQuestionExam,
@@ -113,4 +121,5 @@ export {
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
+  postComment,
 };

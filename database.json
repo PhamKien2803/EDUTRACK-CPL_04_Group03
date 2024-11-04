@@ -172,6 +172,7 @@
       "Email": "phuongddhe173077@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -185,6 +186,7 @@
       "Email": "longndhe171694@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -198,6 +200,7 @@
       "Email": "nghianthe170569@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -211,6 +214,7 @@
       "Email": "kienpdhe170155@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -338,8 +342,8 @@
       "id": "aq1",
       "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
       "QuestionID": "q111",
-      "UserID": "he173077",
-      "rating": 5
+      "UserID": "he173077"
+      
     }
   ],
   "Carousel": [
