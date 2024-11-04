@@ -46,7 +46,7 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => {
-  const [timeRemaining, setTimeRemaining] = useState<number>(parseInt(question.TimeLimit, 10));
+  const [timeRemaining, setTimeRemaining] = useState<number>(parseInt(question.TimeLimit?.toString() ?? '0', 10));
   const [isTimeOver, setIsTimeOver] = useState<boolean>(false);
 
   useEffect(() => {
