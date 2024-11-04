@@ -1,119 +1,146 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import "../css/Lession.css";
+import {
+    Box,
+    Typography,
+    Button,
+    Collapse,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Divider
+} from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { lession as Lession, slot as Slot, questionSlot as QuestionSlot } from "../../../../models/Interface"
 
-interface lession {
-    id: string,
-    SemesterID: string,
-    SlotID: string[]
-    CourseID: string,
-    StudentID: string,
-    LecturersID: string,
-    ClassID: string
-}
+// interface Lession {
+//     id: string;
+//     SemesterID: string;
+//     SlotID: string[];
+//     CourseID: string;
+//     StudentID: string;
+//     LecturersID: string;
+//     ClassID: string;
+// }
 
-interface slot {
-    id: string,
-    SlotName: string,
-    Description: string,
-    TimeStart: string,
-    TimeEnd: string,
-    Status: boolean
-}
+// interface Slot {
+//     id: string;
+//     SlotName: string;
+//     Description: string;
+//     TimeStart: string;
+//     TimeEnd: string;
+//     Status: boolean;
+// }
 
-interface questionSlot {
-    QuestionID: string,
-    content: string,
-    TimeLimit?: number,
-    Slotid: string,
-    Status: number
-}
+// interface QuestionSlot {
+//     QuestionID: string;
+//     content: string;
+//     TimeLimit?: number;
+//     Slotid: string;
+//     Status: number;
+// }
 
 interface Props {
-    lession: lession,
-    slot: slot[],
-    questionSlot: questionSlot[]
+    lession: Lession;
+    slot: Slot[];
+    questionSlot: QuestionSlot[];
 }
 
-
 const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
-    const [isVisible, setIsVisible] = useState<boolean>(true);
+    const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const navigate = useNavigate();
 
-    const handleClicktoDicussion = (questionid: string, slotId: string) => {
-        navigate(`/dicussion-page/question?slotID=${slotId}&id=${questionid}`);
-    }
-    const toggleVisibility = () => {
-        setIsVisible(!isVisible);
+    const handleClicktoDiscussion = (questionid: string, slotId: string) => {
+        navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionid}`);
+    };
+
+    const toggleVisibility = (slotId: string) => {
+        setVisibleSlots((prev) => ({
+            ...prev,
+            [slotId]: !prev[slotId],
+        }));
     };
 
     return (
-        <>
-            {
-                lession?.SlotID?.map((sl, index) => (
-                    <div key={`slot-${index}`} onClick={toggleVisibility} className="course-info clickable">
-                        <div className="boder2">
-                            <div className="slot-header">
-                                <div className="slot-number">slot {index + 1}</div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "flex-end",
-                                        fontSize: "18px",
-                                        fontWeight: "bold",
-                                        color: "blue",
-                                        marginRight: "2rem",
-                                        cursor: "pointer"
-                                    }}
+        <Box>
+            {lession?.SlotID?.map((sl, index) => {
+                const currentSlot = slot.find((s) => s.id === sl);
+
+                return (
+                    <Box key={`slot-${index}`} mb={2} p={2} border={1} borderRadius={2} borderColor="grey.300" boxShadow={1} onClick={() => toggleVisibility(sl)}>
+                        {/* Slot Header */}
+                        <Box display="flex" justifyContent="space-between" alignItems="center" >
+                            <Typography variant="h6" component="div">
+                                {currentSlot?.SlotName}
+                            </Typography>
+                            <Box display="flex" alignItems="center" gap={2}>
+                                <Typography variant="body2" color="textSecondary">
+                                    {currentSlot?.TimeStart} - {currentSlot?.TimeEnd}
+                                </Typography>
+                                <Button
+                                    component={Link}
+                                    to={`/lession-infor/details/${sl}`}
+                                    variant="outlined"
+                                    color="secondary"
+                                    size="small"
                                 >
-                                    <Link
-                                        style={{ textDecoration: "none" }}
-                                        to={`/lession-infor/details/${sl}`}
-                                    >
-                                        View Slots
-                                    </Link>
-                                </div>
-                                <div className="date-time">
-                                    {slot.find(s => s.id === sl)?.TimeStart} - {slot.find(s => s.id === sl)?.TimeEnd}
-                                </div>
-                            </div>
+                                    View Slot
+                                </Button>
+                            </Box>
+                        </Box>
 
+                        <Typography variant="body1" color="textSecondary" mt={1} mb={1}>
+                            {currentSlot?.Description}
+                        </Typography>
 
-                            <div className="course-content">
-                                <h3>{slot.find(s => s.id === sl)?.Description} </h3>
-                            </div>
-                        </div>
-
-                        {isVisible && (
-                            <div>
-                                <div className="tile" style={{ margin: "10px 0px 0px 0px" }}>QUESTION:</div>
-                                {questionSlot.map((qs, index) => (
-                                    <div style={{ cursor: "pointer" }} className="question-container" onClick={() => handleClicktoDicussion(qs.QuestionID, sl)}>
-
-                                        {/* <Link to={`/dicussion-page/question/${qs.QuestionID}`} className="question-item"> */}
-                                        <div key={`qs-${index}`} className="question-item">
-                                            <div className="question-icon">Q{index + 1}</div>
-                                            <div className="question-text">{qs.content.substring(0, 50)}...</div>
-                                            {qs.Status === 0 ? <div className="question-status not-started">Not start</div> : <div className="question-status started">Go</div>}
-                                        </div>
-                                        {/* </Link> */}
-
-
-                                    </div>
-                                ))}
-
-                            </div>
-                        )}
-
-                    </div>
-                ))
-            }
-        </>
-
-
-
+                        {/* Questions Collapse */}
+                        <Collapse in={visibleSlots[sl]}>
+                            <Divider sx={{ my: 2 }} />
+                            <Typography variant="subtitle1" color="primary" gutterBottom>
+                                Questions:
+                            </Typography>
+                            <List>
+                                {questionSlot
+                                    .filter((qs) => qs.Slotid === sl)
+                                    .map((qs, qIndex) => (
+                                        <ListItem
+                                            key={`qs-${qIndex}`}
+                                            component="li"
+                                            onClick={() => handleClicktoDiscussion(qs.QuestionID, sl)}
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                cursor: 'pointer',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                                    transform: 'scale(1.02)',
+                                                },
+                                                transition: 'background-color 0.3s, transform 0.3s',
+                                            }}
+                                        >
+                                            <ListItemIcon>
+                                                <HelpOutlineIcon color="action" />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
+                                                secondary={qs.Status === 0 ? 'Not started' : 'Go'}
+                                                secondaryTypographyProps={{
+                                                    color: qs.Status === 0 ? 'error' : 'success',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            />
+                                            <ArrowForwardIosIcon fontSize="small" color="action" />
+                                        </ListItem>
+                                    ))}
+                            </List>
+                        </Collapse>
+                    </Box>
+                );
+            })}
+        </Box>
     );
-}
+};
 
 export default Content;
