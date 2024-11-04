@@ -6,15 +6,15 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Dicussion from '../dicussion-question/comment/Dicussion';
 
 function NavTabs() {
-  const [value, setValue] = useState<string>('one'); 
-  const [loading, setLoading] = useState<boolean>(false); 
+  const [value, setValue] = useState<string>('one');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-    setLoading(true); 
+    setLoading(true);
     setValue(newValue);
 
     setTimeout(() => {
-      setLoading(false);  
+      setLoading(false);
     }, 500);
   };
 
@@ -36,7 +36,9 @@ function NavTabs() {
 
       {!loading && (
         <Box sx={{ marginTop: '20px' }}>
-          {value === 'one' && <Dicussion />}
+          {value === 'one' && (
+            <Dicussion/>
+          )}
         </Box>
       )}
     </Box>

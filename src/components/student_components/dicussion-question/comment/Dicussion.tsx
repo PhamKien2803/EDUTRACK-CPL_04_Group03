@@ -1,11 +1,12 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Comment from "./Comment";
-
-
+import { participants, answerQuestionSlot } from "../../../../models/Interface";
+import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiService";
+import { useSearchParams } from "react-router-dom";
 
 const modules = {
   toolbar: [
@@ -20,7 +21,7 @@ const modules = {
   ],
 };
 
-const formats = [ //Update format font and size
+const formats = [
   'header', 'font', 'size',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
   'list', 'bullet',
@@ -28,7 +29,11 @@ const formats = [ //Update format font and size
   'color', 'background', 'align'
 ];
 
-const Dicussion = () => {
+const Discussion: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const questionID = searchParams.get('questionid');
+  const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
+  const [participants, setParticipants] = useState<participants[]>([]);
   const [text, setText] = useState<string>("");
 
   const handleTextChange = (value: string) => {
@@ -38,6 +43,40 @@ const Dicussion = () => {
   const handleSubmit = () => {
     console.log("Your comment:", text);
   };
+
+  useEffect(() => {
+    fetchAnswerQuestionSlot();
+    fetchParticipants();
+  }, []);
+
+  const fetchAnswerQuestionSlot = async () => {
+    try {
+      const res: answerQuestionSlot[] = await getAnswerQuestionSlot();
+      setAnswerQuestionSlots(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchParticipants = async () => {
+    try {
+      const res: participants[] = await getParticipants();
+      setParticipants(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUsernameById = (userID: string) => {
+    const user = participants.find((participant) => participant.id === userID);
+    return user ? user.UserName : "Unknown User";
+  };
+
+  const filterCommentQuestion = answerQuestionSlots.filter(
+    (comment) => comment.QuestionID === questionID
+  );
 
   return (
     <Fragment>
@@ -82,15 +121,21 @@ const Dicussion = () => {
           </Button>
         </div>
       </Box>
-      <div style={{margin: "1rem"}}>
+      <div style={{ margin: "1rem" }}>
         <span>Your Comments Here</span>
       </div>
-      
-      <Comment />
-      <Comment />
-      <Comment />
+
+      {filterCommentQuestion.map((answer) => (
+        <Comment
+          key={answer.id}
+          username={getUsernameById(answer.UserID)}
+          text={answer.comment}
+          time={"Just now"} 
+          rating={answer.rating}
+        />
+      ))}
     </Fragment>
   );
 };
 
-export default Dicussion;
+export default Discussion;

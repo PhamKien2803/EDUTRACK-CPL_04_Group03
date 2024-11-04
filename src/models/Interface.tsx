@@ -51,3 +51,10 @@ export interface UserAnswer {
     QuestionID: string,
     UserID: string
 }
+export interface answerQuestionSlot {
+    id: string,
+    comment: string,
+    QuestionID: string,
+    UserID: string,
+    rating: number
+}

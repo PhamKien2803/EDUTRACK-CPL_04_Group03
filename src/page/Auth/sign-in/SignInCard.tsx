@@ -119,9 +119,10 @@ const Login: React.FC = () => {
     if (user) {
       dispatch(doLogin(user));
       toast.success("Login successful");
+
       setTimeout(() => {
         nav("/home-page");
-      }, 2000);
+      }, 1000);
     } else {
       setEmail("");
       setPassword("");

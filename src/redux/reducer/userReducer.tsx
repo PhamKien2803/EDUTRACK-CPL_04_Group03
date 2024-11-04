@@ -8,7 +8,6 @@ const INITIAL_STATE = {
         Gender: '',
         Address: '',
         Email: '',
-        Password: '',
         Image: '',
         Role: '',
         isOnline: '',
@@ -19,20 +18,20 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action: any) => {
     switch (action.type) {
         case USER_LOGIN_SUCCESS:
+            console.log('check', action.payload);
 
             return {
                 ...state, account: {
-                    UserID: action?.payload?.UserID,
+                    UserID: action?.payload?.id,
                     UserName: action?.payload?.UserName,
                     Age: action?.payload?.Age,
                     Gender: action?.payload?.Gender,
                     Address: action?.payload?.Address,
                     Email: action?.payload?.Email,
-                    Password: action?.payload?.Password,
-                    Image: action?.payload?.image,
-                    Role: action?.payload?.role,
+                    Image: action?.payload?.Image,
+                    Role: action?.payload?.Role,
                     isOnline: action?.payload?.isOnline,
-                    Status: action?.payload?.status
+                    Status: action?.payload?.Status
                 },
                 isAuthenticated: true
             };

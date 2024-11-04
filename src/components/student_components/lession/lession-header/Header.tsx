@@ -1,120 +1,190 @@
-import { useState } from 'react';
-import "../css/Lession.css";
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Breadcrumbs,
+  Link,
+  Typography,
+  Select,
+  MenuItem,
+  Button,
+  IconButton,
+  Collapse,
+  Tooltip,
+  SelectChangeEvent
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import SchoolIcon from '@mui/icons-material/School';
+import HomeIcon from '@mui/icons-material/Home';
+import { lession as Lession, participants as Participants, classRoom as ClassRoom } from "../../../../models/Interface"
 
-interface lession {
-  id: string,
-  SemesterID: string,
-  SlotID: string[]
-  CourseID: string,
-  StudentID: string,
-  LecturersID: string,
-  ClassID: string
-}
+// interface Lession {
+//   id: string;
+//   SemesterID: string;
+//   SlotID: string[];
+//   CourseID: string;
+//   StudentID: string;
+//   LecturersID: string;
+//   ClassID: string;
+// }
 
-interface participants {
-  id: string,
-  UserName: string,
-  Age: number,
-  Gender: true,
-  Address: string,
-  Email: string,
-  Password: string,
-  Image: string,
-  Role: number,
-  isOnline: boolean,
-  Status: boolean
-}
+// interface Participants {
+//   id: string;
+//   UserName: string;
+//   Age: number;
+//   Gender: boolean;
+//   Address: string;
+//   Email: string;
+//   Password: string;
+//   Image: string;
+//   Role: number;
+//   isOnline: boolean;
+//   Status: boolean;
+// }
 
-interface classRoom {
-  ClassID: string,
-  ClassName: string,
-  Student: string[],
-  Status: boolean
-}
-
-
-
+// interface ClassRoom {
+//   ClassID: string;
+//   ClassName: string;
+//   Student: string[];
+//   Status: boolean;
+// }
 
 interface Props {
-  lession: lession,
-  partcipants: participants[],
-  classes: classRoom[],
-  setselected: (id: string) => void
+  lession: Lession;
+  participants: Participants[];
+  classes: ClassRoom[];
+  setSelected: (id: string) => void;
 }
 
 const Header: React.FC<Props> = ({ lession, classes }) => {
-  // State to track the selected option from the dropdown
   const [activityFilter, setActivityFilter] = useState('All Activities');
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setActivityFilter(event.target.value);
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    setActivityFilter(event.target.value as string);
   };
 
   const navigateToExam = () => {
     navigate("/exam-test");
-  }
-  console.log(lession);
+  };
 
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   return (
-    <>
+    <Box p={3}>
+      {/* Breadcrumbs */}
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+        <Link href="/homePage" color="inherit" underline="hover" display="flex" alignItems="center">
+          <HomeIcon fontSize="small" sx={{ mr: 0.5 }} />
+          Home
+        </Link>
+        <Typography color="text.primary" display="flex" alignItems="center">
+          {lession?.CourseID}
+        </Typography>
+        <Typography color="text.secondary" display="flex" alignItems="center">
+          Academic Writing Skills_Kỹ năng viết học thuật
+        </Typography>
+      </Breadcrumbs>
 
-      <div>
+      {/* Dropdowns and Exam Button in a collapsible container */}
+      <Collapse in={isVisible}>
+        <Box display="flex" alignItems="center" gap={2} mb={2}>
+          {/* Activity Filter Select */}
+          <Select
+            value={activityFilter}
+            onChange={handleSelectChange}
+            variant="outlined"
+            sx={{ minWidth: 160 }}
+            size="small"
+            displayEmpty
+          >
+            <MenuItem value="All Activities">All Activities</MenuItem>
+            <MenuItem value="Hidden">Hidden</MenuItem>
+            <MenuItem value="On Going">On Going</MenuItem>
+            <MenuItem value="Cancelled">Cancelled</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="Not Started">Not Started</MenuItem>
+            <MenuItem value="Assignment or Feedback">Assignment or Feedback</MenuItem>
+          </Select>
 
-        <div className="course-container">
-          <nav className="breadcrumb">
-            <a href="/homePage">Home</a> {lession?.CourseID} <a> ↔ Academic Writing Skills_Kỹ năng viết học thuật</a>
-          </nav>
-        </div>
-        {isVisible && (
+          {/* SlotID Select with "Select Slot" placeholder */}
+          <Select
+            variant="outlined"
+            sx={{ minWidth: 120, color: "black" }}
+            size="small"
+            displayEmpty
+            defaultValue=""
+          >
+            <MenuItem value="" disabled>Select Slot</MenuItem>
+            {lession.SlotID.map((id, index) => (
+              <MenuItem key={`slot-${id}`} value={id}>
+                Slot {index + 1}
+              </MenuItem>
+            ))}
+          </Select>
 
-          <div className="select-container">
+          {/* Class Select with "Select Class" placeholder */}
+          <Select
+            variant="outlined"
+            sx={{ minWidth: 160 }}
+            size="small"
+            displayEmpty
+            defaultValue=""
+          >
+            <MenuItem value="" disabled>Select Class</MenuItem>
+            {classes.map(classItem => (
+              <MenuItem key={classItem.ClassID} value={classItem.ClassID}>
+                {classItem.ClassName}
+              </MenuItem>
+            ))}
+          </Select>
 
-            <select value={activityFilter} onChange={handleSelectChange} className="activity-select">
-              <option>All Activities</option>
-              <option>Hidden</option>
-              <option>On Going</option>
-              <option>Cancelled</option>
-              <option>Completed</option>
-              <option>Not Started</option>
-              <option>Assignment or Feedback</option>
-            </select>
+          {/* Exam Button */}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={navigateToExam}
+            size="medium"
+            sx={{ whiteSpace: 'nowrap' }}
+          >
+            EXAM
+          </Button>
+        </Box>
+      </Collapse>
 
+      {/* Toggle Visibility Button */}
+      <Tooltip title={isVisible ? "Hide options" : "Show options"} arrow>
+        <IconButton onClick={toggleVisibility} color="primary" size="small">
+          {isVisible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </IconButton>
+      </Tooltip>
 
-            <select>
-              {lession.SlotID.map((id, index) => (
-                <option key={`slot-${id}`}>slot {index + 1}</option>
-              ))}
+      {/* Button Text Toggle */}
+      <Button
+        onClick={toggleVisibility}
+        style={{
+          color: isVisible ? 'red' : 'green',
+          fontWeight: 'bold',
+          fontSize: '16px',
+          marginTop: '8px',
+        }}
+      >
+        {isVisible ? 'HIDE OPTIONS' : 'SHOW OPTIONS'}
+      </Button>
 
+      {/* Teacher Information */}
+      <Box mt={2} display="flex" alignItems="center" gap={1}>
+        <SchoolIcon color="primary" />
+        <Typography variant="body2" color="textSecondary">
+          TEACHERS: THOPN3@FPT.EDU.VN
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 
-            </select>
-
-            <select>
-              <option>{classes.find(c => c.ClassID === lession?.ClassID)?.ClassName}</option>
-            </select>
-
-            <button onClick={() => navigateToExam()} className="button-exam">EXAM</button>
-          </div>
-
-        )}
-
-        <button onClick={toggleVisibility} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginLeft: '20px' }}>
-          SHOW/HIDE (HIỆN/ẨN)
-        </button>
-        <div className='lecturer'>TEACHERS:  THOPN3@FPT.EDU.VN</div>
-      </div>
-
-
-
-    </>
-
-  )
-}
-
-export default Header
+export default Header;

@@ -6,6 +6,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import SchoolIcon from '@mui/icons-material/School';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { AppProvider, type Navigation } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { Outlet, useLocation, useNavigationType } from 'react-router-dom';
@@ -44,6 +45,11 @@ const NAVIGATION: Navigation = [
     title: 'FQA',
     icon: <LiveHelpIcon />,
   },
+  {
+    segment: 'Logout',
+    title: 'Logout',
+    icon: <LogoutIcon />,
+  }
 ];
 
 //theme structure with type annotations
