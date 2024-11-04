@@ -16,7 +16,7 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
     const filteredQuestions = questionSlot.filter(qs => qs.Slotid === SlotId);
     console.log(filteredQuestions);
     const handleClickToDiscussion = (questionId: string, slotId: string) => {
-        navigate(`/dicussion-page/question?slotID=${slotId}&id=${questionId}`);
+        navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionId}`);
 
     };
 

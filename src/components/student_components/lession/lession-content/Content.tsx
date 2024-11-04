@@ -41,7 +41,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
     const navigate = useNavigate();
 
     const handleClicktoDicussion = (questionid: string, slotId: string) => {
-        navigate(`/dicussion-page/question?slotID=${slotId}&id=${questionid}`);
+        navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionid}`);
     }
     const toggleVisibility = () => {
         setIsVisible(!isVisible);

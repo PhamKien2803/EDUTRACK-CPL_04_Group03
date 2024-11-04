@@ -48,9 +48,25 @@ const getQuestionSLot = () => {
   return axios.get("QuestionSLot");
 };
 
+const getQuestionSlotById = (id: string) => {
+  return axios.get(`QuestionSLot/${id}`);
+}
+
 const getQuestionSlotBySlotId = (id: string) => {
   return axios.get(`QuestionSLot/${id}`);
 };
+
+const getAnswerQuestionSlot = () => {
+  return axios.get("AnswerQuestionSlot");
+}
+
+const getAnswerQuestionSlotByQuestionId = (id: string) => {
+  return axios.get(`AnswerQuestionSlot/${id}`);
+}
+
+const getCommentByQuestionId = (id: string) => {
+  return axios.get(`AnswerQuestionSlot/${id}`);
+}
 
 const getClass = () => {
   return axios.get("Class");
@@ -80,5 +96,9 @@ export {
   getQuestionSlotBySlotId,
   getCourseSemesterByUserId,
   getSemester,
-  getCourse
+  getCourse,
+  getAnswerQuestionSlotByQuestionId,
+  getAnswerQuestionSlot,
+  getQuestionSlotById,
+  getCommentByQuestionId,
 };

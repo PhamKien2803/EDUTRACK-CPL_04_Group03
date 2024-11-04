@@ -1,11 +1,12 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Comment from "./Comment";
-
-
+import { slot, participants, questionSlot, answerQuestionSlot } from "../../../../models/Interface";
+import { getAnswerQuestionSlot } from "../../../../service/ApiService";
+import { useSearchParams } from "react-router-dom";
 
 const modules = {
   toolbar: [
@@ -20,7 +21,7 @@ const modules = {
   ],
 };
 
-const formats = [ //Update format font and size
+const formats = [
   'header', 'font', 'size',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
   'list', 'bullet',
@@ -28,8 +29,25 @@ const formats = [ //Update format font and size
   'color', 'background', 'align'
 ];
 
-const Dicussion = () => {
+interface Props {
+  slot: slot;
+  questionSlot: questionSlot;
+  questionID: string | null;
+  participants: participants[];
+  answerQuestionSlot: answerQuestionSlot[];
+}
+
+const Discussion: React.FC<Props> = () => {
+  const [searchParams] = useSearchParams();
+  const questionID = searchParams.get('questionid');
+  const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
   const [text, setText] = useState<string>("");
+
+  const filterCommentQuestion = answerQuestionSlots.filter((comment) => comment.QuestionID === questionID);
+  console.log(filterCommentQuestion);
+
+  const filterUserName = filterCommentQuestion.map((comment) => comment.UserID)
+  console.log(filterUserName);
 
   const handleTextChange = (value: string) => {
     setText(value);
@@ -38,6 +56,21 @@ const Dicussion = () => {
   const handleSubmit = () => {
     console.log("Your comment:", text);
   };
+
+  useEffect(() => {
+    fetchAnswerQuestionSlot();
+  }, []);
+
+  const fetchAnswerQuestionSlot = async () => {
+    try {
+      const res: answerQuestionSlot[] = await getAnswerQuestionSlot();
+      setAnswerQuestionSlots(res);
+      console.log(res)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <Fragment>
@@ -82,15 +115,20 @@ const Dicussion = () => {
           </Button>
         </div>
       </Box>
-      <div style={{margin: "1rem"}}>
+      <div style={{ margin: "1rem" }}>
         <span>Your Comments Here</span>
       </div>
-      
-      <Comment />
-      <Comment />
-      <Comment />
+
+      {filterCommentQuestion.map((answer) => (
+        <Comment
+          key={answer.id}
+          username={answer.UserID}
+          text={answer.comment}
+          time={"Just now"} 
+        />
+      ))}
     </Fragment>
   );
 };
 
-export default Dicussion;
+export default Discussion;
