@@ -13,6 +13,8 @@ interface Participant {
   Status: "true" | "false";
 }
 export const doLogin = (data: Participant) => {
+  console.log('data', data);
+
   return {
     type: USER_LOGIN_SUCCESS,
     payload: data,

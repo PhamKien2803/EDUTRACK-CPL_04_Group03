@@ -24,6 +24,10 @@ const getCourseById = (id: string) => {
   return axios.get(`Course/${id}`);
 };
 
+const getCourse = () => {
+  return axios.get(`Course`);
+};
+
 const getCourseSemester = () => {
   return axios.get("CourseSemester");
 };
@@ -76,4 +80,5 @@ export {
   getQuestionSlotBySlotId,
   getCourseSemesterByUserId,
   getSemester,
+  getCourse
 };
