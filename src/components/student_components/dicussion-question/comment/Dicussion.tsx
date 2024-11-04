@@ -4,8 +4,8 @@ import SendIcon from "@mui/icons-material/Send";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Comment from "./Comment";
-import { slot, participants, questionSlot, answerQuestionSlot } from "../../../../models/Interface";
-import { getAnswerQuestionSlot } from "../../../../service/ApiService";
+import { participants, answerQuestionSlot } from "../../../../models/Interface";
+import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiService";
 import { useSearchParams } from "react-router-dom";
 
 const modules = {
@@ -29,25 +29,12 @@ const formats = [
   'color', 'background', 'align'
 ];
 
-interface Props {
-  slot: slot;
-  questionSlot: questionSlot;
-  questionID: string | null;
-  participants: participants[];
-  answerQuestionSlot: answerQuestionSlot[];
-}
-
-const Discussion: React.FC<Props> = () => {
+const Discussion: React.FC = () => {
   const [searchParams] = useSearchParams();
   const questionID = searchParams.get('questionid');
   const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
+  const [participants, setParticipants] = useState<participants[]>([]);
   const [text, setText] = useState<string>("");
-
-  const filterCommentQuestion = answerQuestionSlots.filter((comment) => comment.QuestionID === questionID);
-  console.log(filterCommentQuestion);
-
-  const filterUserName = filterCommentQuestion.map((comment) => comment.UserID)
-  console.log(filterUserName);
 
   const handleTextChange = (value: string) => {
     setText(value);
@@ -59,18 +46,37 @@ const Discussion: React.FC<Props> = () => {
 
   useEffect(() => {
     fetchAnswerQuestionSlot();
+    fetchParticipants();
   }, []);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
       const res: answerQuestionSlot[] = await getAnswerQuestionSlot();
       setAnswerQuestionSlots(res);
-      console.log(res)
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchParticipants = async () => {
+    try {
+      const res: participants[] = await getParticipants();
+      setParticipants(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUsernameById = (userID: string) => {
+    const user = participants.find((participant) => participant.id === userID);
+    return user ? user.UserName : "Unknown User";
+  };
+
+  const filterCommentQuestion = answerQuestionSlots.filter(
+    (comment) => comment.QuestionID === questionID
+  );
 
   return (
     <Fragment>
@@ -122,9 +128,10 @@ const Discussion: React.FC<Props> = () => {
       {filterCommentQuestion.map((answer) => (
         <Comment
           key={answer.id}
-          username={answer.UserID}
+          username={getUsernameById(answer.UserID)}
           text={answer.comment}
           time={"Just now"} 
+          rating={answer.rating}
         />
       ))}
     </Fragment>

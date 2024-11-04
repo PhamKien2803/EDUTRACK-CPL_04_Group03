@@ -6,6 +6,7 @@ interface Props {
   username?: string;
   text?: string;
   time?: string;
+  rating?: number;
 }
 
 const labels: { [index: number]: string } = {
@@ -21,8 +22,8 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ username, text, time }) => {
-  const [rating, setRating] = useState<number | null>(2);
+const Comment: React.FC<Props> = ({ username, text, time, rating = 0 }) => {
+  const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
@@ -48,7 +49,7 @@ const Comment: React.FC<Props> = ({ username, text, time }) => {
     >
       <Box display="flex" alignItems="center">
         <Avatar sx={{ marginRight: 2 }}>
-          {/* {username.charAt(0).toUpperCase()} */}
+          {(username || 'U').charAt(0).toUpperCase()}
         </Avatar>
         <Box flexGrow={1}>
           <Typography variant="h6">
@@ -63,21 +64,23 @@ const Comment: React.FC<Props> = ({ username, text, time }) => {
         </Box>
       </Box>
 
+      {/* Display Rating */}
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
         <Rating
           name="hover-feedback"
-          value={rating}
+          value={currentRating}
           precision={0.5}
-          onChange={(_event, newValue) => setRating(newValue)}
+          onChange={(_event, newValue) => setCurrentRating(newValue)}
           onChangeActive={(_event, newHover) => setHover(newHover)}
           getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
           emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
         />
         <Box sx={{ ml: 2 }}>
-          {hover !== -1 ? labels[hover] : labels[rating || 0]}
+          {hover !== -1 ? labels[hover] : labels[currentRating || 0]}
         </Box>
       </Box>
 
+      {/* Reply Section */}
       <Box sx={{ marginTop: 2 }}>
         <Button variant="outlined" size="small" onClick={handleReplyToggle}>
           {replying ? 'Cancel' : 'Reply'}
