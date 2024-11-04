@@ -45,3 +45,11 @@ export interface classRoom {
     Student: string[],
     Status: boolean
 }
+
+export interface answerQuestionSlot {
+    id: string,
+    comment: string,
+    QuestionID: string,
+    UserID: string,
+    rating:number
+}

@@ -44,6 +44,10 @@ export default function Subject() {
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
 
+  const navigateToLession = () => {
+    navigate("/lession-course");
+  }
+
   // const account = useSelector((state) => state.account.account);
   // const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 

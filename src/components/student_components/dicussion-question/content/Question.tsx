@@ -6,12 +6,15 @@ import { useSearchParams } from 'react-router-dom';
 interface Props {
   questionSlot: questionSlot[];
   slots: Slot[];
+  questionID: string | null;
+  setSlots: (slots: Slot[]) => void;
+  selectedSlot: Slot | null;
 }
 
 const Question: React.FC<Props> = ({ questionSlot }) => {
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('slotID');
-  const questionID = searchParams.get('id');
+  const questionID = searchParams.get('questionid');
 
   const filteredQuestions = questionSlot.filter(qs => qs.Slotid === slotID && qs.QuestionID === questionID);
 
