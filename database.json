@@ -7,7 +7,8 @@
         "he171694",
         "he173077"
       ],
-      "Status": true
+      "Status": true,
+      "id": "2a9d"
     },
     {
       "ClassID": "c124",
@@ -16,7 +17,8 @@
         "he170155",
         "he170569"
       ],
-      "Status": true
+      "Status": true,
+      "id": "e048"
     }
   ],
   "AnswerQuestionExam": [
@@ -106,14 +108,16 @@
       "examContent": "Test nhận diện  ",
       "courseSemesterID": "1",
       "timeLimit": "1500",
-      "status": true
+      "status": true,
+      "id": "f219"
     },
     {
       "examID": "2",
       "examContent": "Test nhận diện  ",
       "courseSemesterID": "1",
       "timeLimit": "1500",
-      "status": false
+      "status": false,
+      "id": "080d"
     }
   ],
   "UserAnswer": [
@@ -239,14 +243,16 @@
       "SemesterName": "SUMMER 24",
       "StartDate": "01/09/2024",
       "EndDate": "01/12/2024",
-      "Status": true
+      "Status": true,
+      "id": "79b9"
     },
     {
       "SemesterID": "fall24",
       "SemesterName": "FALL 24",
       "StartDate": "01/09/2024",
       "EndDate": "01/12/2024",
-      "Status": true
+      "Status": true,
+      "id": "98a0"
     }
   ],
   "CourseSemester": [
@@ -270,7 +276,7 @@
         "s22"
       ],
       "CourseID": "ENW492c",
-      "StudentID": "he173077",
+      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     }
@@ -327,14 +333,16 @@
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "TimeLimit": "1500",
       "Slotid": "s11",
-      "Status": 0
+      "Status": 0,
+      "id": "36f2"
     },
     {
       "QuestionID": "q112",
       "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
       "TimeLimit": "1500",
       "Slotid": "s12",
-      "Status": 0
+      "Status": 0,
+      "id": "008d"
     }
   ],
   "AnswerQuestionSlot": [
@@ -343,9 +351,42 @@
       "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
       "QuestionID": "q111",
       "UserID": "he173077"
-      
+    },
+    {
+      "id": "1e05",
+      "comment": "KIen",
+      "QuestionID": "q111",
+      "UserID": "he173077"
+    },
+    {
+      "id": "b6a2",
+      "comment": "Khó VL",
+      "QuestionID": "q111",
+      "UserID": "he173077"
+    },
+    {
+      "id": "9efa",
+      "comment": "cần cài đặt môi trường",
+      "QuestionID": "q112",
+      "UserID": "he173077"
+    },
+    {
+      "id": "9daa",
+      "comment": "ok",
+      "QuestionID": "q112",
+      "UserID": "he173077"
     }
   ],
+
+  "ReplyAnswerQuestionSlot": [
+    {
+      "id": "r1",
+      "comment": "ok",
+      "AnswerID": "aq1",
+      "UserID": "he173077"
+    }
+  ],
+
   "Carousel": [
     {
       "id": "1",
