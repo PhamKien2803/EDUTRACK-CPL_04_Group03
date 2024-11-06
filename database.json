@@ -279,6 +279,18 @@
       "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
+    },
+    {
+      "id": "cs13",
+      "SemesterID": "fall24",
+      "SlotID": [
+        "s11",
+        "s12"
+      ],
+      "CourseID": "FER201",
+      "StudentID": "he170155",
+      "LecturersID": "lt12345",
+      "ClassID": "c123"
     }
   ],
   "Course": [
@@ -348,45 +360,74 @@
   "AnswerQuestionSlot": [
     {
       "id": "aq1",
-      "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
+      "comment": "một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
       "QuestionID": "q111",
-      "UserID": "he173077"
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r1",
+          "answerID": "aq1",
+          "UserID": "he170569",
+          "ReplyContent": "Đúng rồi, React là một thư viện nổi tiếng!"
+        },
+        {
+          "ReplyID": "r2",
+          "answerID": "aq1",
+          "UserID": "he171694",
+          "ReplyContent": "Cần cài đặt gì để dùng nhỉ?"
+        }
+      ]
     },
     {
       "id": "1e05",
       "comment": "KIen",
       "QuestionID": "q111",
-      "UserID": "he173077"
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r3",
+          "answerID": "1e05",
+          "UserID": "he170155",
+          "ReplyContent": "Ủa ai tên Kiên vậy?"
+        }
+      ]
     },
     {
       "id": "b6a2",
       "comment": "Khó VL",
       "QuestionID": "q111",
-      "UserID": "he173077"
+      "UserID": "he173077",
+      "replies": []
     },
     {
       "id": "9efa",
       "comment": "cần cài đặt môi trường",
       "QuestionID": "q112",
-      "UserID": "he173077"
+      "UserID": "he173077",
+      "replies": []
     },
     {
       "id": "9daa",
       "comment": "ok",
       "QuestionID": "q112",
-      "UserID": "he173077"
-    }
-  ],
-
-  "ReplyAnswerQuestionSlot": [
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r4",
+          "answerID": "9daa",
+          "UserID": "he170100",
+          "ReplyContent": "Tuyệt, cùng làm tiếp nào!"
+        }
+      ]
+    },
     {
-      "id": "r1",
-      "comment": "ok",
-      "AnswerID": "aq1",
-      "UserID": "he173077"
+      "id": "e5a4",
+      "comment": "Ok nhe 123",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "replies": []
     }
   ],
-
   "Carousel": [
     {
       "id": "1",

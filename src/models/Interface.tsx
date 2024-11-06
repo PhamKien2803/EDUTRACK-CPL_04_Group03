@@ -57,11 +57,12 @@ export interface answerQuestionSlot {
     comment: string,
     QuestionID: string,
     UserID: string,
+    replies: Reply[];
 }
 
-export interface replyanswerQuestionSlot {
-    id: string,
-    comment: string,
-    AnswerQuestionID: string,
-    UserID: string,
+export interface Reply {
+    ReplyID: string;
+    answerID: string;
+    UserID: string;
+    ReplyContent: string;
 }

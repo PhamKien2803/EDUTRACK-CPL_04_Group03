@@ -1,4 +1,4 @@
-import { UserAnswer, answerQuestionSlot, replyanswerQuestionSlot } from "../models/Interface"
+import { UserAnswer, answerQuestionSlot } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -71,8 +71,8 @@ const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
 }
 
-const getReplyAnswerQuestionSlot = () => {
-  return axios.get("ReplyAnswerQuestionSlot");
+const getRepliesContent = () => {
+  return axios.get(`AnswerQuestionSlot`);
 }
 
 const getClass = () => {
@@ -96,20 +96,24 @@ const postAnswer = (ua: UserAnswer) => {
 }
 
 const postComment = (user: answerQuestionSlot) => {
-  return axios.post('AnswerQuestionSlot', {
+  return axios.post("AnswerQuestionSlot", {
     comment: user.comment,
     QuestionID: user.QuestionID,
     UserID: user.UserID,
-  })
+    replies: user.replies
+  });
+};
+
+const postReplyContent = (reply: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: reply.comment,
+    QuestionID: reply.QuestionID,
+    UserID: reply.UserID,
+    replies: reply.replies
+  });
 }
 
-const postReply = (user: replyanswerQuestionSlot) => {
-  return axios.post('ReplyAnswerQuestionSlot', {
-    comment: user.comment,
-    AnswerQuestionID: user.AnswerQuestionID,
-    UserID: user.UserID,
-  })
-}
+
 
 export {
   getDataExam,
@@ -134,6 +138,7 @@ export {
   getQuestionSlotById,
   getCommentByQuestionId,
   postComment,
-  postReply,
-  getReplyAnswerQuestionSlot,
+  getRepliesContent,
+  postReplyContent,
+
 };

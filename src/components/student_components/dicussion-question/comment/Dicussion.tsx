@@ -34,6 +34,7 @@ const Discussion: React.FC = () => {
       comment: text,
       QuestionID: questionID || "",
       UserID: "he173077",
+      replies: [],
     };
 
     try {
@@ -147,6 +148,7 @@ const Discussion: React.FC = () => {
             username={getUsernameById(answer.UserID)}
             text={answer.comment}
             time={"Just now"}
+            answerId={answer.id}
           />
         </Paper>
       ))}
