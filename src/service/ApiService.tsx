@@ -5,6 +5,9 @@ import axios from "../utils/axiosCustomiz"
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
+const getQuestionByExID = (exId: any) => {
+  return axios.get(`QuestionExam?exId=${exId}`);
+};
 
 const getAnswerForQuestionExam = () => {
   return axios.get("AnswerQuestionExam");
@@ -12,6 +15,10 @@ const getAnswerForQuestionExam = () => {
 
 const getExamList = () => {
   return axios.get("Examination");
+};
+
+const getExamByID = (id: any) => {
+  return axios.get(`Examination?examID=${id}`);
 };
 
 const getSLot = () => {
@@ -91,6 +98,11 @@ const postAnswer = (ua: UserAnswer) => {
   })
 }
 
+const getAnswerByUserId = (id: any) => {
+  return axios.get(`UserAnswer?UserID=${id}`);
+
+}
+
 export {
   getDataExam,
   getAnswerForQuestionExam,
@@ -113,4 +125,7 @@ export {
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
+  getQuestionByExID,
+  getExamByID,
+  getAnswerByUserId,
 };

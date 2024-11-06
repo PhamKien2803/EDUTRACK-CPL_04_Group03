@@ -58,7 +58,7 @@
     {
       "id": "8",
       "content": "ccc",
-      "isCorrect": false
+      "isCorrect": true
     },
     {
       "id": "9",
@@ -90,7 +90,7 @@
       "exId": "1"
     },
     {
-      "id": "4",
+      "id": "3",
       "content": "Đây là ai",
       "answer": [
         "7",
@@ -129,7 +129,7 @@
     {
       "id": "a12",
       "answer": [
-        "1"
+        "4"
       ],
       "QuestionID": "2",
       "UserID": "he173077"
@@ -137,8 +137,8 @@
     {
       "id": "a13",
       "answer": [
-        "1",
-        "2"
+        "7",
+        "8"
       ],
       "QuestionID": "3",
       "UserID": "he173077"

@@ -68,12 +68,15 @@ export const ExamList = () => {
                                             <Button
                                                 variant="contained" >
                                                 EXAM
-                                            </Button></Link>
+                                            </Button>
+                                        </Link>
                                         :
-                                        <Button
-                                            variant="contained" >
-                                            VIEW
-                                        </Button>}
+                                        <Link to={`/history?exID=${exam.examID}`}>
+                                            <Button
+                                                variant="contained" >
+                                                VIEW
+                                            </Button>
+                                        </Link>}
 
                                 </TableCell>
                             </TableRow>
