@@ -26,6 +26,7 @@ export interface participants {
     Email: string,
     Password: string,
     Image: string,
+    rating: number,
     Role: number,
     isOnline: boolean,
     Status: boolean
@@ -56,5 +57,12 @@ export interface answerQuestionSlot {
     comment: string,
     QuestionID: string,
     UserID: string,
-    rating: number
+    replies: Reply[];
+}
+
+export interface Reply {
+    ReplyID: string;
+    answerID: string;
+    UserID: string;
+    ReplyContent: string;
 }

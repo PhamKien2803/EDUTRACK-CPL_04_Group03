@@ -1,4 +1,4 @@
-import { UserAnswer } from "../models/Interface"
+import { UserAnswer, answerQuestionSlot } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -78,6 +78,10 @@ const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
 }
 
+const getRepliesContent = () => {
+  return axios.get(`AnswerQuestionSlot`);
+}
+
 const getClass = () => {
   return axios.get("Class");
 };
@@ -102,6 +106,26 @@ const getAnswerByUserId = (id: any) => {
   return axios.get(`UserAnswer?UserID=${id}`);
 
 }
+
+const postComment = (user: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: user.comment,
+    QuestionID: user.QuestionID,
+    UserID: user.UserID,
+    replies: user.replies
+  });
+};
+
+const postReplyContent = (reply: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: reply.comment,
+    QuestionID: reply.QuestionID,
+    UserID: reply.UserID,
+    replies: reply.replies
+  });
+}
+
+
 
 export {
   getDataExam,
@@ -128,4 +152,7 @@ export {
   getQuestionByExID,
   getExamByID,
   getAnswerByUserId,
+  postComment,
+  getRepliesContent,
+  postReplyContent,
 };
