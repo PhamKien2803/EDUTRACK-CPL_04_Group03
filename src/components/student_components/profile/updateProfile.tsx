@@ -46,11 +46,13 @@ const EditProfile: React.FC = () => {
         const fetchUser = async () => {
             try {
                 const res = await getParticipantsById(user.UserID);
-                setName(res.UserName);
-                setAge(res.Age);
-                setAdress(res.Address);
-                setGender(res.Gender);
-                setProfile(res);
+                const profileData = res.data; // Access the actual data from the Axios response
+
+        setName(profileData.UserName);
+        setAge(profileData.Age);
+        setAdress(profileData.Address);
+        setGender(profileData.Gender);
+        setProfile(profileData);
             } catch (error) {
                 console.error("Failed to fetch user data:", error);
             }
