@@ -133,7 +133,7 @@ const postComment = (user: answerQuestionSlot) => {
     UserID: user?.UserID,
     Rating: user?.Rating,
     Replies: user?.Replies,
-    Timestamped: user?.Timestamped
+    Timestamped: new Date().toISOString()
   });
 };
 
@@ -145,7 +145,7 @@ export const updateComment = (comment: answerQuestionSlot) => {
     UserID: comment?.UserID,
     Replies: comment?.Replies,
     Rating: comment?.Rating,
-    Timestamped: comment?.Timestamped
+    Timestamped: new Date().toISOString()
   });
 };
 
@@ -155,13 +155,13 @@ export const deleteComment = (id: string) => {
 };
 
 
-export const postReply = async (answerID: string, replyContent: string, userID: string) => {
+export const postReply = async (answerID: string, replyContent: string, userID: string, timestamp: string) => {
   try {
     const response = await axios.post(`Replies`, {
       ReplyContent: replyContent,
       UserID: userID,
       answerID: answerID,
-      Timestamped: new Date().toISOString()
+      Timestamped: timestamp
 
     });
     return response.data;
@@ -176,7 +176,7 @@ export const updateReply = async (replies: replies) => {
     ReplyContent: replies?.ReplyContent,
     UserID: replies?.UserID,
     answerID: replies?.answerID,
-    Timestamped: replies?.Timestamped
+    Timestamped: new Date().toISOString()
   });
 }
 
@@ -192,7 +192,7 @@ export const updateRating = (rating: answerQuestionSlot) => {
     UserID: rating?.UserID,
     Replies: rating?.Replies,
     Rating: rating?.Rating,
-    Timestamped: rating?.Timestamped
+    Timestamped: new Date().toISOString()
   });
 };
 

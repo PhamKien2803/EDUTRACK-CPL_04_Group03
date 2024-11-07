@@ -373,6 +373,26 @@
       "Rating": 2.5,
       "Timestamped": "2024-11-07T16:07:06.516Z",
       "id": "f530"
+    },
+    {
+      "comment": "Alo123456",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "Replies": [
+        "23f1"
+      ],
+      "Rating": 4,
+      "Timestamped": "2024-11-07T17:35:16.015Z",
+      "id": "253c"
+    },
+    {
+      "comment": "ok chưa, nhận nhé",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "Replies": [],
+      "Rating": 4,
+      "Timestamped": "2024-11-07T17:37:48.591Z",
+      "id": "94f4"
     }
   ],
   "Replies": [
@@ -382,6 +402,20 @@
       "answerID": "3d1d",
       "Timestamped": "2024-11-07T16:10:59.186Z",
       "id": "0330"
+    },
+    {
+      "ReplyContent": "ok time123",
+      "UserID": "he173077",
+      "answerID": "253c",
+      "Timestamped": "2024-11-07T17:35:02.420Z",
+      "id": "23f1"
+    },
+    {
+      "ReplyContent": "ok1234253454",
+      "UserID": "he173077",
+      "answerID": "94f4",
+      "Timestamped": "2024-11-07T17:40:12.596Z",
+      "id": "2811"
     }
   ],
   "Carousel": [

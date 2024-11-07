@@ -36,6 +36,7 @@ const Discussion: React.FC = () => {
   };
 
   const handleSubmit = async () => {
+    // Kiểm tra nội dung bình luận trống
     if (!text.trim()) {
       Swal.fire({
         icon: "question",
@@ -46,21 +47,38 @@ const Discussion: React.FC = () => {
       return;
     }
 
-    // Character limit check
+    // Kiểm tra giới hạn ký tự
     if (text.length > 800) {
       toast.error("Comment cannot exceed 800 characters.");
       return;
     }
+    const currentTimestamp = new Date().toISOString();
 
     if (editingCommentId) {
-      const updatedComment = { ...answerQuestionSlots.find(comment => comment.id === editingCommentId), comment: text } as answerQuestionSlot;
+      // Cập nhật bình luận
+      const updatedComment = {
+        ...answerQuestionSlots.find((comment) => comment.id === editingCommentId),
+        comment: text,
+        Timestamped: currentTimestamp,
+      } as answerQuestionSlot;
+
       try {
         await updateComment(updatedComment);
-        setAnswerQuestionSlots(answerQuestionSlots.map(comment => (comment.id === editingCommentId ? updatedComment : comment)));
+        setAnswerQuestionSlots(
+          answerQuestionSlots.map((comment) =>
+            comment.id === editingCommentId ? updatedComment : comment
+          )
+        );
         setEditingCommentId(null);
         setText("");
       } catch (error) {
         console.error("Error updating comment:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an error updating the comment.",
+          confirmButtonText: "OK",
+        });
       }
     } else {
       const newComment: answerQuestionSlot = {
@@ -70,7 +88,7 @@ const Discussion: React.FC = () => {
         UserID: "he173077",
         Rating: 0,
         Replies: [],
-        Timestamped: new Date().toISOString(),
+        Timestamped: currentTimestamp, 
       };
 
       try {
@@ -79,9 +97,16 @@ const Discussion: React.FC = () => {
         setText("");
       } catch (error) {
         console.error("Error posting comment:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an error posting the comment.",
+          confirmButtonText: "OK",
+        });
       }
     }
   };
+
 
   useEffect(() => {
     fetchAnswerQuestionSlot();

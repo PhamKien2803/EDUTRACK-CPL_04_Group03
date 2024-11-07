@@ -29,7 +29,7 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, questionID, timestamp }) => {
+const Comment: React.FC<Props> = ({ username, text, rating = 0, answerId, questionID, timestamp }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
@@ -79,7 +79,8 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, 
     if (replyText.trim() && answerId) {
       try {
         const userId = "he170155"; // Replace with actual user ID
-        await postReply(answerId, replyText, userId);
+        const currentTimestamp = new Date().toISOString();
+        await postReply(answerId, replyText, userId, currentTimestamp);
         setReplyText('');
         setReplying(false);
         fetchReplies(answerId);
@@ -139,7 +140,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, 
         QuestionID: questionID || "",     
         UserID: "he173077",     
         Replies: replies.map((reply) => reply.id),  
-        Timestamped: time || new Date().toISOString(),
+        Timestamped: new Date().toISOString(),
       };
 
       try {
@@ -159,7 +160,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, 
         <Box flexGrow={1}>
           <Typography variant="h6">{username}</Typography>
           <Typography variant="body2" color="text.secondary">{text}</Typography>
-          <Typography variant="caption" color="text.secondary">{timestamp}</Typography>
+          <Typography variant="caption" color="text.secondary">{timestamp ? new Date(timestamp).toLocaleString() : "Just now"}</Typography>
         </Box>
       </Box>
 
@@ -183,7 +184,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, 
           <Replies
             key={reply?.id}
             replies={[reply]}
-            timestamp={reply?.Timestamped}
+            timestamp={reply?.Timestamped ? new Date(reply?.Timestamped).toLocaleString() : "Just now"}
             username={getUsernameByID(reply?.UserID)}
             answerId={reply?.answerID}
             onDelete={handleDeleteReply}
