@@ -3,6 +3,7 @@ import Content from "../../../components/student_components/lession/lession-cont
 import Header from "../../../components/student_components/lession/lession-header/Header";
 import Items from "../../../components/student_components/lession/lession-items/Items";
 import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot } from "../../../service/ApiService";
+import { useLocation } from "react-router-dom";
 
 interface lession {
     id: string,
@@ -59,7 +60,9 @@ function Lession() {
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [slotSelected, setSlotSelected] = useState<string>();
-    console.log(slotSelected);
+    const location = useLocation();
+    const param = new URLSearchParams(location.search);
+    const sID = param.get('subjectId');
 
     useEffect(() => {
         getLession();
@@ -72,8 +75,10 @@ function Lession() {
 
 
     const getLession = async () => {
-        const res = await getCourseSemesterById('cs11')
-        setLesstion(res);
+        if (typeof (sID) === 'string') {
+            const res = await getCourseSemesterById(sID)
+            setLesstion(res);
+        }
     }
 
     const getParticipant = async () => {
@@ -110,9 +115,9 @@ function Lession() {
             {
                 lession && slot && participants && questionSlot && classes ?
                     <div>
-                        <Header lession={lession} partcipants={participants} classes={classes} setselected={setSlotSelected} />
+                        <Header lession={lession} participants={participants} classes={classes} slotSelected={setSlotSelected} />
                         <Content lession={lession} slot={slot} questionSlot={questionSlot} />
-                        <Items />
+
                     </div> :
                     <div>
                         LOADING...
