@@ -1,4 +1,4 @@
-import { UserAnswer, answerQuestionSlot } from "../models/Interface"
+import { UserAnswer, answerQuestionSlot, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -72,7 +72,7 @@ const getCommentByQuestionId = (id: string) => {
 }
 
 const getRepliesContent = () => {
-  return axios.get(`AnswerQuestionSlot`);
+  return axios.get(`Replies`);
 }
 
 const getClass = () => {
@@ -94,25 +94,59 @@ const postAnswer = (ua: UserAnswer) => {
     UserID: ua.UserID
   })
 }
-
+// Posting a comment
 const postComment = (user: answerQuestionSlot) => {
   return axios.post("AnswerQuestionSlot", {
-    comment: user.comment,
-    QuestionID: user.QuestionID,
-    UserID: user.UserID,
-    replies: user.replies
+    comment: user?.comment,
+    QuestionID: user?.QuestionID,
+    UserID: user?.UserID,
+    Replies: user?.Replies,
   });
 };
 
-const postReplyContent = (reply: answerQuestionSlot) => {
-  return axios.post("AnswerQuestionSlot", {
-    comment: reply.comment,
-    QuestionID: reply.QuestionID,
-    UserID: reply.UserID,
-    replies: reply.replies
+// Updating a comment
+const updateComment = (comment: answerQuestionSlot) => {
+  return axios.put(`AnswerQuestionSlot/${comment.id}`, {
+    comment: comment?.comment,
+    QuestionID: comment?.QuestionID,
+    UserID: comment?.UserID,
+    Replies: comment?.Replies,
+  });
+};
+
+// Deleting a comment along with its replies
+const deleteComment = (id: string) => {
+  return axios.delete(`AnswerQuestionSlot/${id}`);
+};
+
+
+const postReply = async (answerID: string, replyContent: string, userID: string) => {
+  try {
+    const response = await axios.post(`Replies`, {
+      ReplyContent: replyContent,
+      UserID: userID,
+      answerID: answerID,
+
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error posting reply:", error);
+    throw error;
+  }
+};
+
+const updateReply = async (replies: replies) => {
+  return axios.put(`Replies/${replies.id}`, {
+    ReplyContent: replies.ReplyContent,
+    UserID: replies.UserID,
+    answerID: replies.answerID
   });
 }
 
+
+const deleteReply = async (replies: replies) => {
+  return axios.delete(`Replies/${replies.id}`);
+}
 
 
 export {
@@ -138,7 +172,10 @@ export {
   getQuestionSlotById,
   getCommentByQuestionId,
   postComment,
+  updateComment,
+  deleteComment,
   getRepliesContent,
-  postReplyContent,
-
+  postReply,
+  updateReply,
+  deleteReply,
 };

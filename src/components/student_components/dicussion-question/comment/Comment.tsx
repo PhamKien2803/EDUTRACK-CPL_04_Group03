@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Box, Typography, Avatar, Paper, Rating, TextField, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Avatar, Paper, Rating, TextField, Button, Collapse } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import Replies from './Replies';
-import { Reply, answerQuestionSlot, participants } from '../../../../models/Interface';
-import { getParticipants, getRepliesContent } from "../../../../service/ApiService";
+import Swal from 'sweetalert2';
+import { replies, participants } from '../../../../models/Interface';
+import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply } from '../../../../service/ApiService';
 
 interface Props {
   username?: string;
@@ -31,7 +32,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
-  const [replies, setReplies] = useState<Reply[]>([]);
+  const [replies, setReplies] = useState<replies[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
 
   useEffect(() => {
@@ -46,13 +47,9 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
 
   const fetchReplies = async (answerId: string) => {
     try {
-      const data: answerQuestionSlot[] = await getRepliesContent();
-      const answerID = data.find((reply) => reply.id === answerId);
-      if (answerID && answerID.replies) {
-        setReplies(answerID.replies);
-      } else {
-        setReplies([]);
-      }
+      const data: replies[] = await getRepliesContent();
+      const filteredReplies = data.filter((reply) => reply.answerID === answerId);
+      setReplies(filteredReplies);
     } catch (e) {
       console.error("Error fetching replies:", e);
     }
@@ -72,19 +69,59 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
     return user?.UserName || "Unknown User";
   };
 
-  console.log(getUsernameByID("he171694"));
-
   const handleReplyToggle = () => {
     setReplying(!replying);
   };
 
-  const handleReplySubmit = () => {
-    if (replyText.trim()) {
-      console.log("Reply:", replyText);
-      setReplyText('');
-      setReplying(false);
+  const handleReplySubmit = async () => {
+    if (replyText.trim() && answerId) {
+      try {
+        const userId = "he170155";
+        await postReply(answerId, replyText, userId);
+        setReplyText('');
+        setReplying(false);
+        fetchReplies(answerId);
+      } catch (error) {
+        console.error("Error posting reply:", error);
+      }
     } else {
       alert("Reply cannot be empty.");
+    }
+  };
+
+  const handleDeleteReply = async (replyId: string) => {
+    if (answerId) {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you really want to delete this reply?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        try {
+          await deleteReply({ id: replyId } as replies);
+          fetchReplies(answerId);
+          Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+        } catch (error) {
+          console.error("Error deleting reply:", error);
+          Swal.fire('Error', 'There was an error deleting the reply.', 'error');
+        }
+      }
+    }
+  };
+
+  const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
+    if (answerId) {
+      try {
+        await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId } as replies);
+        fetchReplies(answerId);
+      } catch (error) {
+        console.error("Error updating reply:", error);
+      }
     }
   };
 
@@ -101,7 +138,6 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
         </Box>
       </Box>
 
-      {/* Display Rating */}
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
         <Rating
           name="hover-feedback"
@@ -117,26 +153,26 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
         </Box>
       </Box>
 
-      {/* Replies */}
       <Box>
         {replies?.map((reply) => (
           <Replies
-            key={reply?.ReplyID} 
-            replies={[reply]} 
-            username={getUsernameByID(reply?.UserID)} 
+            key={reply?.id}
+            replies={[reply]}
+            username={getUsernameByID(reply?.UserID)}
+            answerId={reply?.answerID}
+            onDelete={handleDeleteReply}
+            onUpdate={handleUpdateReply}
           />
         ))}
       </Box>
 
-
-      {/* Reply Section */}
       <Box sx={{ marginTop: 2 }}>
         <Button variant="outlined" size="small" onClick={handleReplyToggle}>
           {replying ? 'Cancel' : 'Reply'}
         </Button>
       </Box>
 
-      {replying && (
+      <Collapse in={replying} timeout="auto" unmountOnExit>
         <Box sx={{ marginTop: 2 }}>
           <TextField
             fullWidth
@@ -153,7 +189,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
             </Button>
           </Box>
         </Box>
-      )}
+      </Collapse>
     </Paper>
   );
 };
