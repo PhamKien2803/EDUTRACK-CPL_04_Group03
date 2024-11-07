@@ -83,10 +83,16 @@ const getSemester = () => {
   return axios.get("Semester");
 };
 
-const updateParticipant = (id: string, data: Partial<participants>) => {
-  return axios.put(`Participants/${id}`, data);
-};
 
+const updateProfile = (id: string, name: string, adds: string, age: number, gender: boolean) => {
+  return axios.put(`Participants/${id}`, {
+    UserName: name,
+    Age: age,
+    Gender: gender,
+    Address: adds
+  })
+
+}
 
 export {
   getDataExam,
@@ -109,5 +115,5 @@ export {
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
-  updateParticipant
+  updateProfile,
 };

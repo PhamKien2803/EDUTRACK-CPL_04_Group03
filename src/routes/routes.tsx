@@ -1,6 +1,7 @@
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
 import { ExamList } from "../components/student_components/examtest/ExamList";
 import Profile from "../components/student_components/profile/profile";
+import EditProfile from "../components/student_components/profile/updateProfile";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
@@ -63,7 +64,14 @@ const routesStudentHome: Router[] = [
         key: "ProfilePage",
         path: "/profile",
         component: Profile
+    },
+    {
+        name: "Update-Profile",
+        key: "ProfilePage",
+        path: "/edit-profile",
+        component: EditProfile
     }
+
 
 
 ];
