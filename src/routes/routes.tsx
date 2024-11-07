@@ -1,6 +1,7 @@
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
 import { ExamList } from "../components/student_components/examtest/ExamList";
 import { HistoryExam } from "../components/student_components/examtest/exam-history/HistoryExam";
+import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
@@ -64,6 +65,13 @@ const routesStudentHome: Router[] = [
         key: "History",
         path: "/history",
         component: HistoryExam
+    },
+
+    {
+        name: "AddExam",
+        key: "AddExam",
+        path: "/addingExam",
+        component: AddExam
     }
 
 
