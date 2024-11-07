@@ -131,7 +131,9 @@ const postComment = (user: answerQuestionSlot) => {
     comment: user?.comment,
     QuestionID: user?.QuestionID,
     UserID: user?.UserID,
+    Rating: user?.Rating,
     Replies: user?.Replies,
+    Timestamped: user?.Timestamped
   });
 };
 
@@ -142,6 +144,8 @@ export const updateComment = (comment: answerQuestionSlot) => {
     QuestionID: comment?.QuestionID,
     UserID: comment?.UserID,
     Replies: comment?.Replies,
+    Rating: comment?.Rating,
+    Timestamped: comment?.Timestamped
   });
 };
 
@@ -157,6 +161,7 @@ export const postReply = async (answerID: string, replyContent: string, userID: 
       ReplyContent: replyContent,
       UserID: userID,
       answerID: answerID,
+      Timestamped: new Date().toISOString()
 
     });
     return response.data;
@@ -167,10 +172,11 @@ export const postReply = async (answerID: string, replyContent: string, userID: 
 };
 
 export const updateReply = async (replies: replies) => {
-  return axios.put(`Replies/${replies.id}`, {
-    ReplyContent: replies.ReplyContent,
-    UserID: replies.UserID,
-    answerID: replies.answerID
+  return axios.put(`Replies/${replies?.id}`, {
+    ReplyContent: replies?.ReplyContent,
+    UserID: replies?.UserID,
+    answerID: replies?.answerID,
+    Timestamped: replies?.Timestamped
   });
 }
 
@@ -178,6 +184,17 @@ export const updateReply = async (replies: replies) => {
 export const deleteReply = async (replies: replies) => {
   return axios.delete(`Replies/${replies.id}`);
 }
+
+export const updateRating = (rating: answerQuestionSlot) => {
+  return axios.put(`AnswerQuestionSlot/${rating.id}`, {
+    comment: rating?.comment,
+    QuestionID: rating?.QuestionID,
+    UserID: rating?.UserID,
+    Replies: rating?.Replies,
+    Rating: rating?.Rating,
+    Timestamped: rating?.Timestamped
+  });
+};
 
 
 export {

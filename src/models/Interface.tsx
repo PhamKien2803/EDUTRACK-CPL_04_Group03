@@ -59,6 +59,7 @@ export interface answerQuestionSlot {
     UserID: string,
     Rating: number,
     Replies: string[];
+    Timestamped: string;
 }
 
 export interface replies {
@@ -66,4 +67,5 @@ export interface replies {
     answerID: string;
     UserID: string;
     ReplyContent: string;
+    Timestamped: string;
 }

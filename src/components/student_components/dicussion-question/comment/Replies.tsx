@@ -8,11 +8,12 @@ interface RepliesProps {
   username?: string;
   answerId: string;
   userid?: string;
+  timestamp?: string;
   onDelete: (replyId: string) => void;
   onUpdate: (replyId: string, newContent: string, userId: string, answerId: string) => void;
 }
 
-const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', answerId, onDelete, onUpdate }) => {
+const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', answerId, onDelete, onUpdate, timestamp }) => {
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -93,6 +94,7 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', answerId,
                   {reply?.ReplyContent}
                 </Typography>
               )}
+              <Typography variant="caption" color="text.secondary">{timestamp}</Typography>
             </Box>
 
             {editMode === reply?.id ? (

@@ -355,20 +355,33 @@
   ],
   "AnswerQuestionSlot": [
     {
-      "comment": "Alo 123456",
+      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !",
       "QuestionID": "q111",
       "UserID": "he173077",
-      "Rating": 5,
+      "Replies": [
+        "0330"
+      ],
+      "Rating": 3,
+      "Timestamped": "2024-11-07T16:06:55.253Z",
+      "id": "3d1d"
+    },
+    {
+      "comment": "ReactJS là gì?12345",
+      "QuestionID": "q111",
+      "UserID": "he173077",
       "Replies": [],
-      "id": "0811"
+      "Rating": 2.5,
+      "Timestamped": "2024-11-07T16:07:06.516Z",
+      "id": "f530"
     }
   ],
   "Replies": [
     {
-      "ReplyContent": "okererwrrw",
+      "ReplyContent": "ssss7897ddddddd",
       "UserID": "he173077",
-      "answerID": "0811",
-      "id": "f1ce"
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-07T16:10:59.186Z",
+      "id": "0330"
     }
   ],
   "Carousel": [

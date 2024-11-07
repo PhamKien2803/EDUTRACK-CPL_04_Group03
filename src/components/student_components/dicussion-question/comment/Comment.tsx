@@ -3,15 +3,17 @@ import { Box, Typography, Avatar, Paper, Rating, TextField, Button, Collapse } f
 import StarIcon from '@mui/icons-material/Star';
 import Replies from './Replies';
 import Swal from 'sweetalert2';
-import { replies, participants } from '../../../../models/Interface';
-import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply } from '../../../../service/ApiService';
+import { replies as Reply, answerQuestionSlot, participants } from '../../../../models/Interface';
+import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
 
 interface Props {
   username?: string;
   text?: string;
   time?: string;
   rating?: number;
+  questionID?: string;
   answerId?: string;
+  timestamp?: string;
 }
 
 const labels: { [index: number]: string } = {
@@ -27,12 +29,12 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }) => {
+const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId, questionID, timestamp }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
-  const [replies, setReplies] = useState<replies[]>([]);
+  const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
 
   const fetchReplies = async (answerId: string) => {
     try {
-      const data: replies[] = await getRepliesContent();
+      const data: Reply[] = await getRepliesContent();
       const filteredReplies = data.filter((reply) => reply.answerID === answerId);
       setReplies(filteredReplies);
     } catch (e) {
@@ -76,7 +78,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
   const handleReplySubmit = async () => {
     if (replyText.trim() && answerId) {
       try {
-        const userId = "he170155";
+        const userId = "he170155"; // Replace with actual user ID
         await postReply(answerId, replyText, userId);
         setReplyText('');
         setReplying(false);
@@ -103,7 +105,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
 
       if (result.isConfirmed) {
         try {
-          await deleteReply({ id: replyId } as replies);
+          await deleteReply({ id: replyId } as Reply);
           fetchReplies(answerId);
           Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
         } catch (error) {
@@ -117,10 +119,33 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
   const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
     if (answerId) {
       try {
-        await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId } as replies);
+        await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
         fetchReplies(answerId);
       } catch (error) {
         console.error("Error updating reply:", error);
+      }
+    }
+  };
+
+  const handleRatingChange = async (newValue: number | null) => {
+    setCurrentRating(newValue);
+
+    // Giữ nguyên tất cả dữ liệu và chỉ cập nhật Rating
+    if (answerId) {
+      const updatedRatingData: answerQuestionSlot = {
+        id: answerId, 
+        Rating: newValue || 0, 
+        comment: text || "",    
+        QuestionID: questionID || "",     
+        UserID: "he173077",     
+        Replies: replies.map((reply) => reply.id),  
+        Timestamped: time || new Date().toISOString(),
+      };
+
+      try {
+        await updateRating(updatedRatingData);  // Cập nhật chỉ Rating
+      } catch (error) {
+        console.error("Error updating rating:", error);
       }
     }
   };
@@ -134,7 +159,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
         <Box flexGrow={1}>
           <Typography variant="h6">{username}</Typography>
           <Typography variant="body2" color="text.secondary">{text}</Typography>
-          <Typography variant="caption" color="text.secondary">{time}</Typography>
+          <Typography variant="caption" color="text.secondary">{timestamp}</Typography>
         </Box>
       </Box>
 
@@ -143,7 +168,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
           name="hover-feedback"
           value={currentRating}
           precision={0.5}
-          onChange={(_event, newValue) => setCurrentRating(newValue)}
+          onChange={(_event, newValue) => handleRatingChange(newValue)}
           onChangeActive={(_event, newHover) => setHover(newHover)}
           getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
           emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
@@ -158,6 +183,7 @@ const Comment: React.FC<Props> = ({ username, text, time, rating = 0, answerId }
           <Replies
             key={reply?.id}
             replies={[reply]}
+            timestamp={reply?.Timestamped}
             username={getUsernameByID(reply?.UserID)}
             answerId={reply?.answerID}
             onDelete={handleDeleteReply}

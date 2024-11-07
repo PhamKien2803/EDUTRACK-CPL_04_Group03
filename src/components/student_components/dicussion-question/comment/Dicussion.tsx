@@ -68,7 +68,9 @@ const Discussion: React.FC = () => {
         comment: text,
         QuestionID: questionID || "",
         UserID: "he173077",
+        Rating: 0,
         Replies: [],
+        Timestamped: new Date().toISOString(),
       };
 
       try {
@@ -268,14 +270,16 @@ const Discussion: React.FC = () => {
           }}
         >
           <Comment
-            username={getUsernameById(answer.UserID)}
-            text={answer.comment}
-            time={"Just now"}
-            answerId={answer.id}
+            username={getUsernameById(answer?.UserID)}
+            rating={answer?.Rating}
+            text={answer?.comment}
+            questionID={answer?.QuestionID}
+            timestamp={answer?.Timestamped}
+            answerId={answer?.id}
           />
           <IconButton
             aria-label="more"
-            onClick={(event) => handleMenuOpen(event, answer.id)}
+            onClick={(event) => handleMenuOpen(event, answer?.id)}
             sx={{ position: "absolute", top: 10, right: 10, color: "#3f51b5" }}
           >
             <MoreVertIcon />
