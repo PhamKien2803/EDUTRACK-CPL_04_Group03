@@ -26,6 +26,7 @@ export interface participants {
     Email: string,
     Password: string,
     Image: string,
+    rating: number,
     Role: number,
     isOnline: boolean,
     Status: boolean
@@ -44,4 +45,24 @@ export interface classRoom {
     ClassName: string,
     Student: string[],
     Status: boolean
+}
+export interface UserAnswer {
+    id: string,
+    answer: string[],
+    QuestionID: string,
+    UserID: string
+}
+export interface answerQuestionSlot {
+    id: string,
+    comment: string,
+    QuestionID: string,
+    UserID: string,
+    replies: Reply[];
+}
+
+export interface Reply {
+    ReplyID: string;
+    answerID: string;
+    UserID: string;
+    ReplyContent: string;
 }

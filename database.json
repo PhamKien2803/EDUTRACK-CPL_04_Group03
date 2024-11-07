@@ -8,7 +8,7 @@
         "he173077"
       ],
       "Status": true,
-      "id": "3433"
+      "id": "2a9d"
     },
     {
       "ClassID": "c124",
@@ -18,7 +18,7 @@
         "he170569"
       ],
       "Status": true,
-      "id": "2426"
+      "id": "e048"
     }
   ],
   "AnswerQuestionExam": [
@@ -109,7 +109,7 @@
       "courseSemesterID": "1",
       "timeLimit": "1500",
       "status": true,
-      "id": "1bfa"
+      "id": "f219"
     },
     {
       "examID": "2",
@@ -117,7 +117,7 @@
       "courseSemesterID": "1",
       "timeLimit": "1500",
       "status": false,
-      "id": "93c6"
+      "id": "080d"
     }
   ],
   "UserAnswer": [
@@ -146,15 +146,40 @@
       ],
       "QuestionID": "3",
       "UserID": "he173077"
+    },
+    {
+      "id": "d1a9",
+      "answer": [],
+      "QuestionID": "1",
+      "UserID": "he171694"
+    },
+    {
+      "id": "6442",
+      "answer": [],
+      "QuestionID": "2",
+      "UserID": "he171694"
+    },
+    {
+      "id": "8caa",
+      "answer": [],
+      "QuestionID": "4",
+      "UserID": "he171694"
     }
   ],
   "Participants": [
     {
+      "id": "he173077",
       "UserName": "Do Dang Phuong",
-      "Age": 22,
-      "Gender": false,
-      "Address": "Bac Giang2",
-      "id": "he173077"
+      "Age": 21,
+      "Gender": true,
+      "Address": "Bac Giang",
+      "Email": "phuongddhe173077@fpt.edu.vn",
+      "Password": "1223@",
+      "Image": "",
+      "rating": 5,
+      "Role": 0,
+      "isOnline": true,
+      "Status": true
     },
     {
       "id": "he171694",
@@ -165,6 +190,7 @@
       "Email": "longndhe171694@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -178,6 +204,7 @@
       "Email": "nghianthe170569@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -191,6 +218,7 @@
       "Email": "kienpdhe170155@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
+      "rating": 5,
       "Role": 0,
       "isOnline": true,
       "Status": true
@@ -211,20 +239,20 @@
   ],
   "Semester": [
     {
-      "SemesterID": "fall24",
-      "SemesterName": "FALL 24",
-      "StartDate": "01/09/2024",
-      "EndDate": "01/12/2024",
-      "Status": true,
-      "id": "4588"
-    },
-    {
       "SemesterID": "sum24",
       "SemesterName": "SUMMER 24",
       "StartDate": "01/09/2024",
       "EndDate": "01/12/2024",
       "Status": true,
-      "id": "a27c"
+      "id": "79b9"
+    },
+    {
+      "SemesterID": "fall24",
+      "SemesterName": "FALL 24",
+      "StartDate": "01/09/2024",
+      "EndDate": "01/12/2024",
+      "Status": true,
+      "id": "98a0"
     }
   ],
   "CourseSemester": [
@@ -248,7 +276,19 @@
         "s22"
       ],
       "CourseID": "ENW492c",
-      "StudentID": "he173077",
+      "StudentID": "he170155",
+      "LecturersID": "lt12345",
+      "ClassID": "c123"
+    },
+    {
+      "id": "cs13",
+      "SemesterID": "fall24",
+      "SlotID": [
+        "s11",
+        "s12"
+      ],
+      "CourseID": "FER201",
+      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     }
@@ -269,7 +309,7 @@
     {
       "id": "s11",
       "SlotName": "slot 1",
-      "Description": "Course Introduction 1.1 Full Stack Web Development",
+      "Description": "Course Introduction\n\n1.1 Full Stack Web Development: The Big Picture\n\n1.2 React 18 Introduction\n\n1.3 Git\n- Setting up Git\n- Basic Git Commands\n- Setting up an Online Git repository\n\n1.4 Node.js and NPM\n- Setting up Node.js and NPM\n- Basics of Node.js and NPM",
       "TimeStart": "01/09/2024",
       "TimeEnd": "01/12/2024",
       "Status": true
@@ -306,7 +346,7 @@
       "TimeLimit": "1500",
       "Slotid": "s11",
       "Status": 0,
-      "id": "c71c"
+      "id": "36f2"
     },
     {
       "QuestionID": "q112",
@@ -314,15 +354,100 @@
       "TimeLimit": "1500",
       "Slotid": "s12",
       "Status": 0,
-      "id": "a69e"
+      "id": "008d"
     }
   ],
   "AnswerQuestionSlot": [
     {
       "id": "aq1",
-      "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
+      "comment": "một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
       "QuestionID": "q111",
-      "UserID": "he173077"
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r1",
+          "answerID": "aq1",
+          "UserID": "he170569",
+          "ReplyContent": "Đúng rồi, React là một thư viện nổi tiếng!"
+        },
+        {
+          "ReplyID": "r2",
+          "answerID": "aq1",
+          "UserID": "he171694",
+          "ReplyContent": "Cần cài đặt gì để dùng nhỉ?"
+        }
+      ]
+    },
+    {
+      "id": "1e05",
+      "comment": "KIen",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r3",
+          "answerID": "1e05",
+          "UserID": "he170155",
+          "ReplyContent": "Ủa ai tên Kiên vậy?"
+        }
+      ]
+    },
+    {
+      "id": "b6a2",
+      "comment": "Khó VL",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "replies": []
+    },
+    {
+      "id": "9efa",
+      "comment": "cần cài đặt môi trường",
+      "QuestionID": "q112",
+      "UserID": "he173077",
+      "replies": []
+    },
+    {
+      "id": "9daa",
+      "comment": "ok",
+      "QuestionID": "q112",
+      "UserID": "he173077",
+      "replies": [
+        {
+          "ReplyID": "r4",
+          "answerID": "9daa",
+          "UserID": "he170100",
+          "ReplyContent": "Tuyệt, cùng làm tiếp nào!"
+        }
+      ]
+    },
+    {
+      "id": "e5a4",
+      "comment": "Ok nhe 123",
+      "QuestionID": "q111",
+      "UserID": "he173077",
+      "replies": []
+    }
+  ],
+  "Carousel": [
+    {
+      "id": "1",
+      "decription": " nghia dep trai",
+      "image": "https://www.shutterstock.com/image-vector/investment-education-concept-web-banner-260nw-1944889492.jpg"
+    },
+    {
+      "id": "2",
+      "decription": " nghia dep trai",
+      "image": "https://www.shutterstock.com/image-vector/learning-education-web-banner-design-260nw-1944239308.jpg"
+    },
+    {
+      "id": "3",
+      "decription": " nghia dep trai",
+      "image": "https://www.shutterstock.com/image-vector/digital-learning-web-banner-design-260nw-1944889510.jpg"
+    },
+    {
+      "id": "4",
+      "decription": " nghia dep trai",
+      "image": "https://www.shutterstock.com/image-vector/education-knowledge-concept-web-banner-260nw-1944889507.jpg"
     }
   ]
 }

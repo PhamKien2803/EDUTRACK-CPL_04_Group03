@@ -1,7 +1,7 @@
 import { participants } from "../models/Interface";
+import { UserAnswer, answerQuestionSlot } from "../models/Interface"
+import axios from "../utils/axiosCustomiz"
 
-
-import axios from "../utils/axiosCustomiz";
 
 const getDataExam = () => {
   return axios.get("QuestionExam");
@@ -71,6 +71,10 @@ const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
 }
 
+const getRepliesContent = () => {
+  return axios.get(`AnswerQuestionSlot`);
+}
+
 const getClass = () => {
   return axios.get("Class");
 };
@@ -91,8 +95,35 @@ const updateProfile = (id: string, name: string, adds: string, age: number, gend
     Gender: gender,
     Address: adds
   })
-
 }
+
+const postAnswer = (ua: UserAnswer) => {
+  return axios.post('UserAnswer', {
+    answer: ua.answer,
+    QuestionID: ua.QuestionID,
+    UserID: ua.UserID
+  })
+}
+
+const postComment = (user: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: user.comment,
+    QuestionID: user.QuestionID,
+    UserID: user.UserID,
+    replies: user.replies
+  });
+};
+
+const postReplyContent = (reply: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: reply.comment,
+    QuestionID: reply.QuestionID,
+    UserID: reply.UserID,
+    replies: reply.replies
+  });
+}
+
+
 
 export {
   getDataExam,
@@ -110,10 +141,15 @@ export {
   getQuestionSlotBySlotId,
   getCourseSemesterByUserId,
   getSemester,
+  postAnswer,
   getCourse,
   getAnswerQuestionSlotByQuestionId,
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
   updateProfile,
+  getRepliesContent,
+  postReplyContent,
+  postComment,
+
 };
