@@ -46,6 +46,11 @@ const NAVIGATION: Navigation = [
     icon: <LiveHelpIcon />,
   },
   {
+    segment: 'profile',
+    title: 'Profile',
+    icon: <SchoolIcon />,
+  },
+  {
     segment: 'Logout',
     title: 'Logout',
     icon: <LogoutIcon />,

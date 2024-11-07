@@ -5,7 +5,7 @@ import axios from "../utils/axiosCustomiz"
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
-const getQuestionByExID = (exId: any) => {
+ export const getQuestionByExID = (exId: any) => {
   return axios.get(`QuestionExam?exId=${exId}`);
 };
 
@@ -17,7 +17,7 @@ const getExamList = () => {
   return axios.get("Examination");
 };
 
-const getExamByID = (id: any) => {
+export const getExamByID = (id: any) => {
   return axios.get(`Examination?examID=${id}`);
 };
 
@@ -62,9 +62,8 @@ const getQuestionSlotById = (id: string) => {
 }
 
 const getQuestionSlotBySlotId = (id: string) => {
-  return axios.get(`QuestionSLot/${id}`)
-}
-
+  return axios.get(`QuestionSLot/${id}`);
+};
 
 const getAnswerQuestionSlot = () => {
   return axios.get("AnswerQuestionSlot");
@@ -94,6 +93,26 @@ const getSemester = () => {
   return axios.get("Semester");
 };
 
+
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+) => {
+  return axios.put(`Participants/${id}`, {
+    UserName: name,
+    Age: age,
+    Gender: gender,
+    Address: address,
+    Password: password,
+    Image: image,
+    rating: rating,
+    Role: role,
+    isOnline: isOnline,
+    Status: status,
+    Email: email,
+
+  })
+}
+
 const postAnswer = (ua: UserAnswer) => {
   return axios.post('UserAnswer', {
     answer: ua.answer,
@@ -102,7 +121,7 @@ const postAnswer = (ua: UserAnswer) => {
   })
 }
 
-const getAnswerByUserId = (id: any) => {
+export const getAnswerByUserId = (id: any) => {
   return axios.get(`UserAnswer?UserID=${id}`);
 
 }
@@ -117,7 +136,7 @@ const postComment = (user: answerQuestionSlot) => {
 };
 
 // Updating a comment
-const updateComment = (comment: answerQuestionSlot) => {
+export const updateComment = (comment: answerQuestionSlot) => {
   return axios.put(`AnswerQuestionSlot/${comment.id}`, {
     comment: comment?.comment,
     QuestionID: comment?.QuestionID,
@@ -127,12 +146,12 @@ const updateComment = (comment: answerQuestionSlot) => {
 };
 
 // Deleting a comment along with its replies
-const deleteComment = (id: string) => {
+export const deleteComment = (id: string) => {
   return axios.delete(`AnswerQuestionSlot/${id}`);
 };
 
 
-const postReply = async (answerID: string, replyContent: string, userID: string) => {
+export const postReply = async (answerID: string, replyContent: string, userID: string) => {
   try {
     const response = await axios.post(`Replies`, {
       ReplyContent: replyContent,
@@ -147,7 +166,7 @@ const postReply = async (answerID: string, replyContent: string, userID: string)
   }
 };
 
-const updateReply = async (replies: replies) => {
+export const updateReply = async (replies: replies) => {
   return axios.put(`Replies/${replies.id}`, {
     ReplyContent: replies.ReplyContent,
     UserID: replies.UserID,
@@ -156,7 +175,7 @@ const updateReply = async (replies: replies) => {
 }
 
 
-const deleteReply = async (replies: replies) => {
+export const deleteReply = async (replies: replies) => {
   return axios.delete(`Replies/${replies.id}`);
 }
 
@@ -183,15 +202,8 @@ export {
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
-  getQuestionByExID,
-  getExamByID,
-  getAnswerByUserId,
-  postComment,
-  updateComment,
-  deleteComment,
+  updateProfile,
   getRepliesContent,
-  postReply,
-  updateReply,
-  deleteReply,
-  // postReplyContent,
+  postComment,
+
 };
