@@ -116,7 +116,7 @@ const Login: React.FC = () => {
             dispatch(doLogin(user));
             toast.success("Login successful");
             setTimeout(() => {
-                nav("/home-page");
+                nav("/profile");
             }, 2000);
 
         } else {
