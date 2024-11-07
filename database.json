@@ -168,18 +168,18 @@
   ],
   "Participants": [
     {
-      "id": "he173077",
       "UserName": "Do Dang Phuong",
       "Age": 21,
       "Gender": true,
       "Address": "Bac Giang",
-      "Email": "phuongddhe173077@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
       "rating": 5,
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": true,
+      "Email": "phuongddhe173077@fpt.edu.vn",
+      "id": "he173077"
     },
     {
       "id": "he171694",
@@ -196,18 +196,11 @@
       "Status": true
     },
     {
-      "id": "he170569",
       "UserName": "Nguyễn Trung Nghĩa ",
-      "Age": 21,
+      "Age": 18,
       "Gender": true,
       "Address": "Ha Noi",
-      "Email": "nghianthe170569@fpt.edu.vn",
-      "Password": "1223@",
-      "Image": "",
-      "rating": 5,
-      "Role": 0,
-      "isOnline": true,
-      "Status": true
+      "id": "he170569"
     },
     {
       "id": "he170155",

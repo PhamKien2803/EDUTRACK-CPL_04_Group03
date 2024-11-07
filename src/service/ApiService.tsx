@@ -88,12 +88,22 @@ const getSemester = () => {
 };
 
 
-const updateProfile = (id: string, name: string, adds: string, age: number, gender: boolean) => {
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+) => {
   return axios.put(`Participants/${id}`, {
     UserName: name,
     Age: age,
     Gender: gender,
-    Address: adds
+    Address: address,
+    Password: password,
+    Image: image,
+    rating: rating,
+    Role: role,
+    isOnline: isOnline,
+    Status: status,
+    Email: email,
+
   })
 }
 
