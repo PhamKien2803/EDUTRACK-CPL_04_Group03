@@ -7,6 +7,7 @@ import { replies as Reply, answerQuestionSlot, participants } from '../../../../
 import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
 
 interface Props {
+  userIds?: string;
   username?: string;
   text?: string;
   time?: string;
@@ -29,13 +30,15 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ username, text, rating = 0, answerId, questionID, timestamp }) => {
+const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
   const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
+
+  console.log(userIds)
 
   useEffect(() => {
     if (answerId) {
@@ -78,7 +81,7 @@ const Comment: React.FC<Props> = ({ username, text, rating = 0, answerId, questi
   const handleReplySubmit = async () => {
     if (replyText.trim() && answerId) {
       try {
-        const userId = "he170155"; // Replace with actual user ID
+        const userId = userIds || "defaultUserId";
         const currentTimestamp = new Date().toISOString();
         await postReply(answerId, replyText, userId, currentTimestamp);
         setReplyText('');
@@ -138,7 +141,7 @@ const Comment: React.FC<Props> = ({ username, text, rating = 0, answerId, questi
         Rating: newValue || 0, 
         comment: text || "",    
         QuestionID: questionID || "",     
-        UserID: "he173077",     
+        UserID: userIds || "",     
         Replies: replies.map((reply) => reply.id),  
         Timestamped: new Date().toISOString(),
       };
@@ -182,6 +185,7 @@ const Comment: React.FC<Props> = ({ username, text, rating = 0, answerId, questi
       <Box>
         {replies?.map((reply) => (
           <Replies
+            userIds={reply?.UserID}
             key={reply?.id}
             replies={[reply]}
             timestamp={reply?.Timestamped ? new Date(reply?.Timestamped).toLocaleString() : "Just now"}

@@ -17,10 +17,13 @@ import { participants, answerQuestionSlot } from "../../../../models/Interface";
 import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiService";
 import { postComment, updateComment, deleteComment } from "../../../../service/ApiService";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Discussion: React.FC = () => {
+  const userid = useSelector((state: any) => state.account.account.UserID);
+  console.log(userid);
   const [searchParams] = useSearchParams();
   const questionID = searchParams.get("questionid");
   const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
@@ -85,7 +88,7 @@ const Discussion: React.FC = () => {
         id: Math.random().toString(36).substr(2, 9),
         comment: text,
         QuestionID: questionID || "",
-        UserID: "he173077",
+        UserID: userid,
         Rating: 0,
         Replies: [],
         Timestamped: currentTimestamp, 
@@ -111,7 +114,7 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
-  }, []);
+  }, [userid.UserID]);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
@@ -295,6 +298,7 @@ const Discussion: React.FC = () => {
           }}
         >
           <Comment
+            userIds={answer?.UserID}
             username={getUsernameById(answer?.UserID)}
             rating={answer?.Rating}
             text={answer?.comment}

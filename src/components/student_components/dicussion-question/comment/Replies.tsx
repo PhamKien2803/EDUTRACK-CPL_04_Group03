@@ -4,6 +4,7 @@ import { replies as Reply } from '../../../../models/Interface';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface RepliesProps {
+  userIds?: string;
   replies: Reply[];
   username?: string;
   answerId: string;
@@ -13,12 +14,13 @@ interface RepliesProps {
   onUpdate: (replyId: string, newContent: string, userId: string, answerId: string) => void;
 }
 
-const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', answerId, onDelete, onUpdate, timestamp }) => {
+const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, answerId, onDelete, onUpdate, timestamp }) => {
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedReplyId, setSelectedReplyId] = useState<string | null>(null);
 
+  console.log(userIds)
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, replyId: string) => {
     setAnchorEl(event.currentTarget);
     setSelectedReplyId(replyId);
@@ -37,7 +39,7 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', answerId,
 
   const handleSave = (replyId: string) => {
     if (editText.trim() !== '') {
-      onUpdate(replyId, editText, 'he173077', answerId);
+      onUpdate(replyId, editText, userIds || '', answerId);
       setEditMode(null);
       setEditText('');
     } else {

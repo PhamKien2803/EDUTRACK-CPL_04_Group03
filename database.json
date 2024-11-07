@@ -366,56 +366,29 @@
       "id": "3d1d"
     },
     {
-      "comment": "ReactJS là gì?12345",
+      "comment": " (Java web, ASP.NET, PHP, ...)",
       "QuestionID": "q111",
-      "UserID": "he173077",
+      "UserID": "he170155",
       "Replies": [],
       "Rating": 2.5,
-      "Timestamped": "2024-11-07T16:07:06.516Z",
-      "id": "f530"
-    },
-    {
-      "comment": "Alo123456",
-      "QuestionID": "q111",
-      "UserID": "he173077",
-      "Replies": [
-        "23f1"
-      ],
-      "Rating": 4,
-      "Timestamped": "2024-11-07T17:35:16.015Z",
-      "id": "253c"
-    },
-    {
-      "comment": "ok chưa, nhận nhé",
-      "QuestionID": "q111",
-      "UserID": "he173077",
-      "Replies": [],
-      "Rating": 4,
-      "Timestamped": "2024-11-07T17:37:48.591Z",
-      "id": "94f4"
+      "Timestamped": "2024-11-07T18:35:48.707Z",
+      "id": "9ace"
     }
   ],
   "Replies": [
     {
-      "ReplyContent": "ssss7897ddddddd",
+      "ReplyContent": "123",
       "UserID": "he173077",
       "answerID": "3d1d",
-      "Timestamped": "2024-11-07T16:10:59.186Z",
+      "Timestamped": "2024-11-07T18:13:39.201Z",
       "id": "0330"
     },
     {
-      "ReplyContent": "ok time123",
-      "UserID": "he173077",
-      "answerID": "253c",
-      "Timestamped": "2024-11-07T17:35:02.420Z",
-      "id": "23f1"
-    },
-    {
-      "ReplyContent": "ok1234253454",
-      "UserID": "he173077",
-      "answerID": "94f4",
-      "Timestamped": "2024-11-07T17:40:12.596Z",
-      "id": "2811"
+      "id": "63ed",
+      "ReplyContent": "ok",
+      "UserID": "he170155",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-07T18:35:54.680Z"
     }
   ],
   "Carousel": [
