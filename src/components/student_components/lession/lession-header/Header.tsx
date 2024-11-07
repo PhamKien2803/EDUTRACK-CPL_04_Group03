@@ -49,7 +49,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
-  
+
   const filterSlotName = (slotid: string): string | undefined => {
     const slotName = slot.find((s) => s.id === questionSlot.find((q) => q.Slotid === slotid)?.Slotid)?.SlotName;
     return slotName;
@@ -113,10 +113,10 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
             onChange={handleSlotChange}
             defaultValue=""
           >
-            <MenuItem value="" disabled>Select Slot</MenuItem>
-            {slot?.map(slotItem => (
-              <MenuItem key={slotItem.id} value={slotItem.id}>
-                {slotItem.SlotName}
+            <MenuItem value="" >All</MenuItem>
+            {lession?.SlotID?.map((slotItem, index) => (
+              <MenuItem key={`slt-${slotItem}`} value={slotItem}>
+                Slot {index + 1}
               </MenuItem>
             ))}
           </Select>
@@ -127,14 +127,12 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
             sx={{ minWidth: 160 }}
             size="small"
             displayEmpty
-            defaultValue=""
+            defaultValue="index"
           >
-            <MenuItem value="" disabled>Select Class</MenuItem>
-            {classes.map(classItem => (
-              <MenuItem key={classItem.ClassID} value={classItem.ClassID}>
-                {classItem.ClassName}
-              </MenuItem>
-            ))}
+
+            <MenuItem value="index">
+              {classes.find(item => item.ClassID === lession.ClassID)?.ClassName}
+            </MenuItem>
           </Select>
 
           {/* Exam Button */}
