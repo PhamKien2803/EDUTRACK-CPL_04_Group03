@@ -194,6 +194,7 @@
       "Status": true
     },
     {
+      "id": "he170569",
       "UserName": "Nguyễn Trung Nghĩa ",
       "Age": 18,
       "Gender": true,
@@ -203,8 +204,7 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true,
-      "id": "he170569"
+      "Status": true
     },
     {
       "id": "he170155",
@@ -287,6 +287,18 @@
       "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
+    },
+    {
+      "id": "cs14",
+      "SemesterID": "fall24",
+      "SlotID": [
+        "s11",
+        "s12"
+      ],
+      "CourseID": "FER201",
+      "StudentID": "he170569",
+      "LecturersID": "lt12345",
+      "ClassID": "c123"
     }
   ],
   "Course": [
@@ -355,14 +367,19 @@
   ],
   "AnswerQuestionSlot": [
     {
-      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !",
+      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !jjjj",
       "QuestionID": "q111",
       "UserID": "he173077",
       "Replies": [
-        "0330"
+        "0330",
+        "eac1",
+        "fd33",
+        "dc3e",
+        "224f",
+        "bb8a"
       ],
-      "Rating": 3,
-      "Timestamped": "2024-11-07T16:06:55.253Z",
+      "Rating": 4,
+      "Timestamped": "2024-11-08T09:21:14.774Z",
       "id": "3d1d"
     },
     {
@@ -373,6 +390,26 @@
       "Rating": 2.5,
       "Timestamped": "2024-11-07T18:35:48.707Z",
       "id": "9ace"
+    },
+    {
+      "id": "6eb8",
+      "comment": "nfgnn",
+      "QuestionID": "q111",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-08T06:29:01.144Z"
+    },
+    {
+      "comment": "Ok nha",
+      "QuestionID": "q111",
+      "UserID": "he170569",
+      "Replies": [
+        "f7b7"
+      ],
+      "Rating": 3.5,
+      "Timestamped": "2024-11-08T09:21:20.318Z",
+      "id": "2066"
     }
   ],
   "Replies": [
@@ -389,6 +426,83 @@
       "UserID": "he170155",
       "answerID": "9ace",
       "Timestamped": "2024-11-07T18:35:54.680Z"
+    },
+    {
+      "id": "855d",
+      "ReplyContent": "ccc",
+      "UserID": "he170155",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-08T05:43:08.068Z"
+    },
+    {
+      "ReplyContent": " cx vxcvxcccccc",
+      "UserID": "he170155",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-08T07:41:50.211Z",
+      "id": "eac1"
+    },
+    {
+      "id": "fd33",
+      "ReplyContent": "ccccc",
+      "UserID": "he173077",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-08T07:41:18.138Z"
+    },
+    {
+      "id": "ae1d",
+      "ReplyContent": "kyukyuk",
+      "UserID": "he170155",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-08T07:56:29.595Z"
+    },
+    {
+      "ReplyContent": "htrhrhthhtrhrthhrth",
+      "UserID": "he170155",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-08T07:56:42.752Z",
+      "id": "dc3e"
+    },
+    {
+      "ReplyContent": "myumm  nhn",
+      "UserID": "he170155",
+      "answerID": "6eb8",
+      "Timestamped": "2024-11-08T09:21:25.843Z",
+      "id": "07c7"
+    },
+    {
+      "id": "cb12",
+      "ReplyContent": "cewcc",
+      "UserID": "he170569",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-08T08:40:46.231Z"
+    },
+    {
+      "id": "224f",
+      "ReplyContent": "muymu",
+      "UserID": "he170569",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-08T08:40:52.880Z"
+    },
+    {
+      "id": "f7b7",
+      "ReplyContent": "ffff",
+      "UserID": "he170569",
+      "answerID": "2066",
+      "Timestamped": "2024-11-08T09:07:03.917Z"
+    },
+    {
+      "id": "4c34",
+      "ReplyContent": "ffff",
+      "UserID": "he170569",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-08T09:19:13.219Z"
+    },
+    {
+      "ReplyContent": "ggggggg",
+      "UserID": "he170569",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-08T09:19:22.620Z",
+      "id": "bb8a"
     }
   ],
   "Carousel": [
