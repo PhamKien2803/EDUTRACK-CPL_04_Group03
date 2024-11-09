@@ -7,7 +7,8 @@
         "he171694",
         "he173077"
       ],
-      "Status": true
+      "Status": true,
+      "id": "2a9d"
     },
     {
       "ClassID": "c124",
@@ -16,7 +17,8 @@
         "he170155",
         "he170569"
       ],
-      "Status": true
+      "Status": true,
+      "id": "e048"
     }
   ],
   "AnswerQuestionExam": [
@@ -58,7 +60,7 @@
     {
       "id": "8",
       "content": "ccc",
-      "isCorrect": false
+      "isCorrect": true
     },
     {
       "id": "9",
@@ -90,7 +92,7 @@
       "exId": "1"
     },
     {
-      "id": "4",
+      "id": "3",
       "content": "Đây là ai",
       "answer": [
         "7",
@@ -106,14 +108,16 @@
       "examContent": "Test nhận diện  ",
       "courseSemesterID": "1",
       "timeLimit": "1500",
-      "status": true
+      "status": true,
+      "id": "f219"
     },
     {
       "examID": "2",
       "examContent": "Test nhận diện  ",
       "courseSemesterID": "1",
       "timeLimit": "1500",
-      "status": false
+      "status": false,
+      "id": "080d"
     }
   ],
   "UserAnswer": [
@@ -129,7 +133,7 @@
     {
       "id": "a12",
       "answer": [
-        "1"
+        "4"
       ],
       "QuestionID": "2",
       "UserID": "he173077"
@@ -137,26 +141,44 @@
     {
       "id": "a13",
       "answer": [
-        "1",
-        "2"
+        "7",
+        "8"
       ],
       "QuestionID": "3",
       "UserID": "he173077"
+    },
+    {
+      "id": "d1a9",
+      "answer": [],
+      "QuestionID": "1",
+      "UserID": "he171694"
+    },
+    {
+      "id": "6442",
+      "answer": [],
+      "QuestionID": "2",
+      "UserID": "he171694"
+    },
+    {
+      "id": "8caa",
+      "answer": [],
+      "QuestionID": "4",
+      "UserID": "he171694"
     }
   ],
   "Participants": [
     {
-      "id": "he173077",
       "UserName": "Do Dang Phuong",
       "Age": 21,
       "Gender": true,
       "Address": "Bac Giang",
-      "Email": "phuongddhe173077@fpt.edu.vn",
       "Password": "1223@",
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": true,
+      "Email": "phuongddhe173077@fpt.edu.vn",
+      "id": "he173077"
     },
     {
       "id": "he171694",
@@ -172,9 +194,8 @@
       "Status": true
     },
     {
-      "id": "he170569",
       "UserName": "Nguyễn Trung Nghĩa ",
-      "Age": 21,
+      "Age": 18,
       "Gender": true,
       "Address": "Ha Noi",
       "Email": "nghianthe170569@fpt.edu.vn",
@@ -182,7 +203,8 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": true,
+      "id": "he170569"
     },
     {
       "id": "he170155",
@@ -217,14 +239,16 @@
       "SemesterName": "SUMMER 24",
       "StartDate": "01/09/2024",
       "EndDate": "01/12/2024",
-      "Status": true
+      "Status": true,
+      "id": "79b9"
     },
     {
       "SemesterID": "fall24",
       "SemesterName": "FALL 24",
       "StartDate": "01/09/2024",
       "EndDate": "01/12/2024",
-      "Status": true
+      "Status": true,
+      "id": "98a0"
     }
   ],
   "CourseSemester": [
@@ -248,7 +272,19 @@
         "s22"
       ],
       "CourseID": "ENW492c",
-      "StudentID": "he173077",
+      "StudentID": "he170155",
+      "LecturersID": "lt12345",
+      "ClassID": "c123"
+    },
+    {
+      "id": "cs13",
+      "SemesterID": "fall24",
+      "SlotID": [
+        "s11",
+        "s12"
+      ],
+      "CourseID": "FER201",
+      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     }
@@ -269,7 +305,7 @@
     {
       "id": "s11",
       "SlotName": "slot 1",
-      "Description": "Course Introduction 1.1 Full Stack Web Development",
+      "Description": "Course Introduction\n\n1.1 Full Stack Web Development: The Big Picture\n\n1.2 React 18 Introduction\n\n1.3 Git\n- Setting up Git\n- Basic Git Commands\n- Setting up an Online Git repository\n\n1.4 Node.js and NPM\n- Setting up Node.js and NPM\n- Basics of Node.js and NPM",
       "TimeStart": "01/09/2024",
       "TimeEnd": "01/12/2024",
       "Status": true
@@ -305,23 +341,54 @@
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "TimeLimit": "1500",
       "Slotid": "s11",
-      "Status": 0
+      "Status": 0,
+      "id": "36f2"
     },
     {
       "QuestionID": "q112",
       "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
       "TimeLimit": "1500",
       "Slotid": "s12",
-      "Status": 0
+      "Status": 0,
+      "id": "008d"
     }
   ],
   "AnswerQuestionSlot": [
     {
-      "id": "aq1",
-      "comment": " một thư viện JavaScript mã nguồn mở, được dùng để xây dựng giao diện người dùng (frontend) cho web.",
+      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !",
       "QuestionID": "q111",
       "UserID": "he173077",
-      "rating": 5
+      "Replies": [
+        "0330"
+      ],
+      "Rating": 3,
+      "Timestamped": "2024-11-07T16:06:55.253Z",
+      "id": "3d1d"
+    },
+    {
+      "comment": " (Java web, ASP.NET, PHP, ...)",
+      "QuestionID": "q111",
+      "UserID": "he170155",
+      "Replies": [],
+      "Rating": 2.5,
+      "Timestamped": "2024-11-07T18:35:48.707Z",
+      "id": "9ace"
+    }
+  ],
+  "Replies": [
+    {
+      "ReplyContent": "123",
+      "UserID": "he173077",
+      "answerID": "3d1d",
+      "Timestamped": "2024-11-07T18:13:39.201Z",
+      "id": "0330"
+    },
+    {
+      "id": "63ed",
+      "ReplyContent": "ok",
+      "UserID": "he170155",
+      "answerID": "9ace",
+      "Timestamped": "2024-11-07T18:35:54.680Z"
     }
   ],
   "Carousel": [

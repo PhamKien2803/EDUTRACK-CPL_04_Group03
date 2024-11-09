@@ -1,7 +1,12 @@
-import axios from "../utils/axiosCustomiz";
+import { UserAnswer, answerQuestionSlot, replies } from "../models/Interface"
+import axios from "../utils/axiosCustomiz"
+
 
 const getDataExam = () => {
   return axios.get("QuestionExam");
+};
+ export const getQuestionByExID = (exId: any) => {
+  return axios.get(`QuestionExam?exId=${exId}`);
 };
 
 const getAnswerForQuestionExam = () => {
@@ -10,6 +15,10 @@ const getAnswerForQuestionExam = () => {
 
 const getExamList = () => {
   return axios.get("Examination");
+};
+
+export const getExamByID = (id: any) => {
+  return axios.get(`Examination?examID=${id}`);
 };
 
 const getSLot = () => {
@@ -68,6 +77,10 @@ const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
 }
 
+const getRepliesContent = () => {
+  return axios.get(`Replies`);
+}
+
 const getClass = () => {
   return axios.get("Class");
 };
@@ -79,6 +92,110 @@ const getCourseSemesterByUserId = (useId: string) => {
 const getSemester = () => {
   return axios.get("Semester");
 };
+
+
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+) => {
+  return axios.put(`Participants/${id}`, {
+    UserName: name,
+    Age: age,
+    Gender: gender,
+    Address: address,
+    Password: password,
+    Image: image,
+    rating: rating,
+    Role: role,
+    isOnline: isOnline,
+    Status: status,
+    Email: email,
+
+  })
+}
+
+const postAnswer = (ua: UserAnswer) => {
+  return axios.post('UserAnswer', {
+    answer: ua.answer,
+    QuestionID: ua.QuestionID,
+    UserID: ua.UserID
+  })
+}
+
+export const getAnswerByUserId = (id: any) => {
+  return axios.get(`UserAnswer?UserID=${id}`);
+
+}
+
+const postComment = (user: answerQuestionSlot) => {
+  return axios.post("AnswerQuestionSlot", {
+    comment: user?.comment,
+    QuestionID: user?.QuestionID,
+    UserID: user?.UserID,
+    Rating: user?.Rating,
+    Replies: user?.Replies,
+    Timestamped: new Date().toISOString()
+  });
+};
+
+// Updating a comment
+export const updateComment = (comment: answerQuestionSlot) => {
+  return axios.put(`AnswerQuestionSlot/${comment.id}`, {
+    comment: comment?.comment,
+    QuestionID: comment?.QuestionID,
+    UserID: comment?.UserID,
+    Replies: comment?.Replies,
+    Rating: comment?.Rating,
+    Timestamped: new Date().toISOString()
+  });
+};
+
+// Deleting a comment along with its replies
+export const deleteComment = (id: string) => {
+  return axios.delete(`AnswerQuestionSlot/${id}`);
+};
+
+
+export const postReply = async (answerID: string, replyContent: string, userID: string, timestamp: string) => {
+  try {
+    const response = await axios.post(`Replies`, {
+      ReplyContent: replyContent,
+      UserID: userID,
+      answerID: answerID,
+      Timestamped: timestamp
+
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error posting reply:", error);
+    throw error;
+  }
+};
+
+export const updateReply = async (replies: replies) => {
+  return axios.put(`Replies/${replies?.id}`, {
+    ReplyContent: replies?.ReplyContent,
+    UserID: replies?.UserID,
+    answerID: replies?.answerID,
+    Timestamped: new Date().toISOString()
+  });
+}
+
+
+export const deleteReply = async (replies: replies) => {
+  return axios.delete(`Replies/${replies.id}`);
+}
+
+export const updateRating = (rating: answerQuestionSlot) => {
+  return axios.put(`AnswerQuestionSlot/${rating.id}`, {
+    comment: rating?.comment,
+    QuestionID: rating?.QuestionID,
+    UserID: rating?.UserID,
+    Replies: rating?.Replies,
+    Rating: rating?.Rating,
+    Timestamped: new Date().toISOString()
+  });
+};
+
 
 export {
   getDataExam,
@@ -96,9 +213,14 @@ export {
   getQuestionSlotBySlotId,
   getCourseSemesterByUserId,
   getSemester,
+  postAnswer,
   getCourse,
   getAnswerQuestionSlotByQuestionId,
   getAnswerQuestionSlot,
   getQuestionSlotById,
   getCommentByQuestionId,
+  updateProfile,
+  getRepliesContent,
+  postComment,
+
 };

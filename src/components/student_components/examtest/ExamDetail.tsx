@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Typography, LinearProgress } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getAnswerForQuestionExam, getDataExam, getExamList } from '../../../service/ApiService';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getAnswerForQuestionExam, getDataExam, getExamList, postAnswer } from '../../../service/ApiService';
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
 
@@ -30,6 +30,7 @@ export const ExamDetail = () => {
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
+    const nav = useNavigate()
 
     const [dataExam, setDataExam] = useState<Data[]>([]);
     const [exam, setExam] = useState<Exam | null>(null);
@@ -111,6 +112,32 @@ export const ExamDetail = () => {
         });
     }, []);
 
+    const handleFinish = async () => {
+        if (dataExam) {
+            for (const ques of dataExam) {
+                const answer = {
+                    id: '1',
+                    answer: ques.answer.filter(item => item.isSelected).map(item => item.id),
+                    QuestionID: ques.id,
+                    UserID: 'he171694'
+                };
+                try {
+                    const req = await postAnswer(answer);
+                    if (req) {
+                        alert('Finish Exam');
+                        setTimeout(() => {
+                            nav('/exam-test');
+                        }, 0);
+                    }
+                } catch (error) {
+                    console.error("Error posting answer:", error);
+                }
+            }
+        } else {
+            console.log('abc');
+        }
+    };
+
     return (
         <Box className="exam-container" sx={{ padding: 3 }}>
             <Typography variant="h4" component="div" sx={{ mb: 2, fontWeight: 'bold' }}>
@@ -172,7 +199,7 @@ export const ExamDetail = () => {
                 {/* Right Content (Question Navigation and Timer) */}
                 <Box className="right-content" sx={{ width: { xs: '100%', md: '30%' }, mt: { xs: 2, md: 0 } }}>
                     {exam ? (
-                        <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} />
+                        <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} handleFinish={handleFinish} />
                     ) : null}
                 </Box>
             </Box>

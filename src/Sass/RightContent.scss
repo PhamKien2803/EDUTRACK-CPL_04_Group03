@@ -5,12 +5,14 @@
     padding-bottom: 20px;
 }
 .main-question{
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: 20px;
-    .question{
+   
+    .q-idndex{ 
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-top: 20px;
+      .question{
         border: 1px solid black;
         border-radius: 50%;
         width: 40px;
@@ -25,5 +27,12 @@
         &.selected{
             background-color: grey;
         }
+    }  
     }
+    .btn{
+        display: flex;
+        justify-content: center;
+        margin-top: 400px;
+    }
+    
 }
