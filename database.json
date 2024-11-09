@@ -350,19 +350,57 @@
   "QuestionSLot": [
     {
       "QuestionID": "q111",
+      "UserID":"lt12345",
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "TimeLimit": "1500",
       "Slotid": "s11",
-      "Status": 0,
-      "id": "36f2"
+      "Status": 0
     },
     {
       "QuestionID": "q112",
+      "UserID":"lt12345",
+      "content": "Đặt môi trường gì trên Hệ điều hành?",
+      "TimeLimit": "1500",
+      "Slotid": "s11",
+      "Status": 0
+    },
+    {
+      "QuestionID": "q113",
+      "UserID":"lt12345",
+      "content": "NextJS là gì? Ưu điểm của ứng dụng NextJS so với các công nghệ web truyền thống",
+      "TimeLimit": "1500",
+      "Slotid": "s11",
+      "Status": 0
+    },
+    {
+      "QuestionID": "q112",
+      "UserID":"lt12345",
       "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
       "TimeLimit": "1500",
       "Slotid": "s12",
-      "Status": 0,
-      "id": "008d"
+      "Status": 0
+    }
+  ],
+  "AssignmentSlot": [
+    {
+      "AssignmentID": "a111",
+      "UserID":"lt12345",
+      "title": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
+      "description": "Assignment 1",
+      "urlfile": "https://www.w3schools.com/",
+      "TimeLimit": "1500",
+      "Slotid": "s11",
+      "Status": 0
+    }
+  ],
+  "AnswerAssignmentSlot": [
+    {
+      "id": "1",
+      "AssignmentID": "a111",
+      "UserID": "he173077",
+      "urlfile": "https://www.w3schools.com/",
+      "Timestamped": "2024-11-08T09:21:14.774Z",
+      "Status": 0
     }
   ],
   "AnswerQuestionSlot": [
