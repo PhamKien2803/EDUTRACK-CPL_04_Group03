@@ -11,6 +11,7 @@ function DicussionPage() {
     const slotID = searchParams.get('slotID');  
     const questionID = searchParams.get('id');  
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
+    console.log(questionSlot);
     const [slots, setSlots] = useState<Slot[]>([]);
     const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
     useEffect(() => {

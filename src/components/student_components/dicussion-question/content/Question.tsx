@@ -18,18 +18,12 @@ const Question: React.FC<Props> = ({ questionSlot }) => {
 
   const filteredQuestions = questionSlot.filter(qs => qs.Slotid === slotID && qs.QuestionID === questionID);
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-  };
-
   return (
     <div style={{ marginTop: "3rem" }}>
       <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
       {filteredQuestions.length ? (
         filteredQuestions.map((question, index) => (
-          <QuestionCard key={index} question={question} formatTime={formatTime} />
+          <QuestionCard key={index} question={question} />
         ))
       ) : (
         <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
@@ -42,34 +36,50 @@ const Question: React.FC<Props> = ({ questionSlot }) => {
 
 interface QuestionCardProps {
   question: questionSlot;
-  formatTime: (seconds: number) => string;
 }
 
-const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => {
-  const [timeRemaining, setTimeRemaining] = useState<number>(parseInt(question.TimeLimit?.toString() ?? '0', 10));
-  const [isTimeOver, setIsTimeOver] = useState<boolean>(false);
+const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+
+  const parseTimeToSeconds = (timeString: string): number => {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    // F5 web , call lại LocalStorage
+    const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
+    const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
+
+    if (initialTimeRemaining !== null) {
+      setTimeRemaining(initialTimeRemaining);
+    } else {
+      const startSeconds = parseTimeToSeconds(question.TimeStart);
+      const endSeconds = parseTimeToSeconds(question.TimeEnd);
+      const initialTimeRemaining = endSeconds - startSeconds;
+      setTimeRemaining(initialTimeRemaining);
+    }
+
+    const timerInterval = setInterval(() => {
       setTimeRemaining((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          setIsTimeOver(true);
+        if (prevTime === null || prevTime <= 1) {
+          clearInterval(timerInterval);
+          localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
           return 0;
         }
+
+        localStorage.setItem(`timeRemaining_${question.QuestionID}`, (prevTime - 1).toString());
         return prevTime - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(timerInterval);
+  }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
 
-  const renderTime = () => {
-    if (isTimeOver) {
-      return <span style={{ color: 'red' }}>Discussion time is over</span>;
-    } else {
-      return formatTime(timeRemaining);
-    }
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
 
   return (
@@ -94,12 +104,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => 
           <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
             Content
           </Typography>
-          <Typography variant="h6" component="div" style={{ color: '#3a3a3a', fontWeight: 'bold' }}>
-            {renderTime()}
+          <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
+            {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
           </Typography>
         </Box>
         <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />
-        <Typography variant="body2" style={{ color: "#555", fontSize: "14px" }}>
+
+        <Typography variant="body2" style={{ color: "#555", fontSize: "14px", marginBottom: "8px" }}>
           {question.content}
         </Typography>
       </CardContent>
