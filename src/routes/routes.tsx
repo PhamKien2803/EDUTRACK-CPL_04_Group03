@@ -93,6 +93,7 @@ const routesStudentHome: Router[] = [
 
 const routesLecturersHome: Router[] = [
     {
+        name: "lecturers_home",
         key: "homepage_lecturer",
         path: "/lecturer/homePage",
         component: LecturersHomePage
