@@ -57,11 +57,11 @@ function DicussionPage() {
         <div>
             <div style={{ width: '98%' }} className='container-fluid'>
                 <div className='row'>
-                    <div className='col-8'>
+                    <div className='col-7'>
                         <Question questionSlot={questionSlot} slots={slots} questionID={questionID} setSlots={setSlots} selectedSlot={selectedSlot} />
                         <NavTabs />
                     </div>
-                    <div className='col-4'>
+                    <div className='col-5'>
                         <ProgressTracker />
                     </div>
                 </div>
