@@ -5,10 +5,11 @@ import Replies from './Replies';
 import Swal from 'sweetalert2';
 import { replies as Reply, answerQuestionSlot, participants } from '../../../../models/Interface';
 import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
+import { useSelector } from 'react-redux';
 
 interface Props {
-  userIds?: string;
-  username?: string;
+  userIds: string;  // Logged-in user's ID
+  username: string;  // Logged-in user's username
   text?: string;
   time?: string;
   rating?: number;
@@ -30,16 +31,15 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
+const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
   const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
-
-  console.log(userIds)
-
+  const loggedInUserId = useSelector((state: any) => state.account.account.UserID);
+  console.log(loggedInUserId)
   useEffect(() => {
     if (answerId) {
       fetchReplies(answerId);
@@ -81,12 +81,15 @@ const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId
   const handleReplySubmit = async () => {
     if (replyText.trim() && answerId) {
       try {
-        const userId = userIds || "defaultUserId";
         const currentTimestamp = new Date().toISOString();
-        await postReply(answerId, replyText, userId, currentTimestamp);
+
+        // Post reply with the logged-in user's ID and username
+        await postReply(answerId, replyText, loggedInUserId, currentTimestamp);
+
+        // Clear the reply text and collapse the reply input box
         setReplyText('');
         setReplying(false);
-        fetchReplies(answerId);
+        fetchReplies(answerId);  // Refresh the replies list to include the new reply
       } catch (error) {
         console.error("Error posting reply:", error);
       }
@@ -123,7 +126,13 @@ const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId
   const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
     if (answerId) {
       try {
-        await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
+        await updateReply({
+          id: replyId,
+          ReplyContent: newContent,
+          UserID: userId,
+          answerID: answerId,
+          Timestamped: new Date().toISOString(),
+        } as Reply);
         fetchReplies(answerId);
       } catch (error) {
         console.error("Error updating reply:", error);
@@ -134,7 +143,6 @@ const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId
   const handleRatingChange = async (newValue: number | null) => {
     setCurrentRating(newValue);
 
-    // Giữ nguyên tất cả dữ liệu và chỉ cập nhật Rating
     if (answerId) {
       const updatedRatingData: answerQuestionSlot = {
         id: answerId, 
@@ -147,7 +155,7 @@ const Comment: React.FC<Props> = ({userIds, username, text, rating = 0, answerId
       };
 
       try {
-        await updateRating(updatedRatingData);  // Cập nhật chỉ Rating
+        await updateRating(updatedRatingData);
       } catch (error) {
         console.error("Error updating rating:", error);
       }

@@ -1,8 +1,7 @@
-// components/Profile.tsx
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getParticipants } from "../../../service/ApiService";
-import { Box, Typography, Avatar, Button } from "@mui/material";
+import { Box, Typography, Avatar, Button, Card, CardContent, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface Participant {
@@ -22,6 +21,7 @@ const Profile: React.FC = () => {
   const [profile, setProfile] = useState<Participant | null>(null);
   const user = useSelector((state: any) => state.account.account); // Lấy `id` người dùng từ Redux
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchUser();
   }, [user.UserID]);
@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
     }
   };
 
-  if (!profile) return <p>Loading...</p>;
+  if (!profile) return <Typography variant="h6" color="textSecondary">Loading...</Typography>;
 
   return (
     <Box
@@ -42,87 +42,88 @@ const Profile: React.FC = () => {
       flexDirection="column"
       alignItems="center"
       p={3}
-      bgcolor="#f5f5f5"
-      borderRadius="8px"
-      boxShadow="0px 4px 12px rgba(0, 0, 0, 0.15)"
-      maxWidth="500px"
+      bgcolor="#f0f4f7"
+      borderRadius="12px"
+      boxShadow="0px 8px 24px rgba(0, 0, 0, 0.1)"
+      maxWidth="600px"
       mx="auto"
-      margin="20px auto"
+      mt={4}
     >
+      {/* Avatar */}
       <Avatar
         src={profile.Image || "/default-avatar.png"}
         sx={{
-          width: 130,
-          height: 130,
+          width: 140,
+          height: 140,
           mb: 3,
-          border: "3px solid #4CAF50",
+          border: "4px solid #4CAF50",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
         }}
       />
+
+      {/* Username */}
       <Typography variant="h5" fontWeight="bold" color="#333" mb={1}>
         {profile.UserName}
       </Typography>
-      
-      {/* Profile Information Sections */}
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        gap={2}
-        mt={3}
-      >
-        <Box p={2} bgcolor="#ffffff" borderRadius="8px" boxShadow="0px 2px 8px rgba(0, 0, 0, 0.1)">
-          <Typography color="textSecondary" variant="subtitle2">
-            Student ID:
-          </Typography>
-          <Typography fontWeight="bold" color="#333">
-            {profile.id}
-          </Typography>
-        </Box>
-        {/* Email */}
-        <Box p={2} bgcolor="#ffffff" borderRadius="8px" boxShadow="0px 2px 8px rgba(0, 0, 0, 0.1)">
-          <Typography color="textSecondary" variant="subtitle2">
-            Email:
-          </Typography>
-          <Typography fontWeight="bold" color="#333">
-            {profile.Email}
-          </Typography>
-        </Box>
 
-        {/* Age */}
-        <Box p={2} bgcolor="#ffffff" borderRadius="8px" boxShadow="0px 2px 8px rgba(0, 0, 0, 0.1)">
-          <Typography color="textSecondary" variant="subtitle2">
-            Age:
+      {/* Profile Card */}
+      <Card sx={{ width: "100%", mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" color="textSecondary" gutterBottom>
+            Profile Details
           </Typography>
-          <Typography fontWeight="bold" color="#333">
-            {profile.Age}
-          </Typography>
-        </Box>
+          
+          <Divider sx={{ mb: 2 }} />
 
-        {/* Address */}
-        <Box p={2} bgcolor="#ffffff" borderRadius="8px" boxShadow="0px 2px 8px rgba(0, 0, 0, 0.1)">
-          <Typography color="textSecondary" variant="subtitle2">
-            Address:
-          </Typography>
-          <Typography fontWeight="bold" color="#333">
-            {profile.Address}
-          </Typography>
-        </Box>
+          {/* Student ID */}
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography color="textSecondary">Student ID:</Typography>
+            <Typography fontWeight="bold">{profile.id}</Typography>
+          </Box>
 
-        {/* Gender */}
-        <Box p={2} bgcolor="#ffffff" borderRadius="8px" boxShadow="0px 2px 8px rgba(0, 0, 0, 0.1)">
-          <Typography color="textSecondary" variant="subtitle2">
-            Gender:
-          </Typography>
-          <Typography fontWeight="bold" color="#333">
-            {profile.Gender ? "Male" : "Female"}
-          </Typography>
-        </Box>
-      </Box>
+          {/* Email */}
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography color="textSecondary">Email:</Typography>
+            <Typography fontWeight="bold">{profile.Email}</Typography>
+          </Box>
+
+          {/* Age */}
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography color="textSecondary">Age:</Typography>
+            <Typography fontWeight="bold">{profile.Age}</Typography>
+          </Box>
+
+          {/* Address */}
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography color="textSecondary">Address:</Typography>
+            <Typography fontWeight="bold">{profile.Address}</Typography>
+          </Box>
+
+          {/* Gender */}
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <Typography color="textSecondary">Gender:</Typography>
+            <Typography fontWeight="bold">{profile.Gender ? "Male" : "Female"}</Typography>
+          </Box>
+        </CardContent>
+      </Card>
+
+      {/* Update Button */}
       <Button
         variant="contained"
         color="primary"
         onClick={() => navigate("/edit-profile")}
-        sx={{ mt: 2 }}
+        sx={{
+          width: "100%",
+          padding: "10px",
+          fontSize: "16px",
+          mt: 2,
+          borderRadius: "8px",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          "&:hover": {
+            backgroundColor: "#388E3C",
+            boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.15)",
+          },
+        }}
       >
         Update Profile
       </Button>

@@ -114,7 +114,7 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
-  }, [userid.UserID]);
+  }, [userid]);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
