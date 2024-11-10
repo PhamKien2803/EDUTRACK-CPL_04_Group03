@@ -1,0 +1,114 @@
+/* Container */
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.dashboard-header .options {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Main Title */
+.dashboard-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #003366;
+}
+
+.course-code {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Slots */
+.slot-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.slot-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #003366;
+    padding: 10px 0;
+}
+
+.slot-details {
+    padding: 0 10px;
+}
+
+.slot-item {
+    font-size: 14px;
+    color: #333;
+    padding: 5px 0;
+}
+
+/* Button for View Detail */
+.view-detail-btn {
+    color: #007bff;
+    font-size: 14px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+/* Class Info Card */
+.class-info-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 14px;
+}
+
+.class-info-card .class-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 10px;
+}
+
+.class-info-card .class-details {
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Lecturers List */
+.lecturers {
+    margin-top: 20px;
+}
+
+.lecturer-item {
+    color: #333;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* Update Button */
+.update-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background-color: #0056b3;
+}
