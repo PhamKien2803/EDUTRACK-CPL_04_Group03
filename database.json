@@ -355,7 +355,7 @@
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 0
+      "Status": 1
     },
     {
       "QuestionID": "q112",
@@ -395,7 +395,7 @@
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 0
+      "Status": 1
     }
   ],
   "AnswerAssignmentSlot": [
