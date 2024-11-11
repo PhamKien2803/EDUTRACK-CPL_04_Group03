@@ -14,6 +14,7 @@ import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDi
 import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
 import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
+import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
 
 
 interface Router {
@@ -129,7 +130,16 @@ const routesLecturersHome: Router[] = [
         key: "SessionAssignment",
         path: "/lecturer/session-assignment",
         component: SessionAssignment
+    },
+
+    {
+
+        name: "lession",
+        key: "LessionPage",
+        path: "/lecturer/lession-course",
+        component: Lession_Lecturers
     }
+        
 ];
 
 const routesStaffHome: Router[] = [
