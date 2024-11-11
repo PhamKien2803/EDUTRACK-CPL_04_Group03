@@ -13,6 +13,7 @@ import StudentHome from "../page/home-page/student-home/StudentHome";
 import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
 import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
 import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
+import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 
 
 interface Router {
@@ -63,6 +64,13 @@ const routesStudentHome: Router[] = [
         key: "DicussionPage",
         path: "/dicussion-page/question",
         component: DicussionPage
+    },
+
+    {
+        name: "DicussionAssignment",
+        key: "DicussionAssignment",
+        path: "/dicussion-page/assignment",
+        component: DicussionAssignment
     },
 
     {
