@@ -37,8 +37,8 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
         navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionid}`);
     };
 
-    const handleClickToAssignment = () => {
-        navigate(`/dicussion-page/assignment`);
+    const handleClickToAssignment = (assignmentid: string, slotId: string) => {
+        navigate(`/dicussion-page/assignment?slotID=${slotId}&assignmentid=${assignmentid}`);
     };
 
     const toggleVisibility = (slotId: string) => {
@@ -163,7 +163,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                 {assignmentSlot?.filter((as) => as?.Slotid === sl)?.map((as, index) => (
                                     <ListItem
                                         key={`as-${index}`}
-                                        onClick={() => handleClickToAssignment()}
+                                        onClick={() => handleClickToAssignment(as?.AssignmentID, sl)}
                                         component="li"
                                         sx={{
                                             display: 'flex',

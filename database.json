@@ -391,10 +391,22 @@
       "UserID": "he170569",
       "title": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "description": "Assignment 1",
-      "urlfile": "https://www.w3schools.com/",
+      "urlfile": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
+      "Status": 1
+    },
+
+    {
+      "AssignmentID": "a112",
+      "UserID": "he170569",
+      "title": "Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
+      "description": "Assignment 2",
+      "urlfile": "https://www.w3schools.com/",
+      "TimeStart": "13:00:00",
+      "TimeEnd": "14:00:00",
+      "Slotid": "s12",
       "Status": 1
     }
   ],

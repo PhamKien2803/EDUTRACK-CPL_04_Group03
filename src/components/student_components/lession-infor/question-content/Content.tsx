@@ -22,9 +22,9 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
 
     };
 
-    const handleClickToAssignment = () => {
-        navigate(`/dicussion-page/assignment`);
-    }
+    const handleClickToAssignment = (assignmentid: string, slotId: string) => {
+        navigate(`/dicussion-page/assignment?slotID=${slotId}&assignmentid=${assignmentid}`);
+    };
 
     return (
         <Container sx={{ padding: "10px 10px" }}>
@@ -69,7 +69,7 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
             {filteredAssignments.map((asm, index) => (
                 <Box
                     key={asm.AssignmentID}
-                    onClick={() => handleClickToAssignment()}
+                    onClick={() => handleClickToAssignment(asm?.AssignmentID, asm?.Slotid)}
                     sx={{
                         display: "flex",
                         alignItems: "center",

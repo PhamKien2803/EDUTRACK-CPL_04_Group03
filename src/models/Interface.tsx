@@ -77,7 +77,7 @@ export interface assignmentSlot {
     UserID: string,
     title: string,
     description: string,
-    urlfile: string,
+    urlfile: string[],
     TimeStart: string,
     TimeEnd: string,
     Slotid: string,

@@ -200,6 +200,10 @@ export const getAssignmentSlot = () => {
   return axios.get("AssignmentSlot");
 }
 
+export const getAssignmentSlotById = (id: string) => {
+  return axios.get(`AssignmentSlot/${id}`);
+}
+
 
 export {
   getDataExam,
