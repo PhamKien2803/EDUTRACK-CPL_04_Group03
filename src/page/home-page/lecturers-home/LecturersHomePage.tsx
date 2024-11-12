@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import {
@@ -22,7 +22,6 @@ import {
   getCourseSemesterByLecturersID,
   getSemester,
 } from "../../../service/ApiService";
-import { useEffect } from "react";
 
 interface CourseSemester {
   id: string;
@@ -78,7 +77,7 @@ function LecturersHomePage() {
     }
   };
 
-  console.log(data);
+  // console.log(data);
 
   const fetchDataSemester = async () => {
     const res = await getSemester();
@@ -98,7 +97,13 @@ function LecturersHomePage() {
     }
   };
 
-  console.log(dataCourse);
+  // console.log(dataCourse);
+  console.log(dataSemester);
+
+  // Lọc các Course duy nhất theo CourseID
+  const uniqueCourses = Array.from(
+    new Map(data.map((item) => [item.CourseID, item])).values()
+  );
 
   return (
     <div>
@@ -119,14 +124,22 @@ function LecturersHomePage() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Semester"
+              label="year"
               sx={{ width: "100%", maxWidth: "200px", marginBottom: "30px" }}
-              defaultValue="fall2024"
+              value={semesterId}
+              onChange={(e) => setSemesterId(e.target.value)}
             >
-              <MenuItem value="fall2024">Fall 2024</MenuItem>
-              <MenuItem value="summer2024">Summer 2024</MenuItem>
-              <MenuItem value="fall2023">Fall 2023</MenuItem>
-              <MenuItem value="summer2023">Summer 2023</MenuItem>
+              {dataSemester
+                ?.slice()
+                .reverse()
+                .map((item) => (
+                  <MenuItem
+                    key={`se-${item.SemesterID}`}
+                    value={item.SemesterID}
+                  >
+                    {item.SemesterName}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Box>
@@ -148,7 +161,7 @@ function LecturersHomePage() {
           }}
         />
         <Grid container spacing={2} justifyContent="center">
-          {data.map((course) => (
+          {uniqueCourses.map((course) => (
             <Grid item xs={12} sm={6} md={3} key={course.id} sx={{ p: 1.5 }}>
               <Card
                 sx={{
@@ -210,7 +223,9 @@ function LecturersHomePage() {
                   >
                     {course.CourseID}
                   </Typography>
-                  <Link to={`/lession-course?subjectId=${course.id}`}>
+                  <Link
+                    to={`/lecturer/lession-course?CourseID=${course.CourseID}&semesterId=${semesterId}`}
+                  >
                     <Typography
                       variant="body1"
                       sx={{
