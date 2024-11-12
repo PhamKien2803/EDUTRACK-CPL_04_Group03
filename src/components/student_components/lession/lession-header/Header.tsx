@@ -87,7 +87,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
       <Collapse in={isVisible}>
         <Box display="flex" alignItems="center" gap={2} mb={2}>
           {/* Activity Filter Select */}
-          <Select
+          {/* <Select
             value={activityFilter}
             onChange={handleSelectChange}
             variant="outlined"
@@ -102,7 +102,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
             <MenuItem value="Completed">Completed</MenuItem>
             <MenuItem value="Not Started">Not Started</MenuItem>
             <MenuItem value="Assignment or Feedback">Assignment or Feedback</MenuItem>
-          </Select>
+          </Select> */}
 
           {/* Slot Select with SlotName */}
           <Select

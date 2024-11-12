@@ -64,14 +64,14 @@ function LessionInfor() {
         <div className="container">
             {slots.length > 0 ? (
                 <div className="row">
-                    <div style={{ padding: "0px" }} className="col-9">
+                    <div style={{ padding: "0px" }} className="col-8">
                         <CourseOutline
                             slots={slots}
                             selectedSlot={selectedSlot}
                         />
                         <NavTabsSession />
                     </div>
-                    <div className="col-3">
+                    <div className="col-4">
                         <TrackingOnline />
                     </div>
                 </div>

@@ -10,6 +10,10 @@ import DicussionPage from "../page/home-page/student-home/DicussionPage";
 import Lession from "../page/home-page/student-home/Lession";
 import LessionInfor from "../page/home-page/student-home/LessionInfor";
 import StudentHome from "../page/home-page/student-home/StudentHome";
+import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
+import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
+import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
+import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 
 
 interface Router {
@@ -63,6 +67,13 @@ const routesStudentHome: Router[] = [
     },
 
     {
+        name: "DicussionAssignment",
+        key: "DicussionAssignment",
+        path: "/dicussion-page/assignment",
+        component: DicussionAssignment
+    },
+
+    {
         name: "History",
         key: "History",
         path: "/history",
@@ -93,9 +104,31 @@ const routesStudentHome: Router[] = [
 
 const routesLecturersHome: Router[] = [
     {
+        name: "lecturers_home",
         key: "homepage_lecturer",
         path: "/lecturer/homePage",
         component: LecturersHomePage
+    },
+
+    {
+        name: "SessionDetails",
+        key: "SessionDetails",
+        path: "/lecturer/session-details",
+        component: SessionDetails
+    },
+
+    {
+        name: "SessionDicussion",
+        key: "SessionDicussion",
+        path: "/lecturer/session-dicussion",
+        component: SessionDicussion
+    },
+
+    {
+        name: "SessionAssignment",
+        key: "SessionAssignment",
+        path: "/lecturer/session-assignment",
+        component: SessionAssignment
     }
 ];
 
@@ -108,6 +141,5 @@ const routesStaffHome: Router[] = [
 ];
 
 
-const routes: Router[] = [...routesStudentHome, ...routesLecturersHome, ...routesStaffHome];
 
-export { routes };
+export { routesStudentHome, routesLecturersHome, routesStaffHome };

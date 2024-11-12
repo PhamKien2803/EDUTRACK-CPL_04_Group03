@@ -11,6 +11,7 @@ function DicussionPage() {
     const slotID = searchParams.get('slotID');  
     const questionID = searchParams.get('id');  
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
+    console.log(questionSlot);
     const [slots, setSlots] = useState<Slot[]>([]);
     const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
     useEffect(() => {
@@ -57,11 +58,11 @@ function DicussionPage() {
         <div>
             <div style={{ width: '98%' }} className='container-fluid'>
                 <div className='row'>
-                    <div className='col-8'>
+                    <div className='col-7'>
                         <Question questionSlot={questionSlot} slots={slots} questionID={questionID} setSlots={setSlots} selectedSlot={selectedSlot} />
                         <NavTabs />
                     </div>
-                    <div className='col-4'>
+                    <div className='col-5'>
                         <ProgressTracker />
                     </div>
                 </div>

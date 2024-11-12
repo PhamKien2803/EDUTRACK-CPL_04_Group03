@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Box,
@@ -20,13 +20,16 @@ interface Props {
     lession: Lession;
     slot: Slot[];
     questionSlot: QuestionSlot[];
+    slotSelected: string;
 }
 
-const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
+const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 2;
     const navigate = useNavigate();
+
+    const slotRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     const handleClicktoDiscussion = (questionid: string, slotId: string) => {
         navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionid}`);
@@ -48,6 +51,20 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
         currentPage * itemsPerPage
     );
 
+    useEffect(() => {
+        // Scroll to the selected slot when slotSelected changes
+        if (slotSelected && slotRefs.current[slotSelected]) {
+            slotRefs.current[slotSelected]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+            setVisibleSlots((prev) => ({
+                ...prev,
+                [slotSelected]: true, // Expand the selected slot if needed
+            }));
+        }
+    }, [slotSelected]);
+
     return (
         <Box>
             {paginatedSlots.map((sl, index) => {
@@ -62,11 +79,10 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot }) => {
                         borderRadius={2}
                         borderColor="grey.300"
                         boxShadow={2}
+                        ref={(el) => (slotRefs.current[sl] = el)} // Set the ref for each slot
                         onClick={() => toggleVisibility(sl)}
                     >
-                        <Box bgcolor="grey.100"
-                            borderRadius="8px"
-                            p={2}>
+                        <Box bgcolor="grey.100" borderRadius="8px" p={2}>
                             {/* Slot Header */}
                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Typography variant="h6" component="div" bgcolor={"lightpink"} borderRadius={2} p={0.5}>

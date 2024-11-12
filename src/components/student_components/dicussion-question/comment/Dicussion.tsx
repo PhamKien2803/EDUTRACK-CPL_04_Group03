@@ -10,6 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import SaveIcon from '@mui/icons-material/Save';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Swal from "sweetalert2";
 import Comment from "./Comment";
@@ -22,8 +23,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Discussion: React.FC = () => {
-  const userid = useSelector((state: any) => state.account.account.UserID);
-  console.log(userid);
+  const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
   const [searchParams] = useSearchParams();
   const questionID = searchParams.get("questionid");
   const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
@@ -39,7 +39,6 @@ const Discussion: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Kiểm tra nội dung bình luận trống
     if (!text.trim()) {
       Swal.fire({
         icon: "question",
@@ -50,7 +49,6 @@ const Discussion: React.FC = () => {
       return;
     }
 
-    // Kiểm tra giới hạn ký tự
     if (text.length > 800) {
       toast.error("Comment cannot exceed 800 characters.");
       return;
@@ -58,7 +56,6 @@ const Discussion: React.FC = () => {
     const currentTimestamp = new Date().toISOString();
 
     if (editingCommentId) {
-      // Cập nhật bình luận
       const updatedComment = {
         ...answerQuestionSlots.find((comment) => comment.id === editingCommentId),
         comment: text,
@@ -91,7 +88,7 @@ const Discussion: React.FC = () => {
         UserID: userid,
         Rating: 0,
         Replies: [],
-        Timestamped: currentTimestamp, 
+        Timestamped: currentTimestamp,
       };
 
       try {
@@ -110,11 +107,10 @@ const Discussion: React.FC = () => {
     }
   };
 
-
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
-  }, [userid.UserID]);
+  }, [userid]);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
@@ -200,19 +196,22 @@ const Discussion: React.FC = () => {
         sx={{
           maxWidth: "750px",
           margin: "20px auto",
-          padding: "25px",
+          padding: "30px",
           border: "1px solid #e0e0e0",
-          borderRadius: "16px",
+          borderRadius: "12px",
           backgroundColor: "#ffffff",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         }}
       >
+        <Typography variant="h6" sx={{ marginBottom: "12px", fontWeight: "600" }}>
+          Add a Comment
+        </Typography>
         <TextField
           value={text}
           onChange={handleTextChange}
-          placeholder="Type your answer here..."
+          placeholder="Type your comment here..."
           multiline
-          rows={3}
+          rows={4}
           fullWidth
           variant="outlined"
           sx={{
@@ -232,7 +231,7 @@ const Discussion: React.FC = () => {
             },
           }}
         />
-        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
           {editingCommentId ? (
             <>
               <Button
@@ -241,21 +240,17 @@ const Discussion: React.FC = () => {
                   fontWeight: "bold",
                   color: "#757575",
                   textTransform: "none",
+                  "&:hover": { color: "#3f51b5" },
                 }}
               >
                 Cancel
               </Button>
               <Button
-                variant="contained"
                 onClick={handleSubmit}
-                sx={{
-                  padding: "10px 20px",
-                  fontWeight: "bold",
-                  textTransform: "none",
-                  borderRadius: "20px",
-                  backgroundColor: "#3f51b5",
-                  "&:hover": { backgroundColor: "#303f9f" },
-                }}
+                size="small"
+                color="secondary"
+                startIcon={<SaveIcon />}
+                variant="contained"
               >
                 Save
               </Button>
@@ -269,7 +264,6 @@ const Discussion: React.FC = () => {
                 padding: "10px 20px",
                 fontWeight: "bold",
                 textTransform: "none",
-                borderRadius: "20px",
                 backgroundColor: "#3f51b5",
                 "&:hover": { backgroundColor: "#303f9f" },
               }}
@@ -306,21 +300,28 @@ const Discussion: React.FC = () => {
             timestamp={answer?.Timestamped}
             answerId={answer?.id}
           />
-          <IconButton
-            aria-label="more"
-            onClick={(event) => handleMenuOpen(event, answer?.id)}
-            sx={{ position: "absolute", top: 10, right: 10, color: "#3f51b5" }}
-          >
-            <MoreVertIcon />
-          </IconButton>
+
+          {answer.UserID === userid && (
+            <IconButton
+              aria-label="more"
+              onClick={(event) => handleMenuOpen(event, answer?.id)}
+              sx={{ position: "absolute", top: 10, right: 10, color: "#3f51b5" }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )}
 
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl) && selectedCommentId === answer.id}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={() => handleEditComment(answer.id)}>Edit</MenuItem>
-            <MenuItem onClick={() => handleDeleteComment(answer.id)}>Delete</MenuItem>
+            {answer.UserID === userid && (
+              <>
+                <MenuItem onClick={() => handleEditComment(answer.id)}>Edit</MenuItem>
+                <MenuItem onClick={() => handleDeleteComment(answer.id)}>Delete</MenuItem>
+              </>
+            )}
           </Menu>
         </Paper>
       ))}

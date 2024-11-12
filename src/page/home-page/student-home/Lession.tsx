@@ -73,7 +73,7 @@ function Lession() {
                             classes={classes}
                             setSelected={setSlotSelected}
                         />
-                        <Content lession={lessionData} slot={slot} questionSlot={questionSlot} />
+                        <Content lession={lessionData} slot={slot} questionSlot={questionSlot} slotSelected={slotSelected} />
                     </div> :
                     <div>
                         LOADING...

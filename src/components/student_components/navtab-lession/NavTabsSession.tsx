@@ -5,14 +5,15 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Content from '../lession-infor/question-content/Content';
 import StudentList from '../lession-infor/student-list/StudentList';
-import { getClass, getParticipants, getQuestionSLot } from "../../../service/ApiService";
-import { classRoom, participants, questionSlot } from "../../../models/Interface";
+import { getClass, getParticipants, getQuestionSLot, getAssignmentSlot } from "../../../service/ApiService";
+import { classRoom, participants, questionSlot, assignmentSlot } from "../../../models/Interface";
 
 
 
 function NavTabsSession() {
   const [participants, setParticipants] = useState<participants[]>([]);
   const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
+  const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
   const [classes, setClasses] = useState<classRoom[]>([]);
 
   const [value, setValue] = useState<string>('one');
@@ -30,6 +31,7 @@ function NavTabsSession() {
   useEffect(() => {
     getParticipant();
     fetchQuestionSLot();
+    fetchAssignmentSlot();
     fetchClass();
   }, []);
 
@@ -41,12 +43,17 @@ function NavTabsSession() {
     }
   }
 
-
-
   const fetchQuestionSLot = async () => {
     const res = await getQuestionSLot()
     if (Array.isArray(res)) {
       setQuestionSlot(res);
+    }
+  }
+
+  const fetchAssignmentSlot = async () => {
+    const res = await getAssignmentSlot()
+    if (Array.isArray(res)) {
+      setAssignmentSlot(res);
     }
   }
 
@@ -74,7 +81,7 @@ function NavTabsSession() {
 
       {!loading && (
         <Box sx={{ marginTop: '20px' }}>
-          {value === 'one' && <Content questionSlot={questionSlot} slots={[]} />}
+          {value === 'one' && <Content questionSlot={questionSlot} assignmentSlot={assignmentSlot} slots={[]} />}
           {value === 'two' && <StudentList participants={participants} classes={classes} />}
         </Box>
       )}

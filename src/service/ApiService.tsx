@@ -196,6 +196,10 @@ export const updateRating = (rating: answerQuestionSlot) => {
   });
 };
 
+export const getAssignmentSlot = () => {
+  return axios.get("AssignmentSlot");
+}
+
 
 export {
   getDataExam,

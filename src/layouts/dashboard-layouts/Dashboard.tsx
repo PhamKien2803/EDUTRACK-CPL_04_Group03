@@ -6,15 +6,23 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import SchoolIcon from '@mui/icons-material/School';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AppProvider, type Navigation } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { Outlet, useLocation, useNavigationType } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigationType } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
+  {
+    segment: 'profile',
+    title: 'Profile',
+    icon: <AccountCircleIcon />,
+  },
+
   {
     segment: 'home-page',
     title: 'Dashboard',
@@ -45,11 +53,7 @@ const NAVIGATION: Navigation = [
     title: 'FQA',
     icon: <LiveHelpIcon />,
   },
-  {
-    segment: 'profile',
-    title: 'Profile',
-    icon: <SchoolIcon />,
-  },
+
   {
     segment: 'Logout',
     title: 'Logout',
@@ -75,7 +79,7 @@ const demoTheme = createTheme({
 });
 
 
-function DashboardLayoutBranding ()  {
+function DashboardLayoutBranding() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(
     JSON.parse(localStorage.getItem('isMenuExpanded') || 'false')
