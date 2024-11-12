@@ -40,15 +40,11 @@ export interface questionSlot {
     TimeStart: string,
     TimeEnd: string,
     Slotid: string,
-    Status: number
+    Status: number,
+    SettingStatus: number
 }
 
-export interface questionSlotSettings {
-    QuestionID: string;
-    canViewOwnCommentsSetting: boolean;
-    canViewAllCommentsSetting: boolean;
-    canReplyToCommentsSetting: boolean;
-}
+
 
 export interface classRoom {
     ClassID: string,

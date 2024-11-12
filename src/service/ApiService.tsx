@@ -1,4 +1,4 @@
-import { UserAnswer, answerQuestionSlot, questionSlot, questionSlotSettings, replies } from "../models/Interface"
+import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, questionSlot, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -147,7 +147,8 @@ export const createQuestionSlot = (question: questionSlot) => {
     TimeStart: question.TimeStart,
     TimeEnd: question.TimeEnd,
     Slotid: question.Slotid,
-    Status: question.Status
+    Status: question.Status,
+    SettingStatus: question.SettingStatus
   });
 }
 
@@ -158,13 +159,20 @@ export const updateQuestionSLot = (question: questionSlot) => {
     TimeStart: question.TimeStart,
     TimeEnd: question.TimeEnd,
     Slotid: question.Slotid,
-    Status: question.Status
+    Status: question.Status,
+    SettingStatus: question.SettingStatus
   });
 }
 
-export const updateStatusQuestionSLot = (question: questionSlot) => {
-  return axios.put(`QuestionSLot/${question.QuestionID}`, {
-    Status: question.Status
+export const updateStatusQuestionSLot = (status: questionSlot) => {
+  return axios.put(`QuestionSLot/${status.QuestionID}`, {
+    Status: status.Status, //Chỉ Update Status
+    content: status.content,
+    image: status.image,
+    TimeStart: status.TimeStart,
+    TimeEnd: status.TimeEnd,
+    Slotid: status.Slotid,
+    SettingStatus: status.SettingStatus
   });
 }
 
@@ -172,14 +180,75 @@ export const deleteQuestionSlot = (id: string) => {
   return axios.delete(`QuestionSLot/${id}`);
 }
 
-export const updateQuestionSlotSettings = (setting: questionSlotSettings) => {
-  return axios.put(`QuestionSlotSettings/${setting.QuestionID}`, {
-    QuestionID: setting.QuestionID,
-    canViewOwnCommentsSetting: setting.canViewOwnCommentsSetting,
-    canViewAllCommentsSetting: setting.canViewAllCommentsSetting,
-    canReplyToCommentsSetting: setting.canReplyToCommentsSetting
+export const createAssignmentSlot = (assignment: assignmentSlot) => {
+  return axios.post("AssignmentSlot", {
+    AssignmentID: assignment.AssignmentID,
+    UserID: assignment.UserID,
+    title: assignment.title,
+    description: assignment.description,
+    urlfile: assignment.urlfile,
+    TimeStart: assignment.TimeStart,
+    TimeEnd: assignment.TimeEnd,
+    Slotid: assignment.Slotid,
+    Status: assignment.Status
   });
 }
+
+
+export const updateAssignmentSlot = (assignment: assignmentSlot) => {
+  return axios.put(`AssignmentSlot/${assignment.AssignmentID}`, {
+    title: assignment.title,
+    description: assignment.description,
+    urlfile: assignment.urlfile,
+    TimeStart: assignment.TimeStart,
+    TimeEnd: assignment.TimeEnd,
+    Slotid: assignment.Slotid,
+    Status: assignment.Status
+  });
+}
+
+export const updateStatusAssignmentSlot = (status: assignmentSlot) => {
+  return axios.put(`AssignmentSlot/${status.AssignmentID}`, {
+    Status: status.Status, //Chỉ Update Status
+    title: status.title,
+    description: status.description,
+    urlfile: status.urlfile,
+    TimeStart: status.TimeStart,
+    TimeEnd: status.TimeEnd,
+    Slotid: status.Slotid
+  });
+}
+
+export const deleteAssignmentSlot = (id: string) => {
+  return axios.delete(`AssignmentSlot/${id}`);
+}
+
+export const postanswerAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.post("AnswerAssignmentSlot", {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const updateanswerAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.put(`AnswerAssignmentSlot/${user.id}`, {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const deleteanswerAssignmentSlot = (id: string) => {
+  return axios.delete(`AnswerAssignmentSlot/${id}`);
+}
+
 
 // Updating a comment
 export const updateComment = (comment: answerQuestionSlot) => {
