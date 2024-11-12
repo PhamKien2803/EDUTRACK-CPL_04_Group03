@@ -16,24 +16,89 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+import { useSelector } from "react-redux";
+import {
+  getCourse,
+  getCourseSemesterByLecturersID,
+  getSemester,
+} from "../../../service/ApiService";
+import { useEffect } from "react";
+
+interface CourseSemester {
+  id: string;
+  SemesterID: string;
+  SlotID: string[];
+  CourseID: string;
+  StudentID: string;
+  LecturersID: string;
+  ClassID: string;
+}
+
+interface Semester {
+  SemesterID: string;
+  SemesterName: string;
+  StartDate: string;
+  EndDate: string;
+  Status: boolean;
+}
+
+interface course {
+  id: string;
+  CourseName: string;
+  Status: boolean;
+}
 // Mock data with multiple courses
-const mockCourses = [
-  { id: "1", courseName: "SSL101c", courseId: "SSL101c" },
-  { id: "2", courseName: "CSI104", courseId: "CSI104" },
-  { id: "3", courseName: "PRF192", courseId: "PRF192" },
-  { id: "4", courseName: "MAE101", courseId: "MAE101" },
-  { id: "5", courseName: "CEA201", courseId: "CEA201" },
-  { id: "6", courseName: "PRO192", courseId: "PRO192" },
-  { id: "7", courseName: "MAD101", courseId: "MAD101" },
-  { id: "8", courseName: "OSG202", courseId: "OSG202" },
-];
 
 function LecturersHomePage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState<CourseSemester[]>([]);
+  const [semesterId, setSemesterId] = useState<string>("");
+  const [dataSemester, setDataSemester] = useState<Semester[]>([]);
+  const [dataCourse, setDataCourse] = useState<course[]>([]);
 
-  const filteredCourses = mockCourses.filter((course) =>
-    course.courseId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const account = useSelector((state: any) => state.account.account);
+  // const isAuthenticated = useSelector(
+  //   (state: any) => state.account.isAuthenticated
+  // );
+
+  // console.log(account);
+
+  useEffect(() => {
+    fetchCourse();
+    fetchDataSemester();
+  }, []);
+
+  useEffect(() => {
+    if (semesterId) fetchCourseSemester();
+  }, [semesterId]);
+  const fetchCourseSemester = async () => {
+    const res = await getCourseSemesterByLecturersID(account.UserID);
+    if (Array.isArray(res)) {
+      const filteredData = res.filter((item) => item.SemesterID === semesterId);
+      setData(filteredData);
+    }
+  };
+
+  console.log(data);
+
+  const fetchDataSemester = async () => {
+    const res = await getSemester();
+    if (Array.isArray(res) && res.length > 0) {
+      const latestSemesterId = res[res.length - 1].SemesterID;
+      setSemesterId(latestSemesterId);
+      setDataSemester(res);
+    }
+  };
+
+  // console.log(semesterId);
+
+  const fetchCourse = async () => {
+    const res = await getCourse();
+    if (Array.isArray(res) && res.length > 0) {
+      setDataCourse(res);
+    }
+  };
+
+  console.log(dataCourse);
 
   return (
     <div>
@@ -70,8 +135,8 @@ function LecturersHomePage() {
           label="Search by Course ID"
           variant="outlined"
           sx={{ mb: 2, maxWidth: "300px" }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          // value={searchTerm}
+          // onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -83,7 +148,7 @@ function LecturersHomePage() {
           }}
         />
         <Grid container spacing={2} justifyContent="center">
-          {filteredCourses.map((course) => (
+          {data.map((course) => (
             <Grid item xs={12} sm={6} md={3} key={course.id} sx={{ p: 1.5 }}>
               <Card
                 sx={{
@@ -143,7 +208,7 @@ function LecturersHomePage() {
                       mb: 0.5,
                     }}
                   >
-                    {course.courseName}
+                    {course.CourseID}
                   </Typography>
                   <Link to={`/lession-course?subjectId=${course.id}`}>
                     <Typography
@@ -157,7 +222,7 @@ function LecturersHomePage() {
                         bgcolor: "rgba(25, 118, 210, 0.08)",
                       }}
                     >
-                      {course.courseId}
+                      {dataCourse[0].CourseName}
                     </Typography>
                   </Link>
                 </CardContent>

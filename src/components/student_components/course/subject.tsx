@@ -40,9 +40,9 @@ interface Semester {
 }
 
 interface course {
-  id: string,
-  CourseName: string,
-  Status: boolean
+  id: string;
+  CourseName: string;
+  Status: boolean;
 }
 
 export default function Subject() {
@@ -50,12 +50,14 @@ export default function Subject() {
   const [data, setData] = useState<CourseSemester[]>([]);
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
-  const [dataCourse, setDataCourse] = useState<course[]>([])
+  const [dataCourse, setDataCourse] = useState<course[]>([]);
 
   const account = useSelector((state: any) => state.account.account);
-  const isAuthenticated = useSelector((state: any) => state.account.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: any) => state.account.isAuthenticated
+  );
 
-  // console.log(account);
+  console.log(account);
   // console.log(isAuthenticated);
 
   useEffect(() => {
@@ -71,12 +73,11 @@ export default function Subject() {
   const fetchCourseSemester = async () => {
     const res = await getCourseSemesterByUserId(account.UserID);
     if (Array.isArray(res)) {
-      const filteredData = res.filter((item) => item.SemesterID === semesterId)
+      const filteredData = res.filter((item) => item.SemesterID === semesterId);
       setData(filteredData);
     }
   };
-  // console.log(data);
-
+  console.log(data);
 
   const fetchDataSemester = async () => {
     const res = await getSemester();
@@ -90,10 +91,9 @@ export default function Subject() {
   const fetchCourse = async () => {
     const res = await getCourse();
     if (Array.isArray(res) && res.length > 0) {
-      setDataCourse(res)
+      setDataCourse(res);
     }
-
-  }
+  };
   // console.log(semesterId);
 
   // const handleSubjectClick = () => {
@@ -143,7 +143,11 @@ export default function Subject() {
                     <img
                       src={item.image}
                       alt="image"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </Box>
                 </Box>
@@ -163,12 +167,19 @@ export default function Subject() {
                 label="year"
                 sx={{ width: "100%", maxWidth: "200px", marginBottom: "30px" }}
                 value={semesterId}
-                onChange={e => setSemesterId(e.target.value)}
+                onChange={(e) => setSemesterId(e.target.value)}
               >
-                {dataSemester?.slice().reverse().map(item => (
-                  <MenuItem key={`se-${item.SemesterID}`} value={item.SemesterID}>{item.SemesterName}</MenuItem>
-                ))}
-
+                {dataSemester
+                  ?.slice()
+                  .reverse()
+                  .map((item) => (
+                    <MenuItem
+                      key={`se-${item.SemesterID}`}
+                      value={item.SemesterID}
+                    >
+                      {item.SemesterName}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Box>
@@ -235,7 +246,10 @@ export default function Subject() {
                         mb: 0.5,
                       }}
                     >
-                      {dataCourse?.find(item => item.id === subject.CourseID)?.CourseName}
+                      {
+                        dataCourse?.find((item) => item.id === subject.CourseID)
+                          ?.CourseName
+                      }
                     </Typography>
                     <Link to={`/lession-course?subjectId=${subject.id}`}>
                       <Typography
@@ -250,7 +264,8 @@ export default function Subject() {
                         }}
                       >
                         {subject.CourseID}
-                      </Typography></Link>
+                      </Typography>
+                    </Link>
                   </CardContent>
                 </Card>
               </Grid>
@@ -258,12 +273,8 @@ export default function Subject() {
           </Grid>
         </Box>
       ) : (
-        <div>
-          Data loading ...
-        </div>
+        <div>Data loading ...</div>
       )}
-
     </div>
-
   );
 }
