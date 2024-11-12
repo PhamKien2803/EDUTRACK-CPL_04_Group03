@@ -59,7 +59,7 @@ const getQuestionSLot = () => {
 
 const getQuestionSlotById = (id: string) => {
   return axios.get(`QuestionSLot/${id}`);
-}
+};
 
 const getQuestionSlotBySlotId = (id: string) => {
   return axios.get(`QuestionSLot/${id}`);
@@ -67,19 +67,19 @@ const getQuestionSlotBySlotId = (id: string) => {
 
 const getAnswerQuestionSlot = () => {
   return axios.get("AnswerQuestionSlot");
-}
+};
 
 const getAnswerQuestionSlotByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
-}
+};
 
 const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
-}
+};
 
 const getRepliesContent = () => {
   return axios.get(`Replies`);
-}
+};
 
 const getClass = () => {
   return axios.get("Class");
@@ -89,13 +89,28 @@ const getCourseSemesterByUserId = (useId: string) => {
   return axios.get(`CourseSemester?StudentID=${useId}`);
 };
 
+const getCourseSemesterByLecturersID = (LecturersID: string) => {
+  return axios.get(`CourseSemester?LecturersID=${LecturersID}`);
+};
+
 const getSemester = () => {
   return axios.get("Semester");
 };
 
 
-const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
-  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+const updateProfile = (
+  id: string,
+  name: string,
+  address: string,
+  age: number,
+  gender: boolean,
+  email: string,
+  password: string,
+  image: string,
+  rating: number,
+  role: number,
+  isOnline: boolean,
+  status: boolean
 ) => {
   return axios.put(`Participants/${id}`, {
     UserName: name,
@@ -109,22 +124,20 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
     isOnline: isOnline,
     Status: status,
     Email: email,
-
-  })
-}
+  });
+};
 
 const postAnswer = (ua: UserAnswer) => {
-  return axios.post('UserAnswer', {
+  return axios.post("UserAnswer", {
     answer: ua.answer,
     QuestionID: ua.QuestionID,
-    UserID: ua.UserID
-  })
-}
+    UserID: ua.UserID,
+  });
+};
 
 export const getAnswerByUserId = (id: any) => {
   return axios.get(`UserAnswer?UserID=${id}`);
-
-}
+};
 
 const postComment = (user: answerQuestionSlot) => {
   return axios.post("AnswerQuestionSlot", {
@@ -133,7 +146,7 @@ const postComment = (user: answerQuestionSlot) => {
     UserID: user?.UserID,
     Rating: user?.Rating,
     Replies: user?.Replies,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
 
@@ -187,7 +200,7 @@ export const updateComment = (comment: answerQuestionSlot) => {
     UserID: comment?.UserID,
     Replies: comment?.Replies,
     Rating: comment?.Rating,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
 
@@ -196,15 +209,18 @@ export const deleteComment = (id: string) => {
   return axios.delete(`AnswerQuestionSlot/${id}`);
 };
 
-
-export const postReply = async (answerID: string, replyContent: string, userID: string, timestamp: string) => {
+export const postReply = async (
+  answerID: string,
+  replyContent: string,
+  userID: string,
+  timestamp: string
+) => {
   try {
     const response = await axios.post(`Replies`, {
       ReplyContent: replyContent,
       UserID: userID,
       answerID: answerID,
-      Timestamped: timestamp
-
+      Timestamped: timestamp,
     });
     return response.data;
   } catch (error) {
@@ -218,14 +234,13 @@ export const updateReply = async (replies: replies) => {
     ReplyContent: replies?.ReplyContent,
     UserID: replies?.UserID,
     answerID: replies?.answerID,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
-}
-
+};
 
 export const deleteReply = async (replies: replies) => {
   return axios.delete(`Replies/${replies.id}`);
-}
+};
 
 export const updateRating = (rating: answerQuestionSlot) => {
   return axios.put(`AnswerQuestionSlot/${rating.id}`, {
@@ -234,18 +249,17 @@ export const updateRating = (rating: answerQuestionSlot) => {
     UserID: rating?.UserID,
     Replies: rating?.Replies,
     Rating: rating?.Rating,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
 
 export const getAssignmentSlot = () => {
   return axios.get("AssignmentSlot");
-}
+};
 
 export const getAssignmentSlotById = (id: string) => {
   return axios.get(`AssignmentSlot/${id}`);
-}
-
+};
 
 export {
   getDataExam,
@@ -272,5 +286,5 @@ export {
   updateProfile,
   getRepliesContent,
   postComment,
-
+  getCourseSemesterByLecturersID,
 };
