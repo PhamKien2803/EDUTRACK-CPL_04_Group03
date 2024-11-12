@@ -9,8 +9,16 @@
     },
     {
       "ClassID": "c124",
-      "ClassName": "SE222",
+      "ClassName": "SE223",
       "Student": ["he170155", "he170569"],
+      "Status": true,
+      "id": "e048"
+    }
+    ,
+    {
+      "ClassID": "c125",
+      "ClassName": "SE223",
+      "Student": ["he170156", "he170579"],
       "Status": true,
       "id": "e048"
     }
@@ -231,7 +239,6 @@
       "SemesterID": "sum24",
       "SlotID": ["s11", "s12"],
       "CourseID": "FER201",
-      "StudentID": "he173077",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -240,7 +247,6 @@
       "SemesterID": "fall24",
       "SlotID": ["s21", "s22"],
       "CourseID": "ENW492c",
-      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -249,7 +255,6 @@
       "SemesterID": "fall24",
       "SlotID": ["s11", "s12"],
       "CourseID": "FER201",
-      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -258,9 +263,8 @@
       "SemesterID": "fall24",
       "SlotID": ["s11", "s12"],
       "CourseID": "FER201",
-      "StudentID": "he170569",
       "LecturersID": "lt12345",
-      "ClassID": "c123"
+      "ClassID": "c124"
     }
   ],
   "Course": [

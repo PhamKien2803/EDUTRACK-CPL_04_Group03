@@ -249,7 +249,7 @@ export const getAssignmentSlot = () => {
 export const getAssignmentSlotById = (id: string) => {
   return axios.get(`AssignmentSlot/${id}`);
 };
-export const getCouseraInLecturers = (cid: string, sid: string, lid: string) => {
+export const getCouseraInLecturers = (cid: any, sid: any, lid: string) => {
   return axios.get(`CourseSemester?CourseID=${cid}&SemesterID=${sid}&LecturersID=${lid}`);
 }
 

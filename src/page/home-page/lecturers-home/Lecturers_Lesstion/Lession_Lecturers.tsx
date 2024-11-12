@@ -4,10 +4,11 @@ import Content from '../../../../components/lecturers_components/Lesstion_Lectur
 import { getAssignmentSlot, getClass, getCourse, getCourseSemesterById, getCouseraInLecturers, getParticipants, getQuestionSLot, getSLot } from '../../../../service/ApiService';
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 function Lession_Lecturers() {
-    const [lessionData, setLession] = useState<lession[]>([]);
+    const [lessionData, setLession] = useState<lession>();
     const [slot, setSlot] = useState<slot[]>([]);
     const [participants, setParticipants] = useState<participants[]>([]);
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
@@ -15,26 +16,51 @@ function Lession_Lecturers() {
     const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [slotSelected, setSlotSelected] = useState<string>();
+    const[classId,setclassId]=useState<string>("");
+
     const location = useLocation();
     const param = new URLSearchParams(location.search);
-    const sID = param.get('subjectId');
+    const cID = param.get('CourseID');
+    const sID =param.get('semesterId');
+
+    console.log(cID,sID);
+  const account = useSelector((state: any) => state.account.account);
+
+  console.log(account);
+  
+    
 
 
     useEffect(() => {
 
-        getLession();
-
+        getParticipant();
+        getSlot();
+        fetchClass();
+        fetchAssignmentSlot();
+        getCourses();
+        fetchQuestionSlot();
     }, []);
 
+    useEffect(()=>{
+        getLession();
+
+    },[classId])
+
+    
     const getLession = async () => {
-
-        const res = await getCouseraInLecturers("FER201", "fall24", "lt12345");
+        const res = await getCouseraInLecturers(cID, sID, account.UserID);
         console.log(res);
-
-
-        setLession(res);
-
-
+        
+        if (Array.isArray(res)) {
+            if(classId){
+                setLession(res.find(item=> item.ClassID === classId));
+                
+            }else{
+                setLession(res[0]);
+                
+            }
+        
+    }
     }
 
 
@@ -62,7 +88,7 @@ function Lession_Lecturers() {
 
     const getCourses = async () => {
         const res = await getCourse();
-        console.log("res", res);
+        // console.log("res", res);
 
         if (Array.isArray(res)) {
             setGetCourse(res);
@@ -77,28 +103,36 @@ function Lession_Lecturers() {
     }
 
     const fetchClass = async () => {
+        const resCourse = await getCouseraInLecturers(cID, sID, account.UserID);
         const res = await getClass();
-        if (Array.isArray(res)) {
-            setClasses(res);
+        let class2:classRoom[];
+        if (Array.isArray(res) && Array.isArray(resCourse)) {
+            const updatedClasses = resCourse.map(item => res.find(cl => cl.ClassID === item.ClassID));
+            setClasses(updatedClasses)
+            
         }
     }
 
     return (
         <div>
             {
-                // lessionData &&
+                lessionData &&
                 slot && participants && questionSlot && classes ?
                     <div>
                         <Header
                             courses={course}
-                            questionSlot={questionSlot}
-                            slot={slot}
-                            // lession={lessionData}
-                            participants={participants}
-                            classes={classes}
-                        // setSelected={setSlotSelected}
+                            lession={lessionData}
                         />
-                        <Content />
+                        <Content 
+                        courses={course}
+                        questionSlot={questionSlot}
+                        slot={slot}
+                        lession={lessionData}
+                        participants={participants}
+                        classes={classes}
+                        setclassId={setclassId}
+                        
+                        />
                     </div> :
                     <div>
                         LOADING...
