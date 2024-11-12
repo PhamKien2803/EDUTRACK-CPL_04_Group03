@@ -121,7 +121,7 @@ const routesLecturersHome: Router[] = [
     {
         name: "SessionDicussion",
         key: "SessionDicussion",
-        path: "/lecturer/session-dicussion",
+        path: "/lecturer/session-question",
         component: SessionDicussion
     },
 

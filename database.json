@@ -349,40 +349,67 @@
   ],
   "QuestionSLot": [
     {
+      "id": "b9ca",
       "QuestionID": "q111",
       "UserID": "lt12345",
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
+      "image": "https://www.w3schools.com/",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
       "Status": 1
     },
     {
+      "id": "a80a",
       "QuestionID": "q112",
       "UserID": "lt12345",
       "content": "Đặt môi trường gì trên Hệ điều hành?",
+      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
       "Status": 0
     },
     {
+      "id": "a80b",
       "QuestionID": "q113",
       "UserID": "lt12345",
       "content": "NextJS là gì? Ưu điểm của ứng dụng NextJS so với các công nghệ web truyền thống",
+      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
       "Status": 0
     },
     {
+      "id": "a80c",
       "QuestionID": "q112",
       "UserID": "lt12345",
       "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
+      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s12",
       "Status": 0
+    },
+    {
+      "id": "9c66",
+      "QuestionID": "wvgtrgc",
+      "UserID": "123",
+      "content": "12345678990",
+      "image": null,
+      "TimeStart": "2024-11-10T16:37",
+      "TimeEnd": "2024-11-11T17:37",
+      "Slotid": "s11",
+      "Status": 0
+    }
+  ],
+  "QuestionSlotSettings": [
+    {
+      "QuestionID": "q111",
+      "canViewOwnCommentsSetting": true,
+      "canViewAllCommentsSetting": false,
+      "canReplyToCommentsSetting": false
     }
   ],
   "AssignmentSlot": [
@@ -395,9 +422,9 @@
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 1
+      "Status": 1,
+      "id": "b9ca"
     },
-
     {
       "AssignmentID": "a112",
       "UserID": "he170569",
@@ -407,7 +434,8 @@
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s12",
-      "Status": 1
+      "Status": 1,
+      "id": "a80a"
     }
   ],
   "AnswerAssignmentSlot": [
@@ -473,6 +501,33 @@
       "Rating": 0,
       "Replies": [],
       "Timestamped": "2024-11-10T16:40:21.496Z"
+    },
+    {
+      "id": "6b39",
+      "comment": "123",
+      "QuestionID": "q111",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-12T04:38:59.167Z"
+    },
+    {
+      "id": "5c3d",
+      "comment": "3333",
+      "QuestionID": "q111",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-12T04:41:22.438Z"
+    },
+    {
+      "id": "555f",
+      "comment": "233",
+      "QuestionID": "q113",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-12T04:42:21.109Z"
     }
   ],
   "Replies": [

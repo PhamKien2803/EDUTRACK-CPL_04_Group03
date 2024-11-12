@@ -1,9 +1,17 @@
 import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState, useEffect } from 'react';
+import { questionSlot, slot } from '../../../../models/Interface';
 
-const Content: React.FC = () => {
-    // Static data for the list of questions
+interface Props {
+    questionSlot: questionSlot[];
+    slots: slot[];
+    questionID: string | null;
+    setSlots: (slots: slot[]) => void;
+    selectedSlot: slot | null;
+  }
+
+const Content: React.FC<Props> = ({questionSlot}) => {
     const questionData = [
         { Slotid: "1", QuestionID: "101", content: "Explain the concept of state management in React.", TimeLimit: 1800 },
     ];

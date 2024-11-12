@@ -1,11 +1,11 @@
-import { UserAnswer, answerQuestionSlot, replies } from "../models/Interface"
+import { UserAnswer, answerQuestionSlot, questionSlot, questionSlotSettings, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
- export const getQuestionByExID = (exId: any) => {
+export const getQuestionByExID = (exId: any) => {
   return axios.get(`QuestionExam?exId=${exId}`);
 };
 
@@ -94,7 +94,7 @@ const getSemester = () => {
 };
 
 
-const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
   image: string, rating: number, role: number, isOnline: boolean, status: boolean
 ) => {
   return axios.put(`Participants/${id}`, {
@@ -136,6 +136,48 @@ const postComment = (user: answerQuestionSlot) => {
     Timestamped: new Date().toISOString()
   });
 };
+
+export const createQuestionSlot = (question: questionSlot) => {
+  return axios.post("QuestionSLot", {
+    UserID: question.UserID,
+    content: question.content,
+    image: question.image,
+    TimeStart: question.TimeStart,
+    TimeEnd: question.TimeEnd,
+    Slotid: question.Slotid,
+    Status: question.Status
+  });
+}
+
+export const updateQuestionSLot = (question: questionSlot) => {
+  return axios.put(`QuestionSLot/${question.QuestionID}`, {
+    content: question.content,
+    image: question.image,
+    TimeStart: question.TimeStart,
+    TimeEnd: question.TimeEnd,
+    Slotid: question.Slotid,
+    Status: question.Status
+  });
+}
+
+export const updateStatusQuestionSLot = (question: questionSlot) => {
+  return axios.put(`QuestionSLot/${question.QuestionID}`, {
+    Status: question.Status
+  });
+}
+
+export const deleteQuestionSlot = (id: string) => {
+  return axios.delete(`QuestionSLot/${id}`);
+}
+
+export const updateQuestionSlotSettings = (setting: questionSlotSettings) => {
+  return axios.put(`QuestionSlotSettings/${setting.QuestionID}`, {
+    QuestionID: setting.QuestionID,
+    canViewOwnCommentsSetting: setting.canViewOwnCommentsSetting,
+    canViewAllCommentsSetting: setting.canViewAllCommentsSetting,
+    canReplyToCommentsSetting: setting.canReplyToCommentsSetting
+  });
+}
 
 // Updating a comment
 export const updateComment = (comment: answerQuestionSlot) => {

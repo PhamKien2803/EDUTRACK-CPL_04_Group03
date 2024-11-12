@@ -1,44 +1,60 @@
-import React from "react";
-import { Box, Container, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Container, Typography, Button, IconButton } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import { assignmentSlot, questionSlot, slot } from "../../../../../models/Interface";
 
-const ContentSes: React.FC = () => {
+interface Props {
+  questionSlot: questionSlot[];
+  assignmentSlot: assignmentSlot[];
+  slots: slot[];
+}
+
+const ContentSes: React.FC<Props> = () => {
   const navigate = useNavigate();
 
   const handleClickToDiscussion = () => {
-    navigate("/lecturer/session-dicussion");
+    navigate("/lecturer/session-question");
   };
 
   const handleClickToAssignment = () => {
     navigate("/lecturer/session-assignment");
-
   };
 
-  // Mock data for testing UI
-  const questionSlot = [
+  const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([
     {
       QuestionID: "1",
       Slotid: "1",
       content: "What is the capital of France?",
       Status: 1,
+      UserID: "user1",
+      TimeStart: "2023-01-01T10:00:00Z",
+      TimeEnd: "2023-01-01T11:00:00Z",
     },
     {
       QuestionID: "2",
       Slotid: "1",
       content: "Explain the theory of relativity.",
       Status: 0,
+      UserID: "user2",
+      TimeStart: "2023-01-02T10:00:00Z",
+      TimeEnd: "2023-01-02T11:00:00Z",
     },
     {
       QuestionID: "3",
       Slotid: "2",
       content: "Describe the process of photosynthesis.",
       Status: 1,
+      UserID: "user3",
+      TimeStart: "2023-01-03T10:00:00Z",
+      TimeEnd: "2023-01-03T11:00:00Z",
     },
-  ];
+  ]);
 
-  const AssignmentSlot = [
+  const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([
     {
       AssignmentID: "a111",
       UserID: "lt12345",
@@ -49,11 +65,41 @@ const ContentSes: React.FC = () => {
       Slotid: "1",
       Status: 0,
     },
-  ];
+  ]);
 
   const SlotId = "1";
   const filteredQuestions = questionSlot.filter((qs) => qs.Slotid === SlotId);
-  const filteredAssignments = AssignmentSlot.filter((asm) => asm.Slotid === SlotId);
+  const filteredAssignments = assignmentSlot.filter((asm) => asm.Slotid === SlotId);
+
+  const handleStatusToggle = (id: string, type: "question" | "assignment") => {
+    if (type === "question") {
+      setQuestionSlot((prevQuestions) =>
+        prevQuestions.map((qs) =>
+          qs.QuestionID === id
+            ? { ...qs, Status: qs.Status === 0 ? 1 : qs.Status === 1 ? 2 : 0 }
+            : qs
+        )
+      );
+    } else {
+      setAssignmentSlot((prevAssignments) =>
+        prevAssignments.map((asm) =>
+          asm.AssignmentID === id
+            ? { ...asm, Status: asm.Status === 0 ? 1 : asm.Status === 1 ? 2 : 0 }
+            : asm
+        )
+      );
+    }
+  };
+
+  const handleEdit = (id: string, type: "question" | "assignment") => {
+    // Add edit logic here
+    console.log(`Edit ${type} with ID: ${id}`);
+  };
+
+  const handleDelete = (id: string, type: "question" | "assignment") => {
+    // Add delete logic here
+    console.log(`Delete ${type} with ID: ${id}`);
+  };
 
   return (
     <Container sx={{ padding: "8px", maxWidth: "500px" }}>
@@ -75,7 +121,7 @@ const ContentSes: React.FC = () => {
           }}
         >
           <QuestionAnswerIcon sx={{ marginRight: "6px", color: "orange", fontSize: "1.5rem" }} />
-          <Box>
+          <Box flex="1">
             <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "1rem" }}>
               Question {index + 1}
             </Typography>
@@ -85,14 +131,31 @@ const ContentSes: React.FC = () => {
             <Typography
               variant="caption"
               sx={{
-                color: qs.Status === 0 ? "red" : "green",
+                color: qs.Status === 0 ? "red" : qs.Status === 1 ? "green" : "gray",
                 fontWeight: "bold",
                 fontSize: "0.75rem",
               }}
             >
-              {qs.Status === 0 ? "Not Started" : "In Progress"}
+              {qs.Status === 0 ? "Not Started" : qs.Status === 1 ? "In Progress" : "Finished"}
             </Typography>
           </Box>
+          <Button
+            size="medium"
+            variant={qs.Status === 0 ? "outlined" : "contained"}
+            color={qs.Status === 0 ? "warning" : qs.Status === 1 ? "error" : "secondary"}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleStatusToggle(qs.QuestionID, "question");
+            }}
+          >
+            {qs.Status === 0 ? "Start" : qs.Status === 1 ? "Stop" : "Restart"}
+          </Button>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(qs.QuestionID, "question"); }}>
+            <EditIcon fontSize="small" />
+          </IconButton>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(qs.QuestionID, "question"); }}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
         </Box>
       ))}
 
@@ -114,7 +177,7 @@ const ContentSes: React.FC = () => {
           }}
         >
           <AssignmentTurnedInIcon sx={{ marginRight: "6px", color: "purple", fontSize: "1.5rem" }} />
-          <Box>
+          <Box flex="1">
             <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "1rem" }}>
               Assignment {index + 1}
             </Typography>
@@ -124,14 +187,31 @@ const ContentSes: React.FC = () => {
             <Typography
               variant="caption"
               sx={{
-                color: asm.Status === 0 ? "red" : "green",
+                color: asm.Status === 0 ? "red" : asm.Status === 1 ? "green" : "gray",
                 fontWeight: "bold",
                 fontSize: "0.75rem",
               }}
             >
-              {asm.Status === 0 ? "Not Started" : "In Progress"}
+              {asm.Status === 0 ? "Not Started" : asm.Status === 1 ? "In Progress" : "Finished"}
             </Typography>
           </Box>
+          <Button
+            size="medium"
+            variant={asm.Status === 0 ? "outlined" : "contained"}
+            color={asm.Status === 0 ? "warning" : asm.Status === 1 ? "error" : "secondary"}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleStatusToggle(asm.AssignmentID, "assignment");
+            }}
+          >
+            {asm.Status === 0 ? "Start" : asm.Status === 1 ? "Stop" : "Restart"}
+          </Button>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(asm.AssignmentID, "assignment"); }}>
+            <EditIcon fontSize="small" />
+          </IconButton>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(asm.AssignmentID, "assignment"); }}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
         </Box>
       ))}
     </Container>
