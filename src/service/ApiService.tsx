@@ -98,34 +98,23 @@ const getSemester = () => {
 };
 
 
-const updateProfile = (
-  id: string,
-  name: string,
-  address: string,
-  age: number,
-  gender: boolean,
-  email: string,
-  password: string,
-  image: string,
-  rating: number,
-  role: number,
-  isOnline: boolean,
-  status: boolean
-) => {
-  return axios.put(`Participants/${id}`, {
-    UserName: name,
-    Age: age,
-    Gender: gender,
-    Address: address,
-    Password: password,
-    Image: image,
-    rating: rating,
-    Role: role,
-    isOnline: isOnline,
-    Status: status,
-    Email: email,
-  });
-};
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
+    image: string, rating: number, role: number, isOnline: boolean, status: boolean
+  ) => {
+    return axios.put(`Participants/${id}`, {
+      UserName: name,
+      Age: age,
+      Gender: gender,
+      Address: address,
+      Password: password,
+      Image: image,
+      rating: rating,
+      Role: role,
+      isOnline: isOnline,
+      Status: status,
+      Email: email,
+    });
+  };
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
@@ -260,6 +249,10 @@ export const getAssignmentSlot = () => {
 export const getAssignmentSlotById = (id: string) => {
   return axios.get(`AssignmentSlot/${id}`);
 };
+export const getCouseraInLecturers = (cid: string, sid: string, lid: string) => {
+  return axios.get(`CourseSemester?CourseID=${cid}&SemesterID=${sid}&LecturersID=${lid}`);
+}
+
 
 export {
   getDataExam,
@@ -287,4 +280,5 @@ export {
   getRepliesContent,
   postComment,
   getCourseSemesterByLecturersID,
+
 };

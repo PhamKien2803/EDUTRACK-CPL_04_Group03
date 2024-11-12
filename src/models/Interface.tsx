@@ -100,3 +100,8 @@ export interface answerAssignmentSlot {
     Timestamped: string,
     Status: number
 }
+export interface courses {
+    id: string,
+    CourseName: string,
+    Status: number
+}

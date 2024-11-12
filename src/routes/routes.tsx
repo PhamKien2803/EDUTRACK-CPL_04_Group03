@@ -10,11 +10,11 @@ import DicussionPage from "../page/home-page/student-home/DicussionPage";
 import Lession from "../page/home-page/student-home/Lession";
 import LessionInfor from "../page/home-page/student-home/LessionInfor";
 import StudentHome from "../page/home-page/student-home/StudentHome";
+import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
 import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
 import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
 import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
-import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
 
 
 interface Router {
@@ -111,6 +111,12 @@ const routesLecturersHome: Router[] = [
         component: LecturersHomePage
     },
 
+    {
+        name: "lession",
+        key: "LessionPage",
+        path: "/lecturer/lession-course",
+        component: Lession_Lecturers
+    },
     {
         name: "SessionDetails",
         key: "SessionDetails",
