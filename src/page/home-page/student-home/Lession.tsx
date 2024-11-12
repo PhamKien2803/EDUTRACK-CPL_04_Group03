@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Content from "../../../components/student_components/lession/lession-content/Content";
 import Header from "../../../components/student_components/lession/lession-header/Header";
-import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot } from "../../../service/ApiService";
-import { classRoom, lession, participants, questionSlot, slot } from "../../../models/Interface";
+import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot, getAssignmentSlot, getCourse } from "../../../service/ApiService";
+import { classRoom, lession, participants, questionSlot, slot, assignmentSlot, courses } from "../../../models/Interface";
 import { useLocation } from "react-router-dom";
 
 function Lession() {
@@ -10,9 +10,10 @@ function Lession() {
     const [slot, setSlot] = useState<slot[]>([]);
     const [participants, setParticipants] = useState<participants[]>([]);
     const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
+    const [course, setGetCourse] = useState<courses[]>([]);
+    const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [slotSelected, setSlotSelected] = useState<string>();
-    console.log(slotSelected)
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const sID = param.get('subjectId');
@@ -22,7 +23,10 @@ function Lession() {
         getParticipant();
         getSlot();
         fetchQuestionSlot();
+        fetchAssignmentSlot();
         fetchClass();
+        getCourses();
+
     }, []);
 
     const getLession = async () => {
@@ -53,6 +57,22 @@ function Lession() {
         }
     }
 
+    const getCourses = async () => {
+        const res = await getCourse();
+        console.log("res", res);
+
+        if (Array.isArray(res)) {
+            setGetCourse(res);
+        }
+    }
+
+    const fetchAssignmentSlot = async () => {
+        const res = await getAssignmentSlot()
+        if (Array.isArray(res)) {
+            setAssignmentSlot(res);
+        }
+    }
+
     const fetchClass = async () => {
         const res = await getClass();
         if (Array.isArray(res)) {
@@ -66,6 +86,7 @@ function Lession() {
                 lessionData && slot && participants && questionSlot && classes ?
                     <div>
                         <Header
+                            courses={course}
                             questionSlot={questionSlot}
                             slot={slot}
                             lession={lessionData}
@@ -73,7 +94,7 @@ function Lession() {
                             classes={classes}
                             setSelected={setSlotSelected}
                         />
-                        <Content lession={lessionData} slot={slot} questionSlot={questionSlot} slotSelected={slotSelected} />
+                        <Content lession={lessionData} slot={slot} questionSlot={questionSlot} assignmentSlot={assignmentSlot} slotSelected={slotSelected || ''} />
                     </div> :
                     <div>
                         LOADING...

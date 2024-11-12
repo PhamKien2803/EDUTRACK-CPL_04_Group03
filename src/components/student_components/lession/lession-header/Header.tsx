@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SchoolIcon from '@mui/icons-material/School';
 import HomeIcon from '@mui/icons-material/Home';
-import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot } from "../../../../models/Interface";
+import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot, courses as Course } from "../../../../models/Interface";
 
 interface Props {
   questionSlot: QuestionSlot[];
@@ -26,12 +26,14 @@ interface Props {
   participants: Participants[];
   classes: ClassRoom[];
   setSelected: (id: string) => void;
+  courses: Course[];
 }
 
-const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, questionSlot }) => {
+const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, questionSlot, courses, participants }) => {
   const [activityFilter, setActivityFilter] = useState('All Activities');
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setActivityFilter(event.target.value as string);
@@ -79,7 +81,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
           {lession?.CourseID}
         </Typography>
         <Typography color="text.secondary" display="flex" alignItems="center">
-          Academic Writing Skills_Kỹ năng viết học thuật
+          {courses?.find((c) => c.id === lession?.CourseID)?.CourseName}
         </Typography>
       </Breadcrumbs>
 
@@ -172,7 +174,8 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
       <Box mt={2} display="flex" alignItems="center" gap={1}>
         <SchoolIcon color="primary" />
         <Typography variant="body2" color="textSecondary">
-          TEACHERS: THOPN3@FPT.EDU.VN
+          {participants?.find((p) => p.id === lession.LecturersID)?.Email}
+
         </Typography>
       </Box>
     </Box>

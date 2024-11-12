@@ -14,16 +14,18 @@ import {
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { lession as Lession, slot as Slot, questionSlot as QuestionSlot } from "../../../../models/Interface"
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { lession as Lession, slot as Slot, questionSlot as QuestionSlot, assignmentSlot } from "../../../../models/Interface"
 
 interface Props {
     lession: Lession;
     slot: Slot[];
     questionSlot: QuestionSlot[];
+    assignmentSlot: assignmentSlot[];
     slotSelected: string;
 }
 
-const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected }) => {
+const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot, slotSelected }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 2;
@@ -33,6 +35,10 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
 
     const handleClicktoDiscussion = (questionid: string, slotId: string) => {
         navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionid}`);
+    };
+
+    const handleClickToAssignment = () => {
+        navigate(`/dicussion-page/assignment`);
     };
 
     const toggleVisibility = (slotId: string) => {
@@ -52,7 +58,6 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
     );
 
     useEffect(() => {
-        // Scroll to the selected slot when slotSelected changes
         if (slotSelected && slotRefs.current[slotSelected]) {
             slotRefs.current[slotSelected]?.scrollIntoView({
                 behavior: 'smooth',
@@ -60,7 +65,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
             });
             setVisibleSlots((prev) => ({
                 ...prev,
-                [slotSelected]: true, // Expand the selected slot if needed
+                [slotSelected]: true,
             }));
         }
     }, [slotSelected]);
@@ -79,11 +84,10 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
                         borderRadius={2}
                         borderColor="grey.300"
                         boxShadow={2}
-                        ref={(el) => (slotRefs.current[sl] = el)} // Set the ref for each slot
+                        ref={(el: HTMLDivElement | null) => (slotRefs.current[sl] = el)}
                         onClick={() => toggleVisibility(sl)}
                     >
                         <Box bgcolor="grey.100" borderRadius="8px" p={2}>
-                            {/* Slot Header */}
                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Typography variant="h6" component="div" bgcolor={"lightpink"} borderRadius={2} p={0.5}>
                                     {currentSlot?.SlotName || `Slot ${index + 1}`}
@@ -145,7 +149,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
                                             </ListItemIcon>
                                             <ListItemText
                                                 primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                secondary={qs.Status === 0 ? 'Not started' : 'Go'}
+                                                secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
                                                 secondaryTypographyProps={{
                                                     color: qs.Status === 0 ? 'error' : 'success',
                                                     fontWeight: 'bold',
@@ -154,6 +158,38 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, slotSelected })
                                             <ArrowForwardIosIcon fontSize="small" color="action" />
                                         </ListItem>
                                     ))}
+
+                                {/* Assignment */}
+                                {assignmentSlot?.filter((as) => as?.Slotid === sl)?.map((as, index) => (
+                                    <ListItem
+                                        key={`as-${index}`}
+                                        onClick={() => handleClickToAssignment()}
+                                        component="li"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                                transform: 'scale(1.02)',
+                                            },
+                                            transition: 'background-color 0.3s, transform 0.3s',
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            <AssignmentIcon color="action" />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={`Assignment ${index + 1}: ${as.title.substring(0, 50)}...`}
+                                            secondary={as.Status === 0 ? 'Not started' : 'On-Going'}
+                                            secondaryTypographyProps={{
+                                                color: as.Status === 0 ? 'error' : 'success',
+                                                fontWeight: 'bold',
+                                            }}
+                                        />
+                                        <ArrowForwardIosIcon fontSize="small" color="action" />
+                                    </ListItem>
+                                ))}
                             </List>
                         </Collapse>
                     </Box>

@@ -5,7 +5,7 @@ import axios from "../utils/axiosCustomiz"
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
- export const getQuestionByExID = (exId: any) => {
+export const getQuestionByExID = (exId: any) => {
   return axios.get(`QuestionExam?exId=${exId}`);
 };
 
@@ -94,7 +94,7 @@ const getSemester = () => {
 };
 
 
-const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
   image: string, rating: number, role: number, isOnline: boolean, status: boolean
 ) => {
   return axios.put(`Participants/${id}`, {
@@ -196,6 +196,14 @@ export const updateRating = (rating: answerQuestionSlot) => {
   });
 };
 
+export const getAssignmentSlot = () => {
+  return axios.get("AssignmentSlot");
+}
+
+export const getCouseraInLecturers = (cid: string, sid: string, lid: string) => {
+  return axios.get(`CourseSemester?CourseID=${cid}&SemesterID=${sid}&LecturersID=${lid}`);
+}
+
 
 export {
   getDataExam,
@@ -222,5 +230,6 @@ export {
   updateProfile,
   getRepliesContent,
   postComment,
+
 
 };

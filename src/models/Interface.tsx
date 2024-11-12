@@ -34,8 +34,10 @@ export interface participants {
 
 export interface questionSlot {
     QuestionID: string,
+    UserID: string,
     content: string,
-    TimeLimit?: number,
+    TimeStart: string,
+    TimeEnd: string,
     Slotid: string,
     Status: number
 }
@@ -68,4 +70,30 @@ export interface replies {
     UserID: string;
     ReplyContent: string;
     Timestamped: string;
+}
+
+export interface assignmentSlot {
+    AssignmentID: string,
+    UserID: string,
+    title: string,
+    description: string,
+    urlfile: string,
+    TimeStart: string,
+    TimeEnd: string,
+    Slotid: string,
+    Status: number
+}
+
+export interface answerAssignmentSlot {
+    id: string,
+    AssignmentID: string,
+    UserID: string,
+    urlfile: string,
+    Timestamped: string,
+    Status: number
+}
+export interface courses {
+    id: string,
+    CourseName: string,
+    Status: number
 }
