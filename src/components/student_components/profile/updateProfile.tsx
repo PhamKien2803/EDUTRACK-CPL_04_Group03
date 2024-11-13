@@ -1,5 +1,5 @@
 // components/EditProfile.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getParticipantsById, updateProfile } from "../../../service/ApiService";
 import {
@@ -8,11 +8,9 @@ import {
     TextField,
     Typography,
     MenuItem,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
+    Grid,
+    Paper,
+    Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -51,6 +49,7 @@ const EditProfile: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -104,7 +103,7 @@ const EditProfile: React.FC = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                handleConfirmSave(); // Xử lý khi người dùng nhấn Yes
+                handleConfirmSave(); 
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire({
                     title: "Cancelled",
@@ -133,138 +132,155 @@ const EditProfile: React.FC = () => {
         }
     };
 
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+          if (file.type.startsWith("image/")) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                  setImage(reader.result as string);
+                  
+              };
+              reader.readAsDataURL(file);
+          } else {
+              
+          }
+      }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+};
+    
     return (
-        <>
-            {profile && <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                p={3}
-                bgcolor="#f9f9f9"
-                borderRadius="8px"
-                boxShadow="0px 4px 10px rgba(0, 0, 0, 0.1)"
-                maxWidth="400px"
-                mx="auto"
-                margin="10px auto"
-            >
-                <Typography variant="h5" fontWeight="bold" color="#333" mb={2}>
-                    Edit Profile
+    <>
+      {profile && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          p={3}
+          bgcolor="#f9f9f9"
+          borderRadius="8px"
+          boxShadow="0px 4px 10px rgba(0, 0, 0, 0.1)"
+          maxWidth="800px"
+          mx="auto"
+          margin="20px auto"
+        >
+          <Grid container spacing={3}>
+      {/* Profile Picture Section */}
+      <Grid item xs={12} md={4}>
+        <Paper elevation={1} sx={{ p: 3, textAlign: 'center' }}>
+          <Typography variant="h6" fontWeight="bold">
+            Profile Picture
+          </Typography>
+
+         
+          <Avatar
+            src={image || profile.Image} 
+            alt="Profile Picture"
+            sx={{ width: 100, height: 100, margin: '20px auto' }}
+          />
+
+          <Typography variant="body2" color="textSecondary">
+            JPG or PNG no larger than 5 MB
+          </Typography>
+
+          <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleClick}>
+            Upload New Image
+          </Button>
+        </Paper>
+
+       
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg, image/png"
+          style={{ display: 'none' }}
+          placeholder="Upload New Image" 
+          onChange={handleImage}
+        />
+      </Grid>
+    
+
+            {/* Account Details Section */}
+            <Grid item xs={12} md={8}>
+              <Paper elevation={1} sx={{ p: 3 }}>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  Account Details
                 </Typography>
+                <Grid container spacing={2}>
+                  {/* Username Field */}
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Name"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  </Grid>
 
-                <TextField
-                    label="Name"
-                    name="UserName"
-                    defaultValue={profile.UserName}
-                    onChange={e => setName(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Age"
-                    name="Age"
-                    value={age}
-                    onChange={handleAgeChange}
-                    type="number"
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Address"
-                    name="Address"
-                    defaultValue={profile.Address}
-                    onChange={e => setAdress(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Gender"
-                    select
-                    name="Gender"
-                    value={gender.toString()} // Chuyển đổi boolean thành string
-                    onChange={(e) => setGender(e.target.value === "true")}
-                    fullWidth
-                    margin="normal"
-                >
-                    <MenuItem value="true">Male</MenuItem>
-                    <MenuItem value="false">Female</MenuItem>
-                </TextField>
-                <TextField
-                    label="Email"
-                    name="Email"
-                    defaultValue={profile.Email}
-                    onChange={e => setEmail(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Password"
-                    name="Password"
-                    defaultValue={profile.Password}
-                    onChange={e => setPassword(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Image"
-                    name="Image"
-                    defaultValue={profile.Image}
-                    onChange={e => setImage(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Rating"
-                    name="Rating"
-                    defaultValue={profile.rating}
-                    onChange={e => setRating(parseInt(e.target.value))}
-                    type="number"
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Role"
-                    name="Role"
-                    defaultValue={profile.Role}
-                    onChange={e => setRole(parseInt(e.target.value))}
-                    type="number"
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Is Online"
-                    name="IsOnline"
-                    defaultValue={profile.isOnline}
-                    onChange={e => setIsOnline(e.target.value === "true")}
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
-                <TextField
-                    label="Status"
-                    name="Status"
-                    defaultValue={profile.Status}
-                    onChange={e => setStatus(e.target.value === "true")}
-                    fullWidth
-                    margin="normal"
-                    sx={{ display: 'none' }}
-                />
+                  {/* Age Field */}
+                  <Grid item xs={12}>
+                  <TextField
+                        label="Age"
+                        name="Age"
+                        value={age}
+                        onChange={handleAgeChange}
+                        type="number"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                    />
+                  </Grid>
 
+                  {/* Address Field */}
+                  <Grid item xs={12}>
+                  <TextField
+                        label="Address"
+                        name="Address"
+                        defaultValue={profile.Address}
+                        onChange={e => setAdress(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                    />
+                  </Grid>
+
+                  {/* Gender Field */}
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Gender"
+                      select
+                      value={gender.toString()}
+                      onChange={e => setGender(e.target.value === "true")}
+                      fullWidth
+                      variant="outlined"
+                    >
+                      <MenuItem value="true">Male</MenuItem>
+                      <MenuItem value="false">Female</MenuItem>
+                    </TextField>
+                  </Grid>
+                </Grid>
+
+                {/* Save Button */}
                 <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSave} // Gọi hàm handleSave để mở hộp thoại xác nhận
-                    sx={{ mt: 2 }}
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 3, fontWeight: 'bold', borderRadius: '8px', textAlign: 'center', alignItems: 'center' }}
+                  onClick={handleSave}
                 >
-                    Save
+                  Save
                 </Button>
-            </Box>}
-        </>
-    );
+              </Paper>
+            </Grid>
+          </Grid>
+        </Box>
+      )}
+    </>
+  );
+    
 };
 
 
