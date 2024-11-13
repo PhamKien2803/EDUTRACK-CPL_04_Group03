@@ -16,19 +16,21 @@ function Lession_Lecturers() {
     const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [slotSelected, setSlotSelected] = useState<string>();
-    const[classId,setclassId]=useState<string>("");
+    const [classId, setclassId] = useState<string>("");
 
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const cID = param.get('CourseID');
-    const sID =param.get('semesterId');
+    const sID = param.get('semesterId');
 
-    console.log(cID,sID);
-  const account = useSelector((state: any) => state.account.account);
+    // console.log(cID, sID);
+    const account = useSelector((state: any) => state.account.account);
 
-  console.log(account);
-  
-    
+    // console.log(account);
+
+
+    console.log(classId);
+
 
 
     useEffect(() => {
@@ -41,27 +43,29 @@ function Lession_Lecturers() {
         fetchQuestionSlot();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         getLession();
 
-    },[classId])
+    }, [classId])
 
-    
+    console.log(lessionData);
+
     const getLession = async () => {
         const res = await getCouseraInLecturers(cID, sID, account.UserID);
-        console.log(res);
-        
+        // console.log(res);
+
         if (Array.isArray(res)) {
-            if(classId){
-                setLession(res.find(item=> item.ClassID === classId));
-                
-            }else{
+            if (classId) {
+                setLession(res.find(item => item.ClassID === classId));
+
+            } else {
                 setLession(res[0]);
-                
+
             }
-        
+
+        }
     }
-    }
+
 
 
 
@@ -105,11 +109,11 @@ function Lession_Lecturers() {
     const fetchClass = async () => {
         const resCourse = await getCouseraInLecturers(cID, sID, account.UserID);
         const res = await getClass();
-        let class2:classRoom[];
+        let class2: classRoom[];
         if (Array.isArray(res) && Array.isArray(resCourse)) {
             const updatedClasses = resCourse.map(item => res.find(cl => cl.ClassID === item.ClassID));
             setClasses(updatedClasses)
-            
+
         }
     }
 
@@ -117,21 +121,21 @@ function Lession_Lecturers() {
         <div>
             {
                 lessionData &&
-                slot && participants && questionSlot && classes ?
+                    slot && participants && questionSlot && classes ?
                     <div>
                         <Header
                             courses={course}
                             lession={lessionData}
                         />
-                        <Content 
-                        courses={course}
-                        questionSlot={questionSlot}
-                        slot={slot}
-                        lession={lessionData}
-                        participants={participants}
-                        classes={classes}
-                        setclassId={setclassId}
-                        
+                        <Content
+                            courses={course}
+                            questionSlot={questionSlot}
+                            slot={slot}
+                            lession={lessionData}
+                            participants={participants}
+                            classes={classes}
+                            setclassId={setclassId}
+
                         />
                     </div> :
                     <div>
