@@ -82,7 +82,7 @@ const Discussion: React.FC = () => {
       }
     } else {
       const newComment: answerQuestionSlot = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: "c" + Math.floor(100 + Math.random() * 900),
         comment: text,
         QuestionID: questionID || "",
         UserID: userid,
