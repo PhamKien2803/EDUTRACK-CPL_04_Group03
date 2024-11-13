@@ -114,6 +114,139 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
 };
 
 // Form cho Assignments
+// const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
+//   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+//   const location = useLocation();
+//   const queryParams = new URLSearchParams(location.search);
+//   const Slotid = queryParams.get("Slotid");
+//   const [title, setTitle] = useState("");
+//   const [description, setDescription] = useState("");
+//   const [startDate, setStartDate] = useState<string>("");
+//   const [endDate, setEndDate] = useState<string>("");
+//   const [file, setFile] = useState<string[]>([]); // Change to Base64 array
+
+//   // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//   //   const selectedFile = event.target.files ? event.target.files[0] : null;
+//   //   if (selectedFile) {
+//   //     const reader = new FileReader();
+//   //     reader.onloadend = () => {
+//   //       setFile([reader.result as string]); // set file to Base64 array
+//   //     };
+//   //     reader.readAsDataURL(selectedFile);
+//   //   }
+//   // };
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const selectedFile = event.target.files ? event.target.files[0] : null;
+//     if (selectedFile) {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         setFile((prevFiles) => [...prevFiles, reader.result as string]); // Add file to the array
+//       };
+//       reader.readAsDataURL(selectedFile);
+//     }
+//   };
+
+
+//   const handleSubmit = async () => {
+//     if (!startDate || !endDate || !title || !description) {
+//       Swal.fire({ icon: "error", title: "Missing Data", text: "Please fill out all required fields." });
+//       return;
+//     }
+
+//     const startTime = new Date(startDate).toISOString();
+//     const endTime = new Date(endDate).toISOString();
+
+//     try {
+//       await createAssignmentSlot({
+//         id: "a" + Math.floor(100 + Math.random() * 900),
+//         AssignmentID: "a" + Math.floor(100 + Math.random() * 900),
+//         UserID: userid,
+//         title,
+//         description,
+//         urlfile: file,
+//         TimeStart: startTime,
+//         TimeEnd: endTime,
+//         Slotid: Slotid || '',
+//         Status: 0,
+//       });
+
+//       Swal.fire({ icon: "success", title: "Success", text: "Assignment created successfully!" });
+//       handleClose();
+//     } catch (error) {
+//       console.log(error);
+//       Swal.fire({ icon: "error", title: "Error", text: "Failed to create assignment. Please try again." });
+//     }
+//   };
+
+//   return (
+//     <Grid container spacing={2}>
+//       <Grid item xs={12}>
+//         <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} sx={{ mb: 2 }} />
+//       </Grid>
+//       <Grid item xs={12}>
+//         <TextField
+//           label="Description"
+//           variant="outlined"
+//           fullWidth
+//           multiline
+//           rows={3}
+//           value={description}
+//           onChange={(e) => setDescription(e.target.value)}
+//           sx={{ mb: 2 }}
+//         />
+//       </Grid>
+//       <Grid item xs={12} sm={6}>
+//         <TextField
+//           label="Start Date"
+//           type="datetime-local"
+//           fullWidth
+//           value={startDate}
+//           onChange={(e) => setStartDate(e.target.value)}
+//           sx={{ mb: 2 }}
+//           InputLabelProps={{ shrink: true }}
+//         />
+//       </Grid>
+//       <Grid item xs={12} sm={6}>
+//         <TextField
+//           label="End Date"
+//           type="datetime-local"
+//           fullWidth
+//           value={endDate}
+//           onChange={(e) => setEndDate(e.target.value)}
+//           sx={{ mb: 2 }}
+//           InputLabelProps={{ shrink: true }}
+//         />
+//       </Grid>
+//       <Grid item xs={12}>
+//         <Button
+//           variant="outlined"
+//           component="label"
+//           startIcon={<UploadIcon />}
+//           sx={{
+//             fontWeight: "bold",
+//             textTransform: "capitalize",
+//             color: "#1976d2",
+//             borderColor: "#1976d2",
+//             "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
+//           }}
+//         >
+//           Upload Assignment File
+//           <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
+//         </Button>
+//         {file && <Typography mt={1}>File uploaded:</Typography>}
+//       </Grid>
+//       <Box mt={2} display="flex" justifyContent="space-between" width="100%">
+//         <Button variant="outlined" onClick={handleClose} sx={{ textTransform: "capitalize" }}>
+//           Cancel
+//         </Button>
+//         <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: "capitalize" }}>
+//           Submit
+//         </Button>
+//       </Box>
+//     </Grid>
+//   );
+// };
 const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
   const location = useLocation();
@@ -123,30 +256,17 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [file, setFile] = useState<string[]>([]); // Change to Base64 array
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = event.target.files ? event.target.files[0] : null;
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setFile([reader.result as string]); // set file to Base64 array
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
+  const [file, setFile] = useState<string[]>([]); // Array to store blob URLs
+  const [fileName, setFileName] = useState<string>(""); // State for file name
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFile((prevFiles) => [...prevFiles, reader.result as string]); // Add file to the array
-      };
-      reader.readAsDataURL(selectedFile);
+      const fileURL = URL.createObjectURL(selectedFile);
+      setFile((prevFiles) => [...prevFiles, fileURL]); // Add blob URL to the array
+      setFileName(selectedFile.name); // Set file name
     }
   };
-
 
   const handleSubmit = async () => {
     if (!startDate || !endDate || !title || !description) {
@@ -164,7 +284,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
         UserID: userid,
         title,
         description,
-        urlfile: file,
+        urlfile: file, // Blob URL array
         TimeStart: startTime,
         TimeEnd: endTime,
         Slotid: Slotid || '',
@@ -174,7 +294,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       Swal.fire({ icon: "success", title: "Success", text: "Assignment created successfully!" });
       handleClose();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.fire({ icon: "error", title: "Error", text: "Failed to create assignment. Please try again." });
     }
   };
@@ -182,7 +302,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} sx={{ mb: 2 }} />
+        <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -193,7 +313,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          sx={{ mb: 2 }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -203,7 +322,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           fullWidth
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          sx={{ mb: 2 }}
           InputLabelProps={{ shrink: true }}
         />
       </Grid>
@@ -214,7 +332,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           fullWidth
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          sx={{ mb: 2 }}
           InputLabelProps={{ shrink: true }}
         />
       </Grid>
@@ -234,7 +351,11 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           Upload Assignment File
           <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
         </Button>
-        {file && <Typography mt={1}>File uploaded: {file}</Typography>}
+        {fileName && (
+          <Typography mt={1} color="textSecondary">
+            File uploaded: {fileName}
+          </Typography>
+        )}
       </Grid>
       <Box mt={2} display="flex" justifyContent="space-between" width="100%">
         <Button variant="outlined" onClick={handleClose} sx={{ textTransform: "capitalize" }}>

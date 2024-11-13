@@ -356,7 +356,7 @@
     {
       "UserID": "lt12345",
       "QuestionID": "q111",
-      "Status": 1,
+      "Status": 0,
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "image": "https://www.w3schools.com/",
       "TimeStart": "13:00:00",
@@ -412,30 +412,6 @@
       "Slotid": "s11",
       "Status": 0,
       "SettingStatus": 3
-    },
-    {
-      "id": "3538",
-      "QuestionID": "q336",
-      "UserID": "he170155",
-      "content": "5435345",
-      "image": null,
-      "TimeStart": "00:31:00",
-      "TimeEnd": "00:31:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 2
-    },
-    {
-      "id": "64dd",
-      "QuestionID": "q953",
-      "UserID": "he170155",
-      "content": "alo123",
-      "image": null,
-      "TimeStart": "15:46:00",
-      "TimeEnd": "15:46:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 3
     }
   ],
   "AssignmentSlot": [
@@ -472,7 +448,7 @@
       "TimeStart": "2024-11-12T17:30:00.000Z",
       "TimeEnd": "2024-11-12T17:30:00.000Z",
       "Slotid": "s11",
-      "Status": 2,
+      "Status": 0,
       "id": "cee4"
     },
     {

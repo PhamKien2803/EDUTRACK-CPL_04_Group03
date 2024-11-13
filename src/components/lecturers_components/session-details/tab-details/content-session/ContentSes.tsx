@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Typography, Button, IconButton, Select, MenuItem, SelectChangeEvent, FormControl, InputLabel } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
 import { updateStatusQuestionSLot, updateStatusAssignmentSlot, deleteQuestionSlot, deleteAssignmentSlot } from "../../../../../service/ApiService";
 import { assignmentSlot, questionSlot, slot } from "../../../../../models/Interface";
+import QuestionSlotUpdate from "./update-session/QuestionSlotUpdate";
+import AssignmentSlotUpdateModal from "./update-session/AssignmentSlotUpdate";
 
 interface Props {
   questionSlot: questionSlot[];
@@ -21,10 +23,14 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
   const queryParams = new URLSearchParams(location.search);
   const Slotid = queryParams.get("Slotid");
 
-  const [questionsslotStatus, setQuestionsslotStatus] = React.useState<questionSlot[]>(questionSlot);
-  const [assignmentsslotStatus, setAssignmentsslotStatus] = React.useState<assignmentSlot[]>(assignmentSlot);
+  const [questionsslotStatus, setQuestionsslotStatus] = useState<questionSlot[]>(questionSlot);
+  const [assignmentsslotStatus, setAssignmentsslotStatus] = useState<assignmentSlot[]>(assignmentSlot);
 
-  const [selectedStatus, setSelectedStatus] = React.useState<number | "">("");
+  const [selectedStatus, setSelectedStatus] = useState<number | "">("");
+  const [openQuestionModal, setOpenQuestionModal] = useState(false);
+  const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<questionSlot | null>(null);
+  const [selectedAssignment, setSelectedAssignment] = useState<assignmentSlot | null>(null);
 
   useEffect(() => {
     setQuestionsslotStatus(questionSlot);
@@ -43,12 +49,33 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     setSelectedStatus(event.target.value as number | "");
   };
 
-  const handleEdit = (id: string, type: "question" | "assignment") => {
-    console.log(`Edit ${type} with ID: ${id}`);
+  const handleEditQuestion = (question: questionSlot) => {
+    if (question.Status === 1) {
+      Swal.fire("Cannot Update", "Please stop the question before updating.", "warning");
+      return;
+    } else if (question.Status === 2) {
+      Swal.fire("Cannot Update", "This question has been completed and cannot be updated.", "error");
+      return;
+    }
+
+    setSelectedQuestion(question);
+    setOpenQuestionModal(true);
+  };
+
+  const handleEditAssignment = (assignment: assignmentSlot) => {
+    if (assignment.Status === 1) {
+      Swal.fire("Cannot Update", "Please stop the assignment before updating.", "warning");
+      return;
+    } else if (assignment.Status === 2) {
+      Swal.fire("Cannot Update", "This assignment has been completed and cannot be updated.", "error");
+      return;
+    }
+
+    setSelectedAssignment(assignment);
+    setOpenAssignmentModal(true);
   };
 
   const handleDelete = async (id: string, type: "question" | "assignment", currentStatus: number) => {
-    // Kiểm tra trạng thái để thông báo với người dùng
     if (currentStatus === 1) {
       await Swal.fire("Không thể xóa", "Vui lòng dừng trước khi xóa.", "warning");
       return;
@@ -57,7 +84,6 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
       return;
     }
 
-    // Hiển thị xác nhận trước khi xóa
     const result = await Swal.fire({
       title: "Bạn có chắc chắn muốn xóa?",
       text: "Hành động này không thể hoàn tác!",
@@ -216,7 +242,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           >
             {qs.Status === 0 ? "Start" : qs.Status === 1 ? "Stop" : "Restart"}
           </Button>
-          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(qs.QuestionID, "question"); }}>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleEditQuestion(qs); }}>
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(qs.id, "question", qs.Status); }}>
@@ -272,7 +298,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           >
             {asm.Status === 0 ? "Start" : asm.Status === 1 ? "Stop" : "Restart"}
           </Button>
-          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(asm.id, "assignment"); }}>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleEditAssignment(asm); }}>
             <EditIcon fontSize="small" />
           </IconButton>
           <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(asm.id, "assignment", asm.Status); }}>
@@ -280,6 +306,38 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           </IconButton>
         </Box>
       ))}
+      {/* Modals */}
+      {openQuestionModal && selectedQuestion && (
+        <QuestionSlotUpdate
+          open={openQuestionModal}
+          question={selectedQuestion}
+          onClose={() => setOpenQuestionModal(false)}
+          onSave={(updatedQuestion) => {
+            setQuestionsslotStatus((prevQuestions) =>
+              prevQuestions.map((qs) =>
+                qs.QuestionID === updatedQuestion.QuestionID ? updatedQuestion : qs
+              )
+            );
+            setOpenQuestionModal(false);
+          }}
+
+        />
+      )}
+      {openAssignmentModal && selectedAssignment && (
+        <AssignmentSlotUpdateModal
+          open={openAssignmentModal}
+          assignment={selectedAssignment}
+          onClose={() => setOpenAssignmentModal(false)}
+          onSave={(updatedAssignment) => {
+            setAssignmentsslotStatus((prevAssignments) =>
+              prevAssignments.map((asm) =>
+                asm.AssignmentID === updatedAssignment.AssignmentID ? updatedAssignment : asm
+              )
+            );
+            setOpenAssignmentModal(false);
+          }}
+        />
+      )}
     </Container>
   );
 };
