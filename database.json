@@ -299,8 +299,7 @@
       "id": "cs14",
       "SemesterID": "fall24",
       "SlotID": [
-        "s11",
-        "s12"
+        "s11"
       ],
       "CourseID": "FER201",
       "LecturersID": "lt12345",
