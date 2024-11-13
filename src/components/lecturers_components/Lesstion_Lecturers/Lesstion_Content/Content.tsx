@@ -15,9 +15,10 @@ interface Props {
     classes: classRoom[];
     courses: courses[];
     setclassId: (id: string) => void;
+    classId: string
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, courses, setclassId }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, courses, setclassId, classId }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
 
     const toggleVisibility = useCallback((slotId: string) => {
@@ -51,7 +52,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             <Typography variant="body2" color="textSecondary">
                                                 Timestart - timeEnd
                                             </Typography>
-                                            <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classes[0]?.ClassID}`}>
+                                            <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
                                                 <Button component={Link} variant="outlined" color="secondary" size="small">
                                                     Update Slot
                                                 </Button>

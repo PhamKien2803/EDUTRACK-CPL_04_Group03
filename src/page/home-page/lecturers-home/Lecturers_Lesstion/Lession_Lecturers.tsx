@@ -135,6 +135,7 @@ function Lession_Lecturers() {
                             participants={participants}
                             classes={classes}
                             setclassId={setclassId}
+                            classId={classId}
 
                         />
                     </div> :
