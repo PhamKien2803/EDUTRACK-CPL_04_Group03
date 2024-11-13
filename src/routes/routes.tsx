@@ -15,6 +15,7 @@ import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionA
 import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
+import LogoutButton from "../page/Auth/logout/logout";
 
 
 interface Router {
@@ -99,7 +100,13 @@ const routesStudentHome: Router[] = [
         key: "ProfilePage",
         path: "/edit-profile",
         component: EditProfile
-    }
+    },
+    {
+        name: "Logout",
+        key: "LogoutPage",
+        path: "/logout",
+        component: LogoutButton
+    },
 
 ];
 
