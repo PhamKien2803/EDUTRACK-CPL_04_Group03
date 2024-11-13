@@ -153,7 +153,10 @@ export const createQuestionSlot = (question: questionSlot) => {
 }
 
 export const updateQuestionSLot = (question: questionSlot) => {
-  return axios.put(`QuestionSLot/${question.QuestionID}`, {
+  return axios.put(`QuestionSLot/${question.id}`, {
+    id: question.id,
+    QuestionID: question.QuestionID,
+    UserID: question.UserID,
     content: question.content,
     image: question.image,
     TimeStart: question.TimeStart,
@@ -165,7 +168,9 @@ export const updateQuestionSLot = (question: questionSlot) => {
 }
 
 export const updateStatusQuestionSLot = (status: questionSlot) => {
-  return axios.put(`QuestionSLot/${status.QuestionID}`, {
+  return axios.put(`QuestionSLot/${status.id}`, {
+    UserID: status.UserID,
+    QuestionID: status.QuestionID,
     Status: status.Status, //Chỉ Update Status
     content: status.content,
     image: status.image,
@@ -176,9 +181,7 @@ export const updateStatusQuestionSLot = (status: questionSlot) => {
   });
 }
 
-export const deleteQuestionSlot = (id: string) => {
-  return axios.delete(`QuestionSLot/${id}`);
-}
+
 
 export const createAssignmentSlot = (assignment: assignmentSlot) => {
   return axios.post("AssignmentSlot", {
@@ -208,15 +211,21 @@ export const updateAssignmentSlot = (assignment: assignmentSlot) => {
 }
 
 export const updateStatusAssignmentSlot = (status: assignmentSlot) => {
-  return axios.put(`AssignmentSlot/${status.AssignmentID}`, {
-    Status: status.Status, //Chỉ Update Status
+  return axios.put(`AssignmentSlot/${status.id}`, {
+    UserID: status.UserID,
+    AssignmentID: status.AssignmentID,
     title: status.title,
     description: status.description,
     urlfile: status.urlfile,
     TimeStart: status.TimeStart,
     TimeEnd: status.TimeEnd,
-    Slotid: status.Slotid
+    Slotid: status.Slotid,
+    Status: status.Status, //Chỉ Update Status
   });
+}
+
+export const deleteQuestionSlot = (id: string) => {
+  return axios.delete(`QuestionSLot/${id}`);
 }
 
 export const deleteAssignmentSlot = (id: string) => {
@@ -234,7 +243,7 @@ export const postanswerAssignmentSlot = (user: answerAssignmentSlot) => {
   });
 }
 
-export const updateanswerAssignmentSlot = (user: answerAssignmentSlot) => {
+export const updateAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
   return axios.put(`AnswerAssignmentSlot/${user.id}`, {
     id: user?.id,
     AssignmentID: user?.AssignmentID,
@@ -245,7 +254,7 @@ export const updateanswerAssignmentSlot = (user: answerAssignmentSlot) => {
   });
 }
 
-export const deleteanswerAssignmentSlot = (id: string) => {
+export const deleteAnswerAssignmentSlot = (id: string) => {
   return axios.delete(`AnswerAssignmentSlot/${id}`);
 }
 

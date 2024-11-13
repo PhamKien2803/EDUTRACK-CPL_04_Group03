@@ -13,15 +13,20 @@
     {
       "ClassID": "c124",
       "ClassName": "SE223",
-      "Student": ["he170155", "he170569"],
+      "Student": [
+        "he170155",
+        "he170569"
+      ],
       "Status": true,
       "id": "e048"
-    }
-    ,
+    },
     {
       "ClassID": "c125",
       "ClassName": "SE223",
-      "Student": ["he170156", "he170579"],
+      "Student": [
+        "he170156",
+        "he170579"
+      ],
       "Status": true,
       "id": "e048"
     }
@@ -350,28 +355,28 @@
   ],
   "QuestionSLot": [
     {
-      "id": "b9ca",
-      "QuestionID": "q111",
       "UserID": "lt12345",
+      "QuestionID": "q111",
+      "Status": 1,
       "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "image": "https://www.w3schools.com/",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 1,
-      "SettingStatus": 1
+      "SettingStatus": 1,
+      "id": "b9ca"
     },
     {
-      "id": "a80a",
-      "QuestionID": "q112",
       "UserID": "lt12345",
+      "QuestionID": "q112",
+      "Status": 0,
       "content": "Đặt môi trường gì trên Hệ điều hành?",
       "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 1
+      "SettingStatus": 1,
+      "id": "a80a"
     },
     {
       "id": "a80b",
@@ -398,18 +403,6 @@
       "SettingStatus": 1
     },
     {
-      "id": "e724",
-      "QuestionID": "q789",
-      "UserID": "he170155",
-      "content": "123",
-      "image": null,
-      "TimeStart": "23:11:00",
-      "TimeEnd": "23:59:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 2
-    },
-    {
       "id": "6f17",
       "QuestionID": "q920",
       "UserID": "he170155",
@@ -432,19 +425,31 @@
       "Slotid": "s11",
       "Status": 0,
       "SettingStatus": 2
+    },
+    {
+      "id": "64dd",
+      "QuestionID": "q953",
+      "UserID": "he170155",
+      "content": "alo123",
+      "image": null,
+      "TimeStart": "15:46:00",
+      "TimeEnd": "15:46:00",
+      "Slotid": "s11",
+      "Status": 0,
+      "SettingStatus": 3
     }
   ],
   "AssignmentSlot": [
     {
-      "AssignmentID": "a111",
       "UserID": "he170569",
+      "AssignmentID": "a111",
       "title": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
       "description": "Assignment 1",
       "urlfile": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       "TimeStart": "13:00:00",
       "TimeEnd": "14:00:00",
       "Slotid": "s11",
-      "Status": 1,
+      "Status": 0,
       "id": "b9ca"
     },
     {
@@ -460,14 +465,26 @@
       "id": "a80a"
     },
     {
-      "id": "cee4",
-      "AssignmentID": "a193",
       "UserID": "he170155",
+      "AssignmentID": "a193",
       "title": "12321",
       "description": "1323123",
       "urlfile": [],
       "TimeStart": "2024-11-12T17:30:00.000Z",
       "TimeEnd": "2024-11-12T17:30:00.000Z",
+      "Slotid": "s11",
+      "Status": 2,
+      "id": "cee4"
+    },
+    {
+      "id": "86f6",
+      "AssignmentID": "a122",
+      "UserID": "he170155",
+      "title": "saxsa",
+      "description": "cascsacc",
+      "urlfile": [],
+      "TimeStart": "2024-11-13T08:49:00.000Z",
+      "TimeEnd": "2024-11-13T08:49:00.000Z",
       "Slotid": "s11",
       "Status": 0
     }

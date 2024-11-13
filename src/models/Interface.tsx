@@ -33,6 +33,7 @@ export interface participants {
 }
 
 export interface questionSlot {
+    id: string,
     QuestionID: string,
     UserID: string,
     content: string,
@@ -77,6 +78,7 @@ export interface replies {
 }
 
 export interface assignmentSlot {
+    id: string,
     AssignmentID: string,
     UserID: string,
     title: string,
