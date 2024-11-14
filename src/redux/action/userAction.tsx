@@ -20,3 +20,9 @@ export const doLogin = (data: Participant) => {
     payload: data,
   };
 };
+
+export const doLogout = () => {
+  return {
+    type: "LOGOUT",
+  };
+};

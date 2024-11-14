@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Box, Container, Typography, Button, IconButton } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Container, Typography, Button, IconButton, Select, MenuItem, SelectChangeEvent, FormControl, InputLabel } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; 
+import { useNavigate, useLocation } from "react-router-dom";
+import { updateStatusQuestionSLot, updateStatusAssignmentSlot, deleteQuestionSlot, deleteAssignmentSlot } from "../../../../../service/ApiService";
 import { assignmentSlot, questionSlot, slot } from "../../../../../models/Interface";
 
 interface Props {
@@ -13,100 +15,164 @@ interface Props {
   slots: slot[];
 }
 
-const ContentSes: React.FC<Props> = () => {
+const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const Slotid = queryParams.get("Slotid");
 
-  const handleClickToDiscussion = () => {
-    navigate("/lecturer/session-question");
+  const [questionsslotStatus, setQuestionsslotStatus] = React.useState<questionSlot[]>(questionSlot);
+  const [assignmentsslotStatus, setAssignmentsslotStatus] = React.useState<assignmentSlot[]>(assignmentSlot);
+
+  const [selectedStatus, setSelectedStatus] = React.useState<number | "">("");
+
+  useEffect(() => {
+    setQuestionsslotStatus(questionSlot);
+    setAssignmentsslotStatus(assignmentSlot);
+  }, [questionSlot, assignmentSlot]);
+
+  const handleClickToDiscussion = (questionId: string, slotId: string) => {
+    navigate(`/lecturer/session-question?Slotid=${slotId}&questionId=${questionId}`);
   };
 
-  const handleClickToAssignment = () => {
-    navigate("/lecturer/session-assignment");
+  const handleClickToAssignment = (assignmentId: string, slotId: string) => {
+    navigate(`/lecturer/session-assignment?Slotid=${slotId}&assignmentid=${assignmentId}`);
   };
 
-  const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([
-    {
-      QuestionID: "1",
-      Slotid: "1",
-      content: "What is the capital of France?",
-      Status: 1,
-      UserID: "user1",
-      TimeStart: "2023-01-01T10:00:00Z",
-      TimeEnd: "2023-01-01T11:00:00Z",
-    },
-    {
-      QuestionID: "2",
-      Slotid: "1",
-      content: "Explain the theory of relativity.",
-      Status: 0,
-      UserID: "user2",
-      TimeStart: "2023-01-02T10:00:00Z",
-      TimeEnd: "2023-01-02T11:00:00Z",
-    },
-    {
-      QuestionID: "3",
-      Slotid: "2",
-      content: "Describe the process of photosynthesis.",
-      Status: 1,
-      UserID: "user3",
-      TimeStart: "2023-01-03T10:00:00Z",
-      TimeEnd: "2023-01-03T11:00:00Z",
-    },
-  ]);
-
-  const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([
-    {
-      AssignmentID: "a111",
-      UserID: "lt12345",
-      title: "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống?",
-      description: "Assignment 1",
-      urlfile: "https://www.w3schools.com/",
-      TimeLimit: "1500",
-      Slotid: "1",
-      Status: 0,
-    },
-  ]);
-
-  const SlotId = "1";
-  const filteredQuestions = questionSlot.filter((qs) => qs.Slotid === SlotId);
-  const filteredAssignments = assignmentSlot.filter((asm) => asm.Slotid === SlotId);
-
-  const handleStatusToggle = (id: string, type: "question" | "assignment") => {
-    if (type === "question") {
-      setQuestionSlot((prevQuestions) =>
-        prevQuestions.map((qs) =>
-          qs.QuestionID === id
-            ? { ...qs, Status: qs.Status === 0 ? 1 : qs.Status === 1 ? 2 : 0 }
-            : qs
-        )
-      );
-    } else {
-      setAssignmentSlot((prevAssignments) =>
-        prevAssignments.map((asm) =>
-          asm.AssignmentID === id
-            ? { ...asm, Status: asm.Status === 0 ? 1 : asm.Status === 1 ? 2 : 0 }
-            : asm
-        )
-      );
-    }
+  const handleStatusFilterChange = (event: SelectChangeEvent<number>) => {
+    setSelectedStatus(event.target.value as number | "");
   };
 
   const handleEdit = (id: string, type: "question" | "assignment") => {
-    // Add edit logic here
     console.log(`Edit ${type} with ID: ${id}`);
   };
 
-  const handleDelete = (id: string, type: "question" | "assignment") => {
-    // Add delete logic here
-    console.log(`Delete ${type} with ID: ${id}`);
+  const handleDelete = async (id: string, type: "question" | "assignment", currentStatus: number) => {
+    // Kiểm tra trạng thái để thông báo với người dùng
+    if (currentStatus === 1) {
+      await Swal.fire("Không thể xóa", "Vui lòng dừng trước khi xóa.", "warning");
+      return;
+    } else if (currentStatus === 2) {
+      await Swal.fire("Không thể xóa", "Không thể xóa vì đã hoàn thành.", "error");
+      return;
+    }
+
+    // Hiển thị xác nhận trước khi xóa
+    const result = await Swal.fire({
+      title: "Bạn có chắc chắn muốn xóa?",
+      text: "Hành động này không thể hoàn tác!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        if (type === "question") {
+          await deleteQuestionSlot(id);
+          setQuestionsslotStatus((prevQuestions) =>
+            prevQuestions.filter((qs) => qs.QuestionID !== id)
+          );
+          Swal.fire("Đã xóa!", "Question đã được xóa thành công.", "success");
+        } else if (type === "assignment") {
+          await deleteAssignmentSlot(id);
+          setAssignmentsslotStatus((prevAssignments) =>
+            prevAssignments.filter((asm) => asm.AssignmentID !== id)
+          );
+          Swal.fire("Đã xóa!", "Assignment đã được xóa thành công.", "success");
+        }
+      } catch (error) {
+        console.log(error);
+        Swal.fire("Lỗi", "Có lỗi xảy ra khi xóa.", "error");
+      }
+    }
   };
 
+  const handleStatusQuestionSLotUpdate = async (questionId: string, currentStatus: number) => {
+    const newStatus = currentStatus === 0 ? 1 : currentStatus === 1 ? 2 : 0;
+
+    try {
+      const questionToUpdate = questionsslotStatus.find((qs) => qs.QuestionID === questionId);
+      if (questionToUpdate) {
+        await updateStatusQuestionSLot({
+          ...questionToUpdate,
+          Status: newStatus,
+        });
+
+        setQuestionsslotStatus((prevQuestions) =>
+          prevQuestions.map((qs) =>
+            qs.QuestionID === questionId ? { ...qs, Status: newStatus } : qs
+          )
+        );
+
+        console.log(`Status updated successfully for QuestionID: ${questionId}`);
+      } else {
+        console.error("Question not found");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const handleStatusAssignmentSlotUpdate = async (assignmentId: string, currentStatus: number) => {
+    const newStatus = currentStatus === 0 ? 1 : currentStatus === 1 ? 2 : 0;
+
+    try {
+      const assignmentToUpdate = assignmentsslotStatus.find((asm) => asm.AssignmentID === assignmentId);
+      if (assignmentToUpdate) {
+        await updateStatusAssignmentSlot({
+          ...assignmentToUpdate,
+          Status: newStatus,
+        });
+
+        setAssignmentsslotStatus((prevAssignments) =>
+          prevAssignments.map((asm) =>
+            asm.AssignmentID === assignmentId ? { ...asm, Status: newStatus } : asm
+          )
+        );
+
+        console.log(`Status updated successfully for AssignmentID: ${assignmentId}`);
+      } else {
+        console.error("Assignment not found");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const filteredQuestions = questionsslotStatus.filter(
+    (qs) => qs.Slotid === Slotid && (selectedStatus === "" || qs.Status === selectedStatus)
+  );
+
+  const filteredAssignments = assignmentsslotStatus.filter(
+    (asm) => asm.Slotid === Slotid && (selectedStatus === "" || asm.Status === selectedStatus)
+  );
   return (
     <Container sx={{ padding: "8px", maxWidth: "500px" }}>
+      <Box mb={2}>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
+          <InputLabel id="status-filter-label">Status Filter</InputLabel>
+          <Select
+            labelId="status-filter-label"
+            id="status-filter"
+            value={selectedStatus}
+            onChange={handleStatusFilterChange}
+            label="Status Filter"
+          >
+            <MenuItem value="">
+              <em>All</em>
+            </MenuItem>
+            <MenuItem value={0}>Not Started</MenuItem>
+            <MenuItem value={1}>In Progress</MenuItem>
+            <MenuItem value={2}>Finished</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       {filteredQuestions.map((qs, index) => (
         <Box
           key={qs.QuestionID}
-          onClick={handleClickToDiscussion}
+          onClick={() => handleClickToDiscussion(qs?.QuestionID, qs?.Slotid)}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -145,7 +211,7 @@ const ContentSes: React.FC<Props> = () => {
             color={qs.Status === 0 ? "warning" : qs.Status === 1 ? "error" : "secondary"}
             onClick={(e) => {
               e.stopPropagation();
-              handleStatusToggle(qs.QuestionID, "question");
+              handleStatusQuestionSLotUpdate(qs.QuestionID, qs.Status);
             }}
           >
             {qs.Status === 0 ? "Start" : qs.Status === 1 ? "Stop" : "Restart"}
@@ -153,7 +219,7 @@ const ContentSes: React.FC<Props> = () => {
           <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(qs.QuestionID, "question"); }}>
             <EditIcon fontSize="small" />
           </IconButton>
-          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(qs.QuestionID, "question"); }}>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(qs.id, "question", qs.Status); }}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -162,7 +228,7 @@ const ContentSes: React.FC<Props> = () => {
       {filteredAssignments.map((asm, index) => (
         <Box
           key={asm.AssignmentID}
-          onClick={() => handleClickToAssignment()}
+          onClick={() => handleClickToAssignment(asm?.AssignmentID, asm?.Slotid)}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -201,15 +267,15 @@ const ContentSes: React.FC<Props> = () => {
             color={asm.Status === 0 ? "warning" : asm.Status === 1 ? "error" : "secondary"}
             onClick={(e) => {
               e.stopPropagation();
-              handleStatusToggle(asm.AssignmentID, "assignment");
+              handleStatusAssignmentSlotUpdate(asm.AssignmentID, asm.Status);
             }}
           >
             {asm.Status === 0 ? "Start" : asm.Status === 1 ? "Stop" : "Restart"}
           </Button>
-          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(asm.AssignmentID, "assignment"); }}>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleEdit(asm.id, "assignment"); }}>
             <EditIcon fontSize="small" />
           </IconButton>
-          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(asm.AssignmentID, "assignment"); }}>
+          <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(asm.id, "assignment", asm.Status); }}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Box>

@@ -35,6 +35,11 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
                 },
                 isAuthenticated: true
             };
+        case "LOGOUT":
+            return {
+                ...state,
+                user: null,
+            };
 
 
         default: return state;

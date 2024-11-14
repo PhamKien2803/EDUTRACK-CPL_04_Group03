@@ -1,49 +1,31 @@
-import React, { useState, useEffect } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   Avatar, Typography, Box, Divider
 } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
-import { getClass, getParticipants } from "../../../../../service/ApiService";
-import { classRoom, participants } from "../../../../../models/Interface";
+import { useLocation } from "react-router-dom";
+import { participants, classRoom } from "../../../../../models/Interface";
 
-
-
-interface ListProps {
+interface Props {
   participants: participants[];
   classes: classRoom[];
 }
-
-const List: React.FC<ListProps> = () => {
-  const [participants, setParticipants] = useState<participants[]>([]);
-  const [classes, setClasses] = useState<classRoom[]>([]);
-
-  useEffect(() => {
-    fetchParticipants();
-    fetchClasses();
-  }, []);
-
-  const fetchParticipants = async () => {
-    const res = await getParticipants();
-    if (Array.isArray(res)) {
-      setParticipants(res);
-    }
-  };
-
-  const fetchClasses = async () => {
-    const res = await getClass();
-    if (Array.isArray(res)) {
-      setClasses(res);
-    }
-  };
+const List: React.FC<Props> = ({ participants, classes }) => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const classid = queryParams.get("classid");
 
   const getStudentsInClass = (classRoom: classRoom) => {
     return participants.filter(participant => classRoom.Student.includes(participant.id));
   };
 
+  const filteredClasses = classid
+    ? classes.filter(classRoom => classRoom.ClassID === classid)
+    : classes;
+
   return (
     <Box sx={{ padding: 3 }}>
-      {classes.map((classRoom) => {
+      {filteredClasses.map((classRoom) => {
         const students = getStudentsInClass(classRoom);
 
         return (
