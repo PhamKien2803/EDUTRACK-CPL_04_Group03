@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Comment from './../comment-question/Comment';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { answerQuestionSlot, participants } from '../../../../models/Interface';
+import { getAnswerQuestionSlot, getParticipants } from '../../../../service/ApiService';
 
 function TabsDicussion() {
+  const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+  const [searchParams] = useSearchParams();
+  const questionID = searchParams.get("questionId");
+  const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
+  const [participants, setParticipants] = useState<participants[]>([]);
+
   const [value, setValue] = useState<string>('one');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -17,6 +27,39 @@ function TabsDicussion() {
       setLoading(false);
     }, 500);
   };
+
+  useEffect(() => {
+    fetchAnswerQuestionSlot();
+    fetchParticipants();
+  }, [userid]);
+
+  const fetchAnswerQuestionSlot = async () => {
+    try {
+      const res: answerQuestionSlot[] = await getAnswerQuestionSlot();
+      setAnswerQuestionSlots(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchParticipants = async () => {
+    try {
+      const res: participants[] = await getParticipants();
+      setParticipants(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUsernameById = (userID: string) => {
+    const user = participants.find((participant) => participant.id === userID);
+    return user ? user.UserName : "Unknown User";
+  };
+
+  const filterCommentQuestion = answerQuestionSlots.filter(
+    (comment) => comment?.QuestionID === questionID
+  );
+  console.log(filterCommentQuestion);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -34,13 +77,18 @@ function TabsDicussion() {
 
       {loading && <LinearProgress color="secondary" />}
 
-      {!loading && (
-        <Box sx={{ marginTop: '20px' }}>
-          {value === 'one' && (
-            <Comment/>
-          )}
+      {!loading && value === 'one' && filterCommentQuestion.map((comment) => (
+        <Box key={comment.id} sx={{ marginTop: '20px' }}>
+          <Comment
+            userIds={comment?.UserID}
+            username={getUsernameById(comment?.UserID)}
+            rating={comment?.Rating}
+            text={comment?.comment}
+            questionID={comment?.QuestionID}
+            timestamp={comment?.Timestamped}
+            answerId={comment?.id} />
         </Box>
-      )}
+      ))}
     </Box>
   );
 }

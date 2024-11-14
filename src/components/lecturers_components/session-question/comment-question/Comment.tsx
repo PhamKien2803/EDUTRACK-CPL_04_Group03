@@ -1,36 +1,23 @@
-import { useState } from 'react';
-import { Box, Typography, Avatar, Paper, Rating, TextField, Button, Collapse, Divider, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Avatar, Paper, Rating, TextField, Button, Collapse } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import ReplyIcon from '@mui/icons-material/Reply';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
+import { replies as Reply, participants } from '../../../../models/Interface';
+import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
+import { useSelector } from 'react-redux';
+import ReplyComment from './ReplyComment';
 
-// Static data for comments
-const comments = [
-  {
-    username: "Alice",
-    text: "This was a helpful explanation. Thanks for the detailed insights!",
-    rating: 4.5,
-    timestamp: new Date().toISOString(),
-    replies: [
-      {
-        username: "John",
-        text: "Glad it helped, Alice! Let me know if you have further questions.",
-        timestamp: new Date().toISOString(),
-      }
-    ]
-  },
-  {
-    username: "Bob",
-    text: "Could you elaborate more on state management in React? I am a bit confused about the hooks.",
-    rating: 3.0,
-    timestamp: new Date().toISOString(),
-    replies: []
-  }
-];
+interface Props {
+  userIds: string;
+  username: string;
+  text?: string;
+  time?: string;
+  rating?: number;
+  questionID?: string;
+  answerId?: string;
+  timestamp?: string;
+}
 
-// Rating labels
 const labels: { [index: number]: string } = {
   0.5: 'Useless',
   1: 'Useless+',
@@ -44,105 +31,174 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment = () => {
-  const [currentRating, setCurrentRating] = useState<number | null>(4.5);
+const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
+  const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
+  const [replies, setReplies] = useState<Reply[]>([]);
+  const [participants, setParticipants] = useState<participants[]>([]);
+  const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
 
-  const handleReplyToggle = () => setReplying(!replying);
+  useEffect(() => {
+    if (answerId) fetchReplies(answerId);
+  }, [answerId]);
 
-  const handleReplySubmit = () => {
-    if (replyText.trim()) {
-      // Normally, post reply to the server
-      setReplyText('');
-      setReplying(false);
-      Swal.fire('Success', 'Your reply has been posted.', 'success');
-    } else {
-      Swal.fire('Warning', 'Reply cannot be empty.', 'warning');
+  useEffect(() => {
+    fetchParticipants();
+  }, []);
+
+  const fetchReplies = async (answerId: string) => {
+    try {
+      const data: Reply[] = await getRepliesContent();
+      setReplies(data.filter((reply) => reply.answerID === answerId));
+    } catch (e) {
+      console.error("Error fetching replies:", e);
     }
   };
 
-  const handleRatingChange = (newValue: number | null) => setCurrentRating(newValue);
+  const fetchParticipants = async () => {
+    try {
+      const res: participants[] = await getParticipants();
+      setParticipants(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUsernameByID = (userID: string) => participants.find((user) => user.id === userID)?.UserName || "Unknown User";
+
+  const handleReplyToggle = () => setReplying(!replying);
+
+  const handleReplySubmit = async () => {
+    if (!replyText.trim() || !answerId) return;
+    try {
+      await postReply(answerId, replyText, loggedInUserId, new Date().toISOString());
+      setReplyText('');
+      setReplying(false);
+      fetchReplies(answerId);
+    } catch (error) {
+      console.error("Error posting reply:", error);
+    }
+  };
+
+  const handleDeleteReply = async (replyId: string) => {
+    if (!answerId) return;
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to delete this reply?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteReply({ id: replyId } as Reply);
+        fetchReplies(answerId);
+        Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+      } catch (error) {
+        console.error("Error deleting reply:", error);
+        Swal.fire('Error', 'There was an error deleting the reply.', 'error');
+      }
+    }
+  };
+
+  const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
+    try {
+      await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
+      fetchReplies(answerId);
+    } catch (error) {
+      console.error("Error updating reply:", error);
+    }
+  };
+
+  const handleRatingChange = async (newValue: number | null) => {
+    setCurrentRating(newValue);
+    if (!answerId) return;
+    try {
+      await updateRating({
+        id: answerId,
+        Rating: newValue || 0,
+        comment: text || "",
+        QuestionID: questionID || "",
+        UserID: userIds || "",
+        Replies: replies.map((reply) => reply.id),
+        Timestamped: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Error updating rating:", error);
+    }
+  };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '860px', mx: 'auto', mt: 4 }}>
-      {comments.map((comment, index) => (
-        <Paper key={index} elevation={3} sx={{ p: 3, mb: 2, borderRadius: 2 }}>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>{comment.username.charAt(0)}</Avatar>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{comment.username}</Typography>
-              <Typography variant="body2" color="text.secondary">{comment.text}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {comment.timestamp ? new Date(comment.timestamp).toLocaleString() : "Just now"}
-              </Typography>
-            </Box>
-          </Box>
+    <Paper elevation={5} sx={{ padding: 2, marginBottom: 2, width: '100%', maxWidth: '860px' }}>
+      <Box display="flex" alignItems="center">
+        <Avatar sx={{ marginRight: 2 }}>{(username || 'U').charAt(0).toUpperCase()}</Avatar>
+        <Box flexGrow={1}>
+          <Typography variant="h6">{username}</Typography>
+          <Typography variant="body2" color="text.secondary">{text}</Typography>
+          <Typography variant="caption" color="text.secondary">
+            {timestamp ? new Date(timestamp).toLocaleString() : "Just now"}
+          </Typography>
+        </Box>
+      </Box>
 
-          <Box display="flex" alignItems="center" mt={1} mb={2}>
-            <Rating
-              name="hover-feedback"
-              value={currentRating}
-              precision={0.5}
-              onChange={(_, newValue) => handleRatingChange(newValue)}
-              onChangeActive={(_, newHover) => setHover(newHover)}
-              emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-            />
-            <Box sx={{ ml: 2, color: 'text.secondary' }}>
-              {hover !== -1 ? labels[hover] : labels[currentRating || 0]}
-            </Box>
-          </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
+        <Rating
+          name="hover-feedback"
+          value={currentRating}
+          precision={0.5}
+          onChange={(_event, newValue) => handleRatingChange(newValue)}
+          onChangeActive={(_event, newHover) => setHover(newHover)}
+          getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
+          emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        />
+        <Box sx={{ ml: 2 }}>{labels[hover >= 0 ? hover : currentRating || 0]}</Box>
+      </Box>
 
-          <Divider sx={{ my: 2 }} />
+      <Box>
+        {replies.map((reply) => (
+          <ReplyComment
+            key={reply.id}
+            userIds={reply.UserID}
+            replies={[reply]}
+            timestamp={reply.Timestamped ? new Date(reply.Timestamped).toLocaleString() : "Just now"}
+            username={getUsernameByID(reply.UserID)}
+            answerId={reply.answerID}
+            onDelete={reply.UserID === loggedInUserId ? handleDeleteReply : undefined}
+            onUpdate={reply.UserID === loggedInUserId ? handleUpdateReply : undefined}
+          />
+        ))}
+      </Box>
 
-          <Box>
-            <IconButton size="small" color="primary" onClick={handleReplyToggle}>
-              <ReplyIcon fontSize="small" />
-            </IconButton>
-            <IconButton size="small" color="error">
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-            <IconButton size="small" color="primary">
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Box>
+      <Box sx={{ marginTop: 2 }}>
+        <Button variant="outlined" size="small" onClick={handleReplyToggle}>
+          {replying ? 'Cancel' : 'Reply'}
+        </Button>
+      </Box>
 
-          <Collapse in={replying} timeout="auto" unmountOnExit sx={{ mt: 2 }}>
-            <TextField
-              fullWidth
-              multiline
-              rows={2}
-              variant="outlined"
-              label="Your Reply"
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-              sx={{ mb: 1 }}
-            />
-            <Button variant="contained" color="primary" onClick={handleReplySubmit}>
+      <Collapse in={replying} timeout="auto" unmountOnExit>
+        <Box sx={{ marginTop: 2 }}>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            variant="outlined"
+            label="Your Reply"
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+          />
+          <Box sx={{ marginTop: 1 }}>
+            <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
               Submit Reply
             </Button>
-          </Collapse>
-
-          <Box sx={{ mt: 3 }}>
-            {comment.replies?.map((reply, index) => (
-              <Paper key={index} elevation={1} sx={{ p: 2, mt: 2, borderRadius: 2 }}>
-                <Box display="flex" alignItems="center">
-                  <Avatar sx={{ bgcolor: 'secondary.main', mr: 2 }}>{reply.username.charAt(0)}</Avatar>
-                  <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{reply.username}</Typography>
-                    <Typography variant="body2" color="text.secondary">{reply.text}</Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {reply.timestamp ? new Date(reply.timestamp).toLocaleString() : "Just now"}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Paper>
-            ))}
           </Box>
-        </Paper>
-      ))}
-    </Box>
+        </Box>
+      </Collapse>
+    </Paper>
   );
 };
 
