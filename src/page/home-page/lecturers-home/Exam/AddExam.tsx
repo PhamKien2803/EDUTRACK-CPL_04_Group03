@@ -16,7 +16,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { v4 as uuidv4 } from 'uuid';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import _ from 'lodash';
-import Lightbox from "react-awesome-lightbox";
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
@@ -270,9 +269,9 @@ export const AddExam = () => {
 
                         </Box>}
                     </Box>
-                    {item.imagePreview &&
+                    {/* {item.imagePreview &&
                         <Lightbox onClose={() => handleZoomImage(item.id)} image={item.image} title="Image Title"></Lightbox>
-                    }
+                    } */}
                 </Box>
             ))
             }

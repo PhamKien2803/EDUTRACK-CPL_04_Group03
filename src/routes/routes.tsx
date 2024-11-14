@@ -151,7 +151,26 @@ const routesLecturersHome: Router[] = [
         key: "LessionPage",
         path: "/lecturer/lession-course",
         component: Lession_Lecturers
-    }
+    },
+    {
+        name: "Profile",
+        key: "ProfilePage",
+        path: "/profile",
+        component: Profile
+    },
+
+    {
+        name: "Update-Profile",
+        key: "ProfilePage",
+        path: "/edit-profile",
+        component: EditProfile
+    },
+    {
+        name: "Logout",
+        key: "LogoutPage",
+        path: "/logout",
+        component: LogoutButton
+    },
         
 ];
 
