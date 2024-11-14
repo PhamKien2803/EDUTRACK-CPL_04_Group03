@@ -113,8 +113,9 @@ function Lession_Lecturers() {
         if (Array.isArray(res) && Array.isArray(resCourse)) {
             const updatedClasses = resCourse.map(item => res.find(cl => cl.ClassID === item.ClassID));
             setClasses(updatedClasses)
-
+            setclassId(res[0].ClassID)
         }
+
     }
 
     return (

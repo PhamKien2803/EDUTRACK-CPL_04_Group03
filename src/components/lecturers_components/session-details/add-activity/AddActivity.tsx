@@ -123,30 +123,17 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [file, setFile] = useState<string[]>([]); // Change to Base64 array
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = event.target.files ? event.target.files[0] : null;
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setFile([reader.result as string]); // set file to Base64 array
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
+  const [file, setFile] = useState<string[]>([]); 
+  const [fileName, setFileName] = useState<string>(""); 
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFile((prevFiles) => [...prevFiles, reader.result as string]); // Add file to the array
-      };
-      reader.readAsDataURL(selectedFile);
+      const fileURL = URL.createObjectURL(selectedFile);
+      setFile((prevFiles) => [...prevFiles, fileURL]); 
+      setFileName(selectedFile.name); 
     }
   };
-
 
   const handleSubmit = async () => {
     if (!startDate || !endDate || !title || !description) {
@@ -164,7 +151,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
         UserID: userid,
         title,
         description,
-        urlfile: file,
+        urlfile: file, // Blob URL array
         TimeStart: startTime,
         TimeEnd: endTime,
         Slotid: Slotid || '',
@@ -174,7 +161,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       Swal.fire({ icon: "success", title: "Success", text: "Assignment created successfully!" });
       handleClose();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.fire({ icon: "error", title: "Error", text: "Failed to create assignment. Please try again." });
     }
   };
@@ -182,7 +169,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} sx={{ mb: 2 }} />
+        <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -193,7 +180,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          sx={{ mb: 2 }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -203,7 +189,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           fullWidth
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          sx={{ mb: 2 }}
           InputLabelProps={{ shrink: true }}
         />
       </Grid>
@@ -214,7 +199,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           fullWidth
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          sx={{ mb: 2 }}
           InputLabelProps={{ shrink: true }}
         />
       </Grid>
@@ -234,7 +218,11 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
           Upload Assignment File
           <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
         </Button>
-        {file && <Typography mt={1}>File uploaded: {file}</Typography>}
+        {fileName && (
+          <Typography mt={1} color="textSecondary">
+            File uploaded: {fileName}
+          </Typography>
+        )}
       </Grid>
       <Box mt={2} display="flex" justifyContent="space-between" width="100%">
         <Button variant="outlined" onClick={handleClose} sx={{ textTransform: "capitalize" }}>

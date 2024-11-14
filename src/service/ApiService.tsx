@@ -152,20 +152,7 @@ export const createQuestionSlot = (question: questionSlot) => {
   });
 }
 
-export const updateQuestionSLot = (question: questionSlot) => {
-  return axios.put(`QuestionSLot/${question.id}`, {
-    id: question.id,
-    QuestionID: question.QuestionID,
-    UserID: question.UserID,
-    content: question.content,
-    image: question.image,
-    TimeStart: question.TimeStart,
-    TimeEnd: question.TimeEnd,
-    Slotid: question.Slotid,
-    Status: question.Status,
-    SettingStatus: question.SettingStatus
-  });
-}
+
 
 export const updateStatusQuestionSLot = (status: questionSlot) => {
   return axios.put(`QuestionSLot/${status.id}`, {
@@ -198,8 +185,27 @@ export const createAssignmentSlot = (assignment: assignmentSlot) => {
 }
 
 
+export const updateQuestionSLot = (question: questionSlot) => {
+  return axios.put(`QuestionSLot/${question.id}`, {
+    id: question.id,
+    QuestionID: question.QuestionID,
+    UserID: question.UserID,
+    content: question.content,
+    image: question.image,
+    TimeStart: question.TimeStart,
+    TimeEnd: question.TimeEnd,
+    Slotid: question.Slotid,
+    Status: question.Status,
+    SettingStatus: question.SettingStatus
+  });
+}
+
+
 export const updateAssignmentSlot = (assignment: assignmentSlot) => {
-  return axios.put(`AssignmentSlot/${assignment.AssignmentID}`, {
+  return axios.put(`AssignmentSlot/${assignment.id}`, {
+    id: assignment.id,
+    AssignmentID: assignment.AssignmentID,
+    UserID: assignment.UserID,
     title: assignment.title,
     description: assignment.description,
     urlfile: assignment.urlfile,
@@ -232,12 +238,26 @@ export const deleteAssignmentSlot = (id: string) => {
   return axios.delete(`AssignmentSlot/${id}`);
 }
 
-export const postanswerAssignmentSlot = (user: answerAssignmentSlot) => {
+//AnswerAssignmentSlot
+
+export const getAnswerAssignmentSlot = () => {
+  return axios.get("AnswerAssignmentSlot");
+};
+
+export const getAnswerAssignmentSlot2 = (userID: string, assignmentID: string) => {
+  return axios.get("AnswerAssignmentSlot", {
+    params: { UserID: userID, AssignmentID: assignmentID }
+  });
+};
+
+
+export const postAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
   return axios.post("AnswerAssignmentSlot", {
     id: user?.id,
     AssignmentID: user?.AssignmentID,
     UserID: user?.UserID,
     urlfile: user?.urlfile,
+    score: user?.score,
     Timestamped: new Date().toISOString(),
     Status: user?.Status
   });
@@ -249,6 +269,7 @@ export const updateAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
     AssignmentID: user?.AssignmentID,
     UserID: user?.UserID,
     urlfile: user?.urlfile,
+    score: user?.score,
     Timestamped: new Date().toISOString(),
     Status: user?.Status
   });

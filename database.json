@@ -231,7 +231,7 @@
     },
     {
       "id": "lt12345",
-      "UserName": "Tọ",
+      "UserName": "ThoPN3",
       "Age": 21,
       "Gender": true,
       "Address": "Ha Noi",
@@ -354,316 +354,79 @@
   ],
   "QuestionSLot": [
     {
+      "id": "17d6",
+      "QuestionID": "q129",
       "UserID": "lt12345",
-      "QuestionID": "q111",
-      "Status": 1,
-      "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "image": "https://www.w3schools.com/",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "SettingStatus": 1,
-      "id": "b9ca"
-    },
-    {
-      "UserID": "lt12345",
-      "QuestionID": "q112",
-      "Status": 0,
-      "content": "Đặt môi trường gì trên Hệ điều hành?",
-      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "SettingStatus": 1,
-      "id": "a80a"
-    },
-    {
-      "id": "a80b",
-      "QuestionID": "q113",
-      "UserID": "lt12345",
-      "content": "NextJS là gì? Ưu điểm của ứng dụng NextJS so với các công nghệ web truyền thống",
-      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 1
-    },
-    {
-      "id": "a80c",
-      "QuestionID": "q112",
-      "UserID": "lt12345",
-      "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
-      "image": "https://img5.thuthuatphanmem.vn/uploads/2022/01/12/anh-avatar-cuc-ngau_094941105.jpg",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s12",
-      "Status": 0,
-      "SettingStatus": 1
-    },
-    {
-      "id": "6f17",
-      "QuestionID": "q920",
-      "UserID": "he170155",
-      "content": "66666",
-      "image": null,
-      "TimeStart": "23:34:00",
-      "TimeEnd": "23:50:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 3
-    },
-    {
-      "id": "3538",
-      "QuestionID": "q336",
-      "UserID": "he170155",
-      "content": "5435345",
-      "image": null,
-      "TimeStart": "00:31:00",
-      "TimeEnd": "00:31:00",
+      "content": "Hôm Nay Ăn Gì ? ăn cơm",
+      "image": "",
+      "TimeStart": "2024-11-13T13:52",
+      "TimeEnd": "2024-11-14T14:52",
       "Slotid": "s11",
       "Status": 0,
       "SettingStatus": 2
-    },
-    {
-      "id": "64dd",
-      "QuestionID": "q953",
-      "UserID": "he170155",
-      "content": "alo123",
-      "image": null,
-      "TimeStart": "15:46:00",
-      "TimeEnd": "15:46:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 3
     }
   ],
   "AssignmentSlot": [
     {
-      "UserID": "he170569",
-      "AssignmentID": "a111",
-      "title": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "description": "Assignment 1",
-      "urlfile": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "id": "b9ca"
-    },
-    {
-      "AssignmentID": "a112",
-      "UserID": "he170569",
-      "title": "Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "description": "Assignment 2",
-      "urlfile": "https://www.w3schools.com/",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s12",
-      "Status": 1,
-      "id": "a80a"
-    },
-    {
-      "UserID": "he170155",
-      "AssignmentID": "a193",
-      "title": "12321",
-      "description": "1323123",
-      "urlfile": [],
-      "TimeStart": "2024-11-12T17:30:00.000Z",
-      "TimeEnd": "2024-11-12T17:30:00.000Z",
-      "Slotid": "s11",
-      "Status": 2,
-      "id": "cee4"
-    },
-    {
-      "id": "86f6",
-      "AssignmentID": "a122",
-      "UserID": "he170155",
-      "title": "saxsa",
-      "description": "cascsacc",
-      "urlfile": [],
-      "TimeStart": "2024-11-13T08:49:00.000Z",
-      "TimeEnd": "2024-11-13T08:49:00.000Z",
+      "id": "b34c",
+      "AssignmentID": "a295",
+      "UserID": "lt12345",
+      "title": "Assignment 1",
+      "description": "Project Assignment",
+      "urlfile": [
+        "blob:http://localhost:5173/5df78b30-21ac-4c3a-a831-e7c6e9e0321c"
+      ],
+      "TimeStart": "2024-11-13T13:55",
+      "TimeEnd": "2024-11-15T13:55",
       "Slotid": "s11",
       "Status": 0
     }
   ],
   "AnswerAssignmentSlot": [
     {
-      "id": "1",
-      "AssignmentID": "a111",
-      "UserID": "he173077",
-      "urlfile": "https://www.w3schools.com/",
-      "Timestamped": "2024-11-08T09:21:14.774Z",
-      "Status": 0
+      "id": "as822",
+      "AssignmentID": "a295",
+      "UserID": "he170155",
+      "urlfile": "blob:http://localhost:5173/916b099d-7deb-41a4-b57a-00e1d9f6bb74",
+      "score": 0,
+      "Timestamped": "2024-11-14T10:32:51.410Z",
+      "Status": 1
+    },
+    {
+      "id": "as117",
+      "AssignmentID": "a295",
+      "UserID": "he170155",
+      "urlfile": "blob:http://localhost:5173/33b42ebc-5fcb-493b-92a8-65f37272ae7d",
+      "score": 0,
+      "Timestamped": "2024-11-14T10:44:28.185Z",
+      "Status": 1
     }
   ],
   "AnswerQuestionSlot": [
     {
-      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !jjjj",
-      "QuestionID": "q111",
-      "UserID": "he173077",
-      "Replies": [
-        "0330",
-        "eac1",
-        "fd33",
-        "dc3e",
-        "224f",
-        "bb8a",
-        "fc16"
-      ],
-      "Rating": 3.5,
-      "Timestamped": "2024-11-10T15:41:01.432Z",
-      "id": "3d1d"
-    },
-    {
-      "comment": " (Java web, ASP.NET, PHP, ...) oklea",
-      "QuestionID": "q111",
+      "comment": "Ăn Gì Ai biết được",
+      "QuestionID": "q129",
       "UserID": "he170155",
       "Replies": [],
-      "Rating": 2.5,
-      "Timestamped": "2024-11-10T15:11:47.613Z",
-      "id": "9ace"
-    },
-    {
-      "comment": "Access Denied",
-      "QuestionID": "q111",
-      "UserID": "he170155",
-      "Replies": [],
-      "Rating": 0,
-      "Timestamped": "2024-11-10T15:15:00.155Z",
-      "id": "6eb8"
-    },
-    {
-      "comment": "ssss",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Replies": [],
-      "Rating": 0,
-      "Timestamped": "2024-11-10T16:51:26.046Z",
-      "id": "f4ae"
-    },
-    {
-      "id": "95cc",
-      "comment": "oke",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Rating": 0,
-      "Replies": [],
-      "Timestamped": "2024-11-10T16:40:21.496Z"
-    },
-    {
-      "id": "6b39",
-      "comment": "123",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Rating": 0,
-      "Replies": [],
-      "Timestamped": "2024-11-12T04:38:59.167Z"
-    },
-    {
-      "id": "5c3d",
-      "comment": "3333",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Rating": 0,
-      "Replies": [],
-      "Timestamped": "2024-11-12T04:41:22.438Z"
-    },
-    {
-      "id": "555f",
-      "comment": "233",
-      "QuestionID": "q113",
-      "UserID": "he170569",
-      "Rating": 0,
-      "Replies": [],
-      "Timestamped": "2024-11-12T04:42:21.109Z"
+      "Rating": 4,
+      "Timestamped": "2024-11-14T06:48:59.872Z",
+      "id": "0489"
     }
   ],
   "Replies": [
     {
-      "ReplyContent": "123",
-      "UserID": "he173077",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-07T18:13:39.201Z",
-      "id": "0330"
+      "ReplyContent": "ok nhé ???",
+      "UserID": "lt12345",
+      "answerID": "0489",
+      "Timestamped": "2024-11-14T06:50:04.061Z",
+      "id": "b70f"
     },
     {
-      "id": "63ed",
-      "ReplyContent": "ok",
+      "id": "abbe",
+      "ReplyContent": "Ok thầy",
       "UserID": "he170155",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-07T18:35:54.680Z"
-    },
-    {
-      "ReplyContent": "cccfgfgfg",
-      "UserID": "he170155",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-10T15:08:51.991Z",
-      "id": "855d"
-    },
-    {
-      "ReplyContent": " cx vxcvxcccccc",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:41:50.211Z",
-      "id": "eac1"
-    },
-    {
-      "id": "fd33",
-      "ReplyContent": "ccccc",
-      "UserID": "he173077",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:41:18.138Z"
-    },
-    {
-      "ReplyContent": "htrhrhthhtrhrthhrth",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:56:42.752Z",
-      "id": "dc3e"
-    },
-    {
-      "ReplyContent": "myumm  nhn",
-      "UserID": "he170155",
-      "answerID": "6eb8",
-      "Timestamped": "2024-11-08T09:21:25.843Z",
-      "id": "07c7"
-    },
-    {
-      "ReplyContent": "Kien dep traiddđ",
-      "UserID": "he170569",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-10T15:40:31.563Z",
-      "id": "4c34"
-    },
-    {
-      "id": "eb56",
-      "ReplyContent": "ok nha",
-      "UserID": "he170155",
-      "answerID": "djlcrt7x3",
-      "Timestamped": "2024-11-10T14:43:51.873Z"
-    },
-    {
-      "ReplyContent": "ok234",
-      "UserID": "he170155",
-      "answerID": "2066",
-      "Timestamped": "2024-11-10T15:21:03.846Z",
-      "id": "6681"
-    },
-    {
-      "id": "fc16",
-      "ReplyContent": "ffff",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-10T15:08:42.615Z"
-    },
-    {
-      "id": "1d1e",
-      "ReplyContent": "ok kien",
-      "UserID": "he170569",
-      "answerID": "6eb8",
-      "Timestamped": "2024-11-10T15:25:12.832Z"
+      "answerID": "0489",
+      "Timestamped": "2024-11-14T06:50:18.243Z"
     }
   ],
   "Carousel": [

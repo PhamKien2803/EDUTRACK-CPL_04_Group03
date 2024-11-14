@@ -86,6 +86,7 @@ export interface assignmentSlot {
     urlfile: string[],
     TimeStart: string,
     TimeEnd: string,
+    // score: number,
     Slotid: string,
     Status: number
 }
@@ -95,6 +96,7 @@ export interface answerAssignmentSlot {
     AssignmentID: string,
     UserID: string,
     urlfile: string,
+    score: number,
     Timestamped: string,
     Status: number
 }
