@@ -164,6 +164,5 @@ const routesStaffHome: Router[] = [
 ];
 
 
-const routes: Router[] = [...routesStudentHome, ...routesLecturersHome, ...routesStaffHome];
 
-export { routes };
+export { routesStudentHome, routesLecturersHome, routesStaffHome };
