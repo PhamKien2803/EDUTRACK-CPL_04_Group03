@@ -8,10 +8,12 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import { createAssignmentSlot } from '../../../../service/ApiService';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCommentSettings } from '../../../../redux/action/commentSettingsActions';
 
 // Form cho Questions
 const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
+  const dispatch = useDispatch();
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -52,6 +54,9 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
     else if (commentSetting2) settingStatus = 2;
     else if (commentSetting3) settingStatus = 3;
     else settingStatus = 4;
+
+    dispatch(setCommentSettings(settingStatus));
+
 
     const startTime = new Date(startDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     const endTime = new Date(endDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });

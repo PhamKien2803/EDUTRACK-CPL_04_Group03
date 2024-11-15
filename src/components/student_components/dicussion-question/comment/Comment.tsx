@@ -16,6 +16,7 @@ interface Props {
   questionID?: string;
   answerId?: string;
   timestamp?: string;
+  settingStatus: number; // 1: chỉ hiện reply của user, 2: thấy mọi comment nhưng không reply, 3: thấy toàn bộ và có thể reply
 }
 
 const labels: { [index: number]: string } = {
@@ -31,7 +32,7 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
+const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp, settingStatus }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
@@ -133,6 +134,15 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  const filteredReplies = 
+    settingStatus === 1
+      ? replies.filter((reply) => reply.UserID === loggedInUserId) // Chỉ hiển thị reply của chính user
+      : settingStatus === 2
+      ? replies // Hiển thị toàn bộ nhưng không thể reply
+      : replies; // Hiển thị toàn bộ replies cho setting 3
+
+  const isReplyingDisabled = settingStatus === 2 || (settingStatus === 1 && loggedInUserId !== userIds);
+
   return (
     <Paper elevation={5} sx={{ padding: 2, marginBottom: 2, width: '100%', maxWidth: '860px' }}>
       <Box display="flex" alignItems="center">
@@ -160,7 +170,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       </Box>
 
       <Box>
-        {replies.map((reply) => (
+        {filteredReplies.map((reply) => (
           <Replies
             key={reply.id}
             userIds={reply.UserID}
@@ -168,36 +178,40 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
             timestamp={reply.Timestamped ? new Date(reply.Timestamped).toLocaleString() : "Just now"}
             username={getUsernameByID(reply.UserID)}
             answerId={reply.answerID}
-            onDelete={reply.UserID === loggedInUserId ? handleDeleteReply : undefined}
-            onUpdate={reply.UserID === loggedInUserId ? handleUpdateReply : undefined}
+            onDelete={reply.UserID === loggedInUserId && !isReplyingDisabled ? handleDeleteReply : undefined}
+            onUpdate={reply.UserID === loggedInUserId && !isReplyingDisabled ? handleUpdateReply : undefined}
           />
         ))}
       </Box>
 
-      <Box sx={{ marginTop: 2 }}>
-        <Button variant="outlined" size="small" onClick={handleReplyToggle}>
-          {replying ? 'Cancel' : 'Reply'}
-        </Button>
-      </Box>
-
-      <Collapse in={replying} timeout="auto" unmountOnExit>
+      {!isReplyingDisabled && (
         <Box sx={{ marginTop: 2 }}>
-          <TextField
-            fullWidth
-            multiline
-            rows={3}
-            variant="outlined"
-            label="Your Reply"
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-          />
-          <Box sx={{ marginTop: 1 }}>
-            <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
-              Submit Reply
-            </Button>
-          </Box>
+          <Button variant="outlined" size="small" onClick={handleReplyToggle}>
+            {replying ? 'Cancel' : 'Reply'}
+          </Button>
         </Box>
-      </Collapse>
+      )}
+
+      {!isReplyingDisabled && (
+        <Collapse in={replying} timeout="auto" unmountOnExit>
+          <Box sx={{ marginTop: 2 }}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              variant="outlined"
+              label="Your Reply"
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+            />
+            <Box sx={{ marginTop: 1 }}>
+              <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
+                Submit Reply
+              </Button>
+            </Box>
+          </Box>
+        </Collapse>
+      )}
     </Paper>
   );
 };

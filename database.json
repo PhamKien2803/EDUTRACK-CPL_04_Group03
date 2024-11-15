@@ -354,16 +354,76 @@
   ],
   "QuestionSLot": [
     {
-      "id": "17d6",
-      "QuestionID": "q129",
       "UserID": "lt12345",
-      "content": "Hôm Nay Ăn Gì ? ăn cơm",
+      "QuestionID": "q813",
+      "Status": 0,
+      "content": "Setting 1",
       "image": "",
-      "TimeStart": "2024-11-13T13:52",
-      "TimeEnd": "2024-11-14T14:52",
+      "TimeStart": "22:25:00",
+      "TimeEnd": "22:25:00",
+      "Slotid": "s11",
+      "SettingStatus": 1,
+      "id": "f349"
+    },
+    {
+      "id": "aedf",
+      "QuestionID": "q920",
+      "UserID": "lt12345",
+      "content": "Setting 2",
+      "image": null,
+      "TimeStart": "22:25:00",
+      "TimeEnd": "22:25:00",
       "Slotid": "s11",
       "Status": 0,
       "SettingStatus": 2
+    },
+    {
+      "id": "a592",
+      "QuestionID": "q922",
+      "UserID": "lt12345",
+      "content": "111111111111111",
+      "image": null,
+      "TimeStart": "22:33:00",
+      "TimeEnd": "22:33:00",
+      "Slotid": "s12",
+      "Status": 0,
+      "SettingStatus": 1
+    },
+    {
+      "id": "8bda",
+      "QuestionID": "q384",
+      "UserID": "lt12345",
+      "content": "2222222222",
+      "image": null,
+      "TimeStart": "22:35:00",
+      "TimeEnd": "22:35:00",
+      "Slotid": "s12",
+      "Status": 0,
+      "SettingStatus": 2
+    },
+    {
+      "id": "ebbb",
+      "QuestionID": "q713",
+      "UserID": "lt12345",
+      "content": "3333333333",
+      "image": null,
+      "TimeStart": "22:38:00",
+      "TimeEnd": "22:38:00",
+      "Slotid": "s12",
+      "Status": 0,
+      "SettingStatus": 3
+    },
+    {
+      "id": "a27b",
+      "QuestionID": "q829",
+      "UserID": "lt12345",
+      "content": "mmmmm",
+      "image": null,
+      "TimeStart": "23:00:00",
+      "TimeEnd": "23:00:00",
+      "Slotid": "s12",
+      "Status": 0,
+      "SettingStatus": 1
     }
   ],
   "AssignmentSlot": [
@@ -404,29 +464,198 @@
   ],
   "AnswerQuestionSlot": [
     {
-      "comment": "Ăn Gì Ai biết được",
-      "QuestionID": "q129",
-      "UserID": "he170155",
+      "id": "f7ea",
+      "comment": "Alo",
+      "QuestionID": "q813",
+      "UserID": "he170569",
+      "Rating": 0,
       "Replies": [],
-      "Rating": 4,
-      "Timestamped": "2024-11-14T06:48:59.872Z",
-      "id": "0489"
+      "Timestamped": "2024-11-15T15:26:02.234Z"
+    },
+    {
+      "id": "f9ca",
+      "comment": "â",
+      "QuestionID": "q813",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:26:45.877Z"
+    },
+    {
+      "id": "ae0b",
+      "comment": "as",
+      "QuestionID": "q920",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:27:57.393Z"
+    },
+    {
+      "id": "0be4",
+      "comment": "cccc",
+      "QuestionID": "q920",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:28:07.083Z"
+    },
+    {
+      "id": "4a0a",
+      "comment": " fd ",
+      "QuestionID": "q920",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:32:56.161Z"
+    },
+    {
+      "id": "5a74",
+      "comment": "rgbb",
+      "QuestionID": "q813",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:33:07.483Z"
+    },
+    {
+      "id": "51ed",
+      "comment": "alo",
+      "QuestionID": "q922",
+      "UserID": "he173077",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:34:16.455Z"
+    },
+    {
+      "id": "8c4e",
+      "comment": "ok chưa",
+      "QuestionID": "q922",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:34:44.754Z"
+    },
+    {
+      "id": "a95e",
+      "comment": "dc rồi",
+      "QuestionID": "q922",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:35:13.011Z"
+    },
+    {
+      "id": "fa7c",
+      "comment": "Alo123",
+      "QuestionID": "q384",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:36:16.802Z"
+    },
+    {
+      "id": "2788",
+      "comment": "Alo1234",
+      "QuestionID": "q384",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:36:37.378Z"
+    },
+    {
+      "id": "3e04",
+      "comment": "Ok Setting 2",
+      "QuestionID": "q384",
+      "UserID": "he173077",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:37:04.050Z"
+    },
+    {
+      "id": "5e9f",
+      "comment": "Alo Setting 3",
+      "QuestionID": "q713",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:39:42.226Z"
+    },
+    {
+      "id": "0656",
+      "comment": "Ok Setting 3",
+      "QuestionID": "q713",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:40:00.993Z"
+    },
+    {
+      "id": "4205",
+      "comment": "Ok Conffirm",
+      "QuestionID": "q713",
+      "UserID": "he173077",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T15:40:34.296Z"
+    },
+    {
+      "id": "dfa2",
+      "comment": "llll",
+      "QuestionID": "q829",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T16:00:57.349Z"
+    },
+    {
+      "id": "fb2a",
+      "comment": "mmmmmmmllllllll",
+      "QuestionID": "q829",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T16:01:16.590Z"
+    },
+    {
+      "id": "701c",
+      "comment": "kokok",
+      "QuestionID": "q384",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T16:02:39.125Z"
+    },
+    {
+      "id": "9687",
+      "comment": "jhkhjk",
+      "QuestionID": "q384",
+      "UserID": "he170569",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-15T16:03:23.246Z"
     }
   ],
   "Replies": [
     {
-      "ReplyContent": "ok nhé ???",
-      "UserID": "lt12345",
-      "answerID": "0489",
-      "Timestamped": "2024-11-14T06:50:04.061Z",
-      "id": "b70f"
+      "id": "6b81",
+      "ReplyContent": "ok",
+      "UserID": "he170569",
+      "answerID": "5e9f",
+      "Timestamped": "2024-11-15T15:40:05.649Z"
     },
     {
-      "id": "abbe",
-      "ReplyContent": "Ok thầy",
+      "id": "d17c",
+      "ReplyContent": "Nhận Setting 3",
+      "UserID": "he173077",
+      "answerID": "0656",
+      "Timestamped": "2024-11-15T15:40:27.296Z"
+    },
+    {
+      "id": "db26",
+      "ReplyContent": "ok",
       "UserID": "he170155",
-      "answerID": "0489",
-      "Timestamped": "2024-11-14T06:50:18.243Z"
+      "answerID": "4205",
+      "Timestamped": "2024-11-15T15:40:53.616Z"
     }
   ],
   "Carousel": [

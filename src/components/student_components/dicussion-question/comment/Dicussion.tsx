@@ -19,11 +19,13 @@ import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiS
 import { postComment, updateComment, deleteComment } from "../../../../service/ApiService";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { RootState } from '../../../../redux/reducer/rootReducer';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Discussion: React.FC = () => {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+  const settingStatus = useSelector((state: RootState) => state.commentSettings.settingStatus); // Lấy cài đặt từ Redux
   const [searchParams] = useSearchParams();
   const questionID = searchParams.get("questionid");
   const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
@@ -110,7 +112,7 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
-  }, [userid]);
+  }, [userid, settingStatus]);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
@@ -186,6 +188,20 @@ const Discussion: React.FC = () => {
   const handleCancelEdit = () => {
     setEditingCommentId(null);
     setText("");
+  };
+
+  const filterCommentsBasedOnSettings = (comment: answerQuestionSlot) => {
+    if (settingStatus === 1) {
+      // Only show own comments
+      return comment.UserID === userid;
+    } else if (settingStatus === 2) {
+      // Show all comments but no replies (assumed to handle elsewhere)
+      return true;
+    } else if (settingStatus === 3) {
+      // Show all comments and replies
+      return true;
+    }
+    return true;
   };
 
   return (
@@ -278,7 +294,7 @@ const Discussion: React.FC = () => {
         Your Comments
       </Typography>
 
-      {filterCommentQuestion.map((answer) => (
+      {filterCommentQuestion.filter(filterCommentsBasedOnSettings).map((answer) => (
         <Paper
           key={answer.id}
           elevation={3}
@@ -299,6 +315,7 @@ const Discussion: React.FC = () => {
             questionID={answer?.QuestionID}
             timestamp={answer?.Timestamped}
             answerId={answer?.id}
+            settingStatus={settingStatus}
           />
 
           {answer.UserID === userid && (
