@@ -1,21 +1,21 @@
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
 import { ExamList } from "../components/student_components/examtest/ExamList";
 import { HistoryExam } from "../components/student_components/examtest/exam-history/HistoryExam";
-import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import Profile from "../components/student_components/profile/profile";
 import EditProfile from "../components/student_components/profile/updateProfile";
+import LogoutButton from "../page/Auth/logout/logout";
+import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
+import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
+import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
+import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
+import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
+import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
 import Lession from "../page/home-page/student-home/Lession";
 import LessionInfor from "../page/home-page/student-home/LessionInfor";
 import StudentHome from "../page/home-page/student-home/StudentHome";
-import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
-import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
-import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
-import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
-import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
-import LogoutButton from "../page/Auth/logout/logout";
 
 
 interface Router {
@@ -82,12 +82,6 @@ const routesStudentHome: Router[] = [
         component: HistoryExam
     },
 
-    {
-        name: "AddExam",
-        key: "AddExam",
-        path: "/addingExam",
-        component: AddExam
-    },
     {
         name: "Profile",
         key: "ProfilePage",
@@ -171,7 +165,14 @@ const routesLecturersHome: Router[] = [
         path: "/logout",
         component: LogoutButton
     },
-        
+
+    {
+        name: "AddExam",
+        key: "AddExam",
+        path: "/addingExam",
+        component: AddExam
+    }
+
 ];
 
 const routesStaffHome: Router[] = [
@@ -184,4 +185,4 @@ const routesStaffHome: Router[] = [
 
 
 
-export { routesStudentHome, routesLecturersHome, routesStaffHome };
+export { routesLecturersHome, routesStaffHome, routesStudentHome };

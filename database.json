@@ -354,16 +354,16 @@
   ],
   "QuestionSLot": [
     {
-      "id": "17d6",
-      "QuestionID": "q129",
       "UserID": "lt12345",
+      "QuestionID": "q129",
+      "Status": 2,
       "content": "Hôm Nay Ăn Gì ? ăn cơm",
       "image": "",
       "TimeStart": "2024-11-13T13:52",
       "TimeEnd": "2024-11-14T14:52",
       "Slotid": "s11",
-      "Status": 0,
-      "SettingStatus": 2
+      "SettingStatus": 2,
+      "id": "17d6"
     }
   ],
   "AssignmentSlot": [

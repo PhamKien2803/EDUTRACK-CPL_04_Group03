@@ -41,7 +41,7 @@ const getCourseSemester = () => {
   return axios.get("CourseSemester");
 };
 
-const getCourseSemesterById = (id: string) => {
+const getCourseSemesterById = (id: any) => {
   return axios.get(`CourseSemester/${id}`);
 };
 
@@ -99,22 +99,22 @@ const getSemester = () => {
 
 
 const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
-    image: string, rating: number, role: number, isOnline: boolean, status: boolean
-  ) => {
-    return axios.put(`Participants/${id}`, {
-      UserName: name,
-      Age: age,
-      Gender: gender,
-      Address: address,
-      Password: password,
-      Image: image,
-      rating: rating,
-      Role: role,
-      isOnline: isOnline,
-      Status: status,
-      Email: email,
-    });
-  };
+  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+) => {
+  return axios.put(`Participants/${id}`, {
+    UserName: name,
+    Age: age,
+    Gender: gender,
+    Address: address,
+    Password: password,
+    Image: image,
+    rating: rating,
+    Role: role,
+    isOnline: isOnline,
+    Status: status,
+    Email: email,
+  });
+};
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
