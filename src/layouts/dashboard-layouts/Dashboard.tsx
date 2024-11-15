@@ -1,70 +1,75 @@
-import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import UpcomingIcon from '@mui/icons-material/Upcoming';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import LiveHelpIcon from '@mui/icons-material/LiveHelp';
-import SchoolIcon from '@mui/icons-material/School';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { AppProvider, type Navigation } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { Navigate, Outlet, useLocation, useNavigationType } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Box, CircularProgress } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { createTheme } from "@mui/material/styles";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import UpcomingIcon from "@mui/icons-material/Upcoming";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import SchoolIcon from "@mui/icons-material/School";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
+import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigationType,
+} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
   {
-    segment: 'profile',
-    title: 'Profile',
+    segment: "profile",
+    title: "Profile",
     icon: <AccountCircleIcon />,
   },
 
   {
-    segment: 'home-page',
-    title: 'Dashboard',
+    segment: "home-page",
+    title: "Dashboard",
     icon: <DashboardIcon />,
   },
   {
-    segment: 'Assignments',
-    title: 'Assignments',
+    segment: "Assignments",
+    title: "Assignments",
     icon: <AssignmentIcon />,
   },
   {
-    segment: 'Upcoming',
-    title: 'UpcomingSlots',
+    segment: "Upcoming",
+    title: "UpcomingSlots",
     icon: <UpcomingIcon />,
   },
   {
-    segment: 'Upcoming',
-    title: 'Read user guide',
+    segment: "Upcoming",
+    title: "Read user guide",
     icon: <PictureAsPdfIcon />,
   },
   {
-    segment: 'Contact',
-    title: 'Contact Support',
+    segment: "Contact",
+    title: "Contact Support",
     icon: <SupportAgentIcon />,
   },
   {
-    segment: 'FQA',
-    title: 'FQA',
+    segment: "FQA",
+    title: "FQA",
     icon: <LiveHelpIcon />,
   },
 
   {
-    segment: 'Logout',
-    title: 'Logout',
+    segment: "Logout",
+    title: "Logout",
     icon: <LogoutIcon />,
-  }
+  },
 ];
 
 //theme structure with type annotations
 const demoTheme = createTheme({
   cssVariables: {
-    colorSchemeSelector: 'data-toolpad-color-scheme',
+    colorSchemeSelector: "data-toolpad-color-scheme",
   },
   colorSchemes: { light: true, dark: true },
   breakpoints: {
@@ -78,11 +83,10 @@ const demoTheme = createTheme({
   },
 });
 
-
 function DashboardLayoutBranding() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(
-    JSON.parse(localStorage.getItem('isMenuExpanded') || 'false')
+    JSON.parse(localStorage.getItem("isMenuExpanded") || "false")
   );
   const location = useLocation();
   const navigationType = useNavigationType();
@@ -95,7 +99,7 @@ function DashboardLayoutBranding() {
   }, [location, navigationType]);
 
   useEffect(() => {
-    localStorage.setItem('isMenuExpanded', JSON.stringify(isMenuExpanded));
+    localStorage.setItem("isMenuExpanded", JSON.stringify(isMenuExpanded));
   }, [isMenuExpanded]);
 
   // Toggle menu expansion
@@ -109,7 +113,7 @@ function DashboardLayoutBranding() {
       branding={{
         logo: (
           <Box display="flex" alignItems="center">
-            <SchoolIcon sx={{ fontSize: '2.5rem' }} />
+            <SchoolIcon sx={{ fontSize: "2.5rem" }} />
             <img
               src="https://th.bing.com/th/id/OIP.yQVfminp9JifX-QE4swlHwAAAA?rs=1&pid=ImgDetMain"
               alt="EduTrack logo"
@@ -117,11 +121,14 @@ function DashboardLayoutBranding() {
             />
           </Box>
         ),
-        title: '',
+        title: "",
       }}
       theme={demoTheme}
     >
-      <DashboardLayout isMenuExpanded={isMenuExpanded} onToggleMenu={handleToggleMenu}>
+      <DashboardLayout
+        isMenuExpanded={isMenuExpanded}
+        onToggleMenu={handleToggleMenu}
+      >
         {loading && (
           <Box position="fixed" top={0} left={0} right={0} zIndex={1101}>
             <CircularProgress color="secondary" />
@@ -131,6 +138,6 @@ function DashboardLayoutBranding() {
       </DashboardLayout>
     </AppProvider>
   );
-};
+}
 
 export default DashboardLayoutBranding;
