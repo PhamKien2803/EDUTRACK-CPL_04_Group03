@@ -384,30 +384,21 @@
   ],
   "AnswerAssignmentSlot": [
     {
-      "id": "as576",
+      "id": "as508",
       "AssignmentID": "a295",
-      "UserID": "he170155",
-      "urlfile": "blob:http://localhost:5173/8f871b01-9ddf-4534-9b37-61cdba2b64ed",
-      "score": 0,
-      "Timestamped": "2024-11-14T18:42:53.978Z",
-      "Status": 1
-    },
-    {
-      "id": "as744",
-      "AssignmentID": "a295",
-      "UserID": "he170155",
-      "urlfile": "blob:http://localhost:5173/374d667c-4ad9-4a55-8c5a-9498708b3969",
+      "UserID": "he170569",
+      "urlfile": "blob:http://localhost:5173/321f93a5-bb51-4065-9f1b-c7fa439f9789",
       "score": 10,
-      "Timestamped": "2024-11-14T18:55:38.488Z",
+      "Timestamped": "2024-11-14T19:28:49.063Z",
       "Status": 1
     },
     {
-      "id": "as363",
+      "id": "as807",
       "AssignmentID": "a295",
       "UserID": "he170155",
-      "urlfile": "blob:http://localhost:5173/dfd0852d-fd7e-47e5-9d91-e17d9f3b8bf5",
-      "score": 0,
-      "Timestamped": "2024-11-14T19:03:02.468Z",
+      "urlfile": "blob:http://localhost:5173/3e70bd84-0cc7-4fec-9e29-8cb6aea16e1d",
+      "score": 9,
+      "Timestamped": "2024-11-15T04:12:04.965Z",
       "Status": 1
     }
   ],

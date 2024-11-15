@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { answerAssignmentSlot, participants } from '../../../../models/Interface';
+import { updateScoreAssignmentSlot } from "../../../../service/ApiService";
 
 interface Props {
   answerAssignmentSlot: answerAssignmentSlot[];
@@ -15,9 +16,8 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
   const [searchParams] = useSearchParams();
   const assignmentID = searchParams.get('assignmentid');
   const [filteredSubmissions, setFilteredSubmissions] = useState<(answerAssignmentSlot & { studentName: string })[]>([]);
-  
-  const [editingIndex, setEditingIndex] = useState<number | null>(null); // Track which row is being edited
-  const [tempScore, setTempScore] = useState<string>(''); // Temporary score while editing
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [tempScore, setTempScore] = useState<string>('');
 
   useEffect(() => {
     const mappedSubmissions = answerAssignmentSlot
@@ -39,17 +39,35 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
   };
 
   const handleSaveClick = (index: number) => {
-    // Here you would typically save the updated score, e.g., via an API or update local state
     const updatedSubmissions = [...filteredSubmissions];
-    updatedSubmissions[index].score = Number(tempScore); // Update the score
+    const newScore = Number(tempScore);
+    updatedSubmissions[index].score = newScore;
 
     setFilteredSubmissions(updatedSubmissions);
-    setEditingIndex(null); // Exit editing mode
+    setEditingIndex(null);
+
+    updateScore(index, newScore);
   };
 
   const handleCancelClick = () => {
-    setEditingIndex(null); // Exit editing mode without saving
-    setTempScore(''); // Clear temporary score
+    setEditingIndex(null);
+    setTempScore('');
+  };
+
+  const updateScore = (index: number, score: number) => {
+    const updatedSubmission = filteredSubmissions[index];
+    const updatedData: answerAssignmentSlot = {
+      ...updatedSubmission,
+      score,
+      Timestamped: new Date().toISOString(),
+    };
+    updateScoreAssignmentSlot(updatedData)
+      .then(response => {
+        console.log('Score updated successfully:', response);
+      })
+      .catch(error => {
+        console.error('Error updating score:', error);
+      });
   };
 
   return (

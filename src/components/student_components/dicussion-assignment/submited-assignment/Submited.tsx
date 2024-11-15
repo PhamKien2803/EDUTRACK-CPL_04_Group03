@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button, Paper, TextField, Modal, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Button, Paper, TextField, Modal, Radio, RadioGroup, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot } from "../../../../service/ApiService";
+import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot } from "../../../../service/ApiService";
 import { answerAssignmentSlot } from "../../../../models/Interface";
 
 const Submited: React.FC = () => {
@@ -18,6 +18,27 @@ const Submited: React.FC = () => {
   const [assignmentSlotID, setAssignmentSlotID] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
 
+  const [submissionHistory, setSubmissionHistory] = useState<answerAssignmentSlot[]>([]);
+
+  useEffect(() => {
+    const fetchSubmissionHistory = async () => {
+      try {
+        const res: answerAssignmentSlot[] = await getAnswerAssignmentSlot(); 
+        if(Array.isArray(res)){
+          const response = res.filter((submission) => submission.UserID === userid);
+          setSubmissionHistory(response);
+        }
+        // setSubmissionHistory(response);
+      } catch (error) {
+        console.error('Error fetching submission history:', error);
+      }
+    };
+
+    fetchSubmissionHistory();
+  }, [userid]);
+
+
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFile(event.target.files[0]);
@@ -29,7 +50,6 @@ const Submited: React.FC = () => {
     setLink(e.target.value);
     setSelection('link');
   };
-  
 
   const handleSubmitAssignment = async () => {
     if (file || link) {
@@ -51,6 +71,9 @@ const Submited: React.FC = () => {
         setTimestamp(submissionTimestamp);
         setAssignmentSlotID(newID);
         setScore(10);
+
+        // Append to the submission history without refetching
+        setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
       } catch (error) {
         console.error('Error submitting assignment:', error);
       }
@@ -161,6 +184,34 @@ const Submited: React.FC = () => {
           </Button>
         </Box>
       </Modal>
+
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Submission History</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Submission ID</TableCell>
+                <TableCell>User ID</TableCell>
+                <TableCell>Link/File</TableCell>
+                <TableCell>Score</TableCell>
+                <TableCell>Submission Time</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {submissionHistory?.map((submission) => (
+                <TableRow key={submission?.id}>
+                  <TableCell>{submission?.id}</TableCell>
+                  <TableCell>{submission?.UserID}</TableCell>
+                  <TableCell>{submission?.urlfile}</TableCell>
+                  <TableCell>{submission?.score}</TableCell>
+                  <TableCell>{new Date(submission?.Timestamped).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };
