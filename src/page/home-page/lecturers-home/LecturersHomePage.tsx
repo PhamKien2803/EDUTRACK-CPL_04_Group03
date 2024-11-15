@@ -11,6 +11,7 @@ import {
   TextField,
   IconButton,
   InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
@@ -165,23 +166,23 @@ function LecturersHomePage() {
             <Grid item xs={12} sm={6} md={3} key={course.id} sx={{ p: 1.5 }}>
               <Card
                 sx={{
-                  height: 180,
+                  height: 200,
                   maxWidth: 250,
                   display: "flex",
                   flexDirection: "column",
-                  transition: "all 0.3s ease",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-5px)",
-                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                    boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
                     bgcolor: "primary.light",
                     "& .MuiTypography-root": {
                       color: "white",
                     },
                   },
                   borderRadius: 2,
-                  cursor: "pointer",
                   border: "1px solid #e0e0e0",
                   margin: "0 auto",
+                  cursor: "pointer",
                 }}
               >
                 <Box
@@ -198,10 +199,9 @@ function LecturersHomePage() {
                 <CardContent
                   sx={{
                     flexGrow: 1,
-                    p: 1,
+                    p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center",
                     alignItems: "center",
                     textAlign: "center",
                   }}
@@ -213,12 +213,7 @@ function LecturersHomePage() {
                       fontWeight: 500,
                       fontSize: "0.85rem",
                       lineHeight: 1.3,
-                      maxHeight: "2.8em",
-                      overflow: "hidden",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                      mb: 0.5,
+                      mb: 1,
                     }}
                   >
                     {course.CourseID}
@@ -227,19 +222,37 @@ function LecturersHomePage() {
                     to={`/lecturer/lession-course?CourseID=${course.CourseID}&semesterId=${semesterId}`}
                   >
                     <Typography
-                      variant="body1"
+                      variant="body2"
                       sx={{
-                        fontSize: "0.9rem",
-                        fontWeight: "600",
                         color: "primary.main",
+                        fontWeight: "bold",
                         p: 0.5,
                         borderRadius: 1,
                         bgcolor: "rgba(25, 118, 210, 0.08)",
                       }}
                     >
-                      {dataCourse[0].CourseName}
+                      {dataCourse[0]?.CourseName || "Course Name"}
                     </Typography>
                   </Link>
+                  <Tooltip title="27%" placement="top">
+                    <Box
+                      sx={{
+                        mt: 1,
+                        width: "80%",
+                        height: "8px",
+                        borderRadius: "4px",
+                        bgcolor: "grey.300",
+                        overflow: "hidden",
+                        "&::before": {
+                          content: '""',
+                          display: "block",
+                          height: "100%",
+                          width: "27%", // Adjust dynamically based on progress
+                          bgcolor: "#F05123",
+                        },
+                      }}
+                    />
+                  </Tooltip>
                 </CardContent>
               </Card>
             </Grid>
