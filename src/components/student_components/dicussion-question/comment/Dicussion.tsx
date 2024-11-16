@@ -14,8 +14,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Swal from "sweetalert2";
 import Comment from "./Comment";
-import { participants, answerQuestionSlot } from "../../../../models/Interface";
-import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiService";
+import { participants, answerQuestionSlot, questionSlot } from "../../../../models/Interface";
+import { getAnswerQuestionSlot, getParticipants, getQuestionSLot } from "../../../../service/ApiService";
 import { postComment, updateComment, deleteComment } from "../../../../service/ApiService";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -35,6 +35,8 @@ const Discussion: React.FC = () => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(null);
+
+  const [questionSlots, setQuestionSlots] = useState<questionSlot[]>([]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -112,6 +114,7 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
+    fetchQuestionSlot();
   }, [userid, settingStatus]);
 
   const fetchAnswerQuestionSlot = async () => {
@@ -127,6 +130,15 @@ const Discussion: React.FC = () => {
     try {
       const res: participants[] = await getParticipants();
       setParticipants(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchQuestionSlot = async () => {
+    try {
+      const res: questionSlot[] = await getQuestionSLot();
+      setQuestionSlots(res);
     } catch (error) {
       console.log(error);
     }
@@ -190,19 +202,33 @@ const Discussion: React.FC = () => {
     setText("");
   };
 
-  const filterCommentsBasedOnSettings = (comment: answerQuestionSlot) => {
-    if (settingStatus === 1) {
-      // Only show own comments
+
+  const filterCommentsBasedOnSettings = answerQuestionSlots.filter((comment) => {
+    const questionSlot = questionSlots.find((q) => q.QuestionID === comment.QuestionID);
+    if (!questionSlot) return false;
+
+    const questionSetting = questionSlot.SettingStatus;
+
+    if (questionSetting === 1) {
+
       return comment.UserID === userid;
-    } else if (settingStatus === 2) {
-      // Show all comments but no replies (assumed to handle elsewhere)
+    } else if (questionSetting === 2) {
+
       return true;
-    } else if (settingStatus === 3) {
-      // Show all comments and replies
+    } else if (questionSetting === 0) {
+      
       return true;
     }
-    return true;
-  };
+
+    return false;
+  });
+
+  const filteredComments = filterCommentQuestion.filter((comment) => {
+    const questionSlot = questionSlots.find((q) => q.QuestionID === comment.QuestionID);
+    return questionSlot && filterCommentsBasedOnSettings.includes(comment);
+  });
+
+
 
   return (
     <Fragment>
@@ -294,7 +320,7 @@ const Discussion: React.FC = () => {
         Your Comments
       </Typography>
 
-      {filterCommentQuestion.filter(filterCommentsBasedOnSettings).map((answer) => (
+      {filteredComments.map((answer) => (
         <Paper
           key={answer.id}
           elevation={3}
