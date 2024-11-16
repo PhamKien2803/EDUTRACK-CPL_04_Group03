@@ -16,7 +16,7 @@ interface Props {
   questionID?: string;
   answerId?: string;
   timestamp?: string;
-  settingStatus: number; // 1: chỉ hiện reply của user, 2: thấy mọi comment nhưng không reply, 3: thấy toàn bộ và có thể reply
+  settingStatus: number; // 1: only show replies of the user, 2: show all replies but no reply option, 0: full permissions
 }
 
 const labels: { [index: number]: string } = {
@@ -39,16 +39,20 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
   const [replyText, setReplyText] = useState<string>('');
   const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
+  const [filteredReplies, setFilteredReplies] = useState<Reply[]>([]);
   const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
 
+  // Fetching replies based on the answerId
   useEffect(() => {
     if (answerId) fetchReplies(answerId);
   }, [answerId]);
 
+  // Fetching participants when the component loads
   useEffect(() => {
     fetchParticipants();
   }, []);
 
+  // Fetch replies
   const fetchReplies = async (answerId: string) => {
     try {
       const data: Reply[] = await getRepliesContent();
@@ -58,6 +62,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Fetch participants
   const fetchParticipants = async () => {
     try {
       const res: participants[] = await getParticipants();
@@ -67,10 +72,13 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Get username by user ID
   const getUsernameByID = (userID: string) => participants.find((user) => user.id === userID)?.UserName || "Unknown User";
 
+  // Toggle reply input
   const handleReplyToggle = () => setReplying(!replying);
 
+  // Handle reply submission
   const handleReplySubmit = async () => {
     if (!replyText.trim() || !answerId) return;
     try {
@@ -83,6 +91,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle deleting a reply
   const handleDeleteReply = async (replyId: string) => {
     if (!answerId) return;
     const result = await Swal.fire({
@@ -107,6 +116,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle updating a reply
   const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
     try {
       await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
@@ -116,6 +126,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle rating changes
   const handleRatingChange = async (newValue: number | null) => {
     setCurrentRating(newValue);
     if (!answerId) return;
@@ -134,14 +145,18 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
-  const filteredReplies = 
-    settingStatus === 1
-      ? replies.filter((reply) => reply.UserID === loggedInUserId) // Chỉ hiển thị reply của chính user
-      : settingStatus === 2
-      ? replies // Hiển thị toàn bộ nhưng không thể reply
-      : replies; // Hiển thị toàn bộ replies cho setting 3
+  useEffect(() => {
+    if (settingStatus === 1) {
+      setFilteredReplies(replies.filter((reply) => reply.UserID === loggedInUserId)); 
+    } else if (settingStatus === 2) {
+      setFilteredReplies(replies); 
+    } else {
+      setFilteredReplies(replies); 
+    }
+  }, [settingStatus, replies, loggedInUserId]);
 
   const isReplyingDisabled = settingStatus === 2 || (settingStatus === 1 && loggedInUserId !== userIds);
+  // const isReplyingDisabled = settingStatus === 2
 
   return (
     <Paper elevation={5} sx={{ padding: 2, marginBottom: 2, width: '100%', maxWidth: '860px' }}>

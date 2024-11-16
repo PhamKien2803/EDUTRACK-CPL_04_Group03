@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, Modal, Typography, TextField, Select, MenuItem, FormControl, InputLabel, Fade, IconButton, Grid, Card, CardMedia, Switch, FormControlLabel
+  Box, Button, Modal, Typography, TextField, Select, MenuItem, FormControl, InputLabel, Fade, IconButton, Grid, Switch, FormControlLabel
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import UploadIcon from '@mui/icons-material/Upload';
@@ -11,7 +11,6 @@ import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCommentSettings } from '../../../../redux/action/commentSettingsActions';
 
-// Form cho Questions
 const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   const dispatch = useDispatch();
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
@@ -20,26 +19,27 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
   const Slotid = queryParams.get("Slotid");
 
   const [content, setContent] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  console.log(imageFile);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [commentSetting1, setCommentSetting1] = useState(false);
   const [commentSetting2, setCommentSetting2] = useState(false);
-  const [commentSetting3, setCommentSetting3] = useState(false);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        setImageFile(file);
-        const reader = new FileReader();
-        reader.onloadend = () => setImagePreview(reader.result as string);
-        reader.readAsDataURL(file);
-      } else {
-        alert('Please select an image file!');
-      }
+  // Handle setting changes to ensure only one setting is active at a time
+  const handleCommentSetting1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setCommentSetting1(true);
+      setCommentSetting2(false);  // Disable commentSetting2 when commentSetting1 is selected
+    } else {
+      setCommentSetting1(false);
+    }
+  };
+
+  const handleCommentSetting2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setCommentSetting2(true);
+      setCommentSetting1(false);  // Disable commentSetting1 when commentSetting2 is selected
+    } else {
+      setCommentSetting2(false);
     }
   };
 
@@ -52,11 +52,8 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
     let settingStatus = 0;
     if (commentSetting1) settingStatus = 1;
     else if (commentSetting2) settingStatus = 2;
-    else if (commentSetting3) settingStatus = 3;
-    else settingStatus = 4;
 
     dispatch(setCommentSettings(settingStatus));
-
 
     const startTime = new Date(startDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     const endTime = new Date(endDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -66,7 +63,6 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         QuestionID: "q" + Math.floor(100 + Math.random() * 900),
         UserID: userid,
         content: content,
-        image: imagePreview,
         TimeStart: startTime,
         TimeEnd: endTime,
         Slotid: Slotid || '',
@@ -85,31 +81,51 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <TextField label="Content" variant="outlined" fullWidth multiline rows={4} value={content} onChange={(e) => setContent(e.target.value)} sx={{ mb: 2 }} />
+        <TextField
+          label="Content"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          sx={{ mb: 2 }}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <TextField label="Start Date" type="datetime-local" fullWidth value={startDate} onChange={(e) => setStartDate(e.target.value)} sx={{ mb: 2 }} InputLabelProps={{ shrink: true }} />
+        <TextField
+          label="Start Date"
+          type="datetime-local"
+          fullWidth
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          sx={{ mb: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
-        <TextField label="End Date" type="datetime-local" fullWidth value={endDate} onChange={(e) => setEndDate(e.target.value)} sx={{ mb: 2 }} InputLabelProps={{ shrink: true }} />
-      </Grid>
-      <Grid item xs={12}>
-        <Button variant="outlined" component="label" startIcon={<UploadIcon />} sx={{ fontWeight: 'bold', textTransform: 'capitalize', color: '#1976d2', borderColor: '#1976d2', '&:hover': { backgroundColor: '#1976d2', color: '#fff' } }}>
-          Upload Image
-          <input type="file" accept="image/*" hidden onChange={handleImageChange} />
-        </Button>
-        {imagePreview && (
-          <Card sx={{ maxWidth: 150, boxShadow: 3, borderRadius: 2, overflow: 'hidden', mt: 2 }}>
-            <CardMedia component="img" height="150" image={imagePreview} alt="Preview" />
-          </Card>
-        )}
+        <TextField
+          label="End Date"
+          type="datetime-local"
+          fullWidth
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          sx={{ mb: 2 }}
+          InputLabelProps={{ shrink: true }}
+        />
       </Grid>
       <Grid item xs={12}>
         <Typography variant="subtitle1" gutterBottom>Comment Settings</Typography>
-        <FormControlLabel control={<Switch checked={commentSetting1} onChange={(e) => setCommentSetting1(e.target.checked)} color="primary" />} label="Students can only see their own comments" />
-        <FormControlLabel control={<Switch checked={commentSetting2} onChange={(e) => setCommentSetting2(e.target.checked)} color="primary" />} label="Students can view all comments but cannot reply" />
-        <FormControlLabel control={<Switch checked={commentSetting3} onChange={(e) => setCommentSetting3(e.target.checked)} color="primary" />} label="Students can view and reply to all comments" />
+        <FormControlLabel
+          control={<Switch checked={commentSetting1} onChange={handleCommentSetting1Change} color="primary" />}
+          label="Students can only see their own comments"
+        />
+        <FormControlLabel
+          control={<Switch checked={commentSetting2} onChange={handleCommentSetting2Change} color="primary" />}
+          label="Students can view all comments but cannot reply"
+        />
       </Grid>
+
       <Box mt={2} display="flex" justifyContent="space-between" width="100%">
         <Button variant="outlined" onClick={handleClose} sx={{ textTransform: 'capitalize' }}>Cancel</Button>
         <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: 'capitalize' }}>Submit</Button>
@@ -128,15 +144,15 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [file, setFile] = useState<string[]>([]); 
-  const [fileName, setFileName] = useState<string>(""); 
+  const [file, setFile] = useState<string[]>([]);
+  const [fileName, setFileName] = useState<string>("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
       const fileURL = URL.createObjectURL(selectedFile);
-      setFile((prevFiles) => [...prevFiles, fileURL]); 
-      setFileName(selectedFile.name); 
+      setFile((prevFiles) => [...prevFiles, fileURL]);
+      setFileName(selectedFile.name);
     }
   };
 
