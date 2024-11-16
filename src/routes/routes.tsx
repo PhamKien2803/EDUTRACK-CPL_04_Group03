@@ -16,6 +16,7 @@ import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDeta
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
 import LogoutButton from "../page/Auth/logout/logout";
+import Contact from "../components/student_components/contact-support/contact";
 
 
 interface Router {
@@ -106,6 +107,12 @@ const routesStudentHome: Router[] = [
         key: "LogoutPage",
         path: "/logout",
         component: LogoutButton
+    },
+    {
+        name: "Contact",
+        key: "ContactPage",
+        path: "/contact",
+        component: Contact
     },
 
 ];
