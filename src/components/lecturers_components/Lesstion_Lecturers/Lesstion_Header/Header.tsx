@@ -1,82 +1,41 @@
+import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
 import React from 'react';
-import { Card, Typography, Button, Grid, List, ListItem, Divider } from '@mui/material';
+import { classRoom as ClassRoom, courses as Course, lession as Lession, participants as Participants, questionSlot as QuestionSlot, slot as Slot } from "../../../../models/Interface";
 
-const Header: React.FC = () => {
+import HomeIcon from '@mui/icons-material/Home';
+
+
+interface Props {
+    lession: Lession;
+    courses: Course[];
+}
+const Header: React.FC<Props> = ({ lession, courses }) => {
+    
     return (
-        <div style={{ padding: '20px' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box p={3}>
+            {/* Breadcrumbs */}
+            <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+                <Link href="/lecturer/homePage" color="inherit" underline="hover" display="flex" alignItems="center">
+                    <HomeIcon fontSize="small" sx={{ mr: 0.5 }} />
+                    Home
+                </Link>
+                <Typography color="text.primary" display="flex" alignItems="center">
+                    {courses?.find((c) => c.id === lession?.CourseID)?.CourseName}
+                </Typography>
+
+            </Breadcrumbs>
+            <div>
+                {/* <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h6">FPT Education</Typography>
                 <Typography variant="body1">User Guide | Chat</Typography>
-            </header>
-
-            <main>
+            </header> */}
                 <Typography variant="h4" style={{ margin: '20px 0' }}>
-                    OOP with Java Lab_ Thực hành OOP với Java
+                    {courses?.find((c) => c.id === lession?.CourseID)?.CourseName}
                 </Typography>
-                <Typography variant="body1">Course code: LAB211</Typography>
+                <Typography variant="body1">Course code: {lession.CourseID}</Typography>
 
-                <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                    <Grid item xs={12} md={8}>
-                        <Card variant="outlined">
-                            <Typography variant="h6" style={{ padding: '10px' }}>Slot 1</Typography>
-                            <Divider />
-                            <List>
-                                <ListItem>Orientation</ListItem>
-                                <ListItem>Orientation</ListItem>
-                                <ListItem>Orientation</ListItem>
-                            </List>
-                            <Button variant="text" style={{ margin: '10px' }}>View Detail</Button>
-                        </Card>
-
-                        <Card variant="outlined" style={{ marginTop: '20px' }}>
-                            <Typography variant="h6" style={{ padding: '10px' }}>Slot 2</Typography>
-                            <Divider />
-                            <List>
-                                <ListItem>Orientation</ListItem>
-                                <ListItem>Practice</ListItem>
-                                <ListItem>Mentor review</ListItem>
-                            </List>
-                            <Button variant="text" style={{ margin: '10px' }}>View Detail</Button>
-                        </Card>
-
-                        <Card variant="outlined" style={{ marginTop: '20px' }}>
-                            <Typography variant="h6" style={{ padding: '10px' }}>Slot 3</Typography>
-                            <Divider />
-                            <List>
-                                <ListItem>...</ListItem>
-                                {/* Additional content for Slot 3 */}
-                            </List>
-                            <Button variant="text" style={{ margin: '10px' }}>View Detail</Button>
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <Card variant="outlined" style={{ padding: '20px' }}>
-                            <Typography variant="h6">Class</Typography>
-                            <Typography variant="body1">SE17B01-DN-Spring2023</Typography>
-                            <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">0 online</Typography>
-                            <Typography variant="body2">20 students</Typography>
-                            <Typography variant="body2">20 slots</Typography>
-                            <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">Start date: 17:00 02/01/2023</Typography>
-
-                            <div style={{ marginTop: '20px' }}>
-                                <Typography variant="body1">Lecturer (2)</Typography>
-                                <List>
-                                    <ListItem>edu_next_ltr_fpt_edu_01</ListItem>
-                                    <ListItem>quangltn3@fpt.edu.vn</ListItem>
-                                </List>
-                            </div>
-
-                            <Button variant="contained" color="primary" fullWidth>
-                                Update Student List, Timetable
-                            </Button>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </main>
-        </div>
+            </div>
+        </Box>
     );
 };
 

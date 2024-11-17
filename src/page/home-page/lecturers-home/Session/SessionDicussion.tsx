@@ -13,6 +13,7 @@ function SessionDicussion() {
   const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
   const [slots, setSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+  console.log(questionSlot)
   useEffect(() => {
     if (slotID) {
       getSlotById(slotID);

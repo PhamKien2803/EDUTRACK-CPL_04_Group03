@@ -4,20 +4,20 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
-
-import { getClass, getParticipants, getQuestionSLot } from "../../../../service/ApiService";
-import { classRoom, participants, questionSlot } from "../../../../models/Interface";
+import { getClass, getParticipants, getQuestionSLot, getAssignmentSlot } from "../../../../service/ApiService";
+import { classRoom, participants, questionSlot, assignmentSlot } from "../../../../models/Interface";
 import ContentSes from './content-session/ContentSes';
 import List from './student-list/List';
 
 function TabSession() {
   const [participants, setParticipants] = useState<participants[]>([]);
   const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
+  const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
   const [classes, setClasses] = useState<classRoom[]>([]);
   const [value, setValue] = useState<string>('one');
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log(participants, questionSlot, classes);
+  console.log(participants, questionSlot, classes, assignmentSlot);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setLoading(true);
@@ -31,6 +31,7 @@ function TabSession() {
   useEffect(() => {
     getParticipant();
     fetchQuestionSLot();
+    fetchAssignmentSlot();
     fetchClass();
   }, []);
 
@@ -47,6 +48,13 @@ function TabSession() {
       setQuestionSlot(res);
     }
   };
+
+  const fetchAssignmentSlot = async () => {
+    const res = await getAssignmentSlot()
+    if (Array.isArray(res)) {
+      setAssignmentSlot(res);
+    }
+  }
 
   const fetchClass = async () => {
     const res = await getClass();
@@ -94,7 +102,7 @@ function TabSession() {
           {value === 'one' && (
             <Box sx={{ backgroundColor: '#fafafa', borderRadius: '8px', padding: '20px' }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: 'secondary.main' }}>Content Overview</Typography>
-              <ContentSes />
+              <ContentSes questionSlot={questionSlot} assignmentSlot={assignmentSlot} slots={[]}/>
             </Box>
           )}
 

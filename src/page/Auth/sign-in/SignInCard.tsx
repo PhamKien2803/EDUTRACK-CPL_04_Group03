@@ -119,10 +119,19 @@ const Login: React.FC = () => {
     if (user) {
       dispatch(doLogin(user));
       toast.success("Login successful");
+      switch (user.Role) {
+        case 2: return setTimeout(() => {
+          nav("/home-page");
+        }, 1000);
+        case 0: return setTimeout(() => {
+          nav("/home-page");
+        }, 1000);
+        case 1: return setTimeout(() => {
+          nav("/lecturer/homePage");
+        }, 1000);
+      }
 
-      setTimeout(() => {
-        nav("/home-page");
-      }, 1000);
+
     } else {
       setEmail("");
       setPassword("");

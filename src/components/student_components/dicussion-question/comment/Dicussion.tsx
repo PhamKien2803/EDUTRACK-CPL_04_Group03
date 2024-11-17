@@ -14,16 +14,18 @@ import SaveIcon from '@mui/icons-material/Save';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Swal from "sweetalert2";
 import Comment from "./Comment";
-import { participants, answerQuestionSlot } from "../../../../models/Interface";
-import { getAnswerQuestionSlot, getParticipants } from "../../../../service/ApiService";
+import { participants, answerQuestionSlot, questionSlot } from "../../../../models/Interface";
+import { getAnswerQuestionSlot, getParticipants, getQuestionSLot } from "../../../../service/ApiService";
 import { postComment, updateComment, deleteComment } from "../../../../service/ApiService";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { RootState } from '../../../../redux/reducer/rootReducer';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Discussion: React.FC = () => {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+  const settingStatus = useSelector((state: RootState) => state.commentSettings.settingStatus); // Lấy cài đặt từ Redux
   const [searchParams] = useSearchParams();
   const questionID = searchParams.get("questionid");
   const [answerQuestionSlots, setAnswerQuestionSlots] = useState<answerQuestionSlot[]>([]);
@@ -33,6 +35,8 @@ const Discussion: React.FC = () => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(null);
+
+  const [questionSlots, setQuestionSlots] = useState<questionSlot[]>([]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -82,7 +86,7 @@ const Discussion: React.FC = () => {
       }
     } else {
       const newComment: answerQuestionSlot = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: "c" + Math.floor(100 + Math.random() * 900),
         comment: text,
         QuestionID: questionID || "",
         UserID: userid,
@@ -110,7 +114,8 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     fetchAnswerQuestionSlot();
     fetchParticipants();
-  }, [userid]);
+    fetchQuestionSlot();
+  }, [userid, settingStatus]);
 
   const fetchAnswerQuestionSlot = async () => {
     try {
@@ -125,6 +130,15 @@ const Discussion: React.FC = () => {
     try {
       const res: participants[] = await getParticipants();
       setParticipants(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchQuestionSlot = async () => {
+    try {
+      const res: questionSlot[] = await getQuestionSLot();
+      setQuestionSlots(res);
     } catch (error) {
       console.log(error);
     }
@@ -187,6 +201,34 @@ const Discussion: React.FC = () => {
     setEditingCommentId(null);
     setText("");
   };
+
+
+  const filterCommentsBasedOnSettings = answerQuestionSlots.filter((comment) => {
+    const questionSlot = questionSlots.find((q) => q.QuestionID === comment.QuestionID);
+    if (!questionSlot) return false;
+
+    const questionSetting = questionSlot.SettingStatus;
+
+    if (questionSetting === 1) {
+
+      return comment.UserID === userid;
+    } else if (questionSetting === 2) {
+
+      return true;
+    } else if (questionSetting === 0) {
+      
+      return true;
+    }
+
+    return false;
+  });
+
+  const filteredComments = filterCommentQuestion.filter((comment) => {
+    const questionSlot = questionSlots.find((q) => q.QuestionID === comment.QuestionID);
+    return questionSlot && filterCommentsBasedOnSettings.includes(comment);
+  });
+
+
 
   return (
     <Fragment>
@@ -278,7 +320,7 @@ const Discussion: React.FC = () => {
         Your Comments
       </Typography>
 
-      {filterCommentQuestion.map((answer) => (
+      {filteredComments.map((answer) => (
         <Paper
           key={answer.id}
           elevation={3}
@@ -299,6 +341,7 @@ const Discussion: React.FC = () => {
             questionID={answer?.QuestionID}
             timestamp={answer?.Timestamped}
             answerId={answer?.id}
+            settingStatus={settingStatus}
           />
 
           {answer.UserID === userid && (

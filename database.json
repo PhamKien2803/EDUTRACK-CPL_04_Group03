@@ -12,10 +12,20 @@
     },
     {
       "ClassID": "c124",
-      "ClassName": "SE222",
+      "ClassName": "SE223",
       "Student": [
         "he170155",
         "he170569"
+      ],
+      "Status": true,
+      "id": "e048"
+    },
+    {
+      "ClassID": "c125",
+      "ClassName": "SE223",
+      "Student": [
+        "he170156",
+        "he170579"
       ],
       "Status": true,
       "id": "e048"
@@ -234,7 +244,7 @@
     },
     {
       "id": "lt12345",
-      "UserName": "Tọ",
+      "UserName": "ThoPN3",
       "Age": 21,
       "Gender": true,
       "Address": "Ha Noi",
@@ -267,13 +277,12 @@
   "CourseSemester": [
     {
       "id": "cs11",
-      "SemesterID": "fall24",
+      "SemesterID": "sum24",
       "SlotID": [
         "s11",
         "s12"
       ],
       "CourseID": "FER201",
-      "StudentID": "he173077",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -285,7 +294,6 @@
         "s22"
       ],
       "CourseID": "ENW492c",
-      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -297,7 +305,6 @@
         "s12"
       ],
       "CourseID": "FER201",
-      "StudentID": "he170155",
       "LecturersID": "lt12345",
       "ClassID": "c123"
     },
@@ -305,24 +312,22 @@
       "id": "cs14",
       "SemesterID": "fall24",
       "SlotID": [
-        "s11",
-        "s12"
+        "s11"
       ],
       "CourseID": "FER201",
-      "StudentID": "he170569",
       "LecturersID": "lt12345",
-      "ClassID": "c123"
+      "ClassID": "c124"
     }
   ],
   "Course": [
     {
       "id": "FER201",
-      "CourseName": "Front-End web development with React_Phát triển web Front-End với React",
+      "CourseName": "Front-End web development ",
       "Status": true
     },
     {
       "id": "ENW492c",
-      "CourseName": "Academic Writing Skills_Kỹ năng viết học thuật",
+      "CourseName": "Academic Writing Skills",
       "Status": true
     }
   ],
@@ -361,223 +366,15 @@
     }
   ],
   "QuestionSLot": [
-    {
-      "QuestionID": "q111",
-      "UserID": "lt12345",
-      "content": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 1,
-      "id": "97be"
-    },
-    {
-      "QuestionID": "q112",
-      "UserID": "lt12345",
-      "content": "Đặt môi trường gì trên Hệ điều hành?",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "id": "beb2"
-    },
-    {
-      "QuestionID": "q113",
-      "UserID": "lt12345",
-      "content": "NextJS là gì? Ưu điểm của ứng dụng NextJS so với các công nghệ web truyền thống",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 0,
-      "id": "7de6"
-    },
-    {
-      "QuestionID": "q112",
-      "UserID": "lt12345",
-      "content": "Để tạo ra một ứng dụng React cần cài đặt môi trường gì trên Hệ điều hành? Trình bày các thành phần trong ứng dụng React (node_modules, public, src, ... vv).",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s12",
-      "Status": 0,
-      "id": "ab8c"
-    }
+    
   ],
-  "AssignmentSlot": [
-    {
-      "AssignmentID": "a111",
-      "UserID": "he170569",
-      "title": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "description": "Assignment 1",
-      "urlfile": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s11",
-      "Status": 1,
-      "id": "ebeb"
-    },
-    {
-      "AssignmentID": "a112",
-      "UserID": "he170569",
-      "title": "Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) ?",
-      "description": "Assignment 2",
-      "urlfile": "https://www.w3schools.com/",
-      "TimeStart": "13:00:00",
-      "TimeEnd": "14:00:00",
-      "Slotid": "s12",
-      "Status": 1,
-      "id": "5358"
-    }
-  ],
-  "AnswerAssignmentSlot": [
-    {
-      "id": "1",
-      "AssignmentID": "a111",
-      "UserID": "he173077",
-      "urlfile": "https://www.w3schools.com/",
-      "Timestamped": "2024-11-08T09:21:14.774Z",
-      "Status": 0
-    }
-  ],
+  "AssignmentSlot": [],
+  "AnswerAssignmentSlot": [],
   "AnswerQuestionSlot": [
-    {
-      "comment": "ReactJS là gì? Ưu điểm của ứng dụng ReactJS so với các công nghệ web truyền thống (Java web, ASP.NET, PHP, ...) !jjjj",
-      "QuestionID": "q111",
-      "UserID": "he173077",
-      "Replies": [
-        "0330",
-        "eac1",
-        "fd33",
-        "dc3e",
-        "224f",
-        "bb8a",
-        "fc16"
-      ],
-      "Rating": 3.5,
-      "Timestamped": "2024-11-10T15:41:01.432Z",
-      "id": "3d1d"
-    },
-    {
-      "comment": " (Java web, ASP.NET, PHP, ...) oklea",
-      "QuestionID": "q111",
-      "UserID": "he170155",
-      "Replies": [],
-      "Rating": 2.5,
-      "Timestamped": "2024-11-10T15:11:47.613Z",
-      "id": "9ace"
-    },
-    {
-      "comment": "Access Denied",
-      "QuestionID": "q111",
-      "UserID": "he170155",
-      "Replies": [],
-      "Rating": 0,
-      "Timestamped": "2024-11-10T15:15:00.155Z",
-      "id": "6eb8"
-    },
-    {
-      "comment": "ssss",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Replies": [],
-      "Rating": 0,
-      "Timestamped": "2024-11-10T16:51:26.046Z",
-      "id": "f4ae"
-    },
-    {
-      "id": "95cc",
-      "comment": "oke",
-      "QuestionID": "q111",
-      "UserID": "he170569",
-      "Rating": 0,
-      "Replies": [],
-      "Timestamped": "2024-11-10T16:40:21.496Z"
-    }
+    
   ],
   "Replies": [
-    {
-      "ReplyContent": "123",
-      "UserID": "he173077",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-07T18:13:39.201Z",
-      "id": "0330"
-    },
-    {
-      "id": "63ed",
-      "ReplyContent": "ok",
-      "UserID": "he170155",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-07T18:35:54.680Z"
-    },
-    {
-      "ReplyContent": "cccfgfgfg",
-      "UserID": "he170155",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-10T15:08:51.991Z",
-      "id": "855d"
-    },
-    {
-      "ReplyContent": " cx vxcvxcccccc",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:41:50.211Z",
-      "id": "eac1"
-    },
-    {
-      "id": "fd33",
-      "ReplyContent": "ccccc",
-      "UserID": "he173077",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:41:18.138Z"
-    },
-    {
-      "ReplyContent": "htrhrhthhtrhrthhrth",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-08T07:56:42.752Z",
-      "id": "dc3e"
-    },
-    {
-      "ReplyContent": "myumm  nhn",
-      "UserID": "he170155",
-      "answerID": "6eb8",
-      "Timestamped": "2024-11-08T09:21:25.843Z",
-      "id": "07c7"
-    },
-    {
-      "ReplyContent": "Kien dep traiddđ",
-      "UserID": "he170569",
-      "answerID": "9ace",
-      "Timestamped": "2024-11-10T15:40:31.563Z",
-      "id": "4c34"
-    },
-    {
-      "id": "eb56",
-      "ReplyContent": "ok nha",
-      "UserID": "he170155",
-      "answerID": "djlcrt7x3",
-      "Timestamped": "2024-11-10T14:43:51.873Z"
-    },
-    {
-      "ReplyContent": "ok234",
-      "UserID": "he170155",
-      "answerID": "2066",
-      "Timestamped": "2024-11-10T15:21:03.846Z",
-      "id": "6681"
-    },
-    {
-      "id": "fc16",
-      "ReplyContent": "ffff",
-      "UserID": "he170155",
-      "answerID": "3d1d",
-      "Timestamped": "2024-11-10T15:08:42.615Z"
-    },
-    {
-      "id": "1d1e",
-      "ReplyContent": "ok kien",
-      "UserID": "he170569",
-      "answerID": "6eb8",
-      "Timestamped": "2024-11-10T15:25:12.832Z"
-    }
+    
   ],
   "Carousel": [
     {

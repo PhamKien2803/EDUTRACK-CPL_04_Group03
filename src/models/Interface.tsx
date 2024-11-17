@@ -33,14 +33,19 @@ export interface participants {
 }
 
 export interface questionSlot {
+    id: string,
     QuestionID: string,
     UserID: string,
     content: string,
+    image: string,
     TimeStart: string,
     TimeEnd: string,
     Slotid: string,
-    Status: number
+    Status: number,
+    SettingStatus: number
 }
+
+
 
 export interface classRoom {
     ClassID: string,
@@ -73,6 +78,7 @@ export interface replies {
 }
 
 export interface assignmentSlot {
+    id: string,
     AssignmentID: string,
     UserID: string,
     title: string,
@@ -80,6 +86,7 @@ export interface assignmentSlot {
     urlfile: string[],
     TimeStart: string,
     TimeEnd: string,
+    // score: number,
     Slotid: string,
     Status: number
 }
@@ -89,6 +96,12 @@ export interface answerAssignmentSlot {
     AssignmentID: string,
     UserID: string,
     urlfile: string,
+    score: number,
     Timestamped: string,
+    Status: number
+}
+export interface courses {
+    id: string,
+    CourseName: string,
     Status: number
 }

@@ -16,6 +16,7 @@ interface Props {
   questionID?: string;
   answerId?: string;
   timestamp?: string;
+  settingStatus: number; // 1: only show replies of the user, 2: show all replies but no reply option, 0: full permissions
 }
 
 const labels: { [index: number]: string } = {
@@ -31,23 +32,27 @@ const labels: { [index: number]: string } = {
   5: 'Excellent+',
 };
 
-const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
+const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp, settingStatus }) => {
   const [currentRating, setCurrentRating] = useState<number | null>(rating);
   const [hover, setHover] = useState<number>(-1);
   const [replying, setReplying] = useState<boolean>(false);
   const [replyText, setReplyText] = useState<string>('');
   const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
+  const [filteredReplies, setFilteredReplies] = useState<Reply[]>([]);
   const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
 
+  // Fetching replies based on the answerId
   useEffect(() => {
     if (answerId) fetchReplies(answerId);
   }, [answerId]);
 
+  // Fetching participants when the component loads
   useEffect(() => {
     fetchParticipants();
   }, []);
 
+  // Fetch replies
   const fetchReplies = async (answerId: string) => {
     try {
       const data: Reply[] = await getRepliesContent();
@@ -57,6 +62,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Fetch participants
   const fetchParticipants = async () => {
     try {
       const res: participants[] = await getParticipants();
@@ -66,10 +72,13 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Get username by user ID
   const getUsernameByID = (userID: string) => participants.find((user) => user.id === userID)?.UserName || "Unknown User";
 
+  // Toggle reply input
   const handleReplyToggle = () => setReplying(!replying);
 
+  // Handle reply submission
   const handleReplySubmit = async () => {
     if (!replyText.trim() || !answerId) return;
     try {
@@ -82,6 +91,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle deleting a reply
   const handleDeleteReply = async (replyId: string) => {
     if (!answerId) return;
     const result = await Swal.fire({
@@ -106,6 +116,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle updating a reply
   const handleUpdateReply = async (replyId: string, newContent: string, userId: string, answerId: string) => {
     try {
       await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
@@ -115,6 +126,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
     }
   };
 
+  // Handle rating changes
   const handleRatingChange = async (newValue: number | null) => {
     setCurrentRating(newValue);
     if (!answerId) return;
@@ -132,6 +144,19 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       console.error("Error updating rating:", error);
     }
   };
+
+  useEffect(() => {
+    if (settingStatus === 1) {
+      setFilteredReplies(replies.filter((reply) => reply.UserID === loggedInUserId)); 
+    } else if (settingStatus === 2) {
+      setFilteredReplies(replies); 
+    } else {
+      setFilteredReplies(replies); 
+    }
+  }, [settingStatus, replies, loggedInUserId]);
+
+  const isReplyingDisabled = settingStatus === 2 || (settingStatus === 1 && loggedInUserId !== userIds);
+  // const isReplyingDisabled = settingStatus === 2
 
   return (
     <Paper elevation={5} sx={{ padding: 2, marginBottom: 2, width: '100%', maxWidth: '860px' }}>
@@ -160,7 +185,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       </Box>
 
       <Box>
-        {replies.map((reply) => (
+        {filteredReplies.map((reply) => (
           <Replies
             key={reply.id}
             userIds={reply.UserID}
@@ -168,36 +193,40 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
             timestamp={reply.Timestamped ? new Date(reply.Timestamped).toLocaleString() : "Just now"}
             username={getUsernameByID(reply.UserID)}
             answerId={reply.answerID}
-            onDelete={reply.UserID === loggedInUserId ? handleDeleteReply : undefined}
-            onUpdate={reply.UserID === loggedInUserId ? handleUpdateReply : undefined}
+            onDelete={reply.UserID === loggedInUserId && !isReplyingDisabled ? handleDeleteReply : undefined}
+            onUpdate={reply.UserID === loggedInUserId && !isReplyingDisabled ? handleUpdateReply : undefined}
           />
         ))}
       </Box>
 
-      <Box sx={{ marginTop: 2 }}>
-        <Button variant="outlined" size="small" onClick={handleReplyToggle}>
-          {replying ? 'Cancel' : 'Reply'}
-        </Button>
-      </Box>
-
-      <Collapse in={replying} timeout="auto" unmountOnExit>
+      {!isReplyingDisabled && (
         <Box sx={{ marginTop: 2 }}>
-          <TextField
-            fullWidth
-            multiline
-            rows={3}
-            variant="outlined"
-            label="Your Reply"
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-          />
-          <Box sx={{ marginTop: 1 }}>
-            <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
-              Submit Reply
-            </Button>
-          </Box>
+          <Button variant="outlined" size="small" onClick={handleReplyToggle}>
+            {replying ? 'Cancel' : 'Reply'}
+          </Button>
         </Box>
-      </Collapse>
+      )}
+
+      {!isReplyingDisabled && (
+        <Collapse in={replying} timeout="auto" unmountOnExit>
+          <Box sx={{ marginTop: 2 }}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              variant="outlined"
+              label="Your Reply"
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+            />
+            <Box sx={{ marginTop: 1 }}>
+              <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
+                Submit Reply
+              </Button>
+            </Box>
+          </Box>
+        </Collapse>
+      )}
     </Paper>
   );
 };

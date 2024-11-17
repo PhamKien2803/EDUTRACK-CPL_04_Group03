@@ -1,25 +1,29 @@
-import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { slot as Slot, questionSlot } from "../../../../models/Interface";
+import { useSearchParams } from 'react-router-dom';
 
-const Content: React.FC = () => {
-    // Static data for the list of questions
-    const questionData = [
-        { Slotid: "1", QuestionID: "101", content: "Explain the concept of state management in React.", TimeLimit: 1800 },
-    ];
+interface Props {
+    questionSlot: questionSlot[];
+    slots: Slot[];
+    questionID: string | null;
+    setSlots: (slots: Slot[]) => void;
+    selectedSlot: Slot | null;
+}
 
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-    };
+const Content: React.FC<Props> = ({ questionSlot }) => {
+    const [searchParams] = useSearchParams();
+    const slotID = searchParams.get('Slotid');
+    const questionID = searchParams.get('questionId');
+
+    const filteredQuestions = questionSlot.filter(qs => qs.Slotid === slotID && qs.QuestionID === questionID);
 
     return (
         <div style={{ marginTop: "3rem" }}>
             <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
-            {questionData.length ? (
-                questionData.map((question, index) => (
-                    <QuestionCard key={index} question={question} formatTime={formatTime} />
+            {filteredQuestions.length ? (
+                filteredQuestions.map((question, index) => (
+                    <QuestionCard key={index} question={question} />
                 ))
             ) : (
                 <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
@@ -30,74 +34,52 @@ const Content: React.FC = () => {
     );
 };
 
-interface QuestionSlot {
-    Slotid: string;
-    QuestionID: string;
-    content: string;
-    TimeLimit: number;
-}
-
 interface QuestionCardProps {
-    question: QuestionSlot;
-    formatTime: (seconds: number) => string;
+    question: questionSlot;
 }
 
-const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => {
-    const defaultTime = 1800; // 30 minutes in seconds
-    const storageKey = `timer-${question.QuestionID}`;
-    
-    const getSavedTime = () => {
-        const savedTimeData = localStorage.getItem(storageKey);
-        if (savedTimeData) {
-            const { timeRemaining, isActive } = JSON.parse(savedTimeData);
-            return { timeRemaining, isActive };
-        }
-        return { timeRemaining: defaultTime, isActive: false };
-    };
+const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
+    const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
-    const [timeRemaining, setTimeRemaining] = useState<number>(getSavedTime().timeRemaining);
-    const [timerActive, setTimerActive] = useState<boolean>(getSavedTime().isActive);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const parseTimeToSeconds = (timeString: string): number => {
+        const [hours, minutes, seconds] = timeString.split(':').map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    };
 
     useEffect(() => {
-        let timer: number;
-        if (timerActive && timeRemaining > 0) {
-            timer = window.setInterval(() => {
-                setTimeRemaining((prevTime) => prevTime - 1);
-            }, 1000);
-        } else if (timeRemaining <= 0) {
-            setTimerActive(false);
+        // F5 web , call lại LocalStorage
+        const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
+        const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
+
+        if (initialTimeRemaining !== null) {
+            setTimeRemaining(initialTimeRemaining);
+        } else {
+            const startSeconds = parseTimeToSeconds(question.TimeStart);
+            const endSeconds = parseTimeToSeconds(question.TimeEnd);
+            const initialTimeRemaining = endSeconds - startSeconds;
+            setTimeRemaining(initialTimeRemaining);
         }
 
-        // Save timer state to local storage on every update
-        localStorage.setItem(storageKey, JSON.stringify({ timeRemaining, isActive: timerActive }));
-        
-        return () => window.clearInterval(timer);
-    }, [timerActive, timeRemaining]);
+        const timerInterval = setInterval(() => {
+            setTimeRemaining((prevTime) => {
+                if (prevTime === null || prevTime <= 1) {
+                    clearInterval(timerInterval);
+                    localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
+                    return 0;
+                }
 
-    const handleStart = () => {
-        setTimerActive(true);
-        if (timeRemaining === defaultTime) {
-            setTimeRemaining(defaultTime);
-        }
-    };
+                localStorage.setItem(`timeRemaining_${question.QuestionID}`, (prevTime - 1).toString());
+                return prevTime - 1;
+            });
+        }, 1000);
 
-    const handleStop = () => {
-        setTimerActive(false);
-    };
+        return () => clearInterval(timerInterval);
+    }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
 
-    const handleRestart = () => {
-        setTimeRemaining(defaultTime);
-        setTimerActive(true);
-        handleMenuClose();
-    };
-
-    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
 
     return (
@@ -107,8 +89,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => 
             maxWidth: "850px",
             marginBottom: "1rem",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            transition: "transform 0.3s ease-in-out",
             overflow: "hidden"
-        }}>
+        }}
+        >
             <CardContent style={{
                 backgroundColor: "rgb(250, 246, 246)",
                 padding: "16px",
@@ -118,38 +102,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, formatTime }) => 
                     <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
                         Content
                     </Typography>
-                    <Typography variant="h6" component="div" style={{ color: '#3a3a3a', fontWeight: 'bold' }}>
-                        {formatTime(timeRemaining)}
+                    <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
+                        {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
                     </Typography>
                 </Box>
                 <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />
-                <Typography variant="body2" style={{ color: "#555", fontSize: "14px" }}>
+
+                <Typography variant="body2" style={{ color: "#555", fontSize: "14px", marginBottom: "8px" }}>
                     {question.content}
                 </Typography>
-
-                <Box mt={2} display="flex" justifyContent="flex-end" alignItems="center" gap={1}>
-                    {!timerActive ? (
-                        <Button variant="contained" color="primary" onClick={handleStart}>
-                            Start Question
-                        </Button>
-                    ) : (
-                        <>
-                            <Button variant="contained" color="secondary" onClick={handleStop}>
-                                Stop Question
-                            </Button>
-                            <IconButton onClick={handleMenuOpen}>
-                                <MoreVertIcon />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleMenuClose}
-                            >
-                                <MenuItem onClick={handleRestart}>Restart Time</MenuItem>
-                            </Menu>
-                        </>
-                    )}
-                </Box>
             </CardContent>
         </Card>
     );

@@ -1,11 +1,11 @@
-import { UserAnswer, answerQuestionSlot, replies } from "../models/Interface"
+import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, questionSlot, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
- export const getQuestionByExID = (exId: any) => {
+export const getQuestionByExID = (exId: any) => {
   return axios.get(`QuestionExam?exId=${exId}`);
 };
 
@@ -59,7 +59,7 @@ const getQuestionSLot = () => {
 
 const getQuestionSlotById = (id: string) => {
   return axios.get(`QuestionSLot/${id}`);
-}
+};
 
 const getQuestionSlotBySlotId = (id: string) => {
   return axios.get(`QuestionSLot/${id}`);
@@ -67,19 +67,19 @@ const getQuestionSlotBySlotId = (id: string) => {
 
 const getAnswerQuestionSlot = () => {
   return axios.get("AnswerQuestionSlot");
-}
+};
 
 const getAnswerQuestionSlotByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
-}
+};
 
 const getCommentByQuestionId = (id: string) => {
   return axios.get(`AnswerQuestionSlot/${id}`);
-}
+};
 
 const getRepliesContent = () => {
   return axios.get(`Replies`);
-}
+};
 
 const getClass = () => {
   return axios.get("Class");
@@ -89,12 +89,16 @@ const getCourseSemesterByUserId = (useId: string) => {
   return axios.get(`CourseSemester?StudentID=${useId}`);
 };
 
+const getCourseSemesterByLecturersID = (LecturersID: string) => {
+  return axios.get(`CourseSemester?LecturersID=${LecturersID}`);
+};
+
 const getSemester = () => {
   return axios.get("Semester");
 };
 
 
-const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string,password: string,
+const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
   image: string, rating: number, role: number, isOnline: boolean, status: boolean
 ) => {
   return axios.put(`Participants/${id}`, {
@@ -119,17 +123,16 @@ export const resetPassword = (id: string, password: string) => {
 }
 
 const postAnswer = (ua: UserAnswer) => {
-  return axios.post('UserAnswer', {
+  return axios.post("UserAnswer", {
     answer: ua.answer,
     QuestionID: ua.QuestionID,
-    UserID: ua.UserID
-  })
-}
+    UserID: ua.UserID,
+  });
+};
 
 export const getAnswerByUserId = (id: any) => {
   return axios.get(`UserAnswer?UserID=${id}`);
-
-}
+};
 
 const postComment = (user: answerQuestionSlot) => {
   return axios.post("AnswerQuestionSlot", {
@@ -138,9 +141,162 @@ const postComment = (user: answerQuestionSlot) => {
     UserID: user?.UserID,
     Rating: user?.Rating,
     Replies: user?.Replies,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
+
+export const createQuestionSlot = (question: questionSlot) => {
+  return axios.post("QuestionSLot", {
+    UserID: question.UserID,
+    content: question.content,
+    image: question.image,
+    TimeStart: question.TimeStart,
+    TimeEnd: question.TimeEnd,
+    Slotid: question.Slotid,
+    Status: question.Status,
+    SettingStatus: question.SettingStatus
+  });
+}
+
+
+
+export const updateStatusQuestionSLot = (status: questionSlot) => {
+  return axios.put(`QuestionSLot/${status.id}`, {
+    UserID: status.UserID,
+    QuestionID: status.QuestionID,
+    Status: status.Status, //Chỉ Update Status
+    content: status.content,
+    image: status.image,
+    TimeStart: status.TimeStart,
+    TimeEnd: status.TimeEnd,
+    Slotid: status.Slotid,
+    SettingStatus: status.SettingStatus
+  });
+}
+
+
+
+export const createAssignmentSlot = (assignment: assignmentSlot) => {
+  return axios.post("AssignmentSlot", {
+    AssignmentID: assignment.AssignmentID,
+    UserID: assignment.UserID,
+    title: assignment.title,
+    description: assignment.description,
+    urlfile: assignment.urlfile,
+    TimeStart: assignment.TimeStart,
+    TimeEnd: assignment.TimeEnd,
+    Slotid: assignment.Slotid,
+    Status: assignment.Status
+  });
+}
+
+
+export const updateQuestionSLot = (question: questionSlot) => {
+  return axios.put(`QuestionSLot/${question.id}`, {
+    id: question.id,
+    QuestionID: question.QuestionID,
+    UserID: question.UserID,
+    content: question.content,
+    image: question.image,
+    TimeStart: question.TimeStart,
+    TimeEnd: question.TimeEnd,
+    Slotid: question.Slotid,
+    Status: question.Status,
+    SettingStatus: question.SettingStatus
+  });
+}
+
+
+export const updateAssignmentSlot = (assignment: assignmentSlot) => {
+  return axios.put(`AssignmentSlot/${assignment.id}`, {
+    id: assignment.id,
+    AssignmentID: assignment.AssignmentID,
+    UserID: assignment.UserID,
+    title: assignment.title,
+    description: assignment.description,
+    urlfile: assignment.urlfile,
+    TimeStart: assignment.TimeStart,
+    TimeEnd: assignment.TimeEnd,
+    Slotid: assignment.Slotid,
+    Status: assignment.Status
+  });
+}
+
+export const updateStatusAssignmentSlot = (status: assignmentSlot) => {
+  return axios.put(`AssignmentSlot/${status.id}`, {
+    UserID: status.UserID,
+    AssignmentID: status.AssignmentID,
+    title: status.title,
+    description: status.description,
+    urlfile: status.urlfile,
+    TimeStart: status.TimeStart,
+    TimeEnd: status.TimeEnd,
+    Slotid: status.Slotid,
+    Status: status.Status, //Chỉ Update Status
+  });
+}
+
+export const deleteQuestionSlot = (id: string) => {
+  return axios.delete(`QuestionSLot/${id}`);
+}
+
+export const deleteAssignmentSlot = (id: string) => {
+  return axios.delete(`AssignmentSlot/${id}`);
+}
+
+//AnswerAssignmentSlot
+
+export const getAnswerAssignmentSlot = () => {
+  return axios.get("AnswerAssignmentSlot");
+};
+
+export const getAnswerAssignmentSlot2 = (userID: string, assignmentID: string) => {
+  return axios.get("AnswerAssignmentSlot", {
+    params: { UserID: userID, AssignmentID: assignmentID }
+  });
+};
+
+
+export const postAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.post("AnswerAssignmentSlot", {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    score: user?.score,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const updateAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.put(`AnswerAssignmentSlot/${user.id}`, {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile, //Only Update urlfile
+    score: user?.score,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const updateScoreAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.put(`AnswerAssignmentSlot/${user.id}`, {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    score: user?.score, //Only Update score
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const deleteAnswerAssignmentSlot = (id: string) => {
+  return axios.delete(`AnswerAssignmentSlot/${id}`);
+}
+
 
 // Updating a comment
 export const updateComment = (comment: answerQuestionSlot) => {
@@ -150,7 +306,7 @@ export const updateComment = (comment: answerQuestionSlot) => {
     UserID: comment?.UserID,
     Replies: comment?.Replies,
     Rating: comment?.Rating,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
 
@@ -159,15 +315,18 @@ export const deleteComment = (id: string) => {
   return axios.delete(`AnswerQuestionSlot/${id}`);
 };
 
-
-export const postReply = async (answerID: string, replyContent: string, userID: string, timestamp: string) => {
+export const postReply = async (
+  answerID: string,
+  replyContent: string,
+  userID: string,
+  timestamp: string
+) => {
   try {
     const response = await axios.post(`Replies`, {
       ReplyContent: replyContent,
       UserID: userID,
       answerID: answerID,
-      Timestamped: timestamp
-
+      Timestamped: timestamp,
     });
     return response.data;
   } catch (error) {
@@ -181,14 +340,13 @@ export const updateReply = async (replies: replies) => {
     ReplyContent: replies?.ReplyContent,
     UserID: replies?.UserID,
     answerID: replies?.answerID,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
-}
-
+};
 
 export const deleteReply = async (replies: replies) => {
   return axios.delete(`Replies/${replies.id}`);
-}
+};
 
 export const updateRating = (rating: answerQuestionSlot) => {
   return axios.put(`AnswerQuestionSlot/${rating.id}`, {
@@ -197,16 +355,19 @@ export const updateRating = (rating: answerQuestionSlot) => {
     UserID: rating?.UserID,
     Replies: rating?.Replies,
     Rating: rating?.Rating,
-    Timestamped: new Date().toISOString()
+    Timestamped: new Date().toISOString(),
   });
 };
 
 export const getAssignmentSlot = () => {
   return axios.get("AssignmentSlot");
-}
+};
 
 export const getAssignmentSlotById = (id: string) => {
   return axios.get(`AssignmentSlot/${id}`);
+};
+export const getCouseraInLecturers = (cid: any, sid: any, lid: string) => {
+  return axios.get(`CourseSemester?CourseID=${cid}&SemesterID=${sid}&LecturersID=${lid}`);
 }
 
 
@@ -235,5 +396,6 @@ export {
   updateProfile,
   getRepliesContent,
   postComment,
+  getCourseSemesterByLecturersID,
 
 };

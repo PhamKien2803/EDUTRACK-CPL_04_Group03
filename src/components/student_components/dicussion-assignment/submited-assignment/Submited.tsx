@@ -1,31 +1,181 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button, Paper, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Box, Typography, Button, Paper, Modal, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow
+} from '@mui/material';
+import Swal from 'sweetalert2';
+import { useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot, getParticipants, deleteAnswerAssignmentSlot } from "../../../../service/ApiService";
+import { answerAssignmentSlot, participants } from "../../../../models/Interface";
 
 const Submited: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [selection, setSelection] = useState("file");
-  const [link, setLink] = useState('');
+  const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+  const [searchParams] = useSearchParams();
+  const assignmentID = searchParams.get('assignmentid');
   const [file, setFile] = useState<File | null>(null);
-  console.log(file)
+  const [link, setLink] = useState('');
+  const [selection, setSelection] = useState<'file' | 'link'>('file');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [timestamp, setTimestamp] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assignmentSlotID, setAssignmentSlotID] = useState<string | null>(null);
+  console.log(assignmentSlotID);
+  const [score, setScore] = useState<number | null>(null);
+  const [submissionHistory, setSubmissionHistory] = useState<answerAssignmentSlot[]>([]);
+  const [currentSubmission, setCurrentSubmission] = useState<answerAssignmentSlot | null>(null);
+  const [participants, setParticipants] = useState<participants[]>([]);
+  console.log(participants)
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    const fetchSubmissionHistory = async () => {
+      try {
+        const res: answerAssignmentSlot[] = await getAnswerAssignmentSlot();
+        if (Array.isArray(res)) {
+          const response = res.filter((submission) => submission.UserID === userid);
+          setSubmissionHistory(response);
+        }
+      } catch (error) {
+        console.error('Error fetching submission history:', error);
+      }
+    };
 
-  const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelection(event.target.value);
+    const fetchParticipants = async () => {
+      try {
+        const res: participants[] = await getParticipants();
+        setParticipants(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchSubmissionHistory();
+    fetchParticipants();
+  }, [userid]);
+
+  const getUsernameById = (userID: string) => {
+    const user = participants.find((participant) => participant.id === userID);
+    return user ? user.UserName : "Unknown User";
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFile(event.target.files[0]);
-      setOpen(false);
-      console.log("Uploaded file:", event.target.files[0]);
+      setSelection('file');
     }
   };
 
-  const handleLinkSubmit = () => {
-    setOpen(false);
-    console.log("Entered link:", link);
+
+
+  const handleSubmitAssignment = async () => {
+    if (!file && !link) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Error',
+        text: 'Please select a file or enter a link before submitting.',
+      });
+      return;
+    }
+
+    if (file || link) {
+      const submissionTimestamp = new Date().toISOString();
+      const newID = 'as' + Math.floor(100 + Math.random() * 900);
+      const formData: answerAssignmentSlot = {
+        id: newID,
+        AssignmentID: assignmentID || '',
+        UserID: userid,
+        urlfile: file ? URL.createObjectURL(file) : link,
+        score: 10,
+        Timestamped: submissionTimestamp,
+        Status: 1,
+      };
+
+      try {
+        await postAnswerAssignmentSlot(formData);
+        setIsSubmitted(true);
+        setTimestamp(submissionTimestamp);
+        setAssignmentSlotID(newID);
+        setScore(10);
+        setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
+        Swal.fire({
+          icon: 'success',
+          title: 'Submitted!',
+          text: 'Your assignment has been submitted successfully.',
+        });
+      } catch (error) {
+        console.error('Error submitting assignment:', error);
+      }
+    }
+  };
+
+  const handleOpenUpdateModal = (submission: answerAssignmentSlot) => {
+    setCurrentSubmission(submission);
+    setFile(null);
+    setLink(submission.urlfile);
+    setSelection('link');
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateAssignment = async () => {
+    if (!file && !link) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Update Error',
+        text: 'Please select a file or enter a new link before updating.',
+      });
+      return;
+    }
+
+    if ((file || link) && currentSubmission) {
+      const updatedFormData: answerAssignmentSlot = {
+        ...currentSubmission,
+        urlfile: file ? URL.createObjectURL(file) : link,
+        Timestamped: new Date().toISOString(),
+      };
+
+      try {
+        await updateAnswerAssignmentSlot(updatedFormData);
+        setIsModalOpen(false);
+        setSubmissionHistory((prevHistory) =>
+          prevHistory.map((submission) =>
+            submission.id === updatedFormData.id ? updatedFormData : submission
+          )
+        );
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Your submission has been updated successfully.',
+        });
+      } catch (error) {
+        console.error('Error updating assignment:', error);
+      }
+    }
+  };
+
+  const handleDeleteAssignment = async (submissionID: string) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this submission?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    })
+    if (result.isConfirmed) {
+      try {
+        await deleteAnswerAssignmentSlot(submissionID);
+        setSubmissionHistory((prevHistory) => prevHistory.filter((submission) => submission.id !== submissionID));
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Your submission has been deleted successfully.',
+        });
+      } catch (error) {
+        console.error('Error deleting assignment:', error);
+      }
+    }
+
   };
 
   return (
@@ -33,79 +183,119 @@ const Submited: React.FC = () => {
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>SUBMISSION STATUS</Typography>
-          <Box sx={{ mt: 1, px: 1.5, py: 0.5, bgcolor: '#E0E0E0', borderRadius: 1, display: 'inline-block' }}>
-            <Typography variant="body2">Missing</Typography>
-          </Box>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            {isSubmitted ? 'Submitted' : 'Not Submitted'}
+          </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>SUBMISSION TIME</Typography>
-          <Typography variant="body2" sx={{ mt: 1 }}>(GMT+07)</Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            {timestamp ? new Date(timestamp).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }) : '(GMT+07)'}
+          </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>LINK/FILE ASSIGNMENT</Typography>
+          <Box sx={{ mt: 2 }}>
+            {selection === 'file' && !isSubmitted && (
+              <Button variant="contained" color="primary" component="label" sx={{ fontSize: '1rem', py: 1.5, width: '100%' }}>
+                CHOOSE FILE
+                <input type="file" hidden onChange={handleFileUpload} />
+              </Button>
+            )}
+            {file && (
+              <Typography sx={{ mt: 2, fontSize: '0.9rem' }}>
+                Uploaded File: {file.name}
+              </Typography>
+            )}
+          </Box>
+        </Paper>
+        <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>YOUR SCORE</Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            {score !== null ? score : 'Not graded yet'}
+          </Typography>
         </Paper>
       </Box>
-      
+
       <Box sx={{ mt: 3 }}>
-        <Button variant="outlined" color="secondary" sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1.2, px: 3 }} onClick={handleClickOpen}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1.2, px: 3 }}
+          onClick={handleSubmitAssignment}
+        >
           SUBMIT ASSIGNMENT
         </Button>
       </Box>
 
-      {/* Modal Dialog */}
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center', pb: 1 }}>Upload or Enter Link</DialogTitle>
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, pt: 1 }}>
-          <RadioGroup value={selection} onChange={handleSelectionChange} row sx={{ gap: 4 }}>
-            <FormControlLabel
-              value="file"
-              control={<Radio />}
-              label={<Typography sx={{ fontSize: '1.1rem' }}>Upload File</Typography>}
-              sx={{ '.MuiFormControlLabel-label': { fontWeight: '500' } }}
-            />
-            <FormControlLabel
-              value="link"
-              control={<Radio />}
-              label={<Typography sx={{ fontSize: '1.1rem' }}>Enter Link</Typography>}
-              sx={{ '.MuiFormControlLabel-label': { fontWeight: '500' } }}
-            />
-          </RadioGroup>
-
-          {selection === "file" ? (
-            <Button
-              variant="contained"
-              component="label"
-              color="primary"
-              fullWidth
-              sx={{ fontSize: '1rem', py: 1.5 }}
-            >
-              CHOOSE FILE
-              <input type="file" hidden onChange={handleFileUpload} />
-            </Button>
-          ) : (
-            <TextField
-              label="Enter Link"
-              variant="outlined"
-              fullWidth
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-              sx={{ mt: 1, fontSize: '1rem' }}
-            />
-          )}
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 2 }}>
-          {selection === "link" && (
-            <Button onClick={handleLinkSubmit} variant="contained" color="primary" sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1, px: 3 }}>
-              SUBMIT LINK
-            </Button>
-          )}
-          <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1, px: 3 }}>
-            CANCEL
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Box sx={{ ...modalStyle }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>Update Your Submission</Typography>
+          <Button variant="contained" component="label" color="primary" fullWidth>
+            CHOOSE NEW FILE
+            <input type="file" hidden onChange={handleFileUpload} />
           </Button>
-        </DialogActions>
-      </Dialog>
+          <Button variant="contained" sx={{ mt: 2 }} color="secondary" onClick={handleUpdateAssignment}>
+            UPDATE ASSIGNMENT
+          </Button>
+        </Box>
+      </Modal>
+
+
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Submission History</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Submission ID</TableCell>
+                <TableCell>User ID</TableCell>
+                <TableCell>Link/File</TableCell>
+                <TableCell>Score</TableCell>
+                <TableCell>Submission Time</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {submissionHistory?.map((submission) => (
+                <TableRow key={submission?.id}>
+                  <TableCell>{submission?.id}</TableCell>
+                  <TableCell>{getUsernameById(submission?.UserID)}</TableCell>
+                  <TableCell>{submission?.urlfile}</TableCell>
+                  <TableCell>{submission?.score}</TableCell>
+                  <TableCell>
+                    {new Date(submission?.Timestamped).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>DELETE</Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleOpenUpdateModal(submission)}
+                    >
+                      UPDATE
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };
 
 export default Submited;
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  borderRadius: 2,
+  boxShadow: 24,
+  p: 4,
+};
