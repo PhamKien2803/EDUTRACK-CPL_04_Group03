@@ -55,7 +55,8 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                         </Typography>
                                         <Box display="flex" alignItems="center" gap={2}>
                                             <Typography variant="body2" color="textSecondary">
-                                                Timestart - timeEnd
+
+                                                {slot.find(sl => sl.id === item)?.TimeStart} - {slot.find(sl => sl.id === item)?.TimeEnd}
                                             </Typography>
                                             <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
                                                 <Button component={Link} variant="outlined" color="secondary" size="small">
@@ -120,7 +121,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                     {/* Right Panel */}
                     <Grid item xs={12} md={4}>
                         <Card variant="outlined" style={{ padding: '20px' }}>
-                            <Typography variant="h6">Class</Typography>
+                            <Typography variant="h6">Class </Typography>
                             <Select
                                 variant="outlined"
                                 sx={{ minWidth: 200 }}
@@ -136,11 +137,12 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 ))}
                             </Select>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">0 online</Typography>
                             <Typography variant="body2">20 students</Typography>
                             <Typography variant="body2">20 slots</Typography>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">Start date: 17:00 02/01/2023</Typography>
+                            <Typography variant="body2">
+
+                                Start date: 17:00 02/01/2023</Typography>
 
                             <div style={{ marginTop: '20px' }}>
                                 <Typography variant="body1">Lecturer (2)</Typography>
