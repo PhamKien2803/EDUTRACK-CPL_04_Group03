@@ -13,19 +13,19 @@ const Submited: React.FC = () => {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
   const [searchParams] = useSearchParams();
   const assignmentID = searchParams.get('assignmentid');
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<string[] | null>(null);
+  const [fileMetadata, setFileMetadata] = useState<File | null>(null);
   const [link, setLink] = useState('');
   const [selection, setSelection] = useState<'file' | 'link'>('file');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [timestamp, setTimestamp] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [assignmentSlotID, setAssignmentSlotID] = useState<string | null>(null);
-  console.log(assignmentSlotID);
   const [score, setScore] = useState<number | null>(null);
   const [submissionHistory, setSubmissionHistory] = useState<answerAssignmentSlot[]>([]);
+  console.log(assignmentSlotID)
   const [currentSubmission, setCurrentSubmission] = useState<answerAssignmentSlot | null>(null);
   const [participants, setParticipants] = useState<participants[]>([]);
-  console.log(participants)
 
   useEffect(() => {
     const fetchSubmissionHistory = async () => {
@@ -47,7 +47,7 @@ const Submited: React.FC = () => {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     fetchSubmissionHistory();
     fetchParticipants();
@@ -58,15 +58,46 @@ const Submited: React.FC = () => {
     return user ? user.UserName : "Unknown User";
   };
 
+  // Handle file upload and convert to Base64
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFile(event.target.files[0]);
-      setSelection('file');
+      const selectedFile = event.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64File = reader.result as string;
+        const [header, data] = base64File.split(",");
+        sessionStorage.setItem("fileHeader", header);
+        sessionStorage.setItem("fileData", data);
+        setFile([header + "," + data]);
+        setFileMetadata(selectedFile);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const openInNewTab = (url: string) => {
+    const header = sessionStorage.getItem("fileHeader") || "";
+    const data = sessionStorage.getItem("fileData") || "";
+
+    // Combine the Base64 header and data if available
+    const fullBase64 = header && data ? `${header},${data}` : url;
+
+    if (fullBase64.startsWith("data:")) {
+      const newTab = window.open();
+      if (newTab) {
+        newTab.document.write(
+          `<iframe src="${fullBase64}" frameborder="0" style="width:100%;height:100%;"></iframe>`
+        );
+      } else {
+        alert("Failed to open a new tab. Please allow pop-ups for this site.");
+      }
+    } else {
+      alert("Invalid Base64 data.");
     }
   };
 
 
-
+  // Handle assignment submission
   const handleSubmitAssignment = async () => {
     if (!file && !link) {
       Swal.fire({
@@ -84,8 +115,8 @@ const Submited: React.FC = () => {
         id: newID,
         AssignmentID: assignmentID || '',
         UserID: userid,
-        urlfile: file ? URL.createObjectURL(file) : link,
-        score: 10,
+        urlfile: file ? file[0] : link,
+        score: 0,
         Timestamped: submissionTimestamp,
         Status: 1,
       };
@@ -95,7 +126,7 @@ const Submited: React.FC = () => {
         setIsSubmitted(true);
         setTimestamp(submissionTimestamp);
         setAssignmentSlotID(newID);
-        setScore(10);
+        setScore(0);
         setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
         Swal.fire({
           icon: 'success',
@@ -108,14 +139,16 @@ const Submited: React.FC = () => {
     }
   };
 
+  // Handle opening the update modal
   const handleOpenUpdateModal = (submission: answerAssignmentSlot) => {
     setCurrentSubmission(submission);
-    setFile(null);
-    setLink(submission.urlfile);
+    setFile([submission.urlfile]); // Set Base64 string from current submission
+    setLink(submission.urlfile);  // Just in case there is a link in the submission
     setSelection('link');
     setIsModalOpen(true);
   };
 
+  // Handle updating the assignment
   const handleUpdateAssignment = async () => {
     if (!file && !link) {
       Swal.fire({
@@ -129,7 +162,7 @@ const Submited: React.FC = () => {
     if ((file || link) && currentSubmission) {
       const updatedFormData: answerAssignmentSlot = {
         ...currentSubmission,
-        urlfile: file ? URL.createObjectURL(file) : link,
+        urlfile: file ? file[0] : link,  // Use Base64 string or link
         Timestamped: new Date().toISOString(),
       };
 
@@ -152,6 +185,7 @@ const Submited: React.FC = () => {
     }
   };
 
+  // Handle deleting a submission
   const handleDeleteAssignment = async (submissionID: string) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -161,7 +195,7 @@ const Submited: React.FC = () => {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-    })
+    });
     if (result.isConfirmed) {
       try {
         await deleteAnswerAssignmentSlot(submissionID);
@@ -175,7 +209,6 @@ const Submited: React.FC = () => {
         console.error('Error deleting assignment:', error);
       }
     }
-
   };
 
   return (
@@ -204,7 +237,7 @@ const Submited: React.FC = () => {
             )}
             {file && (
               <Typography sx={{ mt: 2, fontSize: '0.9rem' }}>
-                Uploaded File: {file.name}
+                <strong>File Upload:</strong> {fileMetadata ? fileMetadata.name : 'No file selected'}
               </Typography>
             )}
           </Box>
@@ -249,7 +282,7 @@ const Submited: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Submission ID</TableCell>
-                <TableCell>User ID</TableCell>
+                <TableCell>Student Name</TableCell>
                 <TableCell>Link/File</TableCell>
                 <TableCell>Score</TableCell>
                 <TableCell>Submission Time</TableCell>
@@ -261,13 +294,23 @@ const Submited: React.FC = () => {
                 <TableRow key={submission?.id}>
                   <TableCell>{submission?.id}</TableCell>
                   <TableCell>{getUsernameById(submission?.UserID)}</TableCell>
-                  <TableCell>{submission?.urlfile}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => openInNewTab(submission?.urlfile)}
+                    >
+                      Your Assign
+                    </Button>
+                  </TableCell>
                   <TableCell>{submission?.score}</TableCell>
                   <TableCell>
                     {new Date(submission?.Timestamped).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })}
                   </TableCell>
                   <TableCell>
-                    <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>DELETE</Button>
+                    <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>
+                      DELETE
+                    </Button>
                     <Button
                       variant="outlined"
                       color="primary"
@@ -280,6 +323,7 @@ const Submited: React.FC = () => {
               ))}
             </TableBody>
           </Table>
+
         </TableContainer>
       </Box>
     </Box>

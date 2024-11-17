@@ -140,24 +140,54 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const Slotid = queryParams.get("Slotid");
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [file, setFile] = useState<string[]>([]);
+  const [file, setFile] = useState<string[]>([]); // Lưu Base64 của tệp
   const [fileName, setFileName] = useState<string>("");
+
+  // Hàm xử lý thay đổi tệp
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFile = event.target.files ? event.target.files[0] : null;
+  //   if (selectedFile) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const base64File = reader.result as string;
+  //       // Lưu Base64 vào sessionStorage
+  //       sessionStorage.setItem("uploadedFile", base64File);
+  //       setFile([base64File]); 
+  //       setFileName(selectedFile.name);
+  //     };
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
-      const fileURL = URL.createObjectURL(selectedFile);
-      setFile((prevFiles) => [...prevFiles, fileURL]);
-      setFileName(selectedFile.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64File = reader.result as string;
+  
+        const [header, data] = base64File.split(",");
+  
+        sessionStorage.setItem("fileHeader", header);
+        sessionStorage.setItem("fileData", data);
+  
+        setFile([header + "," + data]); 
+        setFileName(selectedFile.name);
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
+  
+  
 
+  // Hàm gửi form
   const handleSubmit = async () => {
-    if (!startDate || !endDate || !title || !description) {
+    if (!startDate || !endDate || !title || !description || !file) {
       Swal.fire({ icon: "error", title: "Missing Data", text: "Please fill out all required fields." });
       return;
     }
@@ -166,13 +196,14 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
     const endTime = new Date(endDate).toISOString();
 
     try {
+      // Gửi dữ liệu lên API
       await createAssignmentSlot({
         id: "a" + Math.floor(100 + Math.random() * 900),
         AssignmentID: "a" + Math.floor(100 + Math.random() * 900),
         UserID: userid,
         title,
         description,
-        urlfile: file, // Blob URL array
+        urlfile: file, // Gửi Base64 của tệp dưới dạng mảng
         TimeStart: startTime,
         TimeEnd: endTime,
         Slotid: Slotid || '',
@@ -256,7 +287,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
     </Grid>
   );
 };
-
 const AddActivity: React.FC = () => {
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);

@@ -47,8 +47,9 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
             {assignment.urlfile && assignment.urlfile.length > 0 ? (
               assignment.urlfile.map((file, index) => (
                 <Typography variant="body2" key={index} sx={{ color: 'primary.main', mb: 1 }}>
-                  <a href={file} target="_blank" rel="noopener noreferrer">
-                    File {index + 1}
+                  <a href={file} target="_blank" rel="noopener noreferrer"> 
+                    {/* F5 mới hiển thị */}
+                    Assignment File
                   </a>
                 </Typography>
               ))
