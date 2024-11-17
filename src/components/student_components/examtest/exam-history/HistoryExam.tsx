@@ -1,17 +1,18 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../../../../Sass/HistoryExam.scss';
-import { getAnswerByUserId, getAnswerForQuestionExam, getExamList, getQuestionByExID } from '../../../../service/ApiService';
-import { useSelector } from 'react-redux';
+import { ThemeProvider } from "@emotion/react";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, FormGroup, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ResultExam } from "../../../../models/Interface";
+import { getAnswerByUserId, getAnswerForQuestionExam, getExamList, getQuestionByExID } from "../../../../service/ApiService";
+import { getResultExam } from "../../../../service/ExamApi";
+import { ToHHMMSS } from "../../../../utils/Timer/ToHHMMSS";
+import { theme } from "./HisTheme";
 
 interface question {
     id: string;
@@ -43,12 +44,11 @@ interface UserAnswer {
 }
 
 export const HistoryExam = () => {
-    const [currentQuestion, setCurrentQuestion] = useState<number>(1);
     const [questionEx, setQuestionEx] = useState<question[]>([]);
     const [answerQs, setAnswerQs] = useState<Answer[]>([]);
     const [exam, setExam] = useState<Exam | null>(null);
     const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
-
+    const [result, setResult] = useState<ResultExam>()
 
     const account = useSelector((state: any) => state.account.account);
 
@@ -56,10 +56,12 @@ export const HistoryExam = () => {
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
 
+
     useEffect(() => {
         fetchAnswerQuestionExam();
         fetchDataExamByID();
         fetchDataAnswer();
+        fetchResult();
     }, []);
 
     useEffect(() => {
@@ -84,6 +86,15 @@ export const HistoryExam = () => {
             console.error('Failed to fetch answers:', error);
         }
     };
+
+    const fetchResult = async () => {
+        const res = await getResultExam(exId);
+        console.log(res);
+
+        if (Array.isArray(res)) {
+            setResult(res.find(item => item.userId === account.UserID))
+        }
+    }
 
     const fetchDataExamByID = async () => {
         try {
@@ -132,92 +143,153 @@ export const HistoryExam = () => {
         return false
     };
 
-    const handleClick = (question: number) => {
-        setCurrentQuestion(question);
-    };
+
 
     return (
-        <Box className="exam-container" padding={3}>
-            <Typography variant="h4" gutterBottom align="center" className="exam-title">
-                {exam?.examContent}
-            </Typography>
-            <Box display="flex" justifyContent="space-between" mt={2}>
-                {/* Question Display Area */}
-                <Box
-                    flex={3}
-                    className="exam-box"
-                    sx={{
-                        maxHeight: '500px',
-                        overflowY: 'auto',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                        padding: '16px',
-                    }}
-                >
-                    {questionEx?.map((data, index) => (
-                        <Box key={index} mb={3} className="question-box">
-                            <Typography variant="h6">Question {index + 1}</Typography>
-                            {data.image && (
-                                <Box my={2} textAlign="center">
-                                    <img src={data?.image} alt={`Question ${index + 1}`} height="300px" />
+        <ThemeProvider theme={theme}>
+            <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
+                {/* Header */}
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography variant="h5">History Exam</Typography>
+                </Box>
+
+                {/* Bulk update and search */}
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={9}>
+                        <Card>
+                            <CardContent>
+                                <Box display="flex" alignItems="center" mb={2}>
+                                    <Typography variant="body1" ><h4>Title Examination:</h4></Typography>
+                                    <h4>
+                                        {exam?.examContent}
+                                    </h4>
                                 </Box>
-                            )}
-                            <Typography mb={2}>{data.content}</Typography>
-                            <FormControl component="fieldset" className="radio-group">
-                                <RadioGroup name={`question${index + 1}`}>
-                                    {data?.answer?.map((item, itemIndex) => (
-                                        <FormControlLabel
-                                            key={itemIndex}
-                                            value={item}
-                                            control={<Radio />}
-                                            label={answerQs.find(ans => ans.id === item)?.content || ''}
-                                            checked={handleChecked(data.id, item)}
-                                            disabled={!handleChecked(data.id, item)}
-                                        />
+                                <Typography variant="subtitle1">{questionEx.length} questions(10 points)</Typography>
+
+                                {/* Question Items */}
+                                {questionEx && questionEx.map((qs, index) => (
+                                    <Box mt={2} key={index}>
+
+                                        <Card sx={{ mb: 2 }}>
+                                            <CardContent>
+                                                <Box display="flex" justifyContent="space-between" alignItems="center">
+                                                    <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
+                                                    <Box display="flex" alignItems="center">
+                                                        {handleCheckIsCorrect(qs) ? (
+                                                            <CheckBoxOutlinedIcon color="success" />
+                                                        ) : (
+                                                            <CancelPresentationOutlinedIcon color="error" />
+                                                        )}
+
+
+
+
+                                                    </Box>
+
+
+                                                </Box>
+                                                <Typography sx={{ textAlign: 'center' }} variant="h5">{qs.content}</Typography>
+                                                <Divider sx={{ my: 1 }} />
+
+                                                {qs.image && (
+                                                    <Box display="flex" justifyContent="center" my={2} >
+                                                        <img src={qs.image} alt="Preview" style={{ height: '200px', cursor: 'pointer' }} />
+                                                    </Box>
+                                                )}
+                                                <Typography variant="body2">Answer choices:</Typography>
+                                                <Box display="flex" alignItems="center" sx={{ mb: 2 }} >
+                                                    {/* Checkbox */}
+                                                    <FormGroup >
+                                                        {qs?.answer?.map((item, itemIndex) => (
+                                                            <FormControlLabel
+                                                                key={itemIndex}
+                                                                value={item}
+                                                                control={<Checkbox />}
+                                                                label={answerQs.find(ans => ans.id === item)?.content || ''}
+                                                                checked={handleChecked(qs.id, item)}
+                                                                disabled
+                                                            />
+                                                        ))}
+                                                    </FormGroup>
+                                                </Box>
+                                                <Typography sx={{ backgroundColor: '#fcefdc', display: "block", unicodeBidi: "isolate", border: "1px solid rgba(0, 0, 0, .125)", padding: '15px', borderRadius: "5px" }}>
+                                                    The correct answer is:{qs?.answer?.map((item, itemIndex) => (
+                                                        <span key={itemIndex}>{answerQs.find(as => as.id === item)?.isCorrect && <span>{itemIndex + 1}.{answerQs.find(as => as.id === item)?.content} </span>}</span>
+                                                    ))}</Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Box>
+                                ))}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="subtitle1">Bulk update questions</Typography>
+                                <Divider sx={{ my: 1 }} />
+                                <Button variant="text" startIcon={<AccessTimeIcon />}>Time:</Button>
+                                {exam &&
+                                    <Select defaultValue={exam.timeLimit} size="small" sx={{ mx: 1 }}>
+                                        <MenuItem value={exam.timeLimit}><ToHHMMSS time={exam.timeLimit} /></MenuItem>
+                                    </Select>
+                                }
+
+                                <Divider sx={{ my: 1 }} />
+                                {result && (
+                                    <>
+                                        <Button
+                                            variant="text"
+                                            startIcon={<FactCheckIcon />}
+                                            color="primary"
+                                        >
+                                            Result:
+                                        </Button>
+                                        <Box mt={2} mb={2}>
+                                            <Typography variant="subtitle1">
+                                                <strong>Score:</strong> {parseInt(result.totalQuestion) > 0
+                                                    ? (parseInt(result.numberCorrect) / parseInt(result.totalQuestion) * 10).toFixed(2)
+                                                    : "N/A"} Point
+                                            </Typography>
+                                            <Typography variant="subtitle1">
+                                                <strong>Number Correct:</strong> {result?.numberCorrect} Questions
+                                            </Typography>
+                                            <Typography variant="subtitle1">
+                                                <strong>Total Questions:</strong> {result?.totalQuestion} Questions
+                                            </Typography>
+                                        </Box>
+                                    </>
+                                )}
+                                <Divider sx={{ my: 1 }} />
+
+                            </CardContent>
+                        </Card>
+                        <Card sx={{ marginTop: '10px' }}>
+                            <CardContent>
+                                <Typography variant="subtitle1">Number of Answers/Questions</Typography>
+                                <Divider sx={{ my: 1 }} />
+                                <Box display="flex" flexWrap="wrap" justifyContent="center" mb={2}>
+                                    {questionEx?.map((data, index) => (
+                                        <Button
+                                            key={index + 1}
+                                            variant={userAnswer.find(item => item.QuestionID === data.id) ? 'contained' : 'outlined'}
+                                            color="primary"
+                                            sx={{ margin: '4px', minWidth: '40px' }}
+                                            className={`navigation-button navigation-button-contained `}
+                                        >
+                                            {index + 1}
+                                        </Button>
                                     ))}
 
-                                </RadioGroup>
-                            </FormControl>
-                            <Typography variant="h6" gutterBottom align="center" >
-                                {handleCheckIsCorrect(data) ? (
-                                    <Box sx={{ bgcolor: 'success.main', color: 'white' }} >is correct</Box>
-                                ) : (
-                                    <Box sx={{ bgcolor: 'error.main', color: 'white' }}>not correct</Box>
-                                )}
-                            </Typography>
-                            <hr />
-                        </Box>
-                    ))}
-                </Box>
+                                </Box>
+                                <Divider sx={{ my: 1 }} />
 
-                {/* Quiz Navigation */}
-                <Box flex={1} ml={3} className="quiz-navigation" sx={{ border: '1px solid #ccc', padding: '16px', borderRadius: '4px' }}>
-                    <Typography variant="h6" gutterBottom>
-                        Quiz Navigation
-                    </Typography>
-                    <Box display="flex" flexWrap="wrap" justifyContent="center" mb={2}>
-                        {questionEx?.map((data, index) => (
-                            <Button
-                                key={index + 1}
-                                variant={userAnswer.find(item => item.QuestionID === data.id) ? 'contained' : 'outlined'}
-                                color="primary"
-                                onClick={() => handleClick(index + 1)}
-                                sx={{ margin: '4px', minWidth: '40px' }}
-                                className={`navigation-button ${currentQuestion === index + 1 ? 'navigation-button-contained' : ''}`}
-                            >
-                                {index + 1}
-                            </Button>
-                        ))}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
 
-                    </Box>
-                    <Button variant="text" color="secondary" fullWidth onClick={() => alert('Show one page at a time')}>
-                        Show one page at a time
-                    </Button>
-                    <Button variant="text" color="error" fullWidth sx={{ mt: 1 }} onClick={() => alert('Finish review')}>
-                        Finish review
-                    </Button>
-                </Box>
-            </Box>
-        </Box>
+            </Box >
+        </ThemeProvider>
     );
 };

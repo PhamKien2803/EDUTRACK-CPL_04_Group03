@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
     Card, Typography, Button, Grid, List, ListItem, Divider, Box,
-    Select, MenuItem, Link, ListItemIcon, ListItemText, Collapse, Switch, FormControlLabel
+    Select, MenuItem, Link, ListItemIcon, ListItemText, Collapse
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -18,10 +18,10 @@ interface Props {
     classId: string;
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, courses, setclassId, classId }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes,  setclassId, classId }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
-
+    console.log(setUpdatedQuestions)
     const toggleVisibility = useCallback((slotId: string) => {
         setVisibleSlots((prev) => ({
             ...prev,
@@ -35,7 +35,6 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
             <main>
                 <Grid container spacing={3}>
                     {/* Left Panel */}
-
                     <Grid item xs={12} md={8} >
                         {lession.SlotID.map((item, index) => (
                             <Box
@@ -116,8 +115,6 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                             </Box>
                         ))}
                     </Grid>
-
-
                     {/* Right Panel */}
                     <Grid item xs={12} md={4}>
                         <Card variant="outlined" style={{ padding: '20px' }}>
@@ -151,10 +148,11 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     <ListItem>{participants.find(pr => pr.id === lession.LecturersID)?.Email}</ListItem>
                                 </List>
                             </div>
-
-                            <Button href='/addingExam' variant="contained" color="primary" fullWidth>
-                                Create test
-                            </Button>
+                            <Link href={`/addingExam?csID=${lession.id}`}>
+                                <Button variant="contained" color="primary" fullWidth>
+                                    Adding eXam
+                                </Button>
+                            </Link>
                         </Card>
                     </Grid>
                 </Grid>

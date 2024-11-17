@@ -14,12 +14,14 @@ import Carousel from "react-bootstrap/Carousel";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
+  getClass,
   getCourse,
   getCourseSemesterByUserId,
   getSemester,
 } from "../../../service/ApiService";
 
 import dataCarousel from "../../../../database.json";
+import { classRoom } from "../../../models/Interface";
 
 interface CourseSemester {
   id: string;
@@ -51,18 +53,20 @@ export default function Subject() {
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
   const [dataCourse, setDataCourse] = useState<course[]>([]);
+  const [dataClass, setDataClass] = useState<classRoom[]>([]);
 
   const account = useSelector((state: any) => state.account.account);
   const isAuthenticated = useSelector(
     (state: any) => state.account.isAuthenticated
   );
 
-  console.log(account);
+  // console.log(account);
   // console.log(isAuthenticated);
 
   useEffect(() => {
     fetchCourse();
     fetchDataSemester();
+    fetchClassByUserid();
   }, []);
 
   useEffect(() => {
@@ -71,13 +75,28 @@ export default function Subject() {
     if (semesterId) fetchCourseSemester();
   }, [semesterId]);
   const fetchCourseSemester = async () => {
-    const res = await getCourseSemesterByUserId(account.UserID);
-    if (Array.isArray(res)) {
-      const filteredData = res.filter((item) => item.SemesterID === semesterId);
-      setData(filteredData);
-    }
+    const results = await Promise.all(
+      dataClass.map(async (item) => {
+        const res = await getCourseSemesterByUserId(item.ClassID);
+        return Array.isArray(res) ? res.filter((i) => i.SemesterID === semesterId) : [];
+      })
+    );
+    setData(results.flat());
   };
-  console.log(data);
+
+  // console.log(data);
+
+  const fetchClassByUserid = async () => {
+    const res = await getClass();
+    // console.log(res);
+
+    if (Array.isArray(res)) {
+      const filteredData = res.filter(item => item.Student.includes(account.UserID))
+      // console.log(filteredData);
+      setDataClass(filteredData)
+
+    }
+  }
 
   const fetchDataSemester = async () => {
     const res = await getSemester();

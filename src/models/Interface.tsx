@@ -105,3 +105,44 @@ export interface courses {
     CourseName: string,
     Status: number
 }
+
+export interface CourseSemester {
+    id: string;
+    SemesterID: string;
+    SlotID: string[];
+    CourseID: string;
+    StudentID: string;
+    LecturersID: string;
+    ClassID: string;
+}
+
+export interface Question {
+    id: string;
+    content: string;
+    image: string;
+    answer: string[];
+    exId: string;
+}
+
+export interface Answer {
+    id: string;
+    content: string;
+    isCorrect: boolean;
+}
+export interface Exam {
+    examID: string;
+    examContent: string;
+    courseSemesterID: string;
+    timeLimit: string;
+    image: string;
+    status: boolean;
+    display: boolean;
+}
+
+export interface ResultExam {
+    id: string,
+    userId: string,
+    numberCorrect: string,
+    totalQuestion: string,
+    examId: string
+}

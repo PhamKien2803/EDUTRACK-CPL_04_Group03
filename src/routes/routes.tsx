@@ -1,9 +1,9 @@
 import { ExamDetail } from "../components/student_components/examtest/ExamDetail";
 import { ExamList } from "../components/student_components/examtest/ExamList";
 import { HistoryExam } from "../components/student_components/examtest/exam-history/HistoryExam";
-import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import Profile from "../components/student_components/profile/profile";
 import EditProfile from "../components/student_components/profile/updateProfile";
+import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
 import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
@@ -16,9 +16,7 @@ import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionA
 import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDetails";
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import LogoutButton from "../page/Auth/logout/logout";
-import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import Contact from "../components/student_components/contact-support/contact";
-import ContactUs from "../components/student_components/contact-support/contactUs";
 import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 
@@ -249,24 +247,26 @@ const routesLecturersHome: Router[] = [
     component: LogoutButton
   },
 
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile,
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton,
-  },
-  {
-    name: "DashBoard",
-    key: "DashBoardPage",
-    path: "/dashBoardPage",
-    component: DashBoardPage,
-  },
+    {
+        name: "Update-Profile",
+        key: "ProfilePage",
+        path: "/edit-profile",
+        component: EditProfile
+    },
+    {
+        name: "Logout",
+        key: "LogoutPage",
+        path: "/logout",
+        component: LogoutButton
+    },
+
+    {
+        name: "AddExam",
+        key: "AddExam",
+        path: "/addingExam",
+        component: AddExam
+    }
+
 ];
 
 const routesStaffHome: Router[] = [
@@ -277,4 +277,6 @@ const routesStaffHome: Router[] = [
   },
 ];
 
-export { routesStudentHome, routesLecturersHome, routesStaffHome };
+
+
+export { routesLecturersHome, routesStaffHome, routesStudentHome };
