@@ -117,36 +117,36 @@ const routesStudentHome: Router[] = [
     component: Profile
   },
 
-    {
-        name: "Update-Profile",
-        key: "ProfilePage",
-        path: "/edit-profile",
-        component: EditProfile
-    },
-    {
-        name: "Logout",
-        key: "LogoutPage",
-        path: "/logout",
-        component: LogoutButton
-    },
-    {
-        name: "Contact",
-        key: "ContactPage",
-        path: "/contact",
-        component: Contact
-    },
-    {
-        name: "VerifyOTP",
-        key: "VerifyOTPPage",
-        path: "/verify-otp",
-        component: VerifyOTP
-    },
-    {
-        name: "ResetPassword",
-        key: "ResetPasswordPage",
-        path: "/reset-password",
-        component: ResetPassword
-    },
+  {
+    name: "Update-Profile",
+    key: "ProfilePage",
+    path: "/edit-profile",
+    component: EditProfile
+  },
+  {
+    name: "Logout",
+    key: "LogoutPage",
+    path: "/logout",
+    component: LogoutButton
+  },
+  {
+    name: "Contact",
+    key: "ContactPage",
+    path: "/contact",
+    component: Contact
+  },
+  // {
+  //   name: "VerifyOTP",
+  //   key: "VerifyOTPPage",
+  //   path: "/verify-otp",
+  //   component: VerifyOTP
+  // },
+  // {
+  //   name: "ResetPassword",
+  //   key: "ResetPasswordPage",
+  //   path: "/reset-password",
+  //   component: ResetPassword
+  // },
 
   {
     name: "Update-Profile",
@@ -247,25 +247,25 @@ const routesLecturersHome: Router[] = [
     component: LogoutButton
   },
 
-    {
-        name: "Update-Profile",
-        key: "ProfilePage",
-        path: "/edit-profile",
-        component: EditProfile
-    },
-    {
-        name: "Logout",
-        key: "LogoutPage",
-        path: "/logout",
-        component: LogoutButton
-    },
+  {
+    name: "Update-Profile",
+    key: "ProfilePage",
+    path: "/edit-profile",
+    component: EditProfile
+  },
+  {
+    name: "Logout",
+    key: "LogoutPage",
+    path: "/logout",
+    component: LogoutButton
+  },
 
-    {
-        name: "AddExam",
-        key: "AddExam",
-        path: "/addingExam",
-        component: AddExam
-    }
+  {
+    name: "AddExam",
+    key: "AddExam",
+    path: "/addingExam",
+    component: AddExam
+  }
 
 ];
 

@@ -49,7 +49,7 @@ export default function ForgotPassword({ open, handleClose, user }: ForgotPasswo
   
     // Sinh mã OTP
     const otp = generateOTP();
-    const expirationTime = Date.now() + 5 * 60  * 1000; // 5 phút từ thời điểm gửi
+    const expirationTime = Date.now() + 60 * 1000; // 5 phút từ thời điểm gửi
   
     // Lưu OTP và thời gian hết hạn vào localStorage
     localStorage.setItem('otp', otp);

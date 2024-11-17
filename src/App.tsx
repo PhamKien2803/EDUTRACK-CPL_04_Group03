@@ -5,6 +5,8 @@ import { routesLecturersHome, routesStaffHome, routesStudentHome } from './route
 import { Layout } from './routes/Layout';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { useSelector } from 'react-redux';
+import VerifyOTP from './page/Auth/forgot-password/VerifyOTP';
+import ResetPassword from './page/Auth/forgot-password/ResetPassword';
 
 function App() {
   const account = useSelector((state: any) => state.account.account);
@@ -14,8 +16,13 @@ function App() {
       {/* Public routes */}
       <Route path="/" element={<Layout />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/verify-otp" element={<VerifyOTP />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+
+      
       {/* Private routes */}
-      <Route element={<PrivateRoute />}>
+      {account && <Route element={<PrivateRoute />}>
+
         <Route element={<DashboardLayoutBranding />}>
           {/* Student routes */}
           {account.Role === 0 && routesStudentHome.map((route) => (
@@ -44,7 +51,8 @@ function App() {
             />
           ))}
         </Route>
-      </Route>
+      </Route>}
+
     </Routes>
 
   );

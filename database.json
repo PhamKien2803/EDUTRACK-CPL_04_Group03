@@ -76,6 +76,11 @@
       "id": "9",
       "content": "ccss",
       "isCorrect": false
+    },
+    {
+      "id": "e35699fa-8269-4f3a-bbba-f3897c9f00bf",
+      "content": "",
+      "isCorrect": false
     }
   ],
   "QuestionExam": [
@@ -110,6 +115,16 @@
         "9"
       ],
       "exId": "1"
+    },
+    {
+      "id": "828e15cb-5c4a-493a-b5bc-4ee76362e68b",
+      "content": "Assignment 1",
+      "image": "",
+      "answer": [
+        "e35699fa-8269-4f3a-bbba-f3897c9f00bf",
+        "81fa1fa9-248a-486d-bf00-117b222ca686"
+      ],
+      "exId": "be06d022-9b87-4735-803f-c9e6850511ba"
     }
   ],
   "Examination": [
@@ -122,6 +137,14 @@
       "status": true,
       "display": true,
       "id": "f219"
+    },
+    {
+      "id": "e79a",
+      "examID": "be06d022-9b87-4735-803f-c9e6850511ba",
+      "examContent": "12313",
+      "courseSemesterID": "fall24",
+      "timeLimit": "900",
+      "status": false
     }
   ],
   "UserAnswer": [
@@ -217,7 +240,7 @@
       "Gender": true,
       "Address": "Ha Noi",
       "Email": "kienpdhe170155@fpt.edu.vn",
-      "Password": "1223@",
+      "Password": "2003",
       "Image": "",
       "Role": 0,
       "isOnline": true,
@@ -360,20 +383,7 @@
       "id": "17d6"
     }
   ],
-  "AssignmentSlot": [
-    {
-      "id": "e745",
-      "AssignmentID": "a459",
-      "UserID": "lt12345",
-      "title": "Assignment 1",
-      "description": "g44g5",
-      "urlfile": [],
-      "TimeStart": "2024-11-17T10:12:00.000Z",
-      "TimeEnd": "2024-11-17T10:12:00.000Z",
-      "Slotid": "s11",
-      "Status": 0
-    }
-  ],
+  "AssignmentSlot": [],
   "AnswerAssignmentSlot": [
     {
       "id": "as903",

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function VerifyOTP() {
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || localStorage.getItem('email');
+  const email = location.state?.verifiedEmail || localStorage.getItem('verifiedEmail');
 
   const [otpInputs, setOtpInputs] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState<string | null>(null);
