@@ -29,39 +29,6 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
         }));
     }, []);
 
-    // Hàm cập nhật trạng thái trong database
-    const updateStatusInDatabase = async (questionId: string, status: number) => {
-        try {
-            const response = await fetch(`http://localhost:9999/QuestionSLot/${questionId}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ status }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update status');
-            }
-            console.log('Status updated successfully');
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const toggleStatus = (questionId: string) => {
-        setUpdatedQuestions((prevQuestions) =>
-            prevQuestions.map((question) =>
-                question.id === questionId
-                    ? { ...question, Status: question.Status === 0 ? 1 : 0 } // Đổi trạng thái
-                    : question
-            )
-        );
-
-        // Cập nhật vào database
-        const newStatus = updatedQuestions.find(q => q.id === questionId)?.Status === 0 ? 1 : 0;
-        updateStatusInDatabase(questionId, newStatus);
-    };
 
     return (
         <div>
@@ -139,15 +106,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                             fontWeight: 'bold',
                                                         }}
                                                     />
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Switch
-                                                                checked={qs.Status === 1}
-                                                                onChange={() => toggleStatus(qs.id)}
-                                                            />
-                                                        }
-                                                        label=""
-                                                    />
+
                                                     <ArrowForwardIosIcon fontSize="small" color="action" />
                                                 </ListItem>
                                             ))}

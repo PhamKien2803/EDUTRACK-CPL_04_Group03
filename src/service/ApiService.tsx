@@ -99,22 +99,22 @@ const getSemester = () => {
 
 
 const updateProfile = (id: string, name: string, address: string, age: number, gender: boolean, email: string, password: string,
-    image: string, rating: number, role: number, isOnline: boolean, status: boolean
-  ) => {
-    return axios.put(`Participants/${id}`, {
-      UserName: name,
-      Age: age,
-      Gender: gender,
-      Address: address,
-      Password: password,
-      Image: image,
-      rating: rating,
-      Role: role,
-      isOnline: isOnline,
-      Status: status,
-      Email: email,
-    });
-  };
+  image: string, rating: number, role: number, isOnline: boolean, status: boolean
+) => {
+  return axios.put(`Participants/${id}`, {
+    UserName: name,
+    Age: age,
+    Gender: gender,
+    Address: address,
+    Password: password,
+    Image: image,
+    rating: rating,
+    Role: role,
+    isOnline: isOnline,
+    Status: status,
+    Email: email,
+  });
+};
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
@@ -268,8 +268,20 @@ export const updateAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
     id: user?.id,
     AssignmentID: user?.AssignmentID,
     UserID: user?.UserID,
-    urlfile: user?.urlfile,
+    urlfile: user?.urlfile, //Only Update urlfile
     score: user?.score,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const updateScoreAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.put(`AnswerAssignmentSlot/${user.id}`, {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    score: user?.score, //Only Update score
     Timestamped: new Date().toISOString(),
     Status: user?.Status
   });
