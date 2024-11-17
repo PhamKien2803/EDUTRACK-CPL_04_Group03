@@ -21,7 +21,7 @@ const LogoutButton: React.FC = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(doLogout()); 
-        localStorage.removeItem("token"); 
+        
         navigate("/login"); 
       } else {
         navigate("/home-page");

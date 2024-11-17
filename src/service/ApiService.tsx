@@ -112,6 +112,11 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
 
   })
 }
+export const resetPassword = (id: string, password: string) => {
+  return axios.patch(`Participants/${id}`, {
+    Password: password,
+  })
+}
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post('UserAnswer', {
