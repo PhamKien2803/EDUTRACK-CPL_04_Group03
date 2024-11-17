@@ -82,12 +82,7 @@ const routesStudentHome: Router[] = [
         component: HistoryExam
     },
 
-    {
-        name: "AddExam",
-        key: "AddExam",
-        path: "/addingExam",
-        component: AddExam
-    },
+
     {
         name: "Profile",
         key: "ProfilePage",
@@ -116,6 +111,12 @@ const routesLecturersHome: Router[] = [
         key: "homepage_lecturer",
         path: "/lecturer/homePage",
         component: LecturersHomePage
+    },
+    {
+        name: "AddExam",
+        key: "AddExam",
+        path: "/addingExam",
+        component: AddExam
     },
 
     {
@@ -171,7 +172,7 @@ const routesLecturersHome: Router[] = [
         path: "/logout",
         component: LogoutButton
     },
-        
+
 ];
 
 const routesStaffHome: Router[] = [
