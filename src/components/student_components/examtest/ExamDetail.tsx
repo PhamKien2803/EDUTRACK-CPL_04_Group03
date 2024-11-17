@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getAnswerForQuestionExam, getDataExam, getExamList, postAnswer } from '../../../service/ApiService';
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
+import { Answer, Exam } from '../../../models/Interface';
 
 interface Data {
     id: string;
@@ -13,18 +14,8 @@ interface Data {
     exId: string;
 }
 
-interface Answer {
-    id: string;
-    content: string;
-    isCorrect: boolean;
-}
-interface Exam {
-    examID: string;
-    examContent: string;
-    courseSemesterID: string;
-    timeLimit: string;
-    status: boolean;
-}
+
+
 
 export const ExamDetail = () => {
     const location = useLocation();

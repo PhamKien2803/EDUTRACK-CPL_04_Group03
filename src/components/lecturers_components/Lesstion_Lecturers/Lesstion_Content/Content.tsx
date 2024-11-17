@@ -32,9 +32,11 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
         <div>
             <main>
                 <Grid container spacing={3}>
-                    {lession.SlotID.map((item, index) => (
-                        <Grid item xs={12} md={8} key={`slot-grid-${index}`}>
+
+                    <Grid item xs={12} md={8} >
+                        {lession.SlotID.map((item, index) => (
                             <Box
+                                key={`slot-grid-${index}`}
                                 mb={2}
                                 p={2}
                                 border={1}
@@ -102,8 +104,9 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     </List>
                                 </Collapse>
                             </Box>
-                        </Grid>
-                    ))}
+                        ))}
+                    </Grid>
+
 
                     <Grid item xs={12} md={4}>
                         <Card variant="outlined" style={{ padding: '20px' }}>
@@ -139,7 +142,8 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                             <Link href={`/addingExam?csID=${lession.id}`}>
                                 <Button variant="contained" color="primary" fullWidth>
                                     Adding eXam
-                                </Button></Link>
+                                </Button>
+                            </Link>
                         </Card>
                     </Grid>
                 </Grid>

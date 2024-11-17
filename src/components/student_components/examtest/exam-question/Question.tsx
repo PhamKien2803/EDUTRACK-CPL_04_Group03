@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import '../../../../Sass/QestionQuiz.scss';
+import { Answer } from '../../../../models/Interface';
 
 interface QuestionData {
     id: string;
@@ -9,11 +10,6 @@ interface QuestionData {
     exId: string;
 }
 
-interface Answer {
-    id: string;
-    content: string;
-    isCorrect: boolean;
-}
 
 interface Props {
     index: number;

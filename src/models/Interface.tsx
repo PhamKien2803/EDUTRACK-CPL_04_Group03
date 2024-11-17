@@ -134,5 +134,15 @@ export interface Exam {
     examContent: string;
     courseSemesterID: string;
     timeLimit: string;
+    image: string;
     status: boolean;
+    display: boolean;
+}
+
+export interface ResultExam {
+    id: string,
+    userId: string,
+    numberCorrect: string,
+    totalQuestion: string,
+    examId: string
 }

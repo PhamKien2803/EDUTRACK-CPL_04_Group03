@@ -13,3 +13,10 @@ export const postAnswerQs = (Answer: Answer) => {
 export const postQuestion = (Question: Question) => {
     return axios.post('QuestionExam', { ...Question })
 }
+
+export const getResultExam = (exId: any) => {
+    return axios.get(`resultExam?examId=${exId}`)
+}
+export const getResultExamList = () => {
+    return axios.get(`resultExam`)
+}
