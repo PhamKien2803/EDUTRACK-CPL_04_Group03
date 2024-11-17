@@ -113,8 +113,14 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
     isOnline: isOnline,
     Status: status,
     Email: email,
-  });
-};
+
+  })
+}
+export const resetPassword = (id: string, password: string) => {
+  return axios.patch(`Participants/${id}`, {
+    Password: password,
+  })
+}
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {

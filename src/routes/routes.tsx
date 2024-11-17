@@ -18,6 +18,9 @@ import DicussionAssignment from "../page/home-page/student-home/DicussionAssignm
 import LogoutButton from "../page/Auth/logout/logout";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import Contact from "../components/student_components/contact-support/contact";
+import ContactUs from "../components/student_components/contact-support/contactUs";
+import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
+import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 
 
 interface Router {
@@ -116,24 +119,36 @@ const routesStudentHome: Router[] = [
     component: Profile
   },
 
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton
-  },
-  {
-    name: "Contact",
-    key: "ContactPage",
-    path: "/contact",
-    component: Contact
-  },
+    {
+        name: "Update-Profile",
+        key: "ProfilePage",
+        path: "/edit-profile",
+        component: EditProfile
+    },
+    {
+        name: "Logout",
+        key: "LogoutPage",
+        path: "/logout",
+        component: LogoutButton
+    },
+    {
+        name: "Contact",
+        key: "ContactPage",
+        path: "/contact",
+        component: Contact
+    },
+    {
+        name: "VerifyOTP",
+        key: "VerifyOTPPage",
+        path: "/verify-otp",
+        component: VerifyOTP
+    },
+    {
+        name: "ResetPassword",
+        key: "ResetPasswordPage",
+        path: "/reset-password",
+        component: ResetPassword
+    },
 
   {
     name: "Update-Profile",

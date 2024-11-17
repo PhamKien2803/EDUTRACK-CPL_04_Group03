@@ -1,17 +1,31 @@
 import * as React from 'react';
 import SendIcon from '@mui/icons-material/Send';
-import { Button, TextField, Box, Typography, Grid } from '@mui/material';
+import { Button, TextField, Box, Typography, Grid, Alert } from '@mui/material';
 import emailjs from '@emailjs/browser';
 
 function Contact() {
+    // State để lưu trạng thái thông báo
+    const [statusMessage, setStatusMessage] = React.useState(null); // { type: 'success' | 'error', message: string }
+  
     const sendEmail = (e) => {
         e.preventDefault();
+
+        // Reset thông báo trước khi gửi email
+        setStatusMessage(null);
         
-        emailjs.sendForm('service_k7tjo7o', 'template_gvcv25b', e.target, 'BEG8X3EKg9_bLjfCn')
+        emailjs.sendForm('service_k7tjo7o', 'template_cluyyub', e.target, 'BEG8X3EKg9_bLjfCn')
             .then((result) => {
                 console.log('Email sent successfully:', result.text);
+                setStatusMessage({
+                    type: 'success',
+                    message: 'Email sent successfully!'
+                });
             }, (error) => {
                 console.error('Error sending email:', error.text);
+                setStatusMessage({
+                    type: 'error',
+                    message: 'Error sending email. Please try again.'
+                });
             });
     }
 
@@ -34,6 +48,13 @@ function Contact() {
             <Typography variant="h4" component="h1" gutterBottom align="center">
                 Contact Support
             </Typography>
+            
+            {/* Hiển thị thông báo thành công hoặc lỗi */}
+            {statusMessage && (
+                <Alert severity={statusMessage.type} sx={{ width: '100%', marginBottom: 2 }}>
+                    {statusMessage.message}
+                </Alert>
+            )}
 
             <form className="contact__form" onSubmit={sendEmail} style={{ width: '100%' }}>
                 <Grid container spacing={2}>
