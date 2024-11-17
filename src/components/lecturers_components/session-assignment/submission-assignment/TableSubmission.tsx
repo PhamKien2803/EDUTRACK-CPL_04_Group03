@@ -119,7 +119,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                   {submission.Status === 1 ? "Submitted" : "Not Submitted"}
                 </TableCell>
 
-                <TableCell>
+                {/* <TableCell>
                   <a
                     href={submission.urlfile || '#'}
                     target="_blank"
@@ -132,7 +132,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                   >
                     {submission.urlfile || 'Assignment File'}
                   </a>
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell>
                   {editingIndex === index ? (
