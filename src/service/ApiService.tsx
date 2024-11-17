@@ -85,8 +85,8 @@ const getClass = () => {
   return axios.get("Class");
 };
 
-const getCourseSemesterByUserId = (useId: string) => {
-  return axios.get(`CourseSemester?StudentID=${useId}`);
+const getCourseSemesterByUserId = (clasId: string) => {
+  return axios.get(`CourseSemester?ClassID=${clasId}`);
 };
 
 const getCourseSemesterByLecturersID = (LecturersID: string) => {
