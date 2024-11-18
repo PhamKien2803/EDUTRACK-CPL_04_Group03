@@ -1,4 +1,4 @@
-import { Answer, Exam, Question } from "../models/Interface"
+import { Answer, Exam, Question, ResultExam } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 export const postExam = (Exam: Exam) => {
@@ -19,4 +19,16 @@ export const getResultExam = (exId: any) => {
 }
 export const getResultExamList = () => {
     return axios.get(`resultExam`)
+}
+
+export const getExamListByID = (csID: any) => {
+    return axios.get(`Examination?courseSemesterID=${csID}`);
+};
+
+export const getResultExamListByUserId = (userId: any) => {
+    return axios.get(`resultExam?userId=${userId}`)
+}
+
+export const postResultExam = (ResultExam: ResultExam) => {
+    return axios.post(`resultExam`, { ...ResultExam })
 }

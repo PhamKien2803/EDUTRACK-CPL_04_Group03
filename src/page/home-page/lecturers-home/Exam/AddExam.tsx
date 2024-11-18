@@ -39,8 +39,14 @@ export const AddExam = () => {
     const [time, setTime] = useState<string>("900")
     const [courseSemester, setCourseSemester] = useState<CourseSemester>()
     const [open, setOpen] = useState<boolean>(false);
+    const [display, setDisplay] = useState<boolean>(false);
+    const [status, setStatus] = useState<boolean>(false);
+    const [dateOfBooking, setDateOfBooking] = useState<string>("");
+    const [image, setImage] = useState<string>("");
+
 
     const Exid = useRef(uuidv4());
+
 
     const [question, setQuestion] = useState<Question[]>([
         {
@@ -138,6 +144,8 @@ export const AddExam = () => {
 
 
 
+
+
     // console.log(question);
     const handleQuestion = (type: string, id: string) => {
         if (type === 'ADD') {
@@ -203,15 +211,26 @@ export const AddExam = () => {
             return { ...item, answer: answers }
         })
         console.log(questionClone);
+        const now = new Date();
+        const formatted = new Intl.DateTimeFormat('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(now);
 
         if (courseSemester) {
             const Exam = {
                 examID: Exid.current,
                 examContent: description,
-                courseSemesterID: courseSemester.SemesterID,
+                courseSemesterID: courseSemester.id,
                 timeLimit: time,
-                status: false
+                image: image,
+                dateOfBooking: dateOfBooking,
+                display: display,
+                status: status,
+                createdAt: formatted
             }
+
             const req = await postExam(Exam)
             if (req) {
                 for (const item of question) {
@@ -238,8 +257,7 @@ export const AddExam = () => {
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h5">Untitled Quiz</Typography>
                 <Box>
-                    <Button variant="outlined" sx={{ marginRight: 2 }} onClick={() => setOpen(true)}>Settings</Button>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">Publish</Button>
+                    <Button onClick={() => setOpen(true)} variant="contained" color="primary">Publush</Button>
                 </Box>
             </Box>
 
@@ -367,7 +385,7 @@ export const AddExam = () => {
                                 <Button onClick={() => handleQuestion('ADD', "1")} variant="outlined" startIcon={<Add />}>Add question</Button>
                             </Box>
                         </CardContent>
-                        <QuizSettingsModal open={open} onClose={onClose} />
+                        <QuizSettingsModal open={open} onClose={onClose} setStatus={setStatus} setDisplay={setDisplay} setDateOfBooking={setDateOfBooking} setImage={setImage} handleSubmit={handleSubmit} />
                     </Card>
                 </Grid>
             </Grid>

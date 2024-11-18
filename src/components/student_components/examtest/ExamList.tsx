@@ -7,15 +7,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from "react";
-import { getExamList } from "../../../service/ApiService";
-import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import { Exam, ResultExam } from '../../../models/Interface';
-import { getResultExamList } from '../../../service/ExamApi';
+import { getExamListByID, getResultExamListByUserId } from '../../../service/ExamApi';
+import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
 
 export const ExamList = () => {
     const [examList, setExamList] = useState<Exam[]>([]);
     const [result, setResult] = useState<ResultExam[]>([])
+
+    const location = useLocation();
+    const param = new URLSearchParams(location.search)
+    const csId = param.get('csId')
+    console.log('csID', csId);
+
+    const account = useSelector((state: any) => state.account.account);
 
 
     useEffect(() => {
@@ -23,7 +30,7 @@ export const ExamList = () => {
         fetchResult();
     }, []);
     const fetchResult = async () => {
-        const res = await getResultExamList();
+        const res = await getResultExamListByUserId(account.UserID);
         console.log(res);
 
         if (Array.isArray(res)) {
@@ -32,16 +39,15 @@ export const ExamList = () => {
     }
 
     const fetchExam = async () => {
-        const res = await getExamList();
+        const res = await getExamListByID(csId);
         if (Array.isArray(res)) {
             setExamList(res);
         }
     };
-    console.log(examList);
-
 
     return (
-        <Container>
+
+        <Container>{examList && examList.length ?
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
@@ -49,7 +55,7 @@ export const ExamList = () => {
                             <TableCell align="right" sx={{ width: '5%' }}>Index</TableCell>
                             <TableCell align="center" sx={{ width: '15%' }}>Image</TableCell>
                             <TableCell align="center" sx={{ width: '15%' }}>Content</TableCell>
-                            <TableCell align="right" sx={{ width: '15%' }}>Course</TableCell>
+                            <TableCell align="right" sx={{ width: '15%' }}>Created At</TableCell>
                             <TableCell align="right" sx={{ width: '10%' }}>Time Limit</TableCell>
                             <TableCell align="right" sx={{ width: '10%' }}>Status</TableCell>
                             <TableCell align="center" sx={{ width: '10%' }}>Action</TableCell>
@@ -66,10 +72,10 @@ export const ExamList = () => {
                                 <TableCell align="right">{index + 1}</TableCell>
                                 <TableCell align="center">{exam.image ? <img style={{ width: '100px' }} src={exam.image} /> : <img style={{ width: '100px' }} src='https://th.bing.com/th/id/R.e77d23a4500cebf53c6c9cb66b06d6f5?rik=WJJsAXxvwLtJ8A&riu=http%3a%2f%2fwww.icomedia.eu%2fwp-content%2fuploads%2f2017%2f06%2fIQT-Widescreen-Banner.jpg&ehk=ASlrc9o%2fRqEEDL%2bf6Ha7v6C%2ffGc1iuG0VWl8XZbQJfk%3d&risl=&pid=ImgRaw&r=0' />}</TableCell>
                                 <TableCell align="center">{exam.examContent}</TableCell>
-                                <TableCell align="right">{exam.courseSemesterID}</TableCell>
+                                <TableCell align="right">{exam.createdAt}</TableCell>
                                 <TableCell align="right"><ToHHMMSS time={exam.timeLimit} /></TableCell>
                                 <TableCell align="right">
-                                    {exam.status ? 'Start' : 'Done'}
+                                    {result.find(items => items.examId == exam.examID) ? 'END' : 'NEW'}
                                 </TableCell>
                                 <TableCell align="center">
                                     {result.find(items => items.examId == exam.examID) ?
@@ -79,7 +85,7 @@ export const ExamList = () => {
                                                 VIEW
                                             </Button>
                                         </Link>
-                                        : <Link to={`/examDetail?exID=${exam.examID}`}>
+                                        : <Link to={`/examDetail?exID=${exam.examID}&csID=${csId}`}>
                                             <Button
                                                 variant="contained" >
                                                 EXAM
@@ -92,7 +98,7 @@ export const ExamList = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer> : <div>Not Exam Now</div>}
         </Container>
 
     );

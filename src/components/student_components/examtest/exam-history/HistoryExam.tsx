@@ -120,7 +120,12 @@ export const HistoryExam = () => {
         return false
     }
 
-
+    const handleNavigation = (index: number) => {
+        const questionElement = document.getElementById(`question-${index}`);
+        if (questionElement) {
+            questionElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    };
 
 
     const arraysEqual = (arr1: string[], arr2: string[]) => {
@@ -168,7 +173,7 @@ export const HistoryExam = () => {
 
                                 {/* Question Items */}
                                 {questionEx && questionEx.map((qs, index) => (
-                                    <Box mt={2} key={index}>
+                                    <Box mt={2} key={index} id={`question-${index}`}>
 
                                         <Card sx={{ mb: 2 }}>
                                             <CardContent>
@@ -223,7 +228,9 @@ export const HistoryExam = () => {
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={3}
+                        sx={{ position: 'sticky', top: '10px', alignSelf: 'start' }}
+                    >
                         <Card>
                             <CardContent>
                                 <Typography variant="subtitle1">Bulk update questions</Typography>
@@ -268,24 +275,43 @@ export const HistoryExam = () => {
                             <CardContent>
                                 <Typography variant="subtitle1">Number of Answers/Questions</Typography>
                                 <Divider sx={{ my: 1 }} />
-                                <Box display="flex" flexWrap="wrap" justifyContent="center" mb={2}>
-                                    {questionEx?.map((data, index) => (
-                                        <Button
+                                <Box display="flex" flexWrap="wrap" justifyContent="center">
+                                    {userAnswer && questionEx?.map((data, index) => (
+                                        <Box
                                             key={index + 1}
-                                            variant={userAnswer.find(item => item.QuestionID === data.id) ? 'contained' : 'outlined'}
-                                            color="primary"
+                                            display="flex"
+                                            flexDirection="column"
+                                            alignItems="center"
                                             sx={{ margin: '4px', minWidth: '40px' }}
-                                            className={`navigation-button navigation-button-contained `}
                                         >
-                                            {index + 1}
-                                        </Button>
+                                            <Button
+                                                variant={
+                                                    userAnswer?.find(item => item.QuestionID === data.id)?.answer?.length > 0
+                                                        ? 'contained'
+                                                        : 'outlined'
+                                                }
+                                                onClick={() => handleNavigation(index)}
+                                                color="primary"
+                                                sx={{ minWidth: '40px' }}
+                                                className={`navigation-button navigation-button-contained `}
+                                            >
+                                                {index + 1}
+                                            </Button>
+                                            <Box mt={1}>
+                                                {handleCheckIsCorrect(data) ? (
+                                                    <CheckBoxOutlinedIcon color="success" fontSize="small" />
+                                                ) : (
+                                                    <CancelPresentationOutlinedIcon color="error" fontSize="small" />
+                                                )}
+                                            </Box>
+                                        </Box>
                                     ))}
 
                                 </Box>
                                 <Divider sx={{ my: 1 }} />
-
                             </CardContent>
                         </Card>
+
                     </Grid>
                 </Grid>
 

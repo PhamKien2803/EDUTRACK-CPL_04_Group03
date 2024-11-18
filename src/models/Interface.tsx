@@ -136,7 +136,9 @@ export interface Exam {
     timeLimit: string;
     image: string;
     status: boolean;
+    createdAt: string;
     display: boolean;
+    dateOfBooking: string
 }
 
 export interface ResultExam {

@@ -45,7 +45,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
   };
 
   const navigateToExam = () => {
-    navigate("/exam-test");
+    navigate(`/exam-test?csId=${lession.id}`);
   };
 
   const toggleVisibility = () => {

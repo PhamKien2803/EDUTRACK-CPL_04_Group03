@@ -5,6 +5,10 @@ import { getAnswerForQuestionExam, getDataExam, getExamList, postAnswer } from '
 import Question from './exam-question/Question';
 import { RightContent } from './exam-controls/RightContent';
 import { Answer, Exam } from '../../../models/Interface';
+import { v4 as uuidv4 } from 'uuid';
+import { postResultExam } from '../../../service/ExamApi';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 interface Data {
     id: string;
@@ -21,6 +25,7 @@ export const ExamDetail = () => {
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
+    const csId = param.get('csID');
     const nav = useNavigate()
 
     const [dataExam, setDataExam] = useState<Data[]>([]);
@@ -30,18 +35,22 @@ export const ExamDetail = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Track the number of answered questions
+
     const answeredQuestionsCount = dataExam.filter((question) =>
         question.answer.some((ans) => ans.isSelected)
     ).length;
     const totalQuestions = dataExam.length;
     const progressPercentage = totalQuestions ? (answeredQuestionsCount / totalQuestions) * 100 : 0;
 
+    const account = useSelector((state: any) => state.account.account);
+
     useEffect(() => {
         fetchData();
         fetchAnswerQuestionExam();
         fetchDataExamByID();
     }, []);
+    console.log(exId);
+
 
     const fetchData = async () => {
         try {
@@ -103,30 +112,89 @@ export const ExamDetail = () => {
         });
     }, []);
 
-    const handleFinish = async () => {
-        if (dataExam) {
-            for (const ques of dataExam) {
-                const answer = {
-                    id: '1',
-                    answer: ques.answer.filter(item => item.isSelected).map(item => item.id),
-                    QuestionID: ques.id,
-                    UserID: 'he171694'
-                };
-                try {
-                    const req = await postAnswer(answer);
-                    if (req) {
-                        alert('Finish Exam');
-                        setTimeout(() => {
-                            nav('/exam-test');
-                        }, 0);
+    const arraysEqual = (arr1: string[], arr2: string[]) => {
+        return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+    }
+
+    const handleFinish = () => {
+        Swal.fire({
+            title: "Are you Want to Finish?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                if (dataExam) {
+                    const dataAnswer = dataExam.map(item => {
+                        const list: string[] = [];
+                        item.answer.forEach(as => {
+                            if (as.isSelected) list.push(as.id)
+                        })
+                        return { ...item, answer: list }
+                    })
+
+                    // console.log('datas', dataAnswer);
+                    let count = 0
+                    const dataIsCorrect = dataExam.map(item => {
+                        const list: string[] = [];
+                        item.answer.forEach(as => {
+                            if (answerQs.find(item => item.id === as.id)?.isCorrect) list.push(as.id)
+                        })
+                        return { ...item, answer: list }
+                    })
+                    // console.log('dataiscorrect', dataIsCorrect);
+
+                    dataAnswer.forEach(item => {
+                        const question = dataIsCorrect.find(it => it.id === item.id)
+                        if (question && arraysEqual(question.answer, item.answer)) {
+                            count += 1
+                        }
+                    })
+
+                    // console.log(count);
+
+                    // console.log();
+
+                    const req = await postResultExam({
+                        id: uuidv4(),
+                        userId: account.UserID,
+                        numberCorrect: `${count}`,
+                        totalQuestion: `${dataExam.length}`,
+                        examId: `${exId}`
+                    })
+                    console.log(req);
+
+
+                    for (const ques of dataExam) {
+                        const answer = {
+                            id: uuidv4(),
+                            answer: ques.answer.filter(item => item.isSelected).map(item => item.id),
+                            QuestionID: ques.id,
+                            UserID: account?.UserID
+                        };
+                        try {
+                            console.log(answer);
+
+                            const req = await postAnswer(answer);
+                            if (req) {
+
+
+                                nav(`/exam-test?csId=${csId}`);
+
+                            }
+                        } catch (error) {
+                            console.error("Error posting answer:", error);
+                        }
                     }
-                } catch (error) {
-                    console.error("Error posting answer:", error);
+                } else {
+                    console.log('abc');
                 }
             }
-        } else {
-            console.log('abc');
-        }
+        });
+
     };
 
     return (
