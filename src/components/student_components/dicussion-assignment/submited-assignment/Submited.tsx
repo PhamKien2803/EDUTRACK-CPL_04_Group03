@@ -139,16 +139,14 @@ const Submited: React.FC = () => {
     }
   };
 
-  // Handle opening the update modal
   const handleOpenUpdateModal = (submission: answerAssignmentSlot) => {
     setCurrentSubmission(submission);
-    setFile([submission.urlfile]); // Set Base64 string from current submission
-    setLink(submission.urlfile);  // Just in case there is a link in the submission
+    setFile([submission.urlfile]); // set base64 cho file
+    setLink(submission.urlfile);  // set link cho file
     setSelection('link');
     setIsModalOpen(true);
   };
 
-  // Handle updating the assignment
   const handleUpdateAssignment = async () => {
     if (!file && !link) {
       Swal.fire({
@@ -162,7 +160,7 @@ const Submited: React.FC = () => {
     if ((file || link) && currentSubmission) {
       const updatedFormData: answerAssignmentSlot = {
         ...currentSubmission,
-        urlfile: file ? file[0] : link,  // Use Base64 string or link
+        urlfile: file ? file[0] : link,  
         Timestamped: new Date().toISOString(),
       };
 

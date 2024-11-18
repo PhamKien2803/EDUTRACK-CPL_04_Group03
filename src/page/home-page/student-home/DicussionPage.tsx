@@ -29,21 +29,10 @@ function DicussionPage() {
             const res: Slot = await getSLotById(id);
             setSelectedSlot(res);
             if (id) {
-                getQuestionSlotBySlotIds(id);
+                getQuestionSlotBySlotId(id);
             }
         } catch (error) {
             console.error("Error fetching slot by ID:", error);
-        }
-    };
-
-    const getQuestionSlotBySlotIds = async (slotId: string) => {
-        try {
-            const res = await getQuestionSlotBySlotId(slotId);
-            if (Array.isArray(res)) {
-                setQuestionSlot(res);
-            }
-        } catch (error) {
-            console.error("Error fetching question slot by slot ID:", error);
         }
     };
 

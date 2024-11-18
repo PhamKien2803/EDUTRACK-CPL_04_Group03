@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Typography, Box, Button, TextField
+  Paper, Typography, Box, Button, TextField,
+  Link
 } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { answerAssignmentSlot, participants } from '../../../../models/Interface';
@@ -15,7 +16,7 @@ interface Props {
 const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }) => {
   const [searchParams] = useSearchParams();
   const assignmentID = searchParams.get('assignmentid');
-  const [filteredSubmissions, setFilteredSubmissions] = useState<(answerAssignmentSlot & { studentName: string })[]>([]);
+  const [latestSubmissions, setLatestSubmissions] = useState<(answerAssignmentSlot & { studentName: string })[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [tempScore, setTempScore] = useState<string>('');
 
@@ -30,7 +31,16 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
         };
       });
 
-    setFilteredSubmissions(mappedSubmissions);
+    // Nhóm bài nộp theo UserID và lấy bài có thời gian nộp mới nhất
+    const groupedSubmissions = mappedSubmissions.reduce((acc, curr) => {
+      const existing = acc[curr.UserID];
+      if (!existing || new Date(curr.Timestamped).getTime() > new Date(existing.Timestamped).getTime()) {
+        acc[curr.UserID] = curr;
+      }
+      return acc;
+    }, {} as Record<string, answerAssignmentSlot & { studentName: string }>);
+
+    setLatestSubmissions(Object.values(groupedSubmissions));
   }, [answerAssignmentSlot, participants, assignmentID]);
 
   const handleEditClick = (index: number, score: string) => {
@@ -39,11 +49,11 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
   };
 
   const handleSaveClick = (index: number) => {
-    const updatedSubmissions = [...filteredSubmissions];
+    const updatedSubmissions = [...latestSubmissions];
     const newScore = Number(tempScore);
     updatedSubmissions[index].score = newScore;
 
-    setFilteredSubmissions(updatedSubmissions);
+    setLatestSubmissions(updatedSubmissions);
     setEditingIndex(null);
 
     updateScore(index, newScore);
@@ -55,7 +65,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
   };
 
   const updateScore = (index: number, score: number) => {
-    const updatedSubmission = filteredSubmissions[index];
+    const updatedSubmission = latestSubmissions[index];
     const updatedData: answerAssignmentSlot = {
       ...updatedSubmission,
       score,
@@ -70,10 +80,30 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
       });
   };
 
+  const openInNewTab = (url: string) => {
+    const header = sessionStorage.getItem("fileHeader") || "";
+    const data = sessionStorage.getItem("fileData") || "";
+
+    const fullBase64 = header && data ? `${header},${data}` : url;
+
+    if (fullBase64.startsWith("data:")) {
+      const newTab = window.open();
+      if (newTab) {
+        newTab.document.write(
+          `<iframe src="${fullBase64}" frameborder="0" style="width:100%;height:100%;"></iframe>`
+        );
+      } else {
+        alert("Failed to open a new tab. Please allow pop-ups for this site.");
+      }
+    } else {
+      alert("Invalid Base64 data.");
+    }
+  };
+
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-        Number of Student Submissions: {filteredSubmissions.length}
+        Latest Submissions for Each Student
       </Typography>
 
       <TableContainer
@@ -91,13 +121,14 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>No.</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Student</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Submission Status</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Time Submitted</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Link/File Assignment</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Score</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Update Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredSubmissions.map((submission, index) => (
+            {latestSubmissions.map((submission, index) => (
               <TableRow
                 key={submission.id}
                 sx={{
@@ -118,21 +149,11 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                 >
                   {submission.Status === 1 ? "Submitted" : "Not Submitted"}
                 </TableCell>
+                <TableCell>{new Date(submission?.Timestamped).toLocaleString()}</TableCell>
 
-                {/* <TableCell>
-                  <a
-                    href={submission.urlfile || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: '#1976d2',
-                      textDecoration: 'none',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {submission.urlfile || 'Assignment File'}
-                  </a>
-                </TableCell> */}
+                <TableCell>
+                  <Link href={submission?.urlfile} onClick={() => openInNewTab(submission?.urlfile)} target="_blank" rel="noopener noreferrer">Assignment Link</Link>
+                </TableCell>
 
                 <TableCell>
                   {editingIndex === index ? (

@@ -28,7 +28,6 @@ function NavTabs() {
         aria-label="secondary tabs example"
       >
         <Tab value="one" label="Discussion" />
-        <Tab value="two" label="Grade" />
         <Tab value="three" label="Teachers Feedback" />
       </Tabs>
 

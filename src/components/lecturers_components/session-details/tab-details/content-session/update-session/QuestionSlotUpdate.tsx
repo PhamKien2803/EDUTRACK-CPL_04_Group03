@@ -55,12 +55,24 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
     try {
       const updatedSettingStatus = determineSettingStatus(commentSetting1, commentSetting2);
 
+      // Định dạng hh:mm:ss
+      const startTime = new Date(startDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      const endTime = new Date(endDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+
       const updatedQuestion = {
-        ...question,  
-        content,  
-        TimeStart: startDate,  
-        TimeEnd: endDate,  
-        SettingStatus: updatedSettingStatus,  
+        ...question,
+        content,
+        TimeStart: startTime,
+        TimeEnd: endTime,    
+        SettingStatus: updatedSettingStatus,
       };
 
       await updateQuestionSLot(updatedQuestion);
@@ -72,6 +84,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
       Swal.fire("Error", "There was an error updating the question.", "error");
     }
   };
+
 
   // Function to determine SettingStatus based on the current settings
   const determineSettingStatus = (commentSetting1: boolean, commentSetting2: boolean) => {

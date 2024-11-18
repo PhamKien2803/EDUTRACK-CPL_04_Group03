@@ -149,7 +149,6 @@ export const createQuestionSlot = (question: questionSlot) => {
   return axios.post("QuestionSLot", {
     UserID: question.UserID,
     content: question.content,
-    image: question.image,
     TimeStart: question.TimeStart,
     TimeEnd: question.TimeEnd,
     Slotid: question.Slotid,
@@ -166,7 +165,6 @@ export const updateStatusQuestionSLot = (status: questionSlot) => {
     QuestionID: status.QuestionID,
     Status: status.Status, //Chỉ Update Status
     content: status.content,
-    image: status.image,
     TimeStart: status.TimeStart,
     TimeEnd: status.TimeEnd,
     Slotid: status.Slotid,
@@ -197,7 +195,6 @@ export const updateQuestionSLot = (question: questionSlot) => {
     QuestionID: question.QuestionID,
     UserID: question.UserID,
     content: question.content,
-    image: question.image,
     TimeStart: question.TimeStart,
     TimeEnd: question.TimeEnd,
     Slotid: question.Slotid,

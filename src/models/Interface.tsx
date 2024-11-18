@@ -37,7 +37,6 @@ export interface questionSlot {
     QuestionID: string,
     UserID: string,
     content: string,
-    image: string,
     TimeStart: string,
     TimeEnd: string,
     Slotid: string,
