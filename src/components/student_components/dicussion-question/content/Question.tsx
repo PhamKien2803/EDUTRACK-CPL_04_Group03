@@ -40,6 +40,7 @@ interface QuestionCardProps {
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [status, setStatus] = useState<number>(question.Status);
 
   const parseTimeToSeconds = (timeString: string): number => {
     const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -47,7 +48,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
   };
 
   useEffect(() => {
-    // F5 web , call lại LocalStorage
+    if (status !== 1) {
+      return;
+    }
+
     const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
     const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
 
@@ -65,6 +69,11 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         if (prevTime === null || prevTime <= 1) {
           clearInterval(timerInterval);
           localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
+
+          if (status === 1) {
+            setStatus(2); 
+          }
+
           return 0;
         }
 
@@ -74,12 +83,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
+  }, [question.TimeStart, question.TimeEnd, question.QuestionID, status]);
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -104,8 +115,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
           <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
             Content
           </Typography>
-          <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
-            {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
+          <Typography variant="body2" style={{ color: status === 2 ? 'red' : 'green', fontSize: "20px", marginTop: "8px" }}>
+            {status === 0 ? 'Not Started' : status === 1 ? `Time remaining: ${formatTime(timeRemaining ?? 0)}` : 'Time expired'}
           </Typography>
         </Box>
         <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />

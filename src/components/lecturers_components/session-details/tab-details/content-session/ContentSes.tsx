@@ -79,8 +79,21 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     if (currentStatus === 1) {
       await Swal.fire("Không thể xóa", "Vui lòng dừng trước khi xóa.", "warning");
       return;
-    } else if (currentStatus === 2) {
-      await Swal.fire("Không thể xóa", "Không thể xóa vì đã hoàn thành.", "error");
+      // } else if (currentStatus === 2) {
+      //   await Swal.fire("Không thể xóa", "Không thể xóa vì đã hoàn thành.", "error");
+      //   return;
+      // }
+    }
+
+    else if (currentStatus === 2) {
+      await Swal.fire({
+        title: "Câu hỏi đã hoàn thành, bạn có chắc chắn muốn xóa?",
+        text: "Hành động này không thể hoàn tác!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy",
+      });
       return;
     }
 
@@ -92,6 +105,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
       confirmButtonText: "Xóa",
       cancelButtonText: "Hủy",
     });
+
 
     if (result.isConfirmed) {
       try {
