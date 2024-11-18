@@ -14,6 +14,8 @@ export const Layout = () => {
 
         }
 
+    }else {
+        return <Navigate to={"/login"} />
     }
 
     return <Outlet />

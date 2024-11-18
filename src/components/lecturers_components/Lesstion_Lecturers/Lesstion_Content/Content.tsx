@@ -15,12 +15,13 @@ interface Props {
     classes: classRoom[];
     courses: courses[];
     setclassId: (id: string) => void;
-    classId: string
+    classId: string;
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, courses, setclassId, classId }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes,  setclassId, classId }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
-
+    const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
+    console.log(setUpdatedQuestions)
     const toggleVisibility = useCallback((slotId: string) => {
         setVisibleSlots((prev) => ({
             ...prev,
@@ -28,11 +29,12 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
         }));
     }, []);
 
+
     return (
         <div>
             <main>
                 <Grid container spacing={3}>
-
+                    {/* Left Panel */}
                     <Grid item xs={12} md={8} >
                         {lession.SlotID.map((item, index) => (
                             <Box
@@ -52,7 +54,8 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                         </Typography>
                                         <Box display="flex" alignItems="center" gap={2}>
                                             <Typography variant="body2" color="textSecondary">
-                                                Timestart - timeEnd
+
+                                                {slot.find(sl => sl.id === item)?.TimeStart} - {slot.find(sl => sl.id === item)?.TimeEnd}
                                             </Typography>
                                             <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
                                                 <Button component={Link} variant="outlined" color="secondary" size="small">
@@ -62,7 +65,12 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                         </Box>
                                     </Box>
                                     <Typography variant="body1" color="textSecondary" mt={1} mb={1} fontWeight="bold">
-                                        {slot.find(sl => sl.id === item)?.Description || 'No description available'}
+                                        {slot.find(sl => sl.id === item)?.Description.split('\n').map((line, lineIndex) => (
+                                            <React.Fragment key={lineIndex}>
+                                                {line}
+                                                <br />
+                                            </React.Fragment>
+                                        ))}
                                     </Typography>
                                 </Box>
                                 <Divider sx={{ my: 2 }} />
@@ -71,7 +79,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                         Questions:
                                     </Typography>
                                     <List>
-                                        {questionSlot
+                                        {updatedQuestions
                                             .filter((qs) => qs.Slotid === item)
                                             .map((qs, qIndex) => (
                                                 <ListItem
@@ -98,6 +106,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                             fontWeight: 'bold',
                                                         }}
                                                     />
+
                                                     <ArrowForwardIosIcon fontSize="small" color="action" />
                                                 </ListItem>
                                             ))}
@@ -106,11 +115,10 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                             </Box>
                         ))}
                     </Grid>
-
-
+                    {/* Right Panel */}
                     <Grid item xs={12} md={4}>
                         <Card variant="outlined" style={{ padding: '20px' }}>
-                            <Typography variant="h6">Class</Typography>
+                            <Typography variant="h6">Class </Typography>
                             <Select
                                 variant="outlined"
                                 sx={{ minWidth: 200 }}
@@ -126,11 +134,12 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 ))}
                             </Select>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">0 online</Typography>
                             <Typography variant="body2">20 students</Typography>
                             <Typography variant="body2">20 slots</Typography>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Typography variant="body2">Start date: 17:00 02/01/2023</Typography>
+                            <Typography variant="body2">
+
+                                Start date: 17:00 02/01/2023</Typography>
 
                             <div style={{ marginTop: '20px' }}>
                                 <Typography variant="body1">Lecturer (2)</Typography>

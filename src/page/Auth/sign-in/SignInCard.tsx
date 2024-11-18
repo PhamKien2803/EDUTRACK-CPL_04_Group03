@@ -201,7 +201,7 @@ const Login: React.FC = () => {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <ForgotPassword open={open} handleClose={handleClose} />
+        <ForgotPassword open={open} handleClose={handleClose} user = {userList} />
         <Button
           variant="contained"
           fullWidth

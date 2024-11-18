@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Dialog, DialogTitle, DialogContent, TextField, Button, Grid, Box, Typography, Divider } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  Button,
+  Grid,
+  Box,
+  Typography,
+  Divider,
+} from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 import Swal from "sweetalert2";
 import { assignmentSlot } from "../../../../../../models/Interface";
@@ -12,29 +22,42 @@ interface AssignmentSlotUpdateModalProps {
   onSave: (updatedAssignment: assignmentSlot) => void;
 }
 
-const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({ assignment, open, onClose, onSave }) => {
+const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
+  assignment,
+  open,
+  onClose,
+  onSave,
+}) => {
   const [title, setTitle] = useState(assignment.title);
   const [description, setDescription] = useState(assignment.description);
   const [startDate, setStartDate] = useState(assignment.TimeStart);
   const [endDate, setEndDate] = useState(assignment.TimeEnd);
-  const [file, setFile] = useState<File | null>(null);
-  const [fileName, setFileName] = useState<string[]>(assignment.urlfile || []);
+  const [file, setFile] = useState<string>(""); 
+  const [fileName, setFileName] = useState<string>("");
 
+  // Handle file change and convert to base64
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
     if (selectedFile) {
-      setFile(selectedFile);
-      setFileName([selectedFile.name]); 
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64File = reader.result as string;
+
+        const [header, data] = base64File.split(",");
+
+        sessionStorage.setItem("fileHeader", header);
+        sessionStorage.setItem("fileData", data);
+
+        setFile(base64File); 
+        setFileName(selectedFile.name); 
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
 
   const handleSave = async () => {
     try {
-      let urlfile = fileName.length > 0 ? fileName : [];
-
-      if (file) {
-        urlfile = [await uploadFile(file)]; 
-      }
+      const urlfile = file ? [file] : []; 
 
       const updatedAssignment = {
         ...assignment,
@@ -42,25 +65,17 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({ a
         description,
         TimeStart: startDate,
         TimeEnd: endDate,
-        urlfile, 
+        urlfile,
       };
 
       await updateAssignmentSlot(updatedAssignment);
       onSave(updatedAssignment); 
       Swal.fire("Success", "Assignment updated successfully!", "success");
-      onClose();
+      onClose(); 
     } catch (error) {
       console.error(error);
       Swal.fire("Error", "There was an error updating the assignment.", "error");
     }
-  };
-
-  const uploadFile = async (file: File) => {
-    return new Promise<string>((resolve) => {
-      setTimeout(() => {
-        resolve(URL.createObjectURL(file)); 
-      }, 1000);
-    });
   };
 
   return (
@@ -86,7 +101,8 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({ a
               variant="outlined"
               fullWidth
               multiline
-              rows={3}
+              minRows={3}
+              maxRows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -134,8 +150,13 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({ a
                 "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
               }}
             >
-              Upload Assignment File
-              <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
+              Update Assignment File
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.ppt,.pptx"
+                hidden
+                onChange={handleFileChange}
+              />
             </Button>
             {fileName && (
               <Typography mt={1} color="textSecondary">
@@ -149,10 +170,18 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({ a
       <Divider />
 
       <Box mt={2} p={2} display="flex" justifyContent="space-between">
-        <Button variant="outlined" onClick={onClose} sx={{ textTransform: "capitalize", color: "#757575" }}>
+        <Button
+          variant="outlined"
+          onClick={onClose}
+          sx={{ textTransform: "capitalize", color: "#757575" }}
+        >
           Cancel
         </Button>
-        <Button variant="contained" onClick={handleSave} sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+        >
           Submit
         </Button>
       </Box>

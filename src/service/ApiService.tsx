@@ -113,8 +113,14 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
     isOnline: isOnline,
     Status: status,
     Email: email,
-  });
-};
+
+  })
+}
+export const resetPassword = (id: string, password: string) => {
+  return axios.patch(`Participants/${id}`, {
+    Password: password,
+  })
+}
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
@@ -268,8 +274,20 @@ export const updateAnswerAssignmentSlot = (user: answerAssignmentSlot) => {
     id: user?.id,
     AssignmentID: user?.AssignmentID,
     UserID: user?.UserID,
-    urlfile: user?.urlfile,
+    urlfile: user?.urlfile, //Only Update urlfile
     score: user?.score,
+    Timestamped: new Date().toISOString(),
+    Status: user?.Status
+  });
+}
+
+export const updateScoreAssignmentSlot = (user: answerAssignmentSlot) => {
+  return axios.put(`AnswerAssignmentSlot/${user.id}`, {
+    id: user?.id,
+    AssignmentID: user?.AssignmentID,
+    UserID: user?.UserID,
+    urlfile: user?.urlfile,
+    score: user?.score, //Only Update score
     Timestamped: new Date().toISOString(),
     Status: user?.Status
   });

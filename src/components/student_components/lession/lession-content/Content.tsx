@@ -126,8 +126,9 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                 Questions:
                             </Typography>
                             <List>
+                                {/* Hiển thị các câu hỏi (Question) chỉ khi Status là On-Going */}
                                 {questionSlot
-                                    .filter((qs) => qs.Slotid === sl)
+                                    .filter((qs) => qs.Slotid === sl && qs.Status !== 0) // Lọc câu hỏi On-Going
                                     .map((qs, qIndex) => (
                                         <ListItem
                                             key={`qs-${qIndex}`}
@@ -149,9 +150,9 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                             </ListItemIcon>
                                             <ListItemText
                                                 primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
+                                                secondary="On-Going"
                                                 secondaryTypographyProps={{
-                                                    color: qs.Status === 0 ? 'error' : 'success',
+                                                    color: 'success',
                                                     fontWeight: 'bold',
                                                 }}
                                             />
@@ -159,7 +160,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                         </ListItem>
                                     ))}
 
-                                {/* Assignment */}
+                                {/* Hiển thị phần bài tập (Assignment) không thay đổi */}
                                 {assignmentSlot?.filter((as) => as?.Slotid === sl)?.map((as, index) => (
                                     <ListItem
                                         key={`as-${index}`}
@@ -191,6 +192,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                     </ListItem>
                                 ))}
                             </List>
+
                         </Collapse>
                     </Box>
                 );

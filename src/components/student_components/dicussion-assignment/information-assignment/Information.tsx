@@ -19,45 +19,55 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
   const filteredAssignments = assignmentSlot?.filter(
     (as) => as?.Slotid === slotID && as?.AssignmentID === assignmentID
   );
-  console.log(filteredAssignments);
 
-  //Lỗi CORS
-  // const handleDownload = async (urlfile: string | undefined) => {
-  //   if (urlfile && typeof urlfile === 'string') {
-  //     try {
-  //       
-  //       const response = await axios.get(urlfile, { responseType: 'blob' });
-  //       const blob = new Blob([response.data], { type: response.headers['content-type'] });
-  //       const link = document.createElement('a');
-  //       link.href = URL.createObjectURL(blob);
-  //       link.setAttribute('download', 'Assignment_File.pdf'); 
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //       URL.revokeObjectURL(link.href); 
-  //     } catch (error) {
-  //       console.error("Download failed:", error);
-  //       alert("Failed to download file");
-  //     }
+  const handleDownload = (urlfile: string | string[] | undefined) => {
+    if (!urlfile) {
+      alert("No file available to open");
+      return;
+    }
 
-  //   } else {
-  //     alert(urlfile ? "Invalid file URL" : "No file available to download");
-  //   }
-  // };
-
-  const handleDownload = (urlfile: string | undefined) => {
-    if (urlfile && typeof urlfile === 'string') {
-      const link = document.createElement('a');
-      link.href = urlfile;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    if (Array.isArray(urlfile)) {
+      const fileUrl = urlfile[0];
+      openInNewTab(fileUrl);
     } else {
-      alert(urlfile ? "Invalid file URL" : "No file available to open");
+      openInNewTab(urlfile);
     }
   };
 
+  // Hàm mở tệp trong tab mới
+  // const openInNewTab = (url: string) => {
+  //   // Kiểm tra xem URL có hợp lệ hay không
+  //   if (url) {
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.target = '_blank'; // Mở trong tab mới
+  //     document.body.appendChild(link);
+  //     link.click(); // Mô phỏng click để mở tệp
+  //     document.body.removeChild(link); // Xóa liên kết sau khi đã mở
+  //   } else {
+  //     alert("Invalid file URL.");
+  //   }
+  // };
+
+  const openInNewTab = (url: string) => {
+    const header = sessionStorage.getItem("fileHeader") || "";
+    const data = sessionStorage.getItem("fileData") || "";
+
+    const fullBase64 = header && data ? `${header},${data}` : url;
+
+    if (fullBase64.startsWith("data:")) {
+      const newTab = window.open();
+      if (newTab) {
+        newTab.document.write(
+          `<iframe src="${fullBase64}" frameborder="0" style="width:100%;height:100%;"></iframe>`
+        );
+      } else {
+        alert("Failed to open a new tab. Please allow pop-ups for this site.");
+      }
+    } else {
+      alert("Invalid Base64 data.");
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: 850, mx: 'auto', mt: 4 }}>
@@ -82,7 +92,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
               Additional files:
             </Typography>
 
-            {/* Action Button to download or open file */}
+            {/* Action Button to open file */}
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
                 variant="contained"
@@ -93,8 +103,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
                     backgroundColor: '#388E3C',
                   },
                 }}
-                // onClick={() => handleDownload(Array.isArray(asm.urlfile) ? asm.urlfile[0] : asm.urlfile)}
-                onClick={() => handleDownload(Array.isArray(asm.urlfile) ? asm.urlfile[0] : asm.urlfile)}
+                onClick={() => handleDownload(asm?.urlfile)}
               >
                 Get Assignment File
               </Button>
