@@ -46,8 +46,42 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         return hours * 3600 + minutes * 60 + seconds;
     };
 
+    // useEffect(() => {
+    //     // F5 web , call lại LocalStorage
+    //     const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
+    //     const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
+
+    //     if (initialTimeRemaining !== null) {
+    //         setTimeRemaining(initialTimeRemaining);
+    //     } else {
+    //         const startSeconds = parseTimeToSeconds(question.TimeStart);
+    //         const endSeconds = parseTimeToSeconds(question.TimeEnd);
+    //         const initialTimeRemaining = endSeconds - startSeconds;
+    //         setTimeRemaining(initialTimeRemaining);
+    //     }
+
+    //     const timerInterval = setInterval(() => {
+    //         setTimeRemaining((prevTime) => {
+    //             if (prevTime === null || prevTime <= 1) {
+    //                 clearInterval(timerInterval);
+    //                 localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
+    //                 return 0;
+    //             }
+
+    //             localStorage.setItem(`timeRemaining_${question.QuestionID}`, (prevTime - 1).toString());
+    //             return prevTime - 1;
+    //         });
+    //     }, 1000);
+
+    //     return () => clearInterval(timerInterval);
+    // }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
+
     useEffect(() => {
-        // F5 web , call lại LocalStorage
+        if (question.Status !== 1) {
+            setTimeRemaining(null);
+            return;
+        }
+
         const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
         const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
 
@@ -74,8 +108,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         }, 1000);
 
         return () => clearInterval(timerInterval);
-    }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
-
+    }, [question.TimeStart, question.TimeEnd, question.QuestionID, question.Status]);
     const formatTime = (seconds: number) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);

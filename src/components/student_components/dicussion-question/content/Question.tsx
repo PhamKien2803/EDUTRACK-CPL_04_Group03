@@ -2,6 +2,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { slot as Slot, questionSlot } from "../../../../models/Interface";
 import { useSearchParams } from 'react-router-dom';
+import { updateStatusQuestionSLot } from "../../../../service/ApiService";
 
 interface Props {
   questionSlot: questionSlot[];
@@ -47,6 +48,20 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     return hours * 3600 + minutes * 60 + seconds;
   };
 
+  const updateQuestionStatus = async (questionID: string, status: number) => {
+    const updatedQuestion = { ...question, Status: status };
+
+    try {
+      await updateStatusQuestionSLot({
+        ...updatedQuestion,
+        Status: updatedQuestion.Status,
+      });
+      console.log('Status updated successfully');
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
   useEffect(() => {
     if (status !== 1) {
       return;
@@ -71,7 +86,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
           localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
 
           if (status === 1) {
-            setStatus(2); 
+            setStatus(2); //Thay đổi status khi hết thời gian
+            updateQuestionStatus(question.QuestionID, 2); //Tự set lại
           }
 
           return 0;
@@ -83,13 +99,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, [question.TimeStart, question.TimeEnd, question.QuestionID, status]);
+  }, [question.TimeStart, question.TimeEnd, question.QuestionID, status, question.SettingStatus]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-  
+
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
@@ -116,7 +132,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
             Content
           </Typography>
           <Typography variant="body2" style={{ color: status === 2 ? 'red' : 'green', fontSize: "20px", marginTop: "8px" }}>
-            {status === 0 ? 'Not Started' : status === 1 ? `Time remaining: ${formatTime(timeRemaining ?? 0)}` : 'Time expired'}
+            {status === 0 ? 'Not Started' : status === 1 ? `Time remaining: ${formatTime(timeRemaining ?? 0)}` : 'Dicussion Time is over'}
           </Typography>
         </Box>
         <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />

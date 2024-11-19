@@ -59,12 +59,24 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
     try {
       const urlfile = file ? [file] : []; 
 
+      // Định dạng hh:mm:ss
+      const startTime = new Date(startDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      const endTime = new Date(endDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+
       const updatedAssignment = {
         ...assignment,
         title,
         description,
-        TimeStart: startDate,
-        TimeEnd: endDate,
+        TimeStart: startTime,
+        TimeEnd: endTime,
         urlfile,
       };
 

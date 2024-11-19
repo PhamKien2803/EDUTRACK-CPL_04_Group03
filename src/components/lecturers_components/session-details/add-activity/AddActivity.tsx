@@ -170,20 +170,20 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64File = reader.result as string;
-  
+
         const [header, data] = base64File.split(",");
-  
+
         sessionStorage.setItem("fileHeader", header);
         sessionStorage.setItem("fileData", data);
-  
-        setFile([header + "," + data]); 
+
+        setFile([header + "," + data]);
         setFileName(selectedFile.name);
       };
       reader.readAsDataURL(selectedFile);
     }
   };
-  
-  
+
+
 
   // Hàm gửi form
   const handleSubmit = async () => {
@@ -192,8 +192,8 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       return;
     }
 
-    const startTime = new Date(startDate).toISOString();
-    const endTime = new Date(endDate).toISOString();
+    const startTime = new Date(startDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const endTime = new Date(endDate).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
     try {
       // Gửi dữ liệu lên API

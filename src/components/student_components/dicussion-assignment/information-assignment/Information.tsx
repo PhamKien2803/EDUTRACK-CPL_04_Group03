@@ -1,6 +1,7 @@
 import { Box, Typography, Button, Paper, Divider } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { assignmentSlot, slot } from '../../../../models/Interface';
+import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
 
 interface Props {
@@ -15,8 +16,11 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('slotID');
   const assignmentID = searchParams.get('assignmentid');
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [status, setStatus] = useState<number>(0);
+  const [isBlinking, setIsBlinking] = useState(false);
 
-  const filteredAssignments = assignmentSlot?.filter(
+  const assignment = assignmentSlot.find(
     (as) => as?.Slotid === slotID && as?.AssignmentID === assignmentID
   );
 
@@ -33,21 +37,6 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
       openInNewTab(urlfile);
     }
   };
-
-  // Hàm mở tệp trong tab mới
-  // const openInNewTab = (url: string) => {
-  //   // Kiểm tra xem URL có hợp lệ hay không
-  //   if (url) {
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.target = '_blank'; // Mở trong tab mới
-  //     document.body.appendChild(link);
-  //     link.click(); // Mô phỏng click để mở tệp
-  //     document.body.removeChild(link); // Xóa liên kết sau khi đã mở
-  //   } else {
-  //     alert("Invalid file URL.");
-  //   }
-  // };
 
   const openInNewTab = (url: string) => {
     const header = sessionStorage.getItem("fileHeader") || "";
@@ -69,14 +58,89 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
     }
   };
 
+  useEffect(() => {
+    if (status === 1 && timeRemaining !== null && timeRemaining <= 10) {
+      setIsBlinking(true);
+    } else {
+      setIsBlinking(false);
+    }
+  }, [status, timeRemaining]);
+
+  useEffect(() => {
+    if (!assignment) return;
+
+    setStatus(assignment.Status);
+    if (assignment.Status !== 1 || status === 2) {
+      return;
+    }
+    const parseTimeToSeconds = (timeString: string): number => {
+      const [hours, minutes, seconds] = timeString.split(':').map(Number);
+      return hours * 3600 + minutes * 60 + seconds;
+    };
+
+    const storedTimeRemaining = localStorage.getItem(`timeRemaining_${assignment.AssignmentID}`);
+    const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
+
+    if (initialTimeRemaining !== null) {
+      setTimeRemaining(initialTimeRemaining);
+    } else {
+      const startSeconds = parseTimeToSeconds(assignment.TimeStart);
+      const endSeconds = parseTimeToSeconds(assignment.TimeEnd);
+      setTimeRemaining(endSeconds - startSeconds);
+    }
+
+    const timerInterval = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime === null || prevTime <= 1) {
+          clearInterval(timerInterval);
+          localStorage.removeItem(`timeRemaining_${assignment.AssignmentID}`);
+
+          // Time hết thì set status = 2
+          if (assignment.Status === 1) {
+            setStatus(2);
+            updateStatusAssignmentSlot({
+              id: assignment.id,
+              AssignmentID: assignment.AssignmentID,
+              UserID: assignment.UserID,
+              title: assignment.title,
+              description: assignment.description,
+              urlfile: assignment.urlfile,
+              TimeStart: assignment.TimeStart,
+              TimeEnd: assignment.TimeEnd,
+              Slotid: assignment.Slotid,
+              Status: 2
+            });
+          }
+
+          return 0;
+        }
+
+        localStorage.setItem(`timeRemaining_${assignment.AssignmentID}`, (prevTime - 1).toString());
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [assignment]);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   return (
     <Box sx={{ maxWidth: 850, mx: 'auto', mt: 4 }}>
-      {filteredAssignments?.length ? (
-        filteredAssignments.map((asm, index) => (
+      {assignmentSlot.length ? (
+        assignmentSlot.map((asm, index) => (
           <Paper key={index} elevation={3} sx={{ p: 2, mb: 2, borderRadius: 2 }}>
             {/* Assignment Title */}
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              {asm?.description}
+              {asm?.title}
             </Typography>
 
             {/* Content Section */}
@@ -84,7 +148,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
               Content
             </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
-              {asm?.title}
+              {asm?.description || 'No description provided.'}
             </Typography>
 
             {/* Additional Files Section */}
@@ -105,14 +169,36 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
                 }}
                 onClick={() => handleDownload(asm?.urlfile)}
               >
-                Get Assignment File
+                Get Assignment File 
               </Button>
             </Box>
 
             {/* Due Date and Score */}
-            <Typography variant="body2" sx={{ mt: 2, color: 'text.secondary', fontSize: '1.25rem' }}>
-              Due date: {asm?.TimeStart} - {asm?.TimeEnd} - <strong>SCORE: <span style={{ color: 'red' }}>100</span> points</strong>
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 2,
+                mb: 3,
+                color:
+                  status === 0
+                    ? 'text.secondary'
+                    : status === 1
+                      ? timeRemaining && timeRemaining <= 10
+                        ? 'red'
+                        : 'green'
+                      : 'red',
+                fontSize: status === 1 ? '1.2rem' : '1rem',
+                fontWeight: status === 1 ? 'bold' : 'normal',
+                animation: isBlinking ? 'blink 1s step-start infinite' : 'none',
+              }}
+            >
+              {status === 0
+                ? 'Not Started'
+                : status === 1
+                  ? `Time remaining: ${formatTime(timeRemaining ?? 0)}`
+                  : 'Discussion Time is over'}
             </Typography>
+            <strong>SCORE: <span style={{ color: 'green' }}>100</span> points</strong>
             <Divider sx={{ my: 2 }} />
           </Paper>
         ))

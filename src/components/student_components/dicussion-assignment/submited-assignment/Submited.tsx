@@ -58,7 +58,7 @@ const Submited: React.FC = () => {
     return user ? user.UserName : "Unknown User";
   };
 
-  // Handle file upload and convert to Base64
+  // Chuyển base64 sang file
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
@@ -79,7 +79,6 @@ const Submited: React.FC = () => {
     const header = sessionStorage.getItem("fileHeader") || "";
     const data = sessionStorage.getItem("fileData") || "";
 
-    // Combine the Base64 header and data if available
     const fullBase64 = header && data ? `${header},${data}` : url;
 
     if (fullBase64.startsWith("data:")) {
@@ -279,7 +278,6 @@ const Submited: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Submission ID</TableCell>
                 <TableCell>Student Name</TableCell>
                 <TableCell>Link/File</TableCell>
                 <TableCell>Score</TableCell>
@@ -290,7 +288,6 @@ const Submited: React.FC = () => {
             <TableBody>
               {submissionHistory?.map((submission) => (
                 <TableRow key={submission?.id}>
-                  <TableCell>{submission?.id}</TableCell>
                   <TableCell>{getUsernameById(submission?.UserID)}</TableCell>
                   <TableCell>
                     <Button
