@@ -2,6 +2,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { slot as Slot, questionSlot } from "../../../../models/Interface";
 import { useSearchParams } from 'react-router-dom';
+import { updateStatusQuestionSLot } from '../../../../service/ApiService';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -40,6 +41,8 @@ interface QuestionCardProps {
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+    const [status, setStatus] = useState<number>(question.Status);
+
 
     const parseTimeToSeconds = (timeString: string): number => {
         const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -76,9 +79,22 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     //     return () => clearInterval(timerInterval);
     // }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
 
+    const updateQuestionStatus = async (questionID: string, status: number) => {
+        const updatedQuestion = { ...question, Status: status };
+
+        try {
+            await updateStatusQuestionSLot({
+                ...updatedQuestion,
+                Status: updatedQuestion.Status,
+            });
+            console.log('Status updated successfully');
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
+    };
+
     useEffect(() => {
-        if (question.Status !== 1) {
-            setTimeRemaining(null);
+        if (status !== 1) {
             return;
         }
 
@@ -99,6 +115,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
                 if (prevTime === null || prevTime <= 1) {
                     clearInterval(timerInterval);
                     localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
+
+                    if (status === 1) {
+                        setStatus(2); //Thay đổi status khi hết thời gian
+                        updateQuestionStatus(question.QuestionID, 2); //Tự set lại
+                    }
+
                     return 0;
                 }
 
@@ -108,7 +130,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         }, 1000);
 
         return () => clearInterval(timerInterval);
-    }, [question.TimeStart, question.TimeEnd, question.QuestionID, question.Status]);
+    }, [question.TimeStart, question.TimeEnd, question.QuestionID, status, question.SettingStatus]);
+
     const formatTime = (seconds: number) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);

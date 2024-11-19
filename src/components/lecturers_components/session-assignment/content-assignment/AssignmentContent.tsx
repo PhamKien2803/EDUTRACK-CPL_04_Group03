@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Paper, Divider } from '@mui/material';
-import { assignmentSlot } from '../../../../models/Interface';
+import { assignmentSlot, slot } from '../../../../models/Interface';
 import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   assignmentSlot: assignmentSlot[];
+  assignmentID: string | null;
+  slots: slot[];
+  setSlots: (slots: slot[]) => void;
+  selectedSlot: slot | null;
 }
 
 const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {

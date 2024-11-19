@@ -79,58 +79,118 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <TextField
-          label="Content"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={4}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="Start Date"
-          type="datetime-local"
-          fullWidth
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          sx={{ mb: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="End Date"
-          type="datetime-local"
-          fullWidth
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          sx={{ mb: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1" gutterBottom>Comment Settings</Typography>
-        <FormControlLabel
-          control={<Switch checked={commentSetting1} onChange={handleCommentSetting1Change} color="primary" />}
-          label="Students can only see their own comments"
-        />
-        <FormControlLabel
-          control={<Switch checked={commentSetting2} onChange={handleCommentSetting2Change} color="primary" />}
-          label="Students can view all comments but cannot reply"
-        />
-      </Grid>
+    <Box
+      sx={{
+        maxWidth: 800,
+        margin: "0 auto",
+        padding: 2,
+        overflowX: "hidden",
+      }}
+    >
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          overflowX: "hidden",
+        }}
+      >
+        {/* Content Field */}
+        <Grid item xs={12}>
+          <TextField
+            label="Content"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+              },
+            }}
+          />
+        </Grid>
 
-      <Box mt={2} display="flex" justifyContent="space-between" width="100%">
-        <Button variant="outlined" onClick={handleClose} sx={{ textTransform: 'capitalize' }}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: 'capitalize' }}>Submit</Button>
-      </Box>
-    </Grid>
+        {/* Start Date Field */}
+        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
+          <TextField
+            label="Start Date"
+            type="datetime-local"
+            fullWidth
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Grid>
+
+        {/* End Date Field */}
+        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
+          <TextField
+            label="End Date"
+            type="datetime-local"
+            fullWidth
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Grid>
+
+        {/* Comment Settings */}
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" gutterBottom>
+            Comment Settings
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={commentSetting1}
+                onChange={handleCommentSetting1Change}
+                color="primary"
+              />
+            }
+            label="Students can only see their own comments"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={commentSetting2}
+                onChange={handleCommentSetting2Change}
+                color="primary"
+              />
+            }
+            label="Students can view all comments but cannot reply"
+          />
+        </Grid>
+
+        {/* Buttons */}
+        <Grid item xs={12}>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            gap={2}
+          >
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              color="secondary"
+              sx={{ textTransform: "capitalize" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              color="secondary"
+              sx={{ textTransform: "capitalize" }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
@@ -219,72 +279,114 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+    <Box
+      sx={{
+        maxWidth: 800,
+        margin: "0 auto",
+        padding: 2,
+        overflowX: "hidden",
+      }}
+    >
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          overflowX: "hidden",
+        }}
+      >
+        {/* Content Field */}
+        <Grid item xs={12}>
+          <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </Grid>
+
+        {/* Start Date Field */}
+        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
+          <TextField
+            label="Start Date"
+            type="datetime-local"
+            fullWidth
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Grid>
+
+        {/* End Date Field */}
+        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
+          <TextField
+            label="End Date"
+            type="datetime-local"
+            fullWidth
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            variant="outlined"
+            component="label"
+            startIcon={<UploadIcon />}
+            sx={{
+              fontWeight: "bold",
+              textTransform: "capitalize",
+              color: "#1976d2",
+              borderColor: "#1976d2",
+              "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
+            }}
+          >
+            Upload Assignment File
+            <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
+          </Button>
+          <span style={{ color: "gray" }}> .pdf,.doc,.docx,.ppt,.pptx</span>
+          {fileName && (
+            <Typography mt={1} color="textSecondary">
+              File uploaded: {fileName}
+            </Typography>
+          )}
+        </Grid>
+
+        {/* Buttons */}
+        <Grid item xs={12}>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            gap={2}
+          >
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              color="secondary"
+              sx={{ textTransform: "capitalize" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              color="secondary"
+              sx={{ textTransform: "capitalize" }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Description"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="Start Date"
-          type="datetime-local"
-          fullWidth
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          label="End Date"
-          type="datetime-local"
-          fullWidth
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          variant="outlined"
-          component="label"
-          startIcon={<UploadIcon />}
-          sx={{
-            fontWeight: "bold",
-            textTransform: "capitalize",
-            color: "#1976d2",
-            borderColor: "#1976d2",
-            "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
-          }}
-        >
-          Upload Assignment File
-          <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
-        </Button>
-        {fileName && (
-          <Typography mt={1} color="textSecondary">
-            File uploaded: {fileName}
-          </Typography>
-        )}
-      </Grid>
-      <Box mt={2} display="flex" justifyContent="space-between" width="100%">
-        <Button variant="outlined" onClick={handleClose} sx={{ textTransform: "capitalize" }}>
-          Cancel
-        </Button>
-        <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: "capitalize" }}>
-          Submit
-        </Button>
-      </Box>
-    </Grid>
+    </Box>
   );
 };
 const AddActivity: React.FC = () => {
@@ -319,13 +421,39 @@ const AddActivity: React.FC = () => {
 
       <Modal open={open} onClose={handleClose} closeAfterTransition BackdropProps={{ timeout: 500 }}>
         <Fade in={open}>
-          <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, width: 800, borderRadius: 2, maxHeight: '80vh', overflowY: 'auto' }}>
-            <Box display="flex" justifyContent="flex-end"><IconButton onClick={handleClose} size="small"><CloseIcon /></IconButton></Box>
-            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>Add New {activityType === 'questions' ? 'Question' : 'Assignment'}</Typography>
-            {activityType === 'questions' ? <QuestionForm handleClose={handleClose} /> : <AssignmentForm handleClose={handleClose} />}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+              width: 800,
+              borderRadius: 2,
+              maxHeight: '80vh',
+              overflowY: 'auto',
+            }}
+          >
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                Add New {activityType === 'questions' ? 'Question' : 'Assignment'}
+              </Typography>
+              <IconButton onClick={handleClose} size="small">
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            {activityType === 'questions' ? (
+              <QuestionForm handleClose={handleClose} />
+            ) : (
+              <AssignmentForm handleClose={handleClose} />
+            )}
           </Box>
         </Fade>
       </Modal>
+
     </Box>
   );
 };

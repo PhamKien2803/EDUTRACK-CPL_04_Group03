@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Grid, FormControlLabel, Switch, Typography, Divider } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Grid, FormControlLabel, Switch, Typography, Divider, Box, IconButton } from "@mui/material";
 import Swal from "sweetalert2";
 import { questionSlot } from "../../../../../../models/Interface";
 import { updateQuestionSLot } from "../../../../../../service/ApiService";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface QuestionSlotUpdateProps {
   question: questionSlot;
@@ -31,26 +32,6 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
     }
   }, [question]);
 
-  // const handleSave = async () => {
-  //   try {
-  //     const updatedQuestion = {
-  //       ...question,
-  //       content,
-  //       TimeStart: startDate,
-  //       TimeEnd: endDate,
-  //       SettingStatus: determineSettingStatus(commentSetting1, commentSetting2),
-  //     };
-
-  //     await updateQuestionSLot(updatedQuestion);
-  //     onSave(updatedQuestion);
-  //     Swal.fire("Success", "Question updated successfully!", "success");
-  //     onClose();
-  //   } catch (error) {
-  //     console.error(error);
-  //     Swal.fire("Error", "There was an error updating the question.", "error");
-  //   }
-  // };
-
   const handleSave = async () => {
     try {
       const updatedSettingStatus = determineSettingStatus(commentSetting1, commentSetting2);
@@ -71,7 +52,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
         ...question,
         content,
         TimeStart: startTime,
-        TimeEnd: endTime,    
+        TimeEnd: endTime,
         SettingStatus: updatedSettingStatus,
       };
 
@@ -112,20 +93,72 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Question</DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={3}>
-          {/* Content */}
+
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      sx={{
+        '& .MuiPaper-root': {
+          maxWidth: 700,
+          margin: '0 auto',
+          padding: 2,
+          overflow: 'hidden',
+          borderRadius: 3,
+          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+        },
+      }}
+    >
+      <DialogTitle>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ pb: 1, borderBottom: '1px solid #e0e0e0' }}
+        >
+          <Typography variant="h6" fontWeight="bold">
+            Edit Question
+          </Typography>
+          <IconButton onClick={onClose} size="small" sx={{ color: '#757575' }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+
+      <DialogContent
+        sx={{
+          p: 1,
+          overflowX: 'hidden',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: '400px',
+        }}
+      >
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            maxWidth: '100%',
+          }}
+        >
+          {/* Content Field */}
           <Grid item xs={12}>
             <TextField
               label="Content"
               variant="outlined"
               fullWidth
               multiline
-              rows={4}
+              rows={3}
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
+              }}
             />
           </Grid>
 
@@ -137,12 +170,14 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
               fullWidth
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
               }}
             />
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <TextField
               label="End Date"
@@ -150,39 +185,79 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
               fullWidth
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
               }}
             />
           </Grid>
 
-          {/* Divider for Comment Settings */}
+          {/* Comment Settings */}
           <Grid item xs={12}>
             <Divider sx={{ mb: 2 }} />
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
               Comment Settings
             </Typography>
             <FormControlLabel
-              control={<Switch checked={commentSetting1} onChange={handleCommentSetting1Change} color="primary" />}
+              control={
+                <Switch
+                  checked={commentSetting1}
+                  onChange={handleCommentSetting1Change}
+                  color="primary"
+                />
+              }
               label="Students can only see their own comments"
             />
             <FormControlLabel
-              control={<Switch checked={commentSetting2} onChange={handleCommentSetting2Change} color="primary" />}
+              control={
+                <Switch
+                  checked={commentSetting2}
+                  onChange={handleCommentSetting2Change}
+                  color="primary"
+                />
+              }
               label="Students can view all comments but cannot reply"
             />
           </Grid>
         </Grid>
       </DialogContent>
 
-      <DialogActions sx={{ padding: 2 }}>
-        <Button onClick={onClose} sx={{ textTransform: "capitalize", color: "#757575" }}>
+      <DialogActions
+        sx={{
+          p: 2,
+          justifyContent: 'flex-end',
+          borderTop: '1px solid #e0e0e0',
+        }}
+      >
+        <Button
+          onClick={onClose}
+          variant="outlined"
+          sx={{
+            textTransform: 'capitalize',
+            mr: 2,
+            color: '#757575',
+            borderColor: '#757575',
+            '&:hover': { backgroundColor: '#f5f5f5' },
+          }}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSave} variant="contained" sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          color="secondary"
+          sx={{
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+          }}
+        >
           Submit
         </Button>
       </DialogActions>
     </Dialog>
+
   );
 };
 

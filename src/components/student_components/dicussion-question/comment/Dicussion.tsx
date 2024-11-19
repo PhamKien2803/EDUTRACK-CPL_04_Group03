@@ -41,26 +41,28 @@ const Discussion: React.FC = () => {
   const [commentStatusMessage, setCommentStatusMessage] = useState("");
 
   useEffect(() => {
+
     const checkStatus = () => {
       const hasNotStarted = questionSlots.some(slot => slot.Status === 0);
       const isTimeOver = questionSlots.some(slot => slot.Status === 2);
+      const isRunning = questionSlots.some(slot => slot.Status === 1);
 
-      if (hasNotStarted) {
+      if (isRunning) {
+        setIsCommentDisabled(false);
+        setCommentStatusMessage("");
+      } else if (hasNotStarted) {
         setIsCommentDisabled(true);
         setCommentStatusMessage("The question has not started yet.");
       } else if (isTimeOver) {
         setIsCommentDisabled(true);
         setCommentStatusMessage("Comments are disabled as the time is over.");
-      } else {
-        setIsCommentDisabled(false);
-        setCommentStatusMessage("");
       }
     };
 
     checkStatus();
-    const interval = setInterval(checkStatus, 1000); // Check continuously every second
+    const interval = setInterval(checkStatus, 1000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval); 
   }, [questionSlots]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {

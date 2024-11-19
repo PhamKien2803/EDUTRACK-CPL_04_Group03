@@ -11,14 +11,12 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import {
-  Navigate,
   Outlet,
   useLocation,
   useNavigationType,
 } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
-import { useSelector } from "react-redux";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
@@ -27,7 +25,6 @@ const NAVIGATION: Navigation = [
     title: "Profile",
     icon: <AccountCircleIcon />,
   },
-
   {
     segment: "home-page",
     title: "Dashboard",
@@ -58,7 +55,6 @@ const NAVIGATION: Navigation = [
     title: "FQA",
     icon: <LiveHelpIcon />,
   },
-
   {
     segment: "Logout",
     title: "Logout",
@@ -128,13 +124,28 @@ function DashboardLayoutBranding() {
       <DashboardLayout
         isMenuExpanded={isMenuExpanded}
         onToggleMenu={handleToggleMenu}
+        sx={{
+          display: "flex", // Sử dụng Flexbox
+          flexDirection: "row", // Layout theo chiều ngang
+          height: "100vh", // Đảm bảo chiều cao đầy đủ của màn hình
+        }}
       >
-        {loading && (
-          <Box position="fixed" top={0} left={0} right={0} zIndex={1101}>
-            <CircularProgress color="secondary" />
-          </Box>
-        )}
-        <Outlet />
+        <Box
+          sx={{
+            flex: 1,
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column", // Đảm bảo các phần tử nằm theo cột
+          }}
+        >
+          {/* CircularProgress chỉ xuất hiện khi đang tải */}
+          {loading && (
+            <Box position="fixed" top={0} left={0} right={0} zIndex={1101}>
+              <CircularProgress color="secondary" />
+            </Box>
+          )}
+          <Outlet />
+        </Box>
       </DashboardLayout>
     </AppProvider>
   );
