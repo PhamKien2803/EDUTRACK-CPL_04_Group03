@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 
 function VerifyOTP() {
   const location = useLocation();
@@ -8,19 +9,67 @@ function VerifyOTP() {
 
   const [otpInputs, setOtpInputs] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState<string | null>(null);
+  const [isResetting, setIsResetting] = useState<boolean>(false);
+
+  const generateOTP = (): string => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+  };
+
+  const handleSendOTP = () => {
+    if (!email) {
+      setError('No email found. Please try again.');
+      return;
+    }
+
+    setIsResetting(true);
+    const otp = generateOTP();
+    const expirationTime = Date.now() + 5 * 60 * 1000; // 5 minutes
+
+    // Save OTP and expiration in localStorage
+    localStorage.setItem('otp', otp);
+    localStorage.setItem('otpExpiration', expirationTime.toString());
+
+    // Prepare email data for EmailJS
+    const emailData = {
+      contact_number: Math.random().toString(36).substr(2, 9),
+      from_name: 'EduTrack',
+      from_email: email,
+      subject: 'Your OTP Code',
+      html_message: `Your OTP code is: ${otp}. Please use this code to verify your account.`,
+    };
+
+    emailjs
+      .send('service_k7tjo7o', 'template_afnxci2', emailData, 'BEG8X3EKg9_bLjfCn')
+      .then(
+        (result) => {
+          alert(`OTP sent successfully to ${email}`);
+          setIsResetting(false);
+        },
+        (error) => {
+          console.error('Error sending email:', error.text);
+          setError('Error sending OTP. Please try again.');
+          setIsResetting(false);
+        }
+      );
+  };
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; // Only allow numeric input
     const updatedOtpInputs = [...otpInputs];
-    updatedOtpInputs[index] = value;
+    updatedOtpInputs[index] = value.slice(-1); // Take the last digit
     setOtpInputs(updatedOtpInputs);
 
+    // Automatically focus next input if not empty
     if (value && index < otpInputs.length - 1) {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       if (nextInput) (nextInput as HTMLInputElement).focus();
     }
-  };
 
+    // Auto-verify when all 6 digits are entered
+    if (updatedOtpInputs.join('').length === 6) {
+      handleVerifyOTP(updatedOtpInputs.join(''));
+    }
+  };
   const handleKeyDown = (index: number, event: React.KeyboardEvent) => {
     if (event.key === 'Backspace' && !otpInputs[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
@@ -28,8 +77,24 @@ function VerifyOTP() {
     }
   };
 
-  const handleVerifyOTP = () => {
-    const otpInput = otpInputs.join('');
+  const handlePaste = (event: React.ClipboardEvent) => {
+    const pastedData = event.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+    const updatedOtpInputs = Array(6).fill('');
+    pastedData.split('').forEach((char, index) => {
+      if (index < updatedOtpInputs.length) {
+        updatedOtpInputs[index] = char;
+      }
+    });
+    setOtpInputs(updatedOtpInputs);
+
+    // Auto-verify when all 6 digits are entered
+    if (pastedData.length === 6) {
+      handleVerifyOTP(pastedData);
+    }
+  };
+
+
+  const handleVerifyOTP = (otp: string) => {
     const storedOtp = localStorage.getItem('otp');
     const storedExpirationTime = localStorage.getItem('otpExpiration');
     const currentTime = Date.now();
@@ -46,7 +111,7 @@ function VerifyOTP() {
       return;
     }
 
-    if (storedOtp === otpInput) {
+    if (storedOtp === otp) {
       alert('OTP verified successfully!');
       localStorage.removeItem('otp');
       localStorage.removeItem('otpExpiration');
@@ -78,8 +143,11 @@ function VerifyOTP() {
         }}
       >
         <h1 style={{ marginBottom: '20px' }}>Verify OTP</h1>
+
         {email && <p style={{ marginBottom: '20px' }}>We sent an OTP to: {email}</p>}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
+        <div
+         onPaste={handlePaste}
+         style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
           {otpInputs.map((digit, index) => (
             <input
               key={index}
@@ -103,18 +171,19 @@ function VerifyOTP() {
         </div>
         {error && <p style={{ color: 'red', marginBottom: '20px' }}>{error}</p>}
         <button
-          onClick={handleVerifyOTP}
+          onClick={handleSendOTP}
           style={{
             padding: '10px 20px',
             fontSize: '16px',
             borderRadius: '5px',
             border: 'none',
-            backgroundColor: '#007bff',
+            backgroundColor: isResetting ? '#ccc' : '#007bff',
             color: '#fff',
-            cursor: 'pointer',
+            cursor: isResetting ? 'not-allowed' : 'pointer',
           }}
+          disabled={isResetting}
         >
-          Verify
+          {isResetting ? 'Sending...' : 'Reset OTP'}
         </button>
       </div>
     </div>
