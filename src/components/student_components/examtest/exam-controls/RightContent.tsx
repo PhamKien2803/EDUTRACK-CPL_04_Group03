@@ -27,7 +27,7 @@ export const RightContent: React.FC<Props> = (props) => {
     return (
         <>
             <div className="main-timer">
-                <CountDown timer={timer} />
+                <CountDown timer={timer} exID={dataExam[0].exId} />
             </div>
             <div className="main-question">
                 <div className="q-idndex">

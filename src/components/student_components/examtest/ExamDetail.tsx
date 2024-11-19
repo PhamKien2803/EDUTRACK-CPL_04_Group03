@@ -34,6 +34,7 @@ export const ExamDetail = () => {
     const [answerQs, setAnswerQs] = useState<Answer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [timer, setTimer] = useState<string>("")
 
 
     const answeredQuestionsCount = dataExam.filter((question) =>
@@ -43,13 +44,24 @@ export const ExamDetail = () => {
     const progressPercentage = totalQuestions ? (answeredQuestionsCount / totalQuestions) * 100 : 0;
 
     const account = useSelector((state: any) => state.account.account);
+    const examsUId = useSelector((state: any) => state.exam.userId);
+    const exams = useSelector((state: any) => state.exam.exam);
+    // console.log('check state', datas);
 
     useEffect(() => {
+        if (examsUId == account.UserID && exId === exams.id) {
+            // console.log('hello');
+            setTimer(exams.time)
+            // setDataExam(datas)
+        } else {
+
+        }
         fetchData();
         fetchAnswerQuestionExam();
         fetchDataExamByID();
+
     }, []);
-    console.log(exId);
+
 
 
     const fetchData = async () => {
@@ -196,6 +208,8 @@ export const ExamDetail = () => {
         });
 
     };
+    console.log('check log', dataExam);
+
 
     return (
         <Box className="exam-container" sx={{ padding: 3 }}>
@@ -258,7 +272,7 @@ export const ExamDetail = () => {
                 {/* Right Content (Question Navigation and Timer) */}
                 <Box className="right-content" sx={{ width: { xs: '100%', md: '30%' }, mt: { xs: 2, md: 0 } }}>
                     {exam ? (
-                        <RightContent dataExam={dataExam} setIndex={setIndex} timer={exam?.timeLimit} handleFinish={handleFinish} />
+                        <RightContent dataExam={dataExam} setIndex={setIndex} timer={timer ? timer : exam.timeLimit} handleFinish={handleFinish} />
                     ) : null}
                 </Box>
             </Box>
