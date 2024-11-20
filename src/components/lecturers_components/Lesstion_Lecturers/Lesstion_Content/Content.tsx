@@ -18,7 +18,7 @@ interface Props {
     classId: string;
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes,  setclassId, classId }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
     console.log(setUpdatedQuestions)
@@ -98,20 +98,66 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                     <ListItemIcon>
                                                         <HelpOutlineIcon color="action" />
                                                     </ListItemIcon>
-                                                    <ListItemText
-                                                        primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                        secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
-                                                        secondaryTypographyProps={{
-                                                            color: qs.Status === 0 ? 'error' : 'success',
-                                                            fontWeight: 'bold',
-                                                        }}
-                                                    />
-
+                                                    <Link
+                                                        href={`/lecturer/session-question?Slotid=${item}&Questionid=${qs.id}`}
+                                                        style={{ textDecoration: 'none', flexGrow: 1 }}
+                                                    >
+                                                        <ListItemText
+                                                            primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
+                                                            secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
+                                                            secondaryTypographyProps={{
+                                                                color: qs.Status === 0 ? 'error' : 'success',
+                                                                fontWeight: 'bold',
+                                                            }}
+                                                        />
+                                                    </Link>
+                                                    <ArrowForwardIosIcon fontSize="small" color="action" />
+                                                </ListItem>
+                                            ))}
+                                    </List>
+                                    <Divider sx={{ my: 2 }} />
+                                    <Typography variant="subtitle1" color="primary" gutterBottom>
+                                        Assignments:
+                                    </Typography>
+                                    <List>
+                                        {slot
+                                            .filter((sl) => sl.id === item)
+                                            .map((sl, slIndex) => (
+                                                <ListItem
+                                                    key={`assignment-${slIndex}`}
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        cursor: 'pointer',
+                                                        '&:hover': {
+                                                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                                            transform: 'scale(1.02)',
+                                                        },
+                                                        transition: 'background-color 0.3s, transform 0.3s',
+                                                    }}
+                                                >
+                                                    <ListItemIcon>
+                                                        <HelpOutlineIcon color="action" />
+                                                    </ListItemIcon>
+                                                    <Link
+                                                        href={`/lecturer/session-assignment?Slotid=${item}`}
+                                                        style={{ textDecoration: 'none', flexGrow: 1 }}
+                                                    >
+                                                        <ListItemText
+                                                            primary={`Assignment ${slIndex + 1}`}
+                                                            secondary="Click to view details"
+                                                            secondaryTypographyProps={{
+                                                                color: 'primary',
+                                                                fontWeight: 'bold',
+                                                            }}
+                                                        />
+                                                    </Link>
                                                     <ArrowForwardIosIcon fontSize="small" color="action" />
                                                 </ListItem>
                                             ))}
                                     </List>
                                 </Collapse>
+
                             </Box>
                         ))}
                     </Grid>
