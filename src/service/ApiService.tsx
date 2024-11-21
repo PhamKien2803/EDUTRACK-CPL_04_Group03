@@ -3,6 +3,7 @@ import {
   answerAssignmentSlot,
   answerQuestionSlot,
   assignmentSlot,
+  classRoom,
   questionSlot,
   replies,
 } from "../models/Interface";
@@ -135,9 +136,19 @@ const updateProfile = (
     Email: email,
   });
 };
+
 export const resetPassword = (id: string, password: string) => {
   return axios.patch(`Participants/${id}`, {
     Password: password,
+  });
+};
+
+export const createClass = (newClass: classRoom) => {
+  return axios.post("Class", {
+    ClassID: newClass.ClassID,
+    ClassName: newClass.ClassName,
+    Student: newClass.Student,
+    Status: newClass.Status,
   });
 };
 

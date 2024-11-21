@@ -19,7 +19,10 @@ import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
 import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
+
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
+
+import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 
 interface Router {
   name?: string;
@@ -278,6 +281,11 @@ const routesStaffHome: Router[] = [
     key: "homepage_staff",
     path: "/staff/homePage",
     component: StaffHomePage,
+  },
+  {
+    key: "create_class",
+    path: "/staff/create-class",
+    component: CreatingClass,
   },
 ];
 
