@@ -6,7 +6,8 @@ function VerifyOTP() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.verifiedEmail || localStorage.getItem('verifiedEmail');
-
+  console.log(email);
+  
   const [otpInputs, setOtpInputs] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState<string | null>(null);
   const [isResetting, setIsResetting] = useState<boolean>(false);

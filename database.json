@@ -301,7 +301,21 @@
       "Role": 1,
       "isOnline": true,
       "Status": true
+    },
+    {
+      "id": "he176833",
+      "UserName": "Vũ Diệu Linh",
+      "Age": 21,
+      "Gender": true,
+      "Address": "Ha Noi",
+      "Email": "linhvdhe176833@fpt.edu.vn",
+      "Password": "1223@",
+      "Image": "",
+      "Role": 2,
+      "isOnline": true,
+      "Status": true
     }
+
   ],
   "Semester": [
     {
