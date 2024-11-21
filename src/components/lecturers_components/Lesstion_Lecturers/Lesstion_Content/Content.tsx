@@ -99,7 +99,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                         <HelpOutlineIcon color="action" />
                                                     </ListItemIcon>
                                                     <Link
-                                                        href={`/lecturer/session-question?Slotid=${item}&Questionid=${qs.id}`}
+                                                        href={`/lecturer/session-question?slotid=${item}&Questionid=${qs.id}`}
                                                         style={{ textDecoration: 'none', flexGrow: 1 }}
                                                     >
                                                         <ListItemText
@@ -188,15 +188,14 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 Start date: 17:00 02/01/2023</Typography>
 
                             <div style={{ marginTop: '20px' }}>
-                                <Typography variant="body1">Lecturer (2)</Typography>
+                                <Typography variant="body1">Lecturer:</Typography>
                                 <List>
-                                    <ListItem>edu_next_ltr_fpt_edu_01</ListItem>
                                     <ListItem>{participants.find(pr => pr.id === lession.LecturersID)?.Email}</ListItem>
                                 </List>
                             </div>
                             <Link href={`/addingExam?csID=${lession.id}`}>
                                 <Button variant="contained" color="primary" fullWidth>
-                                    Adding eXam
+                                    Adding Exam
                                 </Button>
                             </Link>
                         </Card>

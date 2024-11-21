@@ -18,6 +18,8 @@ export default function MainLayout() {
                 return <Typography variant="h4">Semester List</Typography>;
             case 'student':
                 return <Typography variant="h4">Student List</Typography>;
+            case 'courses':
+                return <Typography variant="h4">Courses List</Typography>;
             case 'settings':
                 return <Typography variant="h4">Settings</Typography>;
             case 'about':
