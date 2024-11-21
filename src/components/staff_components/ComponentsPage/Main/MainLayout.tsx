@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import SideMenu from './SideMenu';
 import Typography from '@mui/material/Typography';
 import DashboardStaff from '../../../../page/home-page/staff-home/DashboardStaff';
+import CreatingClass from '../../../../page/home-page/staff-home/CreatingClass/CreatingClass';
 
 export default function MainLayout() {
     const [currentTab, setCurrentTab] = useState('dashboard');
@@ -13,7 +14,7 @@ export default function MainLayout() {
             case 'dashboard':
                 return <DashboardStaff /> //Components
             case 'class':
-                return <Typography variant="h4">Class Dashboard</Typography>;
+                return <CreatingClass/>
             case 'semesters':
                 return <Typography variant="h4">Semester List</Typography>;
             case 'student':
