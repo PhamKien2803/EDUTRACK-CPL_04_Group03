@@ -21,39 +21,20 @@ import {
 } from "../../../service/ApiService";
 
 import dataCarousel from "../../../../database.json";
-import { classRoom } from "../../../models/Interface";
-
-interface CourseSemester {
-  id: string;
-  SemesterID: string;
-  SlotID: string[];
-  CourseID: string;
-  StudentID: string;
-  LecturersID: string;
-  ClassID: string;
-}
-
-interface Semester {
-  SemesterID: string;
-  SemesterName: string;
-  StartDate: string;
-  EndDate: string;
-  Status: boolean;
-}
-
-interface course {
-  id: string;
-  CourseName: string;
-  Status: boolean;
-}
+import {
+  classRoom,
+  courses,
+  CourseSemester,
+  Semester,
+} from "../../../models/Interface";
 
 export default function Subject() {
   const navigate = useNavigate();
-  const [data, setData] = useState<CourseSemester[]>([]);
+  const [dataCourse, setDataCourse] = useState<courses[]>([]);
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
-  const [dataCourse, setDataCourse] = useState<course[]>([]);
   const [dataClass, setDataClass] = useState<classRoom[]>([]);
+  const [data, setData] = useState<CourseSemester[]>([]);
 
   const account = useSelector((state: any) => state.account.account);
   const isAuthenticated = useSelector(
@@ -78,7 +59,9 @@ export default function Subject() {
     const results = await Promise.all(
       dataClass.map(async (item) => {
         const res = await getCourseSemesterByUserId(item.ClassID);
-        return Array.isArray(res) ? res.filter((i) => i.SemesterID === semesterId) : [];
+        return Array.isArray(res)
+          ? res.filter((i) => i.SemesterID === semesterId)
+          : [];
       })
     );
     setData(results.flat());
@@ -91,12 +74,13 @@ export default function Subject() {
     // console.log(res);
 
     if (Array.isArray(res)) {
-      const filteredData = res.filter(item => item.Student.includes(account.UserID))
+      const filteredData = res.filter((item) =>
+        item.Student.includes(account.UserID)
+      );
       // console.log(filteredData);
-      setDataClass(filteredData)
-
+      setDataClass(filteredData);
     }
-  }
+  };
 
   const fetchDataSemester = async () => {
     const res = await getSemester();

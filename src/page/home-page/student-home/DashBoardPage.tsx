@@ -1,199 +1,462 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Grid,
   Card,
   CardContent,
+  Divider,
   Button,
-  CircularProgress,
-  Tooltip, // Import Tooltip
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  getAnswerQuestionSlot,
+  getAnswerQuestionSlotByUserId,
+  getClass,
+  getCourse,
+  getCourseSemesterByUserId,
+  getQuestionSLot,
+  getSemester,
+  getSLot,
+} from "../../../service/ApiService";
+import {
+  answerQuestionSlot,
+  classRoom,
+  courses,
+  CourseSemester,
+  questionSlot,
+  Semester,
+  slot,
+} from "../../../models/Interface";
+import { log } from "console";
+import { useNavigate } from "react-router-dom";
+
+interface DashBoardPageProps {
+  CourseName: string;
+  ClassName: string;
+  LecturerDate: string;
+  progress: string;
+  TotalSlot: string;
+  CompletedSlot: string;
+  TotalQuestion: string;
+  CompletedQuestion: string;
+  TotalAssignment: string;
+  CompletedAssignment: string;
+}
 
 function DashBoardPage() {
-  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+  const [dataCourse, setDataCourse] = useState<courses[]>([]);
+  const [dataSemester, setDataSemester] = useState<Semester[]>([]);
+  const [semesterId, setSemesterId] = useState<string>("");
+  const [dataClass, setDataClass] = useState<classRoom[]>([]);
+  const [data, setData] = useState<CourseSemester[]>([]);
+  const [dataSlot, setSlot] = useState<slot[]>([]);
+  const [dataQuestion, setQuestion] = useState<questionSlot[]>([]);
+  const [dataAnswer, setAnswer] = useState<answerQuestionSlot[]>([]);
+
+  const account = useSelector((state: any) => state.account.account);
+  const isAuthenticated = useSelector(
+    (state: any) => state.account.isAuthenticated
+  );
+
+  console.log("data", data);
+
+  // console.log(account);
+  // console.log(isAuthenticated);
 
   useEffect(() => {
-    setIsVisible(true); // Trigger animations on component load
+    fetchCourse();
+    fetchDataSemester();
+    fetchClassByUserid();
+    fetchSlot();
+    fetchQuestionSlot();
+    fetchAnswerQuestion();
   }, []);
 
-  const learningPaths = [
-    {
-      title: "Lộ trình học Front-end",
-      description:
-        "Lập trình viên Front-end là người xây dựng ra giao diện websites. Trong phần này F8 sẽ chia sẻ cho bạn lộ trình để trở thành lập trình viên Front-end nhé.",
-      image:
-        "https://files.fullstack.edu.vn/f8-prod/learning-paths/2/63b4642136f3e.png",
-      link: "/learning-paths/front-end-development",
-      skills: [
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/7/6200b81f52d83.png",
-          progress: 60,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/15/62385d6c63dfa.png",
-          progress: 80,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/1/6200ad9d8a2d8.png",
-          progress: 40,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/13/6200af9262b30.png",
-          progress: 90,
-        },
-      ],
-    },
-    {
-      title: "Lộ trình học Back-end",
-      description:
-        "Trái với Front-end thì lập trình viên Back-end là người làm việc với dữ liệu, công việc thường nặng tính logic hơn. Chúng ta sẽ cùng tìm hiểu thêm về lộ trình học Back-end nhé.",
-      image:
-        "https://files.fullstack.edu.vn/f8-prod/learning-paths/3/63b4641535b16.png",
-      link: "/learning-paths/back-end-development",
-      skills: [
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/7/6200b81f52d83.png",
-          progress: 60,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/15/62385d6c63dfa.png",
-          progress: 80,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/1/6200ad9d8a2d8.png",
-          progress: 40,
-        },
-        {
-          img: "https://files.fullstack.edu.vn/f8-prod/courses/13/6200af9262b30.png",
-          progress: 90,
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    // console.log('hello');
 
+    if (semesterId) fetchCourseSemester();
+  }, [semesterId]);
+  const fetchCourseSemester = async () => {
+    const results = await Promise.all(
+      dataClass.map(async (item) => {
+        const res = await getCourseSemesterByUserId(item.ClassID);
+        return Array.isArray(res)
+          ? res.filter((i) => i.SemesterID === semesterId)
+          : [];
+      })
+    );
+    setData(results.flat());
+  };
+
+  const countTotalSlot = (id: string) => {
+    let count = 0;
+    data
+      .find((item) => item.id === id)
+      ?.SlotID.map((item) => {
+        dataQuestion.forEach((slot) => {
+          if (slot.Slotid === item) {
+            count++;
+          }
+        });
+      });
+    return count;
+  };
+
+  console.log("dataquestion", dataQuestion);
+
+  const countAnswer = (id: string) => {
+    let count = 0;
+    const courseSemester = data.find((item) => item.id === id);
+    if (courseSemester) {
+      courseSemester.SlotID.forEach((slotId) => {
+        dataQuestion.forEach((question) => {
+          if (question.Slotid === slotId) {
+            if (
+              dataAnswer.some(
+                (answer) => answer.QuestionID === question.QuestionID
+              )
+            ) {
+              count++;
+            }
+          }
+        });
+      });
+    }
+    return count;
+  };
+
+  console.log("Total answerSlot: ", countAnswer("cs13"));
+
+  console.log("data", data);
+
+  console.log("Total Slot: ", countTotalSlot("cs13"));
+
+  const fetchSlot = async () => {
+    const res = await getSLot();
+    if (Array.isArray(res) && res.length > 0) {
+      setSlot(res);
+    }
+  };
+
+  const fetchQuestionSlot = async () => {
+    const res = await getQuestionSLot();
+    if (Array.isArray(res) && res.length > 0) {
+      setQuestion(res);
+    }
+  };
+
+  const fetchAnswerQuestion = async () => {
+    const res = await getAnswerQuestionSlotByUserId(account.UserID);
+    if (Array.isArray(res) && res.length > 0) {
+      setAnswer(res);
+    }
+  };
+
+  // console.log(data);
+
+  const fetchClassByUserid = async () => {
+    const res = await getClass();
+    // console.log(res);
+
+    if (Array.isArray(res)) {
+      const filteredData = res.filter((item) =>
+        item.Student.includes(account.UserID)
+      );
+      // console.log(filteredData);
+      setDataClass(filteredData);
+    }
+  };
+
+  const fetchDataSemester = async () => {
+    const res = await getSemester();
+    if (Array.isArray(res) && res.length > 0) {
+      const latestSemesterId = res[res.length - 1].SemesterID;
+      setSemesterId(latestSemesterId);
+      setDataSemester(res);
+    }
+  };
+
+  const fetchCourse = async () => {
+    const res = await getCourse();
+    if (Array.isArray(res) && res.length > 0) {
+      setDataCourse(res);
+    }
+  };
+  // console.log(semesterId);
+
+  // const handleSubjectClick = () => {
+  //   navigate("/lession-course");
+  // };
+  // console.log(dataSemester);
   return (
-    <Box sx={{ p: 4, textAlign: "center" }}>
-      <Typography
-        variant="h4"
-        sx={{ fontWeight: "bold", mb: 2, color: "#242424" }}
-      >
-        Lộ trình học
-      </Typography>
-      <Typography sx={{ maxWidth: 600, mx: "auto", mb: 4, color: "#242424" }}>
-        Để bắt đầu một cách thuận lợi, bạn nên tập trung vào một lộ trình học.
-        Ví dụ: Để đi làm với vị trí "Lập trình viên Front-end" bạn nên tập trung
-        vào lộ trình "Front-end".
-      </Typography>
-
-      <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
-        {learningPaths.map((path, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={5}
-            key={index}
-            style={{ margin: "auto" }}
+    <Box p={3} bgcolor="#f9fafb" minHeight="100vh">
+      {/* Header Section */}
+      <Box mb={3} display="flex" alignItems="center">
+        <Box
+          component="img"
+          src={account.Image}
+          alt="Profile"
+          sx={{ width: 50, height: 50, borderRadius: "50%", marginRight: 2 }}
+        />
+        <Box>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{ marginBottom: "4px" }}
           >
-            <Card
-              sx={{
-                p: 2,
-                borderRadius: 2,
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                textAlign: "center",
-                backgroundColor: "#fff",
-                border: "1px solid #ddd",
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(50px)",
-                transition: "opacity 0.5s ease, transform 0.5s ease",
-                "&:hover": {
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  transform: "translateY(-10px)", // Nâng thẻ lên khi hover
-                  transition:
-                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-                },
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold", mb: 1, color: "#242424" }}
-                >
-                  {path.title}
-                </Typography>
-                <Typography sx={{ mb: 2, color: "#242424" }}>
-                  {path.description}
-                </Typography>
-                <div className="_thumb-wrap_1qw7z_39">
-                  <a className="_thumb-round_1qw7z_45" href={path.link}>
-                    <img
-                      className="_thumb_1qw7z_39"
-                      src={path.image}
-                      alt={path.title}
-                    />
-                  </a>
-                </div>
+            Welcome back, {account.UserName}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="primary"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(`/profile`)}
+          >
+            Open Profile
+          </Typography>
+        </Box>
+      </Box>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: 0.5,
-                    mb: 2,
-                  }}
-                >
-                  {path.skills.map((skill, skillIndex) => (
-                    <Box sx={{ position: "relative" }} key={skillIndex}>
-                      {/* Tooltip hiển thị tiến độ */}
-                      <Tooltip
-                        title={`${skill.progress}% tiến độ đã hoàn thành`}
-                      >
-                        <span>
-                          {/* Thêm span để Tooltip không bị che khuất bởi CircularProgress */}
-                          <img
-                            src={skill.img}
-                            alt="Skill"
-                            style={{
-                              width: 40,
-                              height: 40,
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                              border: "2px solid #ddd",
-                            }}
-                          />
-                        </span>
-                      </Tooltip>
-                      <CircularProgress
-                        variant="determinate"
-                        value={skill.progress}
-                        size={40}
-                        thickness={3}
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          zIndex: 1,
-                          "& .MuiCircularProgress-circle": {
-                            stroke: "#f05123",
-                          },
-                          "& .MuiCircularProgress-dashed": {
-                            stroke: "#f05123",
-                          },
-                        }}
+      {/* Streak Section */}
+      {data.map((item) => (
+        <Box key={item.id} mb={4} sx={{ width: "100%" }}>
+          {" "}
+          {/* Khoảng cách giữa các card */}
+          <Card variant="outlined">
+            <CardContent>
+              <Grid container spacing={2} alignItems="center">
+                {/* Title */}
+                <Grid item xs={12} md={4}>
+                  <Typography variant="h6" fontWeight="bold" mb={1}>
+                    {
+                      dataCourse.find((course) => course.id === item.CourseID)
+                        ?.id
+                    }
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" mb={2}>
+                    {
+                      dataCourse.find((course) => course.id === item.CourseID)
+                        ?.CourseName
+                    }
+                  </Typography>
+                </Grid>
+
+                {/* Progress Circle */}
+                <Grid item xs={12} md={4}>
+                  <Box
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
+                      position: "relative",
+                      margin: "0 auto",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <svg
+                      width={80}
+                      height={80}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
+                    >
+                      <circle
+                        cx={40}
+                        cy={40}
+                        r={36}
+                        fill="none"
+                        stroke="#e0e0e0"
+                        strokeWidth={6}
                       />
-                    </Box>
-                  ))}
-                </Box>
+                      <circle
+                        cx={40}
+                        cy={40}
+                        r={36}
+                        fill="none"
+                        stroke="#f59c0b"
+                        strokeWidth={6}
+                        strokeDasharray={2 * Math.PI * 36}
+                        strokeDashoffset={
+                          2 * Math.PI * 36 -
+                          (countTotalSlot(item.id) === 0
+                            ? 0
+                            : countAnswer(item.id) / countTotalSlot(item.id)) *
+                            2 *
+                            Math.PI *
+                            36
+                        }
+                        strokeLinecap="round"
+                        transform="rotate(-90 40 40)"
+                      />
+                    </svg>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      {countTotalSlot(item.id) === 0
+                        ? 0
+                        : Math.round(
+                            (countAnswer(item.id) / countTotalSlot(item.id)) *
+                              100
+                          )}
+                      %
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={1}></Grid>
+                {/* Course Info */}
+                <Grid item xs={12} md={3}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    justifyContent="center"
+                    gap={1}
+                  >
+                    {/* Slot */}
+                    <Typography
+                      variant="body2"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "#f59c0b",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                          flexShrink: 0,
+                        }}
+                      ></span>
+                      Questions: &nbsp;
+                      <span style={{ fontWeight: "bold" }}>
+                        {countAnswer(item.id)}/{countTotalSlot(item.id)}
+                      </span>
+                    </Typography>
 
-                <Button variant="contained" color="primary" sx={{ mt: 1 }}>
-                  Xem chi tiết
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                    {/* Visit */}
+                    <Typography
+                      variant="body2"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "#16a28b",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                          flexShrink: 0,
+                        }}
+                      ></span>
+                      visit: &nbsp;
+                      <span style={{ fontWeight: "bold" }}>1/1</span>
+                    </Typography>
+
+                    {/* Start Date */}
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "transparent",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                          flexShrink: 0,
+                        }}
+                      ></span>
+                      Start Date: &nbsp;
+                      {
+                        dataSemester.find(
+                          (semester) => semester.SemesterID === item.SemesterID
+                        )?.StartDate
+                      }
+                    </Typography>
+
+                    {/* End Date */}
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "transparent",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                          flexShrink: 0,
+                        }}
+                      ></span>
+                      End Date: &nbsp;&nbsp;
+                      {
+                        dataSemester.find(
+                          (semester) => semester.SemesterID === item.SemesterID
+                        )?.EndDate
+                      }
+                    </Typography>
+
+                    {/* Button */}
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      style={{
+                        alignSelf: "flex-start",
+                        backgroundColor: "#16a28b",
+                        color: "#fff",
+                        textTransform: "capitalize",
+                        borderRadius: "8px",
+                        padding: "6px 16px",
+                        fontWeight: "bold",
+                        fontSize: "14px",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        transition: "transform 0.2s, box-shadow 0.2s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                        e.currentTarget.style.boxShadow =
+                          "0 6px 10px rgba(0, 0, 0, 0.15)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        e.currentTarget.style.boxShadow =
+                          "0 4px 6px rgba(0, 0, 0, 0.1)";
+                      }}
+                      onClick={() =>
+                        navigate(`/lession-course?subjectId=${item.id}`)
+                      }
+                    >
+                      See all activity
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Box>
+      ))}
     </Box>
   );
 }
