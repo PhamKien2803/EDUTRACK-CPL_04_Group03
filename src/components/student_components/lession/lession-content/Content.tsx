@@ -128,17 +128,18 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                             <List>
                                 {/* Hiển thị các câu hỏi (Question) chỉ khi Status là On-Going */}
                                 {questionSlot
-                                    .filter((qs) => qs.Slotid === sl && qs.Status !== 0) // Lọc câu hỏi On-Going
+                                    .filter((qs) => qs.Slotid === sl)
                                     .map((qs, qIndex) => (
                                         <ListItem
                                             key={`qs-${qIndex}`}
                                             component="li"
-                                            onClick={() => handleClicktoDiscussion(qs.QuestionID, sl)}
+                                            onClick={() => qs.Status !== 0 && handleClicktoDiscussion(qs.QuestionID, sl)} // Chỉ xử lý khi Status != 0
                                             sx={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                cursor: 'pointer',
-                                                '&:hover': {
+                                                cursor: qs.Status !== 0 ? 'pointer' : 'not-allowed', // Không cho click nếu Status = 0
+                                                opacity: qs.Status !== 0 ? 1 : 0.5, // Làm mờ nếu Status = 0
+                                                '&:hover': qs.Status !== 0 && {
                                                     backgroundColor: 'rgba(0, 123, 255, 0.1)',
                                                     transform: 'scale(1.02)',
                                                 },
@@ -150,27 +151,27 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                             </ListItemIcon>
                                             <ListItemText
                                                 primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                secondary="On-Going"
+                                                secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
                                                 secondaryTypographyProps={{
-                                                    color: 'success',
+                                                    color: qs.Status === 0 ? 'error' : 'success', // Phân biệt màu sắc
                                                     fontWeight: 'bold',
                                                 }}
                                             />
-                                            <ArrowForwardIosIcon fontSize="small" color="action" />
+                                            {qs.Status !== 0 && <ArrowForwardIosIcon fontSize="small" color="action" />}
                                         </ListItem>
                                     ))}
-
                                 {/* Hiển thị phần bài tập (Assignment) không thay đổi */}
                                 {assignmentSlot?.filter((as) => as?.Slotid === sl)?.map((as, index) => (
                                     <ListItem
                                         key={`as-${index}`}
-                                        onClick={() => handleClickToAssignment(as?.AssignmentID, sl)}
+                                        onClick={() => as.Status !== 0 && handleClickToAssignment(as.AssignmentID, sl)} // Chỉ xử lý khi Status != 0
                                         component="li"
                                         sx={{
                                             display: 'flex',
                                             alignItems: 'center',
-                                            cursor: 'pointer',
-                                            '&:hover': {
+                                            cursor: as.Status !== 0 ? 'pointer' : 'not-allowed', // Không cho click nếu Status = 0
+                                            opacity: as.Status !== 0 ? 1 : 0.5, // Làm mờ nếu Status = 0
+                                            '&:hover': as.Status !== 0 && {
                                                 backgroundColor: 'rgba(0, 123, 255, 0.1)',
                                                 transform: 'scale(1.02)',
                                             },
@@ -182,13 +183,13 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                         </ListItemIcon>
                                         <ListItemText
                                             primary={`Assignment ${index + 1}: ${as.title.substring(0, 50)}...`}
-                                            secondary={as.Status === 0 ? 'Not started' : 'On-Going'}
+                                            secondary={as.Status !== 0 ? 'On-Going' : 'Not started'}
                                             secondaryTypographyProps={{
-                                                color: as.Status === 0 ? 'error' : 'success',
+                                                color: as.Status !== 0 ? 'success' : 'error',
                                                 fontWeight: 'bold',
                                             }}
                                         />
-                                        <ArrowForwardIosIcon fontSize="small" color="action" />
+                                        {as.Status !== 0 && <ArrowForwardIosIcon fontSize="small" color="action" />}
                                     </ListItem>
                                 ))}
                             </List>
