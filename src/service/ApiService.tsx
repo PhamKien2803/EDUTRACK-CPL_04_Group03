@@ -93,6 +93,10 @@ export const updateClass = (id: string, updatedData: { ClassName: string }) => {
 export const updateClassStatus = (id: string, status: boolean) => {
   return axios.patch(`/Class/${id}`, { Status: status });
 };
+
+export const updateAccountStatus = (id: string, newStatus: boolean) => {
+  return axios.patch(`/Participants/${id}`, { Status: newStatus });
+}
 const getCourseSemesterByUserId = (clasId: string) => {
   return axios.get(`CourseSemester?ClassID=${clasId}`);
 };

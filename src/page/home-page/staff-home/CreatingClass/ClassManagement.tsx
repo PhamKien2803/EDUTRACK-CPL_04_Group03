@@ -96,19 +96,25 @@ const ClassTable: React.FC = () => {
 
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value.toLowerCase();
+    const query = event.target.value.toLowerCase().trim(); // Loại bỏ khoảng trắng thừa
     setSearchQuery(query);
-
-    
-    const filtered = classData.filter(
-      (cls) =>
-        cls.ClassID.toLowerCase().includes(query) ||
-        cls.ClassName.toLowerCase().includes(query) ||
-        cls.Status.toString().toLowerCase().includes(query)
-    );
-    setFilteredData(filtered);
-    setPage(0); 
+  
+    if (query) {
+      const filtered = classData.filter(
+        (cls) =>
+          cls.ClassID.toLowerCase().includes(query) ||
+          cls.ClassName.toLowerCase().includes(query) ||
+          (cls.Status ? "active" : "inactive").toLowerCase().includes(query)
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(classData); // Hiển thị lại toàn bộ dữ liệu khi không có từ khóa tìm kiếm
+    }
+  
+    setPage(0); // Đặt lại trang đầu tiên
   };
+  
+  
 
   return (
     <div style={{ padding: "20px" }}>
@@ -169,51 +175,52 @@ const ClassTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((cls) => (
-                <TableRow key={cls.id}>
-                  <TableCell align="center">{cls.ClassID}</TableCell>
-                  <TableCell align="center">{cls.ClassName}</TableCell>
-                  <TableCell align="center">{cls.Student.length}</TableCell>
-                  <TableCell align="center">
-                    {cls.Status ? (
-                      <span style={{ color: "green" }}>Active</span>
-                    ) : (
-                      <span style={{ color: "red" }}>Inactive</span>
-                    )}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Box display="flex" justifyContent="center" gap={1}>
-                      <Button
-                        variant="contained"
-                        style={{ backgroundColor: "#808D7C", color: "white" }}
-                        onClick={() => handleViewClick(cls.ClassID)}
-                        startIcon={<VisibilityIcon />}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        variant="contained"
-                        style={{ backgroundColor: "#808D7C", color: "white" }}
-                        onClick={() => handleEditClick(cls.id, cls.ClassName)}
-                        startIcon={<EditIcon />}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        style={{ backgroundColor: "#808D7C", color: "white" }}
-                        onClick={() => handleStatusChange(cls.id, cls.Status)}
-                        startIcon={<DeleteIcon />}
-                      >
-                        {cls.Status ? "Delete" : "Undo"}
-                      </Button>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
+  {filteredData
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .map((cls) => (
+      <TableRow key={cls.id}>
+        <TableCell align="center">{cls.ClassID}</TableCell>
+        <TableCell align="center">{cls.ClassName}</TableCell>
+        <TableCell align="center">{cls.Student.length}</TableCell>
+        <TableCell align="center">
+          {cls.Status ? (
+            <span style={{ color: "green" }}>Active</span>
+          ) : (
+            <span style={{ color: "red" }}>Inactive</span>
+          )}
+        </TableCell>
+        <TableCell align="center">
+          <Box display="flex" justifyContent="center" gap={1}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#808D7C", color: "white" }}
+              onClick={() => handleViewClick(cls.ClassID)}
+              startIcon={<VisibilityIcon />}
+            >
+              View
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#808D7C", color: "white" }}
+              onClick={() => handleEditClick(cls.id, cls.ClassName)}
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
+              style={{ backgroundColor: "#808D7C", color: "white" }}
+              onClick={() => handleStatusChange(cls.id, cls.Status)}
+              startIcon={<DeleteIcon />}
+            >
+              {cls.Status ? "Delete" : "Undo"}
+            </Button>
+          </Box>
+        </TableCell>
+      </TableRow>
+    ))}
+</TableBody>
+
         </Table>
       </TableContainer>
 

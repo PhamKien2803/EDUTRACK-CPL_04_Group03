@@ -11,6 +11,7 @@ export const CountDown: React.FC<Props> = ({ timer }) => {
     const storedExpirationTime = localStorage.getItem('otpExpiration');
 
     useEffect(() => {
+        
         if (count == '0'){
             localStorage.removeItem('otp');
             localStorage.removeItem('otpExpiration');
