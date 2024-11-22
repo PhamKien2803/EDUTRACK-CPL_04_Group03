@@ -1,3 +1,4 @@
+import { update } from "@react-spring/web";
 import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, classRoom, questionSlot, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
@@ -85,6 +86,13 @@ const getClass = () => {
   return axios.get("Class");
 };
 
+export const updateClass = (id: string, updatedData: { ClassName: string }) => {
+  return axios.patch(`/Class/${id}`, updatedData); 
+};
+
+export const updateClassStatus = (id: string, status: boolean) => {
+  return axios.patch(`/Class/${id}`, { Status: status });
+};
 const getCourseSemesterByUserId = (clasId: string) => {
   return axios.get(`CourseSemester?ClassID=${clasId}`);
 };
@@ -132,7 +140,9 @@ export const createClass = (newClass: classRoom) => {
      
   });
 };
-
+export const updateClassByClassID = (ClassID: string, data: { ClassName: string; Status: boolean }) => {
+  return axios.patch(`/Class/${ClassID}`, data);
+};
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
     answer: ua.answer,

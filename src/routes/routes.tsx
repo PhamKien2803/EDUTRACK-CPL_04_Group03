@@ -20,6 +20,9 @@ import Contact from "../components/student_components/contact-support/contact";
 import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
+import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
+import StudentDetail from "../page/home-page/staff-home/CreatingClass/StudentDetail";
+import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 
 
 interface Router {
@@ -280,6 +283,16 @@ const routesStaffHome: Router[] = [
     key: "create_class",
     path: "/staff/create-class",
     component: CreatingClass,
+  },
+  {
+    key: "manage_class",
+    path: "/staff/manage-class",
+    component: ClassManagement,
+  },
+  {
+    key: "student-details",
+    path: "/class/:classId/students",
+    component: StudentList,
   }
 ];
 
