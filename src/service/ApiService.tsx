@@ -1,4 +1,4 @@
-import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, questionSlot, replies } from "../models/Interface"
+import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, classRoom, courses, questionSlot, replies } from "../models/Interface"
 import axios from "../utils/axiosCustomiz"
 
 
@@ -116,11 +116,42 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
 
   })
 }
+
+export const addCourse = (course: courses) => {
+  return axios.post('courses', course);
+};
+
+export const updateCourse = async (id: string, updatedCourse: Course) => {
+  const response = await fetch(`/courses/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedCourse),
+  });
+  return response.json();
+};
+
+export const deleteCourse = async (id: string) => {
+  await fetch(`/courses/${id}`, {
+    method: 'DELETE',
+  });
+};
+
+
 export const resetPassword = (id: string, password: string) => {
   return axios.patch(`Participants/${id}`, {
     Password: password,
   })
 }
+
+export const createClass = (newClass: classRoom) => {
+  return axios.post("Class", {
+    ClassID: newClass.ClassID,
+    ClassName: newClass.ClassName,
+    Student: newClass.Student,
+    Status: newClass.Status,
+
+  });
+};
 
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {

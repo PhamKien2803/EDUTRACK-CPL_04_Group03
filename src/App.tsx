@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import VerifyOTP from './page/Auth/forgot-password/VerifyOTP';
 import ResetPassword from './page/Auth/forgot-password/ResetPassword';
 import StaffHomePage from './page/home-page/staff-home/StaffHomePage';
+import CouseraList from './page/home-page/staff-home/CouseraList/CoursesList';
 
 function App() {
   const account = useSelector((state: any) => state.account.account);
@@ -20,8 +21,9 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/staff/couseras_list" element={<CouseraList />} />
 
-      
+
       {/* Private routes */}
       {account && <Route element={<PrivateRoute />}>
 
