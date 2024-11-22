@@ -110,7 +110,6 @@ export interface CourseSemester {
     SemesterID: string;
     SlotID: string[];
     CourseID: string;
-    StudentID: string;
     LecturersID: string;
     ClassID: string;
 }
@@ -146,4 +145,11 @@ export interface ResultExam {
     numberCorrect: string,
     totalQuestion: string,
     examId: string
+}
+export interface Semester {
+    SemesterID: string,
+    SemesterName: string,
+    StartDate: string,
+    EndDate: string,
+    Status: boolean,
 }
