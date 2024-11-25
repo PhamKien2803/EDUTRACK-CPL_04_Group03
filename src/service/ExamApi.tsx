@@ -40,3 +40,10 @@ export const postCourseSemester = (course: CourseSemester) => {
 export const postSlot = (slot: slot) => {
     return axios.post(`Slot`, { ...slot })
 }
+
+export const getExamByCourseSemesterID = (id: any) => {
+    return axios.post(`Examination?courseSemesterID=${id}`)
+}
+export const deleteExam = (exam: Exam) => {
+    return axios.delete(`Examination/${exam.id}`);
+};  

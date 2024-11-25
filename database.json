@@ -221,21 +221,35 @@
       "display": true,
       "status": true,
       "createdAt": "18/11/2024"
-    },
-    {
-      "id": "3411",
-      "examID": "cfcbfae5-cf34-4581-baa9-680ebdbaa766",
-      "examContent": "12313",
-      "courseSemesterID": "cs13",
-      "timeLimit": "900",
-      "image": "",
-      "dateOfBooking": "",
-      "display": false,
-      "status": false,
-      "createdAt": "19/11/2024"
     }
   ],
-  "UserAnswer": [],
+  "UserAnswer": [
+    {
+      "id": "ee6a",
+      "answer": [
+        "1"
+      ],
+      "QuestionID": "1",
+      "UserID": "he173077"
+    },
+    {
+      "id": "8d36",
+      "answer": [
+        "4",
+        "5"
+      ],
+      "QuestionID": "2",
+      "UserID": "he173077"
+    },
+    {
+      "id": "1e8e",
+      "answer": [
+        "9"
+      ],
+      "QuestionID": "3",
+      "UserID": "he173077"
+    }
+  ],
   "Participants": [
     {
       "UserName": "Do Dang Phuong",
@@ -537,5 +551,13 @@
       "image": "https://www.shutterstock.com/image-vector/education-knowledge-concept-web-banner-260nw-1944889507.jpg"
     }
   ],
-  "resultExam": []
+  "resultExam": [
+    {
+      "id": "25f9eabe-aa11-43d2-80c0-ef428d6de82b",
+      "userId": "he173077",
+      "numberCorrect": "1",
+      "totalQuestion": "3",
+      "examId": "1"
+    }
+  ]
 }

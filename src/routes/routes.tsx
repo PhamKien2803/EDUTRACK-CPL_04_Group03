@@ -22,6 +22,10 @@ import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import { AddingCourseSemester } from "../page/home-page/staff-home/ManageCourseSemester/AddingCourseSemester";
 import { MangerCourse } from "../page/home-page/staff-home/ManageCourseSemester/MangerCourse";
+import ManageExam from "../page/home-page/lecturers-home/Exam/ManageExam";
+import { ViewExam } from "../page/home-page/lecturers-home/Exam/ViewExam";
+import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDetailResult";
+import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 
 
 interface Router {
@@ -268,6 +272,33 @@ const routesLecturersHome: Router[] = [
     key: "AddExam",
     path: "/addingExam",
     component: AddExam
+  },
+
+  {
+    name: "manageExam",
+    key: "manageExam",
+    path: "/manageExam",
+    component: ManageExam
+  },
+  {
+    name: "viewExam",
+    key: "viewExam",
+    path: "/viewExam",
+    component: ViewExam
+  },
+  ,
+  {
+    name: "ViewDetailResult",
+    key: "ViewDetailResult",
+    path: "/viewDetailResult",
+    component: ViewDetailResult
+  }
+  ,
+  {
+    name: "updateExam",
+    key: "updateExam",
+    path: "/updateExam",
+    component: UpdateExam
   }
 
 ];
