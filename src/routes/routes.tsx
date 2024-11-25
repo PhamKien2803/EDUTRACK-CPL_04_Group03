@@ -27,6 +27,7 @@ import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingCl
 import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
+import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 
 interface Router {
   name?: string;
@@ -42,7 +43,12 @@ const routesStudentHome: Router[] = [
     path: "/home-page",
     component: StudentHome,
   },
-
+  {
+    name: "dashboard_Page",
+    key: "dashboardPage",
+    path: "/dashboardPage",
+    component: DashBoardPage,
+  },
   {
     name: "lession",
     key: "LessionPage",
@@ -117,7 +123,6 @@ const routesStudentHome: Router[] = [
     path: "/logout",
     component: LogoutButton,
   },
-
 ];
 
 const routesLecturersHome: Router[] = [

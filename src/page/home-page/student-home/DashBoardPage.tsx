@@ -7,8 +7,15 @@ import {
   CardContent,
   Divider,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+
+import dataCarousel from "../../../../database.json";
+import Carousel from "react-bootstrap/Carousel";
 import {
   getAnswerQuestionSlot,
   getAnswerQuestionSlotByUserId,
@@ -30,6 +37,7 @@ import {
 } from "../../../models/Interface";
 import { log } from "console";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface DashBoardPageProps {
   CourseName: string;
@@ -45,6 +53,7 @@ interface DashBoardPageProps {
 }
 
 function DashBoardPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [dataCourse, setDataCourse] = useState<courses[]>([]);
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
@@ -193,6 +202,49 @@ function DashBoardPage() {
   // console.log(dataSemester);
   return (
     <Box p={3} bgcolor="#f9fafb" minHeight="100vh">
+      <Carousel
+        interval={3000}
+        indicators={true}
+        controls={true}
+        style={{
+          borderRadius: "12px",
+          overflow: "hidden",
+          width: "85%",
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {dataCarousel.Carousel.map((item) => (
+          <Carousel.Item key={item?.id}>
+            <Box
+              sx={{
+                backgroundColor: "white",
+                color: "white",
+                padding: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <Box>
+                <img
+                  src={item.image}
+                  alt="image"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
+            </Box>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+
       {/* Header Section */}
       <Box mb={3} display="flex" alignItems="center">
         <Box
@@ -218,6 +270,29 @@ function DashBoardPage() {
             Open Profile
           </Typography>
         </Box>
+      </Box>
+
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{t("year")}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="year"
+            sx={{ width: "100%", maxWidth: "200px", marginBottom: "30px" }}
+            value={semesterId}
+            onChange={(e) => setSemesterId(e.target.value)}
+          >
+            {dataSemester
+              ?.slice()
+              .reverse()
+              .map((item) => (
+                <MenuItem key={`se-${item.SemesterID}`} value={item.SemesterID}>
+                  {item.SemesterName}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
       </Box>
 
       {/* Streak Section */}

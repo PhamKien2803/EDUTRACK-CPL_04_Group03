@@ -1,16 +1,9 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import {
-  Outlet,
-  useLocation,
-  useNavigationType,
-} from "react-router-dom";
-import {
-  Box,
-  CircularProgress,
-} from "@mui/material";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
 import {
   AccountCircle as AccountCircleIcon,
   Dashboard as DashboardIcon,
@@ -19,14 +12,13 @@ import {
   PictureAsPdf as PictureAsPdfIcon,
   SupportAgent as SupportAgentIcon,
   Logout as LogoutIcon,
-
 } from "@mui/icons-material";
 import SchoolIcon from "@mui/icons-material/School";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
   { segment: "profile", title: "Profile", icon: <AccountCircleIcon /> },
-  { segment: "home-page", title: "Dashboard", icon: <DashboardIcon /> },
+  { segment: "dashboardPage", title: "dashboard", icon: <DashboardIcon /> },
   { segment: "Assignments", title: "Assignments", icon: <AssignmentIcon /> },
   { segment: "Upcoming", title: "UpcomingSlots", icon: <UpcomingIcon /> },
   { segment: "Upcoming", title: "Read user guide", icon: <PictureAsPdfIcon /> },
@@ -72,11 +64,8 @@ function StudentDashboardLayout() {
     setIsMenuExpanded((prev) => !prev);
   };
 
-
-
   return (
     <>
-          
       <AppProvider
         navigation={NAVIGATION}
         branding={{
@@ -103,7 +92,6 @@ function StudentDashboardLayout() {
             height: "100vh",
           }}
         >
-
           {/* Main Content */}
           <Box
             sx={{
@@ -120,12 +108,9 @@ function StudentDashboardLayout() {
             )}
             <Outlet />
           </Box>
-
-
         </DashboardLayout>
       </AppProvider>
     </>
-
   );
 }
 
