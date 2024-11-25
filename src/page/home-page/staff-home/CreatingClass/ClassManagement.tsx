@@ -17,7 +17,7 @@ interface ClassData {
   id: string;
 }
 
-const ClassTable: React.FC = () => {
+const ClassManagement: React.FC = () => {
   const [classData, setClassData] = useState<ClassData[]>([]);
   const [editingClass, setEditingClass] = useState<string | null>(null);
   const [newClassName, setNewClassName] = useState<string>("");
@@ -65,7 +65,7 @@ const ClassTable: React.FC = () => {
           setNewClassName("");
         })
         .catch((error) => {
-          console.error("Lỗi khi cập nhật class:", error);
+          console.error("Error to update class:", error);
         });
     }
   };
@@ -77,7 +77,7 @@ const ClassTable: React.FC = () => {
         fetchClasses();
       })
       .catch((error) => {
-        console.error("Lỗi khi cập nhật trạng thái class:", error);
+        console.error("Error to update class status:", error);
       });
   };
 
@@ -96,7 +96,7 @@ const ClassTable: React.FC = () => {
 
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value.toLowerCase().trim(); // Loại bỏ khoảng trắng thừa
+    const query = event.target.value.toLowerCase().trim();
     setSearchQuery(query);
   
     if (query) {
@@ -108,10 +108,10 @@ const ClassTable: React.FC = () => {
       );
       setFilteredData(filtered);
     } else {
-      setFilteredData(classData); // Hiển thị lại toàn bộ dữ liệu khi không có từ khóa tìm kiếm
+      setFilteredData(classData); 
     }
   
-    setPage(0); // Đặt lại trang đầu tiên
+    setPage(0); 
   };
   
   
@@ -306,4 +306,4 @@ const ClassTable: React.FC = () => {
   );
 };
 
-export default ClassTable;
+export default ClassManagement;

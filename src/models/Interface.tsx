@@ -29,7 +29,8 @@ export interface participants {
     rating: number,
     Role: number,
     isOnline: boolean,
-    Status: boolean
+    Status: boolean,
+    createdAt: string
 }
 
 export interface questionSlot {

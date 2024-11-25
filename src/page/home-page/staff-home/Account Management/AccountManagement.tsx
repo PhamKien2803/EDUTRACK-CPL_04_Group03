@@ -4,8 +4,8 @@ import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import { getParticipants, updateAccountStatus } from "../../../../service/ApiService";
 import { Search as SearchIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-const ParticipantsList: React.FC = () => {
+import {  Modal, Box, Typography } from "@mui/material";
+const AccountManagement: React.FC = () => {
   const currentUsers = useSelector((state: any) => state.account.account); 
   const [participants, setParticipants] = useState<any[]>([]);
   const [filteredParticipants, setFilteredParticipants] = useState<any[]>([]); 
@@ -14,7 +14,7 @@ const ParticipantsList: React.FC = () => {
   const [rowsPerPage] = useState(5); 
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
-
+  const [openModal, setOpenModal] = useState(false);
   
   const fetchParticipants = async () => {
     try {
@@ -69,6 +69,24 @@ const ParticipantsList: React.FC = () => {
 
   const paginatedParticipants = filteredParticipants.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+
+  const handleCreateAccountStudent = () => {
+    navigate("/staff/create-account-student");
+    handleCloseModal(); 
+  };
+
+ 
+  const handleCreateAccountLecturer = () => {
+    navigate("/staff/create-account-lecture"); 
+    handleCloseModal(); 
+  };
   return (
     <div>
       
@@ -80,7 +98,7 @@ const ParticipantsList: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate("/staff/create-account")} 
+          onClick={handleOpenModal} 
         >
           Create Account
         </Button>
@@ -149,8 +167,60 @@ const ParticipantsList: React.FC = () => {
         color="primary"
         style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
       />
+
+<Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            padding: 4,
+            borderRadius: 2,
+            boxShadow: 24,
+            textAlign: "center",
+          }}
+        >
+          <Typography id="modal-title" variant="h6" component="h2">
+            You want to create an account for?
+          </Typography>
+          <div style={{ margin: "20px 0" }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleCreateAccountStudent}
+              style={{ marginRight: "10px" }}
+            >
+              Student
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleCreateAccountLecturer}
+            >
+              Lecturer
+            </Button>
+          </div>
+
+          <div>
+            <Button
+              variant="outlined"
+              onClick={handleCloseModal} 
+              style={{ marginRight: "10px" }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };
 
-export default ParticipantsList;
+export default AccountManagement;

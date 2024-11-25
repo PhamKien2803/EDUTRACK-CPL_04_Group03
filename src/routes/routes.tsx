@@ -17,15 +17,11 @@ import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDeta
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
-import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
-import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
-import StudentDetail from "../page/home-page/staff-home/CreatingClass/StudentDetail";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
-import { Account } from "@toolpad/core/Account";
 import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
-import AccountCreating from "../page/home-page/staff-home/Account Management/AccountCreating";
+import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
 
 
 interface Router {
@@ -304,8 +300,8 @@ const routesStaffHome: Router[] = [
   },
   {
     key: "create-account",
-    path: "staff/create-account",
-    component: AccountCreating ,
+    path: "staff/create-account-student",
+    component: StudentAccountCreating ,
   }
 ];
 
