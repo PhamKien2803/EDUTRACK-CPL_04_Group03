@@ -510,6 +510,11 @@
       "id": "ENW492c",
       "CourseName": "Academic Writing Skills",
       "Status": true
+    },
+    {
+      "id": "123",
+      "CourseName": "ab",
+      "Status": true
     }
   ],
   "Slot": [

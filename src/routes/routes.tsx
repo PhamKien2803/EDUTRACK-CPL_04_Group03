@@ -24,6 +24,7 @@ import { ViewExam } from "../page/home-page/lecturers-home/Exam/ViewExam";
 import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDetailResult";
 import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
+import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 
 interface Router {
   name?: string;
@@ -114,7 +115,7 @@ const routesStudentHome: Router[] = [
     path: "/logout",
     component: LogoutButton,
   },
-  
+
 ];
 
 const routesLecturersHome: Router[] = [
@@ -244,6 +245,11 @@ const routesStaffHome: Router[] = [
     path: "/manage_course_semester",
     component: MangerCourse,
   },
+  {
+    key: "couseras_list",
+    path: "staff/couseras_list",
+    component: CouseraList,
+  }
 ];
 
 export { routesLecturersHome, routesStaffHome, routesStudentHome };

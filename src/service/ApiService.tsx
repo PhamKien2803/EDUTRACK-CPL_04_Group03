@@ -9,6 +9,7 @@ import {
 } from "../models/Interface";
 import axios from "../utils/axiosCustomiz";
 
+
 const getDataExam = () => {
   return axios.get("QuestionExam");
 };
@@ -136,6 +137,26 @@ const updateProfile = (
     Email: email,
   });
 };
+
+export const addCourse = (course: courses) => {
+  return axios.post('Course', { ...course });
+};
+
+export const updateCourse = async (id: string, updatedCourse: courses) => {
+  const response = await fetch(`http://localhost:9999/Course/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedCourse),
+  });
+  return response.json();
+};
+
+export const deleteCourse = async (id: string) => {
+  await fetch(`http://localhost:9999/Course/${id}`, {
+    method: 'DELETE',
+  });
+};
+
 
 export const resetPassword = (id: string, password: string) => {
   return axios.patch(`Participants/${id}`, {

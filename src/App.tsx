@@ -1,7 +1,7 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
-import LanguageSelector from "./i18n/LanguageSelector";
+// import LanguageSelector from "./i18n/LanguageSelector";
 import LoginPage from "./page/Auth/login/Login";
 import {
   routesLecturersHome,
@@ -28,14 +28,14 @@ function App() {
   const account = useSelector((state: RootState) => state.account.account);
 
   // State để lưu ngôn ngữ hiện tại
-  const [language, setLanguage] = useState<"eng" | "vie">(
-    JSON.parse(localStorage.getItem("language") || '"eng"') as "eng" | "vie"
-  );
+  // const [language, setLanguage] = useState<"eng" | "vie">(
+  //   JSON.parse(localStorage.getItem("language") || '"eng"') as "eng" | "vie"
+  // );
 
-  const handleLanguageChange = (lang: "eng" | "vie") => {
-    setLanguage(lang);
-    localStorage.setItem("language", JSON.stringify(lang));
-  };
+  // const handleLanguageChange = (lang: "eng" | "vie") => {
+  //   setLanguage(lang);
+  //   localStorage.setItem("language", JSON.stringify(lang));
+  // };
 
   return (
     <>
