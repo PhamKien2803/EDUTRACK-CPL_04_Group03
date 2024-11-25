@@ -18,18 +18,19 @@ export interface slot {
 }
 
 export interface participants {
-  id: string;
-  UserName: string;
-  Age: number;
-  Gender: true;
-  Address: string;
-  Email: string;
-  Password: string;
-  Image: string;
-  rating: number;
-  Role: number;
-  isOnline: boolean;
-  Status: boolean;
+    id: string,
+    UserName: string,
+    Age: number,
+    Gender: true,
+    Address: string,
+    Email: string,
+    Password: string,
+    Image: string,
+    rating: number,
+    Role: number,
+    isOnline: boolean,
+    Status: boolean,
+    createdAt: string
 }
 
 export interface questionSlot {

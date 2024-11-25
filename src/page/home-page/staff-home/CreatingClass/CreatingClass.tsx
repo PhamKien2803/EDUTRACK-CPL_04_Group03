@@ -14,7 +14,7 @@ import {
   Autocomplete,
   IconButton,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; // Import biểu tượng thùng rác
+import DeleteIcon from "@mui/icons-material/Delete"; 
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 
@@ -96,7 +96,7 @@ const CreatingClass: React.FC = () => {
       });
   };
 
-  // Phân trang: Tính toán danh sách học sinh hiển thị
+
   const indexOfLastParticipant = currentPage * itemsPerPage;
   const indexOfFirstParticipant = indexOfLastParticipant - itemsPerPage;
   const currentParticipants = selectedParticipants.slice(indexOfFirstParticipant, indexOfLastParticipant);
