@@ -37,6 +37,33 @@ const Discussion: React.FC = () => {
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(null);
 
   const [questionSlots, setQuestionSlots] = useState<questionSlot[]>([]);
+  const [isCommentDisabled, setIsCommentDisabled] = useState(false);
+  const [commentStatusMessage, setCommentStatusMessage] = useState("");
+
+  useEffect(() => {
+
+    const checkStatus = () => {
+      const hasNotStarted = questionSlots.some(slot => slot.Status === 0);
+      const isTimeOver = questionSlots.some(slot => slot.Status === 2);
+      const isRunning = questionSlots.some(slot => slot.Status === 1);
+
+      if (isRunning) {
+        setIsCommentDisabled(false);
+        setCommentStatusMessage("");
+      } else if (hasNotStarted) {
+        setIsCommentDisabled(true);
+        setCommentStatusMessage("The question has not started yet.");
+      } else if (isTimeOver) {
+        setIsCommentDisabled(true);
+        setCommentStatusMessage("Comments are disabled as the time is over.");
+      }
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 1000);
+
+    return () => clearInterval(interval); 
+  }, [questionSlots]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -216,7 +243,7 @@ const Discussion: React.FC = () => {
 
       return true;
     } else if (questionSetting === 0) {
-      
+
       return true;
     }
 
@@ -229,11 +256,10 @@ const Discussion: React.FC = () => {
   });
 
 
-
   return (
     <Fragment>
       <ToastContainer position="top-right" autoClose={3000} />
-
+      {/* 
       <Box
         sx={{
           maxWidth: "750px",
@@ -314,6 +340,73 @@ const Discussion: React.FC = () => {
             </Button>
           )}
         </Box>
+      </Box> */}
+
+      <Box>
+        {isCommentDisabled ? (
+          <Typography variant="h6" color="error" textAlign="center">
+            {commentStatusMessage}
+          </Typography>
+        ) : (
+          <Box
+            sx={{
+              maxWidth: "750px",
+              margin: "20px auto",
+              padding: "30px",
+              border: "1px solid #e0e0e0",
+              borderRadius: "12px",
+              backgroundColor: "#ffffff",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: "12px", fontWeight: "600" }}>
+              Add a Comment
+            </Typography>
+            <TextField
+              value={text}
+              onChange={handleTextChange}
+              placeholder="Type your comment here..."
+              multiline
+              rows={4}
+              fullWidth
+              variant="outlined"
+              disabled={isCommentDisabled}
+              sx={{
+                marginBottom: "20px",
+                borderRadius: "12px",
+                backgroundColor: "#f4f6f8",
+              }}
+            />
+            <Box sx={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+              {editingCommentId ? (
+                <>
+                  <Button onClick={handleCancelEdit}>Cancel</Button>
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isCommentDisabled}
+                    color="secondary"
+                    variant="contained"
+                    startIcon={<SaveIcon />}
+                  >
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={handleSubmit}
+                  disabled={isCommentDisabled}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: isCommentDisabled ? "#b0bec5" : "#3f51b5",
+                  }}
+                  endIcon={<SendIcon />}
+                >
+                  Send
+                </Button>
+              )}
+            </Box>
+          </Box>
+        )}
       </Box>
 
       <Typography variant="h6" sx={{ margin: "1rem", fontWeight: "bold", color: "#3f51b5" }}>

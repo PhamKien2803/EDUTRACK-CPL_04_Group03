@@ -9,11 +9,15 @@ import {
   Box,
   Typography,
   Divider,
+  IconButton,
+  DialogActions,
 } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 import Swal from "sweetalert2";
 import { assignmentSlot } from "../../../../../../models/Interface";
 import { updateAssignmentSlot } from "../../../../../../service/ApiService";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 interface AssignmentSlotUpdateModalProps {
   assignment: assignmentSlot;
@@ -32,7 +36,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
   const [description, setDescription] = useState(assignment.description);
   const [startDate, setStartDate] = useState(assignment.TimeStart);
   const [endDate, setEndDate] = useState(assignment.TimeEnd);
-  const [file, setFile] = useState<string>(""); 
+  const [file, setFile] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
 
   // Handle file change and convert to base64
@@ -48,8 +52,8 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
         sessionStorage.setItem("fileHeader", header);
         sessionStorage.setItem("fileData", data);
 
-        setFile(base64File); 
-        setFileName(selectedFile.name); 
+        setFile(base64File);
+        setFileName(selectedFile.name);
       };
       reader.readAsDataURL(selectedFile);
     }
@@ -57,21 +61,33 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
 
   const handleSave = async () => {
     try {
-      const urlfile = file ? [file] : []; 
+      const urlfile = file ? [file] : [];
+
+      // Định dạng hh:mm:ss
+      const startTime = new Date(startDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      const endTime = new Date(endDate).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
 
       const updatedAssignment = {
         ...assignment,
         title,
         description,
-        TimeStart: startDate,
-        TimeEnd: endDate,
+        TimeStart: startTime,
+        TimeEnd: endTime,
         urlfile,
       };
 
       await updateAssignmentSlot(updatedAssignment);
-      onSave(updatedAssignment); 
+      onSave(updatedAssignment);
       Swal.fire("Success", "Assignment updated successfully!", "success");
-      onClose(); 
+      onClose();
     } catch (error) {
       console.error(error);
       Swal.fire("Error", "There was an error updating the assignment.", "error");
@@ -79,10 +95,50 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Assignment</DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={3}>
+
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      sx={{
+        '& .MuiPaper-root': {
+          maxWidth: 700,
+          margin: '0 auto',
+          padding: 2,
+          overflow: 'hidden',
+          borderRadius: 3,
+          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+        },
+      }}
+    >
+      <DialogTitle>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h6" fontWeight="bold">
+            Edit Assignment
+          </Typography>
+          <IconButton onClick={onClose} size="small" sx={{ color: '#757575' }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+
+      <DialogContent
+        dividers
+        sx={{
+          p: 2,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: '400px',
+        }}
+      >
+        <Grid container spacing={3} sx={{ maxWidth: '100%' }}>
           {/* Title */}
           <Grid item xs={12}>
             <TextField
@@ -91,6 +147,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
               fullWidth
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
+              }}
             />
           </Grid>
 
@@ -105,6 +166,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
               maxRows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
+              }}
             />
           </Grid>
 
@@ -118,6 +184,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
               onChange={(e) => setStartDate(e.target.value)}
               InputLabelProps={{
                 shrink: true,
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
               }}
             />
           </Grid>
@@ -133,6 +204,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
               InputLabelProps={{
                 shrink: true,
               }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                },
+              }}
             />
           </Grid>
 
@@ -143,11 +219,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
               component="label"
               startIcon={<UploadIcon />}
               sx={{
-                fontWeight: "bold",
-                textTransform: "capitalize",
-                color: "#1976d2",
-                borderColor: "#1976d2",
-                "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+                color: '#1976d2',
+                borderColor: '#1976d2',
+                '&:hover': { backgroundColor: '#1976d2', color: '#fff' },
               }}
             >
               Update Assignment File
@@ -169,23 +245,40 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
 
       <Divider />
 
-      <Box mt={2} p={2} display="flex" justifyContent="space-between">
+      <DialogActions
+        sx={{
+          p: 2,
+          justifyContent: 'flex-end',
+          borderTop: '1px solid #e0e0e0',
+        }}
+      >
         <Button
-          variant="outlined"
           onClick={onClose}
-          sx={{ textTransform: "capitalize", color: "#757575" }}
+          variant="outlined"
+          sx={{
+            textTransform: 'capitalize',
+            mr: 2,
+            color: '#757575',
+            borderColor: '#757575',
+            '&:hover': { backgroundColor: '#f5f5f5' },
+          }}
         >
           Cancel
         </Button>
         <Button
-          variant="contained"
           onClick={handleSave}
-          sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+          variant="contained"
+          color="secondary"
+          sx={{
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+          }}
         >
           Submit
         </Button>
-      </Box>
+      </DialogActions>
     </Dialog>
+
   );
 };
 

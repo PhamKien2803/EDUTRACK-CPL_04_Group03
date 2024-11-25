@@ -7,6 +7,7 @@ import { PrivateRoute } from './routes/PrivateRoute';
 import { useSelector } from 'react-redux';
 import VerifyOTP from './page/Auth/forgot-password/VerifyOTP';
 import ResetPassword from './page/Auth/forgot-password/ResetPassword';
+import StaffHomePage from './page/home-page/staff-home/StaffHomePage';
 
 function App() {
   const account = useSelector((state: any) => state.account.account);
@@ -14,6 +15,7 @@ function App() {
   return (
     <Routes>
       {/* Public routes */}
+      <Route path="/admin" element={<StaffHomePage />} />
       <Route path="/" element={<Layout />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/verify-otp" element={<VerifyOTP />} />

@@ -10,7 +10,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, progress, color }) => {
   return (
-    <Paper sx={{ padding: 2, boxShadow: 3, borderRadius: 2 }}>
+    <Paper sx={{ padding: 1.5, boxShadow: 3, borderRadius: 2 }}>
       <Typography variant="h6" sx={{ color: color }}>
         {title}
       </Typography>

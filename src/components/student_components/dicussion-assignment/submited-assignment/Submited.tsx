@@ -6,8 +6,8 @@ import {
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot, getParticipants, deleteAnswerAssignmentSlot } from "../../../../service/ApiService";
-import { answerAssignmentSlot, participants } from "../../../../models/Interface";
+import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot, getParticipants, deleteAnswerAssignmentSlot, getAssignmentSlot } from "../../../../service/ApiService";
+import { answerAssignmentSlot, assignmentSlot, participants } from "../../../../models/Interface";
 
 const Submited: React.FC = () => {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
@@ -26,6 +26,8 @@ const Submited: React.FC = () => {
   console.log(assignmentSlotID)
   const [currentSubmission, setCurrentSubmission] = useState<answerAssignmentSlot | null>(null);
   const [participants, setParticipants] = useState<participants[]>([]);
+
+  const [assignmentStatus, setAssignmentStatus] = useState<number>(0);
 
   useEffect(() => {
     const fetchSubmissionHistory = async () => {
@@ -49,8 +51,19 @@ const Submited: React.FC = () => {
       }
     };
 
+    const fetchAssignmentStatus = async () => {
+      try {
+        const res: assignmentSlot[] = await getAssignmentSlot();
+        const currentSlot = res.find((slot) => slot.AssignmentID === assignmentID);
+        if (currentSlot) setAssignmentStatus(currentSlot.Status);
+      } catch (error) {
+        console.error('Error fetching assignment slot:', error);
+      }
+    };
+
     fetchSubmissionHistory();
     fetchParticipants();
+    fetchAssignmentStatus();
   }, [userid]);
 
   const getUsernameById = (userID: string) => {
@@ -58,7 +71,7 @@ const Submited: React.FC = () => {
     return user ? user.UserName : "Unknown User";
   };
 
-  // Handle file upload and convert to Base64
+  // Chuyển base64 sang file
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
@@ -79,7 +92,6 @@ const Submited: React.FC = () => {
     const header = sessionStorage.getItem("fileHeader") || "";
     const data = sessionStorage.getItem("fileData") || "";
 
-    // Combine the Base64 header and data if available
     const fullBase64 = header && data ? `${header},${data}` : url;
 
     if (fullBase64.startsWith("data:")) {
@@ -98,7 +110,57 @@ const Submited: React.FC = () => {
 
 
   // Handle assignment submission
+  // const handleSubmitAssignment = async () => {
+  //   if (!file && !link) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Submission Error',
+  //       text: 'Please select a file or enter a link before submitting.',
+  //     });
+  //     return;
+  //   }
+
+  //   if (file || link) {
+  //     const submissionTimestamp = new Date().toISOString();
+  //     const newID = 'as' + Math.floor(100 + Math.random() * 900);
+  //     const formData: answerAssignmentSlot = {
+  //       id: newID,
+  //       AssignmentID: assignmentID || '',
+  //       UserID: userid,
+  //       urlfile: file ? file[0] : link,
+  //       score: 0,
+  //       Timestamped: submissionTimestamp,
+  //       Status: 1,
+  //     };
+
+  //     try {
+  //       await postAnswerAssignmentSlot(formData);
+  //       setIsSubmitted(true);
+  //       setTimestamp(submissionTimestamp);
+  //       setAssignmentSlotID(newID);
+  //       setScore(0);
+  //       setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
+  //       Swal.fire({
+  //         icon: 'success',
+  //         title: 'Submitted!',
+  //         text: 'Your assignment has been submitted successfully.',
+  //       });
+  //     } catch (error) {
+  //       console.error('Error submitting assignment:', error);
+  //     }
+  //   }
+  // };
+
   const handleSubmitAssignment = async () => {
+    // if (assignmentStatus === 2) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Submission Error',
+    //     text: 'The submission deadline has passed. Your submission will be marked as Late.',
+    //   });
+    //   return;
+    // }
+
     if (!file && !link) {
       Swal.fire({
         icon: 'error',
@@ -108,34 +170,35 @@ const Submited: React.FC = () => {
       return;
     }
 
-    if (file || link) {
-      const submissionTimestamp = new Date().toISOString();
-      const newID = 'as' + Math.floor(100 + Math.random() * 900);
-      const formData: answerAssignmentSlot = {
-        id: newID,
-        AssignmentID: assignmentID || '',
-        UserID: userid,
-        urlfile: file ? file[0] : link,
-        score: 0,
-        Timestamped: submissionTimestamp,
-        Status: 1,
-      };
+    const submissionTimestamp = new Date().toISOString();
+    const newID = 'as' + Math.floor(100 + Math.random() * 900);
+    const formData: answerAssignmentSlot = {
+      id: newID,
+      AssignmentID: assignmentID || '',
+      UserID: userid,
+      urlfile: file ? file[0] : link,
+      score: 0,
+      Timestamped: submissionTimestamp,
+      Status: assignmentStatus === 2 ? 2 : 1, // Ghi lại trạng thái nếu trễ
+    };
 
-      try {
-        await postAnswerAssignmentSlot(formData);
-        setIsSubmitted(true);
-        setTimestamp(submissionTimestamp);
-        setAssignmentSlotID(newID);
-        setScore(0);
-        setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
-        Swal.fire({
-          icon: 'success',
-          title: 'Submitted!',
-          text: 'Your assignment has been submitted successfully.',
-        });
-      } catch (error) {
-        console.error('Error submitting assignment:', error);
-      }
+    try {
+      await postAnswerAssignmentSlot(formData);
+      setIsSubmitted(true);
+      setTimestamp(submissionTimestamp);
+      setAssignmentSlotID(newID);
+      setScore(0);
+      setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
+      Swal.fire({
+        icon: 'success',
+        title: 'Submitted!',
+        // text: 'Your assignment has been submitted successfully.',
+        text: assignmentStatus === 2
+          ? 'Your assignment was submitted late and marked as Late Submission.'
+          : 'Your assignment has been submitted successfully.',
+      });
+    } catch (error) {
+      console.error('Error submitting assignment:', error);
     }
   };
 
@@ -160,7 +223,7 @@ const Submited: React.FC = () => {
     if ((file || link) && currentSubmission) {
       const updatedFormData: answerAssignmentSlot = {
         ...currentSubmission,
-        urlfile: file ? file[0] : link,  
+        urlfile: file ? file[0] : link,
         Timestamped: new Date().toISOString(),
       };
 
@@ -215,7 +278,7 @@ const Submited: React.FC = () => {
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>SUBMISSION STATUS</Typography>
           <Typography variant="body2" sx={{ mt: 1 }}>
-            {isSubmitted ? 'Submitted' : 'Not Submitted'}
+            {assignmentStatus === 2 ? 'Late Submission' : isSubmitted ? 'Submitted' : 'Not Submitted'}
           </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
@@ -258,6 +321,18 @@ const Submited: React.FC = () => {
           SUBMIT ASSIGNMENT
         </Button>
       </Box>
+      {/* <Box sx={{ mt: 3 }}>
+        {assignmentStatus !== 2 && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1.2, px: 3 }}
+            onClick={handleSubmitAssignment}
+          >
+            SUBMIT ASSIGNMENT
+          </Button>
+        )}
+      </Box> */}
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box sx={{ ...modalStyle }}>
@@ -273,57 +348,64 @@ const Submited: React.FC = () => {
       </Modal>
 
 
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Submission History</Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Submission ID</TableCell>
-                <TableCell>Student Name</TableCell>
-                <TableCell>Link/File</TableCell>
-                <TableCell>Score</TableCell>
-                <TableCell>Submission Time</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {submissionHistory?.map((submission) => (
-                <TableRow key={submission?.id}>
-                  <TableCell>{submission?.id}</TableCell>
-                  <TableCell>{getUsernameById(submission?.UserID)}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => openInNewTab(submission?.urlfile)}
-                    >
-                      Your Assign
-                    </Button>
-                  </TableCell>
-                  <TableCell>{submission?.score}</TableCell>
-                  <TableCell>
-                    {new Date(submission?.Timestamped).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })}
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>
-                      DELETE
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleOpenUpdateModal(submission)}
-                    >
-                      UPDATE
-                    </Button>
-                  </TableCell>
+      {submissionHistory.length > 0 && (
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Submission History</Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Student Name</TableCell>
+                  <TableCell>Link/File</TableCell>
+                  <TableCell>Score</TableCell>
+                  <TableCell>Submission Time</TableCell>
+                  {assignmentStatus !== 2 && <TableCell>Actions</TableCell>}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {submissionHistory?.map((submission) => (
+                  <TableRow key={submission?.id}>
+                    <TableCell>{getUsernameById(submission?.UserID)}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => openInNewTab(submission?.urlfile)}
+                      >
+                        Your Assign
+                      </Button>
+                    </TableCell>
+                    <TableCell>{submission?.score}</TableCell>
+                    <TableCell>
+                      {new Date(submission?.Timestamped).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })}
+                    </TableCell>
 
-        </TableContainer>
-      </Box>
+
+                    {assignmentStatus !== 2 && (
+                      <TableCell>
+                        <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>
+                          DELETE
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => handleOpenUpdateModal(submission)}
+                        >
+                          UPDATE
+                        </Button>
+                      </TableCell>
+                    )}
+
+
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+          </TableContainer>
+        </Box>
+      )}
+
     </Box>
   );
 };

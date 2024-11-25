@@ -27,38 +27,129 @@ const List: React.FC<Props> = ({ participants, classes }) => {
     <Box sx={{ padding: 3 }}>
       {filteredClasses.map((classRoom) => {
         const students = getStudentsInClass(classRoom);
-
         return (
-          <Box key={classRoom.ClassID} mb={4} sx={{ bgcolor: "#f9f9f9", borderRadius: 2, padding: 3, boxShadow: 1 }}>
-            <Typography variant="h5" fontWeight="600" color="primary.main" mb={1}>
-              Class: {classRoom.ClassName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Number of Students: {students.length}
-            </Typography>
-            <Divider sx={{ my: 2, borderColor: "primary.light" }} />
+          <Box
+            key={classRoom.ClassID}
+            mb={4}
+            sx={{
+              bgcolor: "background.paper",
+              borderRadius: 4,
+              p: 3,
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              "&:hover": {
+                transform: "translateY(-5px)",
+                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+              },
+            }}
+          >
+            {/* Class Header */}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{
+                mb: 2,
+              }}
+            >
+              <Typography variant="h5" fontWeight="bold" color="primary.main">
+                Class: {classRoom.ClassName}
+              </Typography>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{
+                  color: "text.secondary",
+                  bgcolor: "primary.light",
+                  px: 2,
+                  py: 0.5,
+                  borderRadius: 2,
+                }}
+              >
+                {students.length} Students
+              </Typography>
+            </Box>
 
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 2, overflow: "hidden" }}>
-              <Table stickyHeader aria-label="student table" size="small">
+            <Divider sx={{ my: 2, borderColor: "divider" }} />
+
+            {/* Student Table */}
+            <TableContainer
+              component={Paper}
+              elevation={3}
+              sx={{
+                borderRadius: 3,
+                overflow: "hidden",
+                bgcolor: "background.default",
+              }}
+            >
+              <Table stickyHeader aria-label="student table">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.light" }}>
+                  <TableRow
+                    sx={{
+                      bgcolor: "primary.main",
+                      "& .MuiTableCell-root": {
+                        color: "common.white",
+                        fontWeight: "bold",
+                      },
+                    }}
+                  >
                     <TableCell></TableCell>
-                    <TableCell><Typography variant="subtitle2" fontWeight="bold">Name</Typography></TableCell>
-                    <TableCell><Typography variant="subtitle2" fontWeight="bold">ID</Typography></TableCell>
-                    <TableCell><Typography variant="subtitle2" fontWeight="bold">Email</Typography></TableCell>
+                    <TableCell>
+                      <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                        Name
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                        ID
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                        Email
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {students.map((student) => (
-                    <TableRow key={student.id} hover>
+                    <TableRow
+                      key={student.id}
+                      hover
+                      sx={{
+                        "&:hover": {
+                          bgcolor: "action.hover",
+                        },
+                      }}
+                    >
                       <TableCell width="5%">
-                        <Avatar src={student.Image || ""} sx={{ bgcolor: "#3f51b5", width: 28, height: 28 }}>
+                        <Avatar
+                          src={student.Image || ""}
+                          sx={{
+                            bgcolor: "primary.light",
+                            width: 32,
+                            height: 32,
+                            fontSize: "14px",
+                          }}
+                        >
                           {!student.Image && <GroupIcon fontSize="small" />}
                         </Avatar>
                       </TableCell>
-                      <TableCell><Typography variant="body2">{student.UserName}</Typography></TableCell>
-                      <TableCell><Typography variant="body2" color="text.secondary">{student.id}</Typography></TableCell>
-                      <TableCell><Typography variant="body2" color="text.secondary">{student.Email}</Typography></TableCell>
+                      <TableCell>
+                        <Typography variant="body2" fontWeight="medium">
+                          {student.UserName}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2" color="text.secondary">
+                          {student.id}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2" color="text.secondary">
+                          {student.Email}
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -66,6 +157,8 @@ const List: React.FC<Props> = ({ participants, classes }) => {
             </TableContainer>
           </Box>
         );
+
+
       })}
     </Box>
   );
