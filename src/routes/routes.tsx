@@ -25,6 +25,7 @@ import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDeta
 import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
+import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 
 interface Router {
   name?: string;
@@ -40,7 +41,12 @@ const routesStudentHome: Router[] = [
     path: "/home-page",
     component: StudentHome,
   },
-
+  {
+    name: "dashboard_Page",
+    key: "dashboardPage",
+    path: "/dashboardPage",
+    component: DashBoardPage,
+  },
   {
     name: "lession",
     key: "LessionPage",
@@ -115,7 +121,6 @@ const routesStudentHome: Router[] = [
     path: "/logout",
     component: LogoutButton,
   },
-
 ];
 
 const routesLecturersHome: Router[] = [
@@ -249,7 +254,7 @@ const routesStaffHome: Router[] = [
     key: "couseras_list",
     path: "staff/couseras_list",
     component: CouseraList,
-  }
+  },
 ];
 
 export { routesLecturersHome, routesStaffHome, routesStudentHome };
