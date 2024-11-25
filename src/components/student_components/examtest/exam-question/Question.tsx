@@ -1,6 +1,8 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import '../../../../Sass/QestionQuiz.scss';
 import { Answer } from '../../../../models/Interface';
+import { useTranslation } from 'react-i18next';
+
 
 interface QuestionData {
     id: string;
@@ -19,6 +21,8 @@ interface Props {
 }
 
 const Question: React.FC<Props> = ({ index, data, answer, handleCheckbox }) => {
+    const { t } = useTranslation();
+
     const handleChecked = (answerId: string) => {
         handleCheckbox(answerId, data.id);
     };
@@ -30,7 +34,7 @@ const Question: React.FC<Props> = ({ index, data, answer, handleCheckbox }) => {
             </div>
             <div className="q-content">
                 <div className="image">
-                    {data.image ? <img src={data.image} alt="question" /> : <div className="img-2"></div>}
+                    {data.image ? <img src={data.image} alt="question" /> : <div className="img-2">{t('question_no_image')}</div>}
                 </div>
                 <div className="q-description">
                     <h6>{data.content}</h6>

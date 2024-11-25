@@ -4,6 +4,8 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useNavigate, useParams } from "react-router-dom";
 import { slot as Slot, questionSlot, assignmentSlot } from "../../../../models/Interface";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn"
+import { useTranslation } from 'react-i18next';
+
 
 interface Props {
     questionSlot: questionSlot[];
@@ -13,6 +15,7 @@ interface Props {
 
 const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { id: SlotId } = useParams<{ id: string }>();
 
     const filteredQuestions = questionSlot.filter(qs => qs.Slotid === SlotId);
@@ -48,7 +51,7 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                     <QuestionAnswerIcon sx={{ marginRight: "8px", color: "orange" }} />
                     <Box>
                         <Typography variant="body1" fontWeight="bold">
-                            Question {index + 1}
+                            {t('question_prefix')} {index + 1}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             {qs.content.length > 50 ? `${qs.content.substring(0, 50)}...` : qs.content}
@@ -60,7 +63,7 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                                 fontWeight: "bold",
                             }}
                         >
-                            {qs.Status === 0 ? "Not Started" : "In Progress"}
+                            {qs.Status === 0 ? t('status_not_started') : t('status_in_progress')}
                         </Typography>
                     </Box>
                 </Box>
@@ -86,7 +89,7 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                     <AssignmentTurnedInIcon sx={{ marginRight: "6px", color: "purple", fontSize: "1.5rem" }} />
                     <Box>
                         <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "1rem" }}>
-                            Assignment {index + 1}
+                            {t('assignment_prefix')} {index + 1}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.875rem" }}>
                             {asm.title.length > 40 ? `${asm.title.substring(0, 40)}...` : asm.title}
@@ -99,7 +102,7 @@ const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                                 fontSize: "0.75rem",
                             }}
                         >
-                            {asm.Status === 0 ? "Not Started" : "In Progress"}
+                            {asm.Status === 0 ? t('status_not_started') : t('status_in_progress')}
                         </Typography>
                     </Box>
                 </Box>

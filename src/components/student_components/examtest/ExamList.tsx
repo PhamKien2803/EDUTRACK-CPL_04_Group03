@@ -13,8 +13,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { Exam, ResultExam } from '../../../models/Interface';
 import { getExamListByID, getResultExamListByUserId } from '../../../service/ExamApi';
 import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
+import { useTranslation } from 'react-i18next';
 
 export const ExamList = () => {
+    const { t } = useTranslation();
     const [examList, setExamList] = useState<Exam[]>([]);
     const [examListClone, setExamListClone] = useState<Exam[]>([]);
     const [result, setResult] = useState<ResultExam[]>([])
@@ -26,7 +28,15 @@ export const ExamList = () => {
     const csId = param.get('csId')
     console.log('csID', csId);
 
-    const account = useSelector((state: any) => state.account.account);
+    interface RootState {
+        account: {
+            account: {
+                UserID: string;
+            };
+        };
+    }
+
+    const account = useSelector((state: RootState) => state.account.account);
 
 
     useEffect(() => {

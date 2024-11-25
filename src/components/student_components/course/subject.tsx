@@ -9,7 +9,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -22,27 +22,51 @@ import {
 
 import dataCarousel from "../../../../database.json";
 import {
-  classRoom,
   courses,
-  CourseSemester,
-  Semester,
 } from "../../../models/Interface";
+import { classRoom } from "../../../models/Interface";
+import { useTranslation } from 'react-i18next';
+
+interface CourseSemester {
+  id: string;
+  SemesterID: string;
+  SlotID: string[];
+  CourseID: string;
+  StudentID: string;
+  LecturersID: string;
+  ClassID: string;
+}
+
+interface Semester {
+  SemesterID: string;
+  SemesterName: string;
+  StartDate: string;
+  EndDate: string;
+  Status: boolean;
+}
+
+
 
 export default function Subject() {
-  const navigate = useNavigate();
-  const [dataCourse, setDataCourse] = useState<courses[]>([]);
+  const { t } = useTranslation();
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
   const [dataClass, setDataClass] = useState<classRoom[]>([]);
+  const [dataCourse, setDataCourse] = useState<courses[]>([]);
+
   const [data, setData] = useState<CourseSemester[]>([]);
 
-  const account = useSelector((state: any) => state.account.account);
-  const isAuthenticated = useSelector(
-    (state: any) => state.account.isAuthenticated
-  );
+  interface RootState {
+    account: {
+      account: {
+        UserID: string;
+      };
+    };
+  }
 
-  // console.log(account);
-  // console.log(isAuthenticated);
+  const account = useSelector((state: RootState) => state.account.account);
+
+
 
   useEffect(() => {
     fetchCourse();
@@ -51,7 +75,6 @@ export default function Subject() {
   }, []);
 
   useEffect(() => {
-    // console.log('hello');
 
     if (semesterId) fetchCourseSemester();
   }, [semesterId]);
@@ -67,17 +90,14 @@ export default function Subject() {
     setData(results.flat());
   };
 
-  // console.log(data);
 
   const fetchClassByUserid = async () => {
     const res = await getClass();
-    // console.log(res);
 
     if (Array.isArray(res)) {
       const filteredData = res.filter((item) =>
         item.Student.includes(account.UserID)
       );
-      // console.log(filteredData);
       setDataClass(filteredData);
     }
   };
@@ -159,11 +179,11 @@ export default function Subject() {
           </Carousel>
 
           <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
-            Course
+            {t("course")}
           </Typography>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Year</InputLabel>
+              <InputLabel id="demo-simple-select-label">{t("year")}</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -276,7 +296,7 @@ export default function Subject() {
           </Grid>
         </Box>
       ) : (
-        <div>Data loading ...</div>
+        <div>{t("data_loading")}</div>
       )}
     </div>
   );

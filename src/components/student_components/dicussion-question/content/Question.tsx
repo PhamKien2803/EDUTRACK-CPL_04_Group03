@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { slot as Slot, questionSlot } from "../../../../models/Interface";
 import { useSearchParams } from 'react-router-dom';
 import { updateStatusQuestionSLot } from "../../../../service/ApiService";
+import { useTranslation } from 'react-i18next';
+
 
 interface Props {
   questionSlot: questionSlot[];
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const Question: React.FC<Props> = ({ questionSlot }) => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('slotID');
   const questionID = searchParams.get('questionid');
@@ -21,14 +24,14 @@ const Question: React.FC<Props> = ({ questionSlot }) => {
 
   return (
     <div style={{ marginTop: "3rem" }}>
-      <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
+      <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>{t('questions_title')}</h1>
       {filteredQuestions.length ? (
         filteredQuestions.map((question, index) => (
           <QuestionCard key={index} question={question} />
         ))
       ) : (
         <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
-          No questions available for this slot.
+          {t('questions_empty')}
         </Typography>
       )}
     </div>
@@ -40,6 +43,7 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
+  const { t } = useTranslation();
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [status, setStatus] = useState<number>(question.Status);
 
@@ -129,10 +133,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
       }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
-            Content
+            {t('question_content_label')}
           </Typography>
           <Typography variant="body2" style={{ color: status === 2 ? 'red' : 'green', fontSize: "20px", marginTop: "8px" }}>
-            {status === 0 ? 'Not Started' : status === 1 ? `Time remaining: ${formatTime(timeRemaining ?? 0)}` : 'Dicussion Time is over'}
+            {status === 0
+              ? t('status_not_started')
+              : status === 1
+                ? `${t('status_time_remaining')} ${formatTime(timeRemaining ?? 0)}`
+                : t('status_time_over')}
           </Typography>
         </Box>
         <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />

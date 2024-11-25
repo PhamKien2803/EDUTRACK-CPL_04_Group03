@@ -3,6 +3,8 @@ import { Box, Typography, Avatar, Paper, IconButton, TextField, Menu, MenuItem, 
 import { replies as Reply } from '../../../../models/Interface';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 
 interface RepliesProps {
   userIds?: string;
@@ -16,6 +18,7 @@ interface RepliesProps {
 }
 
 const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, answerId, onDelete, onUpdate, timestamp }) => {
+  const { t } = useTranslation();
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,7 +50,7 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, 
       setEditMode(null);
       setEditText('');
     } else {
-      alert("Reply cannot be empty.");
+      alert(t('reply_empty_error'));
     }
   };
 
@@ -121,7 +124,7 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, 
                           fontSize: '0.8rem',
                         }}
                       >
-                        Save
+                        {t('button_save')}
                       </Button>
                       <Button
                         variant="outlined"
@@ -134,7 +137,7 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, 
                           fontSize: '0.8rem',
                         }}
                       >
-                        Cancel
+                        {t('button_cancel')}
                       </Button>
                     </Box>
                   ) : (
@@ -151,10 +154,10 @@ const Replies: React.FC<RepliesProps> = ({ replies, username = 'User', userIds, 
                     }}
                   >
                     <MenuItem onClick={() => handleEdit(reply?.id, reply.ReplyContent)} sx={{ fontSize: '0.875rem' }}>
-                      Edit
+                      {t('menu_edit')}
                     </MenuItem>
                     <MenuItem onClick={() => onDelete && onDelete(reply?.id)} sx={{ fontSize: '0.875rem', color: '#d32f2f' }}>
-                      Delete
+                      {t('menu_delete')}
                     </MenuItem>
                   </Menu>
                 </>

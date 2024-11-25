@@ -2,9 +2,11 @@ import * as React from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import { Button, TextField, Box, Typography, Grid, Alert } from '@mui/material';
 import emailjs from '@emailjs/browser';
+import { useTranslation } from 'react-i18next'; 
 
 function Contact() {
     // State để lưu trạng thái thông báo
+    const { t } = useTranslation();
     const [statusMessage, setStatusMessage] = React.useState(null); // { type: 'success' | 'error', message: string }
   
     const sendEmail = (e) => {
@@ -18,13 +20,13 @@ function Contact() {
                 console.log('Email sent successfully:', result.text);
                 setStatusMessage({
                     type: 'success',
-                    message: 'Email sent successfully!'
+                    message: t('email_sent_success')
                 });
             }, (error) => {
                 console.error('Error sending email:', error.text);
                 setStatusMessage({
                     type: 'error',
-                    message: 'Error sending email. Please try again.'
+                    message: t('email_sent_error')
                 });
             });
     }
@@ -46,7 +48,7 @@ function Contact() {
             }}
         >
             <Typography variant="h4" component="h1" gutterBottom align="center">
-                Contact Support
+                {t('contact_support')}
             </Typography>
             
             {/* Hiển thị thông báo thành công hoặc lỗi */}
@@ -60,7 +62,7 @@ function Contact() {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
-                            label="Email"
+                            label={t('email_label')}
                             variant="outlined"
                             fullWidth
                             name="email_from"
@@ -71,7 +73,7 @@ function Contact() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            label="Message"
+                            label={t('message_label')}
                             variant="outlined"
                             fullWidth
                             name="message"
@@ -97,7 +99,7 @@ function Contact() {
                         },
                     }}
                 >
-                    Send
+                    {t('send_button')}
                 </Button>
             </form>
         </Box>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { assignmentSlot, slot } from '../../../../models/Interface';
 import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   assignmentSlot: assignmentSlot[];
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const Information: React.FC<Props> = ({ assignmentSlot }) => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('slotID');
   const assignmentID = searchParams.get('assignmentid');
@@ -26,7 +28,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
 
   const handleDownload = (urlfile: string | string[] | undefined) => {
     if (!urlfile) {
-      alert("No file available to open");
+      alert(t('no_file_available'));
       return;
     }
 
@@ -145,7 +147,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
 
             {/* Content Section */}
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 2 }}>
-              Content
+            {t('content')}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
               {asm?.description || 'No description provided.'}
@@ -153,7 +155,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
 
             {/* Additional Files Section */}
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 1 }}>
-              Additional files:
+            {t('additional_files')}
             </Typography>
 
             {/* Action Button to open file */}
@@ -169,7 +171,7 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
                 }}
                 onClick={() => handleDownload(asm?.urlfile)}
               >
-                Get Assignment File 
+                {t('assignment_file_button')}
               </Button>
             </Box>
 
@@ -198,13 +200,13 @@ const Information: React.FC<Props> = ({ assignmentSlot }) => {
                   ? `Time remaining: ${formatTime(timeRemaining ?? 0)}`
                   : 'Discussion Time is over'}
             </Typography>
-            <strong>SCORE: <span style={{ color: 'green' }}>100</span> points</strong>
+            <strong>{t('score_label')}: <span style={{ color: 'green' }}>100</span> points</strong>
             <Divider sx={{ my: 2 }} />
           </Paper>
         ))
       ) : (
         <Typography variant="body1" sx={{ textAlign: 'center', color: 'text.secondary' }}>
-          No assignments found for this slot.
+          {t('no_assignments_found')}
         </Typography>
       )}
     </Box>

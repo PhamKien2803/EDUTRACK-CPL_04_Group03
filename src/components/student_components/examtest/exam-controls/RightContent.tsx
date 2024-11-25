@@ -2,6 +2,8 @@ import React from 'react'
 import '../../../../Sass/RightContent.scss'
 import { CountDown } from '../exam-timer/CountDown';
 import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
 
 interface Data {
     id: string;
@@ -17,16 +19,17 @@ interface Props {
     handleFinish: () => void
 }
 export const RightContent: React.FC<Props> = (props) => {
+    const { t } = useTranslation();
     const { dataExam, setIndex, timer, handleFinish } = props
-
     const getClassNameQs = (item: Data): string => {
         const checkedAnswer = item.answer.every(item => item.isSelected === false)
-        return checkedAnswer ? 'question' : 'question selected'
+        return checkedAnswer ? t('checked_question') : t('question selected')
     }
 
     return (
         <>
             <div className="main-timer">
+                <h3>{t('main_timer_title')}</h3>
                 <CountDown timer={timer} exID={dataExam[0].exId} />
             </div>
             <div className="main-question">
@@ -42,7 +45,7 @@ export const RightContent: React.FC<Props> = (props) => {
                         variant="contained"
                         color='warning'
                     >
-                        FINISH
+                        {t('finish_button')}
                     </Button>
                 </div>
 

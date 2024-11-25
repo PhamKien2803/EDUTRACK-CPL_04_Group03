@@ -18,6 +18,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SchoolIcon from '@mui/icons-material/School';
 import HomeIcon from '@mui/icons-material/Home';
 import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot, courses as Course } from "../../../../models/Interface";
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   questionSlot: QuestionSlot[];
@@ -30,7 +31,9 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, questionSlot, courses, participants }) => {
+  const { t } = useTranslation();
   const [activityFilter, setActivityFilter] = useState('All Activities');
+  console.log(activityFilter);
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
@@ -38,6 +41,8 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     setActivityFilter(event.target.value as string);
   };
+
+  console.log(handleSelectChange);
 
   const handleSlotChange = (event: SelectChangeEvent<string>) => {
     const selectedSlotId = event.target.value;
@@ -75,37 +80,19 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link href="/homePage" color="inherit" underline="hover" display="flex" alignItems="center">
           <HomeIcon fontSize="small" sx={{ mr: 0.5 }} />
-          Home
+          {t('breadcrumb_home')}
         </Link>
         <Typography color="text.primary" display="flex" alignItems="center">
-          {lession?.CourseID}
+          {lession?.CourseID || t('breadcrumb_course_id')}
         </Typography>
         <Typography color="text.secondary" display="flex" alignItems="center">
-          {courses?.find((c) => c.id === lession?.CourseID)?.CourseName}
+          {courses?.find((c) => c.id === lession?.CourseID)?.CourseName || t('breadcrumb_course_name')}
         </Typography>
       </Breadcrumbs>
 
       {/* Dropdowns and Exam Button in a collapsible container */}
       <Collapse in={isVisible}>
         <Box display="flex" alignItems="center" gap={2} mb={2}>
-          {/* Activity Filter Select */}
-          {/* <Select
-            value={activityFilter}
-            onChange={handleSelectChange}
-            variant="outlined"
-            sx={{ minWidth: 160 }}
-            size="small"
-            displayEmpty
-          >
-            <MenuItem value="All Activities">All Activities</MenuItem>
-            <MenuItem value="Hidden">Hidden</MenuItem>
-            <MenuItem value="On Going">On Going</MenuItem>
-            <MenuItem value="Cancelled">Cancelled</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-            <MenuItem value="Not Started">Not Started</MenuItem>
-            <MenuItem value="Assignment or Feedback">Assignment or Feedback</MenuItem>
-          </Select> */}
-
           {/* Slot Select with SlotName */}
           <Select
             variant="outlined"
@@ -115,7 +102,7 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
             onChange={handleSlotChange}
             defaultValue=""
           >
-            <MenuItem value="" >All</MenuItem>
+            <MenuItem value="">{t('select_all_slots')}</MenuItem>
             {lession?.SlotID?.map((slotItem, index) => (
               <MenuItem key={`slt-${slotItem}`} value={slotItem}>
                 Slot {index + 1}
@@ -145,13 +132,13 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
             size="medium"
             sx={{ whiteSpace: 'nowrap' }}
           >
-            EXAM
+            {t('button_exam')}
           </Button>
         </Box>
       </Collapse>
 
       {/* Toggle Visibility Button */}
-      <Tooltip title={isVisible ? "Hide options" : "Show options"} arrow>
+      <Tooltip title={isVisible ? t('tooltip_hide_options') : t('tooltip_show_options')} arrow>
         <IconButton onClick={toggleVisibility} color="primary" size="small">
           {isVisible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </IconButton>
@@ -167,15 +154,14 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
           marginTop: '8px',
         }}
       >
-        {isVisible ? 'HIDE OPTIONS' : 'SHOW OPTIONS'}
+        {isVisible ? t('button_hide_options') : t('button_show_options')}
       </Button>
 
       {/* Teacher Information */}
       <Box mt={2} display="flex" alignItems="center" gap={1}>
         <SchoolIcon color="primary" />
         <Typography variant="body2" color="textSecondary">
-          {participants?.find((p) => p.id === lession.LecturersID)?.Email}
-
+          {t('teacher_email')}: {participants?.find((p) => p.id === lession.LecturersID)?.Email}
         </Typography>
       </Box>
     </Box>

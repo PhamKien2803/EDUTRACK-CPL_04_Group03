@@ -1,14 +1,16 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
     Card, Typography, Button, Grid, List, ListItem, Divider, Box,
     Select, MenuItem, Link, ListItemIcon, ListItemText, Collapse
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
+import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 
 interface Props {
     questionSlot: questionSlot[];
+    assignmentSlot: assignmentSlot[];
     slot: slot[];
     lession: lession;
     participants: participants[];
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
+    const navigate = useNavigate();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
     console.log(setUpdatedQuestions)
@@ -29,36 +32,56 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
         }));
     }, []);
 
+    const handleClickToAssignment = (assignmentId: string, slotId: string) => {
+        navigate(`/lecturer/session-assignment?Slotid=${slotId}&assignmentid=${assignmentId}`);
+    };
 
     return (
-        <div>
+        <div style={{ overflowX: 'hidden', padding: '16px', background: 'linear-gradient(to bottom, #f9f9f9, #ffffff)' }}>
             <main>
                 <Grid container spacing={3}>
                     {/* Left Panel */}
-                    <Grid item xs={12} md={8} >
+                    <Grid item xs={12} md={7.5}>
                         {lession.SlotID.map((item, index) => (
                             <Box
                                 key={`slot-grid-${index}`}
                                 mb={2}
                                 p={2}
-                                border={1}
                                 borderRadius={2}
-                                borderColor="grey.300"
-                                boxShadow={2}
+                                sx={{
+                                    border: visibleSlots[item] ? '2px solid purple' : '1px solid #ddd',
+                                    boxShadow: visibleSlots[item] ? '0 6px 12px rgba(0, 0, 0, 0.1)' : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease-in-out',
+                                    '&:hover': {
+                                        borderColor: 'purple',
+                                        boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
+                                    },
+                                }}
                                 onClick={() => toggleVisibility(item)}
                             >
                                 <Box bgcolor="grey.100" borderRadius="8px" p={2}>
                                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                                        <Typography variant="h6" component="div" bgcolor="lightpink" borderRadius={2} p={0.5}>
-                                            Slot {index + 1}:
-                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                display: 'inline-block',
+                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+                                                borderRadius: 2.5, 
+                                                padding: '8px 16px', 
+                                                backgroundColor: '#b39ddb', 
+                                            }}
+                                        >
+                                            <Typography variant="subtitle2" color="black" fontSize={15}>
+                                                Slot {index + 1}
+                                            </Typography>
+                                        </Box>
+
                                         <Box display="flex" alignItems="center" gap={2}>
                                             <Typography variant="body2" color="textSecondary">
-
                                                 {slot.find(sl => sl.id === item)?.TimeStart} - {slot.find(sl => sl.id === item)?.TimeEnd}
                                             </Typography>
                                             <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
-                                                <Button component={Link} variant="outlined" color="secondary" size="small">
+                                                <Button variant="outlined" color="secondary" size="small">
                                                     Update Slot
                                                 </Button>
                                             </Link>
@@ -140,7 +163,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                         <HelpOutlineIcon color="action" />
                                                     </ListItemIcon>
                                                     <Link
-                                                        href={`/lecturer/session-assignment?Slotid=${item}`}
+                                                        onClick={() => handleClickToAssignment(sl.id, item)}
                                                         style={{ textDecoration: 'none', flexGrow: 1 }}
                                                     >
                                                         <ListItemText
@@ -157,18 +180,18 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             ))}
                                     </List>
                                 </Collapse>
-
                             </Box>
                         ))}
                     </Grid>
+
                     {/* Right Panel */}
                     <Grid item xs={12} md={4}>
-                        <Card variant="outlined" style={{ padding: '20px' }}>
-                            <Typography variant="h6">Class </Typography>
+                        <Card variant="outlined" sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
+                            <Typography variant="h6">Class</Typography>
                             <Select
                                 variant="outlined"
                                 sx={{ minWidth: 200 }}
-                                onChange={e => setclassId(e.target.value)}
+                                onChange={(e) => setclassId(e.target.value)}
                                 size="small"
                                 displayEmpty
                                 value={lession.ClassID || ''}
@@ -179,7 +202,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     </MenuItem>
                                 ))}
                             </Select>
-                            <Divider style={{ margin: '10px 0' }} />
+                            <Divider sx={{ my: 2 }} />
                             <Typography variant="body2">20 students</Typography>
                             <Typography variant="body2">20 slots</Typography>
                             <Divider style={{ margin: '10px 0' }} />
