@@ -25,6 +25,8 @@ import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDeta
 import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
+import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
+import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 
 interface Router {
   name?: string;
@@ -249,7 +251,17 @@ const routesStaffHome: Router[] = [
     key: "couseras_list",
     path: "staff/couseras_list",
     component: CouseraList,
-  }
+  },
+  {
+    key: "manage_class",
+    path: "/staff/manage-class",
+    component: ClassManagement,
+  },
+  {
+    key: "student-details",
+    path: "/class/:classId/students",
+    component: StudentList,
+  },
 ];
 
 export { routesLecturersHome, routesStaffHome, routesStudentHome };
