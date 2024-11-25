@@ -107,7 +107,6 @@ export interface CourseSemester {
   SemesterID: string;
   SlotID: string[];
   CourseID: string;
-  StudentID: string;
   LecturersID: string;
   ClassID: string;
 }

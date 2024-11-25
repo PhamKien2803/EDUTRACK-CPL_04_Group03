@@ -19,6 +19,13 @@ import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
 import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
+import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
+import { AddingCourseSemester } from "../page/home-page/staff-home/ManageCourseSemester/AddingCourseSemester";
+import { MangerCourse } from "../page/home-page/staff-home/ManageCourseSemester/MangerCourse";
+import ManageExam from "../page/home-page/lecturers-home/Exam/ManageExam";
+import { ViewExam } from "../page/home-page/lecturers-home/Exam/ViewExam";
+import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDetailResult";
+import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 
@@ -274,6 +281,32 @@ const routesLecturersHome: Router[] = [
     path: "/addingExam",
     component: AddExam,
   },
+
+  {
+    name: "manageExam",
+    key: "manageExam",
+    path: "/manageExam",
+    component: ManageExam,
+  },
+  {
+    name: "viewExam",
+    key: "viewExam",
+    path: "/viewExam",
+    component: ViewExam,
+  },
+  ,
+  {
+    name: "ViewDetailResult",
+    key: "ViewDetailResult",
+    path: "/viewDetailResult",
+    component: ViewDetailResult,
+  },
+  {
+    name: "updateExam",
+    key: "updateExam",
+    path: "/updateExam",
+    component: UpdateExam,
+  },
 ];
 
 const routesStaffHome: Router[] = [
@@ -286,6 +319,16 @@ const routesStaffHome: Router[] = [
     key: "create_class",
     path: "/staff/create-class",
     component: CreatingClass,
+  },
+  {
+    key: "AddingCourseSemester",
+    path: "/AddingCourseSemester",
+    component: AddingCourseSemester,
+  },
+  {
+    key: "manage_course_semester",
+    path: "/manage_course_semester",
+    component: MangerCourse,
   },
 ];
 

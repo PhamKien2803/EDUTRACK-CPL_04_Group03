@@ -193,9 +193,9 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     <ListItem>{participants.find(pr => pr.id === lession.LecturersID)?.Email}</ListItem>
                                 </List>
                             </div>
-                            <Link href={`/addingExam?csID=${lession.id}`}>
+                            <Link href={`/manageExam?csID=${lession.id}`}>
                                 <Button variant="contained" color="primary" fullWidth>
-                                    Adding Exam
+                                    Exam List
                                 </Button>
                             </Link>
                         </Card>
