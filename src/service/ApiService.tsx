@@ -118,11 +118,11 @@ const updateProfile = (id: string, name: string, address: string, age: number, g
 }
 
 export const addCourse = (course: courses) => {
-  return axios.post('courses', course);
+  return axios.post('Course', { ...course });
 };
 
-export const updateCourse = async (id: string, updatedCourse: Course) => {
-  const response = await fetch(`/courses/${id}`, {
+export const updateCourse = async (id: string, updatedCourse: courses) => {
+  const response = await fetch(`http://localhost:9999/Course/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updatedCourse),
@@ -131,7 +131,7 @@ export const updateCourse = async (id: string, updatedCourse: Course) => {
 };
 
 export const deleteCourse = async (id: string) => {
-  await fetch(`/courses/${id}`, {
+  await fetch(`http://localhost:9999/Course/${id}`, {
     method: 'DELETE',
   });
 };

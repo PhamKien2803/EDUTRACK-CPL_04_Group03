@@ -72,8 +72,11 @@ const CouseraList: React.FC = () => {
     };
 
     const handleDeleteCourse = async (id: string) => {
+        console.log(id);
+
         if (window.confirm("Are you sure you want to delete this course?")) {
             try {
+
                 await deleteCourse(id); // Gọi API để xóa
                 setCourses(courses.filter(course => course.id !== id));
             } catch (error) {
