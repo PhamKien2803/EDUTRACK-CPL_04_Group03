@@ -1,13 +1,6 @@
-import {
-  UserAnswer,
-  answerAssignmentSlot,
-  answerQuestionSlot,
-  assignmentSlot,
-  classRoom,
-  questionSlot,
-  replies,
-} from "../models/Interface";
-import axios from "../utils/axiosCustomiz";
+import { update } from "@react-spring/web";
+import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, classRoom, participants, questionSlot, replies } from "../models/Interface"
+import axios from "../utils/axiosCustomiz"
 
 
 const getDataExam = () => {
@@ -186,6 +179,24 @@ export const createClass = (newClass: classRoom) => {
 export const updateClassByClassID = (ClassID: string, data: { ClassName: string; Status: boolean }) => {
   return axios.patch(`/Class/${ClassID}`, data);
 };
+
+export const createStudent = (newStudent: participants) => {
+  return axios.post(`/Participants`, {
+    id: newStudent.id,
+    UserName: newStudent.UserName,
+    Email: newStudent.Email,
+    Age: newStudent.Age,
+    Gender: newStudent.Gender,
+    Address: newStudent.Address,
+    Password: newStudent.Password,
+    Image: newStudent.Image,
+    Role: newStudent.Role,
+    isOnline: newStudent.isOnline,
+    Status: newStudent.Status,
+    createAt: new Date().toISOString(),
+  });
+};
+
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
     answer: ua.answer,
