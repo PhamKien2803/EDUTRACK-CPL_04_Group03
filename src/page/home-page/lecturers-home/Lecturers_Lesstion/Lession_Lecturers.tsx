@@ -5,7 +5,7 @@ import { getAssignmentSlot, getClass, getCourse, getCourseSemesterById, getCouse
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Lession_Lecturers() {
     const [lessionData, setLession] = useState<lession>();
@@ -137,6 +137,7 @@ function Lession_Lecturers() {
                             classes={classes}
                             setclassId={setclassId}
                             classId={classId}
+                            assignmentSlot={assignmentSlot}
 
                         />
                     </div> :

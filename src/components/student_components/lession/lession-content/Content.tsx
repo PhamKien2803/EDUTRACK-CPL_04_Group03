@@ -16,6 +16,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { lession as Lession, slot as Slot, questionSlot as QuestionSlot, assignmentSlot } from "../../../../models/Interface"
+import { useTranslation } from 'react-i18next';
+
 
 interface Props {
     lession: Lession;
@@ -26,6 +28,7 @@ interface Props {
 }
 
 const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot, slotSelected }) => {
+    const { t } = useTranslation();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 2;
@@ -103,7 +106,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                         color="secondary"
                                         size="small"
                                     >
-                                        View Slot
+                                        {t('view_slot')}
                                     </Button>
                                 </Box>
                             </Box>
@@ -123,7 +126,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                         <Collapse in={visibleSlots[sl]}>
                             <Divider sx={{ my: 2 }} />
                             <Typography variant="subtitle1" color="primary" gutterBottom>
-                                Questions:
+                            {t('questions')}
                             </Typography>
                             <List>
                                 {/* Hiển thị các câu hỏi (Question) chỉ khi Status là On-Going */}
@@ -151,7 +154,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                             </ListItemIcon>
                                             <ListItemText
                                                 primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
+                                                secondary={qs.Status === 0 ? t('not_started1') : t('on_going')}
                                                 secondaryTypographyProps={{
                                                     color: qs.Status === 0 ? 'error' : 'success', // Phân biệt màu sắc
                                                     fontWeight: 'bold',
@@ -183,7 +186,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                         </ListItemIcon>
                                         <ListItemText
                                             primary={`Assignment ${index + 1}: ${as.title.substring(0, 50)}...`}
-                                            secondary={as.Status !== 0 ? 'On-Going' : 'Not started'}
+                                            secondary={as.Status !== 0 ? t('on_going') : t('not_started1')}
                                             secondaryTypographyProps={{
                                                 color: as.Status !== 0 ? 'success' : 'error',
                                                 fontWeight: 'bold',

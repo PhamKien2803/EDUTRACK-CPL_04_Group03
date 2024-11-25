@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { postResultExam } from '../../../service/ExamApi';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
+
 
 interface Data {
     id: string;
@@ -22,6 +24,7 @@ interface Data {
 
 
 export const ExamDetail = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
@@ -118,13 +121,13 @@ export const ExamDetail = () => {
 
     const handleFinish = () => {
         Swal.fire({
-            title: "Are you Want to Finish?",
-            text: "You won't be able to revert this!",
+            title: t("exam_finish_title"),
+            text: t("exam_finish_text"),
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes"
+            cancelButtonText: t("exam_finish_cancel"),
+            confirmButtonText: t("exam_finish_confirm"),
         }).then(async (result) => {
             if (result.isConfirmed) {
                 if (dataExam) {
@@ -230,7 +233,7 @@ export const ExamDetail = () => {
                                 />
                             </>
                         ) : (
-                            <Typography>No questions available.</Typography>
+                            <Typography>{t('question_unavailable')}</Typography>
                         )}
                     </Box>
 
@@ -242,7 +245,7 @@ export const ExamDetail = () => {
                             onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
                             disabled={index === 0}
                         >
-                            BACK
+                            {t('button_back')}
                         </Button>
                         <Button
                             variant="contained"
@@ -250,7 +253,7 @@ export const ExamDetail = () => {
                             onClick={() => setIndex((prev) => Math.min(prev + 1, dataExam.length - 1))}
                             disabled={index + 1 >= dataExam.length}
                         >
-                            NEXT
+                            {t('button_next')}
                         </Button>
                     </Box>
                 </Box>

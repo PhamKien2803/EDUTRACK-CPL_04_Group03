@@ -22,6 +22,8 @@ import {
 
 import dataCarousel from "../../../../database.json";
 import { classRoom } from "../../../models/Interface";
+import { useTranslation } from 'react-i18next';
+
 
 interface CourseSemester {
   id: string;
@@ -49,6 +51,7 @@ interface course {
 
 export default function Subject() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [data, setData] = useState<CourseSemester[]>([]);
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
@@ -175,11 +178,11 @@ export default function Subject() {
           </Carousel>
 
           <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
-            Course
+            {t("course")}
           </Typography>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Year</InputLabel>
+              <InputLabel id="demo-simple-select-label">{t("year")}</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -292,7 +295,7 @@ export default function Subject() {
           </Grid>
         </Box>
       ) : (
-        <div>Data loading ...</div>
+        <div>{t("data_loading")}</div>
       )}
     </div>
   );

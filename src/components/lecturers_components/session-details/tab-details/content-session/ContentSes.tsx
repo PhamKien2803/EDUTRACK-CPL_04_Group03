@@ -189,7 +189,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     (asm) => asm.Slotid === Slotid && (selectedStatus === "" || asm.Status === selectedStatus)
   );
   return (
-    <Container sx={{ padding: "8px", maxWidth: "500px" }}>
+    <Container sx={{ padding: "8px", maxWidth: "500px", backgroundColor: "#e8eaf6" }}>
       <Box mb={2}>
         <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
           <InputLabel id="status-filter-label">Status Filter</InputLabel>

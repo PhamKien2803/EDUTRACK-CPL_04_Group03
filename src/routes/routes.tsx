@@ -17,8 +17,6 @@ import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDeta
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
-import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
-import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 
 
@@ -92,25 +90,6 @@ const routesStudentHome: Router[] = [
     component: AddExam,
   },
 
-
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile
-  },
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile,
-  },
-  {
-    name: "AddExam",
-    key: "AddExam",
-    path: "/addingExam",
-    component: AddExam
-  },
   {
     name: "Profile",
     key: "ProfilePage",
@@ -118,37 +97,12 @@ const routesStudentHome: Router[] = [
     component: Profile
   },
 
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton
-  },
   {
     name: "Contact",
     key: "ContactPage",
     path: "/contact",
     component: Contact
   },
-  // {
-  //   name: "VerifyOTP",
-  //   key: "VerifyOTPPage",
-  //   path: "/verify-otp",
-  //   component: VerifyOTP
-  // },
-  // {
-  //   name: "ResetPassword",
-  //   key: "ResetPasswordPage",
-  //   path: "/reset-password",
-  //   component: ResetPassword
-  // },
-
   {
     name: "Update-Profile",
     key: "ProfilePage",
@@ -175,12 +129,6 @@ const routesLecturersHome: Router[] = [
     key: "AddExam",
     path: "/addingExam",
     component: AddExam
-  },
-  {
-    name: "lecturers_home",
-    key: "homepage_lecturer",
-    path: "/lecturer/homePage",
-    component: LecturersHomePage,
   },
 
   {
@@ -214,18 +162,6 @@ const routesLecturersHome: Router[] = [
     name: "lession",
     key: "LessionPage",
     path: "/lecturer/lession-course",
-    component: Lession_Lecturers,
-  },
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile,
-  },
-  {
-    name: "lession",
-    key: "LessionPage",
-    path: "/lecturer/lession-course",
     component: Lession_Lecturers
   },
   {
@@ -246,26 +182,6 @@ const routesLecturersHome: Router[] = [
     key: "LogoutPage",
     path: "/logout",
     component: LogoutButton
-  },
-
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton
-  },
-
-  {
-    name: "AddExam",
-    key: "AddExam",
-    path: "/addingExam",
-    component: AddExam
   }
 
 ];

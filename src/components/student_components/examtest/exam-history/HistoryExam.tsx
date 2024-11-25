@@ -13,6 +13,8 @@ import { getAnswerByUserId, getAnswerForQuestionExam, getExamList, getQuestionBy
 import { getResultExam } from "../../../../service/ExamApi";
 import { ToHHMMSS } from "../../../../utils/Timer/ToHHMMSS";
 import { theme } from "./HisTheme";
+import { useTranslation } from 'react-i18next';
+
 
 interface question {
     id: string;
@@ -55,6 +57,7 @@ export const HistoryExam = () => {
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
+    const { t } = useTranslation();
 
 
     useEffect(() => {
@@ -155,7 +158,7 @@ export const HistoryExam = () => {
             <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
                 {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="h5">History Exam</Typography>
+                    <Typography variant="h5">{t('history_exam_title')}</Typography>
                 </Box>
 
                 {/* Bulk update and search */}
@@ -164,12 +167,13 @@ export const HistoryExam = () => {
                         <Card>
                             <CardContent>
                                 <Box display="flex" alignItems="center" mb={2}>
-                                    <Typography variant="body1" ><h4>Title Examination:</h4></Typography>
+                                    <Typography variant="body1"><h4>{t('title_examination')}</h4></Typography>
                                     <h4>
                                         {exam?.examContent}
                                     </h4>
                                 </Box>
-                                <Typography variant="subtitle1">{questionEx.length} questions(10 points)</Typography>
+                                <Typography variant="subtitle1">{t('questions_label', { count: questionEx.length })}</Typography>
+
 
                                 {/* Question Items */}
                                 {questionEx && questionEx.map((qs, index) => (
@@ -186,11 +190,7 @@ export const HistoryExam = () => {
                                                             <CancelPresentationOutlinedIcon color="error" />
                                                         )}
 
-
-
-
                                                     </Box>
-
 
                                                 </Box>
                                                 <Typography sx={{ textAlign: 'center' }} variant="h5">{qs.content}</Typography>
@@ -201,7 +201,7 @@ export const HistoryExam = () => {
                                                         <img src={qs.image} alt="Preview" style={{ height: '200px', cursor: 'pointer' }} />
                                                     </Box>
                                                 )}
-                                                <Typography variant="body2">Answer choices:</Typography>
+                                                <Typography variant="body2">{t('answer_choices_label')}</Typography>
                                                 <Box display="flex" alignItems="center" sx={{ mb: 2 }} >
                                                     {/* Checkbox */}
                                                     <FormGroup >
@@ -218,7 +218,7 @@ export const HistoryExam = () => {
                                                     </FormGroup>
                                                 </Box>
                                                 <Typography sx={{ backgroundColor: '#fcefdc', display: "block", unicodeBidi: "isolate", border: "1px solid rgba(0, 0, 0, .125)", padding: '15px', borderRadius: "5px" }}>
-                                                    The correct answer is:{qs?.answer?.map((item, itemIndex) => (
+                                                    {t('correct_answer_label')}:{qs?.answer?.map((item, itemIndex) => (
                                                         <span key={itemIndex}>{answerQs.find(as => as.id === item)?.isCorrect && <span>{itemIndex + 1}.{answerQs.find(as => as.id === item)?.content} </span>}</span>
                                                     ))}</Typography>
                                             </CardContent>
@@ -233,9 +233,9 @@ export const HistoryExam = () => {
                     >
                         <Card>
                             <CardContent>
-                                <Typography variant="subtitle1">Bulk update questions</Typography>
+                                <Typography variant="subtitle1">{t('bulk_update_title')}</Typography>
                                 <Divider sx={{ my: 1 }} />
-                                <Button variant="text" startIcon={<AccessTimeIcon />}>Time:</Button>
+                                <Button variant="text" startIcon={<AccessTimeIcon />}>{t('time_label')}</Button>
                                 {exam &&
                                     <Select defaultValue={exam.timeLimit} size="small" sx={{ mx: 1 }}>
                                         <MenuItem value={exam.timeLimit}><ToHHMMSS time={exam.timeLimit} /></MenuItem>
@@ -250,19 +250,19 @@ export const HistoryExam = () => {
                                             startIcon={<FactCheckIcon />}
                                             color="primary"
                                         >
-                                            Result:
+                                            {t('result_label')}
                                         </Button>
                                         <Box mt={2} mb={2}>
                                             <Typography variant="subtitle1">
-                                                <strong>Score:</strong> {parseInt(result.totalQuestion) > 0
+                                                <strong>{t('score_label1')}</strong> {parseInt(result.totalQuestion) > 0
                                                     ? (parseInt(result.numberCorrect) / parseInt(result.totalQuestion) * 10).toFixed(2)
                                                     : "N/A"} Point
                                             </Typography>
                                             <Typography variant="subtitle1">
-                                                <strong>Number Correct:</strong> {result?.numberCorrect} Questions
+                                                <strong>{t('number_correct_label')}</strong> {result?.numberCorrect} Questions
                                             </Typography>
                                             <Typography variant="subtitle1">
-                                                <strong>Total Questions:</strong> {result?.totalQuestion} Questions
+                                                <strong>{t('total_questions_label')}</strong> {result?.totalQuestion} Questions
                                             </Typography>
                                         </Box>
                                     </>
@@ -273,7 +273,8 @@ export const HistoryExam = () => {
                         </Card>
                         <Card sx={{ marginTop: '10px' }}>
                             <CardContent>
-                                <Typography variant="subtitle1">Number of Answers/Questions</Typography>
+                                <Typography variant="subtitle1">{t('answers_questions_label')}</Typography>
+
                                 <Divider sx={{ my: 1 }} />
                                 <Box display="flex" flexWrap="wrap" justifyContent="center">
                                     {userAnswer && questionEx?.map((data, index) => (

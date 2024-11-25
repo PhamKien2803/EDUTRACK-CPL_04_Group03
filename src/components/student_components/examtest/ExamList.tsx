@@ -12,8 +12,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Exam, ResultExam } from '../../../models/Interface';
 import { getExamListByID, getResultExamListByUserId } from '../../../service/ExamApi';
 import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
+import QuizIcon from '@mui/icons-material/Quiz';
+import { useTranslation } from 'react-i18next';
 
 export const ExamList = () => {
+    const { t } = useTranslation();
     const [examList, setExamList] = useState<Exam[]>([]);
     const [result, setResult] = useState<ResultExam[]>([])
 
@@ -52,13 +55,13 @@ export const ExamList = () => {
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow style={{ backgroundColor: 'rgba(33,151,191,255)' }}>
-                            <TableCell align="right" sx={{ width: '5%' }}>Index</TableCell>
-                            <TableCell align="center" sx={{ width: '15%' }}>Image</TableCell>
-                            <TableCell align="center" sx={{ width: '15%' }}>Content</TableCell>
-                            <TableCell align="right" sx={{ width: '15%' }}>Created At</TableCell>
-                            <TableCell align="right" sx={{ width: '10%' }}>Time Limit</TableCell>
-                            <TableCell align="right" sx={{ width: '10%' }}>Status</TableCell>
-                            <TableCell align="center" sx={{ width: '10%' }}>Action</TableCell>
+                            <TableCell align="right" sx={{ width: '5%' }}>{t('exam_table_index')}</TableCell>
+                            <TableCell align="center" sx={{ width: '15%' }}>{t('exam_table_image')}</TableCell>
+                            <TableCell align="center" sx={{ width: '15%' }}>{t('exam_table_content')}</TableCell>
+                            <TableCell align="right" sx={{ width: '15%' }}>{t('exam_table_created_at')}</TableCell>
+                            <TableCell align="right" sx={{ width: '10%' }}>{t('exam_table_time_limit')}</TableCell>
+                            <TableCell align="right" sx={{ width: '10%' }}>{t('exam_table_status')}</TableCell>
+                            <TableCell align="center" sx={{ width: '10%' }}>{t('exam_table_action')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -75,20 +78,20 @@ export const ExamList = () => {
                                 <TableCell align="right">{exam.createdAt}</TableCell>
                                 <TableCell align="right"><ToHHMMSS time={exam.timeLimit} /></TableCell>
                                 <TableCell align="right">
-                                    {result.find(items => items.examId == exam.examID) ? 'END' : 'NEW'}
+                                    {result.find(items => items.examId === exam.examID) ? t('exam_status_end') : t('exam_status_new')}
                                 </TableCell>
                                 <TableCell align="center">
                                     {result.find(items => items.examId == exam.examID) ?
                                         <Link to={`/history?exID=${exam.examID}`}>
                                             <Button
                                                 variant="contained" >
-                                                VIEW
+                                                {t('exam_action_view')}
                                             </Button>
                                         </Link>
                                         : <Link to={`/examDetail?exID=${exam.examID}&csID=${csId}`}>
                                             <Button
                                                 variant="contained" >
-                                                EXAM
+                                                {t('exam_action_exam')}
                                             </Button>
                                         </Link>
                                     }
@@ -98,7 +101,21 @@ export const ExamList = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer> : <div>Not Exam Now</div>}
+            </TableContainer> : <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '300px',
+                textAlign: 'center',
+                color: '#999'
+            }}>
+                <QuizIcon style={{ fontSize: '100px', color: '#999' }} />
+                <h2>{t('no_exams_title')}</h2>
+                <p style={{ maxWidth: '400px', fontSize: '16px', lineHeight: '1.5' }}>
+                    {t('no_exams_message')}
+                </p>
+            </div>}
         </Container>
 
     );
