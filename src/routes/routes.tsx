@@ -19,7 +19,7 @@ import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
 import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
-import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
+
 import { AddingCourseSemester } from "../page/home-page/staff-home/ManageCourseSemester/AddingCourseSemester";
 import { MangerCourse } from "../page/home-page/staff-home/ManageCourseSemester/MangerCourse";
 import ManageExam from "../page/home-page/lecturers-home/Exam/ManageExam";
