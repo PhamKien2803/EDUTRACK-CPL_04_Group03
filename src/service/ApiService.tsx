@@ -97,6 +97,17 @@ const getClass = () => {
   return axios.get("Class");
 };
 
+export const updateClass = (id: string, updatedData: { ClassName: string }) => {
+  return axios.patch(`/Class/${id}`, updatedData); 
+};
+
+export const updateClassStatus = (id: string, status: boolean) => {
+  return axios.patch(`/Class/${id}`, { Status: status });
+};
+
+export const updateAccountStatus = (id: string, newStatus: boolean) => {
+  return axios.patch(`/Participants/${id}`, { Status: newStatus });
+}
 const getCourseSemesterByUserId = (clasId: string) => {
   return axios.get(`CourseSemester?ClassID=${clasId}`);
 };
@@ -172,7 +183,9 @@ export const createClass = (newClass: classRoom) => {
     Status: newClass.Status,
   });
 };
-
+export const updateClassByClassID = (ClassID: string, data: { ClassName: string; Status: boolean }) => {
+  return axios.patch(`/Class/${ClassID}`, data);
+};
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
     answer: ua.answer,

@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import emailjs from 'emailjs-com';
+import { CountDown } from './CountDown';
 
 function VerifyOTP() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.verifiedEmail || localStorage.getItem('verifiedEmail');
+  console.log(email);
+  const mail = location.state?.mail || localStorage.getItem('mail');
 
   const [otpInputs, setOtpInputs] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState<string | null>(null);
   const [isResetting, setIsResetting] = useState<boolean>(false);
 
+  const [time, setTime] = useState<string>("300");
   const generateOTP = (): string => {
     return Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
   };
@@ -20,7 +24,7 @@ function VerifyOTP() {
       setError('No email found. Please try again.');
       return;
     }
-
+    setTime("300");
     setIsResetting(true);
     const otp = generateOTP();
     const expirationTime = Date.now() + 5 * 60 * 1000; // 5 minutes
@@ -28,12 +32,12 @@ function VerifyOTP() {
     // Save OTP and expiration in localStorage
     localStorage.setItem('otp', otp);
     localStorage.setItem('otpExpiration', expirationTime.toString());
-
+    
     // Prepare email data for EmailJS
     const emailData = {
       contact_number: Math.random().toString(36).substr(2, 9),
       from_name: 'EduTrack',
-      from_email: email,
+      from_email: mail,
       subject: 'Your OTP Code',
       html_message: `Your OTP code is: ${otp}. Please use this code to verify your account.`,
     };
@@ -42,8 +46,9 @@ function VerifyOTP() {
       .send('service_k7tjo7o', 'template_afnxci2', emailData, 'BEG8X3EKg9_bLjfCn')
       .then(
         (result) => {
-          alert(`OTP sent successfully to ${email}`);
+          
           setIsResetting(false);
+          window.location.reload();
         },
         (error) => {
           console.error('Error sending email:', error.text);
@@ -51,6 +56,8 @@ function VerifyOTP() {
           setIsResetting(false);
         }
       );
+      
+    
   };
 
   const handleChange = (index: number, value: string) => {
@@ -112,11 +119,11 @@ function VerifyOTP() {
     }
 
     if (storedOtp === otp) {
-      alert('OTP verified successfully!');
       localStorage.removeItem('otp');
       localStorage.removeItem('otpExpiration');
       localStorage.setItem('verifiedEmail', email || '');
-      navigate('/reset-password');
+      setTimeout(() => navigate('/reset-password'), 500);
+     
     } else {
       setError('Invalid OTP. Please try again.');
     }
@@ -142,6 +149,7 @@ function VerifyOTP() {
           maxWidth: '600px',
         }}
       >
+        <CountDown timer={time} />
         <h1 style={{ marginBottom: '20px' }}>Verify OTP</h1>
 
         {email && <p style={{ marginBottom: '20px' }}>We sent an OTP to: {email}</p>}

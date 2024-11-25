@@ -28,7 +28,7 @@
         "he170579"
       ],
       "Status": true,
-      "id": "e048"
+      "id": "e049"
     }
   ],
   "AnswerQuestionExam": [
@@ -380,7 +380,7 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true,
+      "Status": "true",
       "Email": "phuongddhe173077@fpt.edu.vn",
       "id": "he173077"
     },
@@ -395,7 +395,7 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": "true"
     },
     {
       "id": "he170569",
@@ -408,7 +408,7 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": "true"
     },
     {
       "id": "he170155",
@@ -421,7 +421,7 @@
       "Image": "",
       "Role": 0,
       "isOnline": true,
-      "Status": true
+      "Status": "true"
     },
     {
       "id": "lt12345",
@@ -433,6 +433,19 @@
       "Password": "1223@",
       "Image": "",
       "Role": 1,
+      "isOnline": true,
+      "Status": "true"
+    },
+    {
+      "id": "he176833",
+      "UserName": "Vũ Diệu Linh",
+      "Age": 21,
+      "Gender": true,
+      "Address": "Ha Noi",
+      "Email": "linhvdhe176833@fpt.edu.vn",
+      "Password": "1223@",
+      "Image": "",
+      "Role": 2,
       "isOnline": true,
       "Status": true
     }

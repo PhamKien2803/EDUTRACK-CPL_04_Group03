@@ -55,6 +55,8 @@ export default function ForgotPassword({ open, handleClose, user }: ForgotPasswo
     localStorage.setItem('otp', otp);
     localStorage.setItem('otpExpiration', expirationTime.toString()); // Lưu thời gian hết hạn
     localStorage.setItem('verifiedEmail', foundUser.id);
+    localStorage.setItem('mail', foundUser.Email);
+    
     
     // Chuẩn bị dữ liệu gửi qua EmailJS
     const emailData = {
