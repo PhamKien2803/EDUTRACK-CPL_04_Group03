@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { createClass, getParticipants } from "../../../../service/ApiService";
-import { TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Checkbox, Typography } from "@mui/material";
-import { FaSearch } from "react-icons/fa"; 
+import {
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Autocomplete,
+  IconButton,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete"; 
 import { v4 as uuidv4 } from "uuid";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 interface Participant {
   UserName: string;
@@ -19,16 +32,14 @@ interface Participant {
 
 const CreatingClass: React.FC = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [className, setClassName] = useState<string>("");
-  const [selectedParticipants, setSelectedParticipants] = useState<Set<string>>(new Set());
-  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-  const [itemsPerPage] = useState(5); // Số học viên mỗi trang
+  const [selectedParticipants, setSelectedParticipants] = useState<Participant[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(2); // Số lượng học sinh mỗi trang
 
   useEffect(() => {
     getParticipants()
       .then((response) => {
-        console.log("API response:", response);
         const filteredParticipants = response.filter(
           (participant: Participant) => participant.Role === 0
         );
@@ -39,32 +50,20 @@ const CreatingClass: React.FC = () => {
       });
   }, []);
 
-  const handleCheckboxChange = (id: string) => {
-    setSelectedParticipants((prevSelected) => {
-      const newSelected = new Set(prevSelected);
-      if (newSelected.has(id)) {
-        newSelected.delete(id);
-      } else {
-        newSelected.add(id);
-      }
-      return newSelected;
-    });
+  const handleAddParticipant = (participant: Participant | null) => {
+    if (participant && !selectedParticipants.some((p) => p.id === participant.id)) {
+      setSelectedParticipants((prev) => [...prev, participant]);
+    }
   };
 
-  const filteredParticipants = participants.filter((participant) =>
-    participant.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    participant.UserName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const indexOfLastParticipant = currentPage * itemsPerPage;
-  const indexOfFirstParticipant = indexOfLastParticipant - itemsPerPage;
-  const currentParticipants = filteredParticipants.slice(indexOfFirstParticipant, indexOfLastParticipant);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  const totalPages = Math.ceil(filteredParticipants.length / itemsPerPage);
+  const handleRemoveParticipant = (id: string) => {
+    setSelectedParticipants((prevSelected) =>
+      prevSelected.filter((participant) => participant.id !== id)
+    );
+  };
 
   const handleCreateClass = () => {
-    if (className.trim() === "" || selectedParticipants.size === 0) {
+    if (className.trim() === "" || selectedParticipants.length === 0) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -76,13 +75,12 @@ const CreatingClass: React.FC = () => {
     const newClass = {
       ClassID: uuidv4(),
       ClassName: className,
-      Student: Array.from(selectedParticipants),
+      Student: selectedParticipants.map((p) => p.id),
       Status: true,
     };
 
     createClass(newClass)
       .then((response) => {
-        console.log("Class created successfully:", response);
         Swal.fire({
           icon: "success",
           title: "Class created successfully!",
@@ -90,7 +88,6 @@ const CreatingClass: React.FC = () => {
         });
       })
       .catch((error) => {
-        console.error("Error creating class:", error);
         Swal.fire({
           icon: "error",
           title: "Failed to create class",
@@ -99,10 +96,18 @@ const CreatingClass: React.FC = () => {
       });
   };
 
+
+  const indexOfLastParticipant = currentPage * itemsPerPage;
+  const indexOfFirstParticipant = indexOfLastParticipant - itemsPerPage;
+  const currentParticipants = selectedParticipants.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  const totalPages = Math.ceil(selectedParticipants.length / itemsPerPage);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
-    <div style={{ margin: "20px", padding: "20px", borderRadius: "10px" }}>
+    <div style={{ padding: "20px", borderRadius: "10px" }}>
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <Typography variant="h1" style={{ color: "#62825D", fontWeight: "bold" }}>
+        <Typography variant="h2" style={{ color: "#62825D", fontWeight: "bold" }}>
           Create Class
         </Typography>
       </div>
@@ -121,36 +126,25 @@ const CreatingClass: React.FC = () => {
         }}
       />
 
-      <h3 style={{ textAlign: "center", color: "#526E48" }}>Student List</h3>
-
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px", justifyContent: "center" }}>
-        <IconButton color="primary">
-          <FaSearch />
-        </IconButton>
-        <TextField
-          label="Search by ID or Name"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: "5px",
-            padding: "5px",
-            marginLeft: "10px",
-          }}
+      <div style={{ marginBottom: "20px" }}>
+        <Autocomplete
+          options={participants}
+          getOptionLabel={(option) => `${option.UserName} (${option.id})`}
+          renderInput={(params) => <TextField {...params} label="Search and Select Students" variant="outlined" />}
+          onChange={(event, value) => handleAddParticipant(value)}
+          style={{ backgroundColor: "#fff", borderRadius: "5px" }}
         />
       </div>
 
-      <Typography variant="body1" style={{ marginBottom: "20px", color: "#526E48" }}>
-        Selected Participants: {selectedParticipants.size}
+      <Typography variant="body1" style={{ marginBottom: "20px", color: "#526E48", textDecoration: "underline" }}>
+        Selected Participants: {selectedParticipants.length}
       </Typography>
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead style={{ backgroundColor: "#62825D", color: "#fff" }}>
             <TableRow>
-              <TableCell><strong>Select</strong></TableCell>
+              <TableCell><strong>Remove</strong></TableCell>
               <TableCell><strong>ID</strong></TableCell>
               <TableCell><strong>Name</strong></TableCell>
               <TableCell><strong>Age</strong></TableCell>
@@ -164,10 +158,15 @@ const CreatingClass: React.FC = () => {
               currentParticipants.map((participant) => (
                 <TableRow key={participant.id} style={{ backgroundColor: "#F3F9F3" }}>
                   <TableCell>
-                    <Checkbox
-                      checked={selectedParticipants.has(participant.id)}
-                      onChange={() => handleCheckboxChange(participant.id)}
-                    />
+                    <IconButton
+                      onClick={() => handleRemoveParticipant(participant.id)}
+                      style={{
+                        backgroundColor: "#62825D",
+                        color: "#fff",
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                   <TableCell>{participant.id}</TableCell>
                   <TableCell>{participant.UserName}</TableCell>
@@ -180,9 +179,12 @@ const CreatingClass: React.FC = () => {
             ) : (
               <TableRow>
                 <TableCell colSpan={7} align="center">
-                  No participants found matching your search.
+                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
+                    No student in class. Please choose at least one student in class!
+                  </Typography>
                 </TableCell>
               </TableRow>
+
             )}
           </TableBody>
         </Table>
@@ -191,9 +193,9 @@ const CreatingClass: React.FC = () => {
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         <Button
           variant="contained"
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
-          style={{ backgroundColor: "#526E48", color: "#fff", marginRight: "10px" }}
+          style={{ backgroundColor: "#9EDF9C", color: "#fff", marginRight: "10px" }}
         >
           Previous
         </Button>
@@ -213,9 +215,9 @@ const CreatingClass: React.FC = () => {
         ))}
         <Button
           variant="contained"
-          onClick={() => setCurrentPage(currentPage + 1)}
+          onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages}
-          style={{ backgroundColor: "#526E48", color: "#fff", marginLeft: "10px" }}
+          style={{ backgroundColor: "#9EDF9C", color: "#fff", marginLeft: "10px" }}
         >
           Next
         </Button>
@@ -228,7 +230,7 @@ const CreatingClass: React.FC = () => {
         style={{
           display: "block",
           margin: "20px auto",
-          backgroundColor: "#9EDF9C",
+          backgroundColor: "#62825D",
           color: "#fff",
           padding: "10px 20px",
           fontSize: "16px",

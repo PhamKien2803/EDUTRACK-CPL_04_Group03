@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { replies as Reply, participants } from '../../../../models/Interface';
 import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   userIds: string;
@@ -41,6 +42,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
   const [participants, setParticipants] = useState<participants[]>([]);
   const [filteredReplies, setFilteredReplies] = useState<Reply[]>([]);
   const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
+  const { t } = useTranslation();
 
   // Fetching replies based on the answerId
   useEffect(() => {
@@ -95,23 +97,23 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
   const handleDeleteReply = async (replyId: string) => {
     if (!answerId) return;
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: "Do you really want to delete this reply?",
+      title: t('delete_confirmation_title'),
+      text: t('delete_confirmation_text'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: t('delete_confirmation_button'),
     });
 
     if (result.isConfirmed) {
       try {
         await deleteReply({ id: replyId } as Reply);
         fetchReplies(answerId);
-        Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+        Swal.fire(t('delete_success_title'), t('delete_success_text'), 'success');
       } catch (error) {
         console.error("Error deleting reply:", error);
-        Swal.fire('Error', 'There was an error deleting the reply.', 'error');
+        Swal.fire(t('error_title'), t('error_text'), 'error');
       }
     }
   };
@@ -147,11 +149,11 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
 
   useEffect(() => {
     if (settingStatus === 1) {
-      setFilteredReplies(replies.filter((reply) => reply.UserID === loggedInUserId)); 
+      setFilteredReplies(replies.filter((reply) => reply.UserID === loggedInUserId));
     } else if (settingStatus === 2) {
-      setFilteredReplies(replies); 
+      setFilteredReplies(replies);
     } else {
-      setFilteredReplies(replies); 
+      setFilteredReplies(replies);
     }
   }, [settingStatus, replies, loggedInUserId]);
 
@@ -166,7 +168,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
           <Typography variant="h6">{username}</Typography>
           <Typography variant="body2" color="text.secondary">{text}</Typography>
           <Typography variant="caption" color="text.secondary">
-            {timestamp ? new Date(timestamp).toLocaleString() : "Just now"}
+            {timestamp ? new Date(timestamp).toLocaleString() : t('just_now')}
           </Typography>
         </Box>
       </Box>
@@ -202,7 +204,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       {!isReplyingDisabled && (
         <Box sx={{ marginTop: 2 }}>
           <Button variant="outlined" size="small" onClick={handleReplyToggle}>
-            {replying ? 'Cancel' : 'Reply'}
+            {replying ? t('cancel') : t('reply')}
           </Button>
         </Box>
       )}
@@ -215,13 +217,13 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
               multiline
               rows={3}
               variant="outlined"
-              label="Your Reply"
+              label={t('your_reply')}
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
             />
             <Box sx={{ marginTop: 1 }}>
               <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
-                Submit Reply
+                {t('submit_reply')}
               </Button>
             </Box>
           </Box>

@@ -4,11 +4,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { Box, Button, Card, CardContent, Checkbox, Divider, Grid, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Checkbox, Divider, Grid, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import QuizSettingsModal from "./QuizSettingsModal";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCourseSemesterById } from "../../../../service/ApiService";
 import { CourseSemester } from "../../../../models/Interface";
@@ -43,6 +44,8 @@ export const AddExam = () => {
     const [status, setStatus] = useState<boolean>(false);
     const [dateOfBooking, setDateOfBooking] = useState<string>("");
     const [image, setImage] = useState<string>("");
+    const navigate = useNavigate();
+
 
 
     const Exid = useRef(uuidv4());
@@ -243,21 +246,42 @@ export const AddExam = () => {
                 }
                 toast.success('Update success')
                 return setTimeout(() => {
-                    nav('/lecturer/homePage')
+                    nav('/lecturer/lession-course')
                 }, 1500)
             }
         }
-
     }
 
-
     return (
-        <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
+        <Box p={3} sx={{ backgroundColor: "#ede7f6" }}>
+            <Box
+                display="flex"
+                alignItems="center"
+                mb={2}
+                sx={{
+                    gap: 1,
+                }}
+            >
+                <IconButton
+                    onClick={() => navigate(-1)}
+                    size="small"
+                    sx={{
+                        bgcolor: "primary.light",
+                        color: "primary.main",
+                        "&:hover": { bgcolor: "primary.main", color: "white" },
+                    }}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
+                <Typography variant="h6" fontWeight="bold" color="primary.main">
+                    Session Home
+                </Typography>
+            </Box>
             {/* Header */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5">Untitled Quiz</Typography>
+                <Typography variant="h5">Exam Quiz</Typography>
                 <Box>
-                    <Button onClick={() => setOpen(true)} variant="contained" color="primary">Publush</Button>
+                    <Button onClick={() => setOpen(true)} variant="contained" color="secondary">Publish Exam</Button>
                 </Box>
             </Box>
 
@@ -270,14 +294,14 @@ export const AddExam = () => {
                             <Divider sx={{ my: 1 }} />
                             <Button variant="text" startIcon={<AccessTimeIcon />}>Time:</Button>
                             <Select defaultValue="900" onChange={e => setTime(e.target.value)} size="small" sx={{ mx: 1 }}>
-                                <MenuItem value="900">15 minis</MenuItem>
-                                <MenuItem value="1800">30 minis</MenuItem>
-                                <MenuItem value="2700">45 minis</MenuItem>
-                                <MenuItem value="3600">60 minis</MenuItem>
-                                <MenuItem value="5400">90 minis</MenuItem>
-                                <MenuItem value="7200">120 minis</MenuItem>
-                                <MenuItem value="9000">150 minis</MenuItem>
-                                <MenuItem value="10800">180 minis</MenuItem>
+                                <MenuItem value="900">15 minutes</MenuItem>
+                                <MenuItem value="1800">30 minutes</MenuItem>
+                                <MenuItem value="2700">45 minutes</MenuItem>
+                                <MenuItem value="3600">60 minutes</MenuItem>
+                                <MenuItem value="5400">90 minutes</MenuItem>
+                                <MenuItem value="7200">120 minutes</MenuItem>
+                                <MenuItem value="9000">150 minutes</MenuItem>
+                                <MenuItem value="10800">180 minutes</MenuItem>
                             </Select>
                             <Divider sx={{ my: 1 }} />
 
@@ -302,13 +326,28 @@ export const AddExam = () => {
                                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                                 <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
                                                 <Box display="flex" alignItems="center">
-                                                    <IconButton>
-                                                        <ImageSearchIcon onClick={() => handleClick(item.id)} style={{ cursor: 'pointer' }} />
-                                                    </IconButton>
-                                                    <IconButton>
-                                                        <Delete onClick={() => handleQuestion('REMOVE', item.id)} />
-                                                    </IconButton>
+                                                    {/* Tooltip for Search Icon */}
+                                                    <Tooltip title="Add for Image" arrow>
+                                                        <IconButton>
+                                                            <ImageSearchIcon
+                                                                sx={{ color: 'green' }}
+                                                                onClick={() => handleClick(item.id)}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+
+                                                    {/* Tooltip for Delete Icon */}
+                                                    <Tooltip title="Delete Question" arrow>
+                                                        <IconButton>
+                                                            <Delete
+                                                                sx={{ color: 'red' }}
+                                                                onClick={() => handleQuestion('REMOVE', item.id)}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </Box>
+
                                             </Box>
                                             <TextField
                                                 label={`Description`}
@@ -361,19 +400,18 @@ export const AddExam = () => {
                                                             </IconButton>
 
                                                         }
-                                                        <IconButton>
-                                                            <AddCircleOutlineIcon
-                                                                color="success"
-                                                                style={{ cursor: 'pointer' }}
-                                                                onClick={() => handleAnswer('ADD', item.id, "0")}
-                                                                sx={{ fontSize: 30 }}
-                                                            />
-                                                        </IconButton>
-
+                                                        <Tooltip title="Add for Answer">
+                                                            <IconButton>
+                                                                <AddCircleOutlineIcon
+                                                                    color="success"
+                                                                    style={{ cursor: 'pointer' }}
+                                                                    onClick={() => handleAnswer('ADD', item.id, "0")}
+                                                                    sx={{ fontSize: 30 }}
+                                                                />
+                                                            </IconButton>
+                                                        </Tooltip>
                                                     </Box>
                                                 </Box>
-
-
                                             ))}
                                         </CardContent>
                                     </Card>

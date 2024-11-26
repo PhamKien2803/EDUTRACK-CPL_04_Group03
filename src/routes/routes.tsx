@@ -17,16 +17,17 @@ import SessionDetails from "../page/home-page/lecturers-home/Session/SessionDeta
 import DicussionAssignment from "../page/home-page/student-home/DicussionAssignment";
 import LogoutButton from "../page/Auth/logout/logout";
 import Contact from "../components/student_components/contact-support/contact";
-import VerifyOTP from "../page/Auth/forgot-password/VerifyOTP";
-import ResetPassword from "../page/Auth/forgot-password/ResetPassword";
-import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import { AddingCourseSemester } from "../page/home-page/staff-home/ManageCourseSemester/AddingCourseSemester";
 import { MangerCourse } from "../page/home-page/staff-home/ManageCourseSemester/MangerCourse";
 import ManageExam from "../page/home-page/lecturers-home/Exam/ManageExam";
 import { ViewExam } from "../page/home-page/lecturers-home/Exam/ViewExam";
 import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDetailResult";
 import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
-
+import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
+import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
+import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
+import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
+import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 
 interface Router {
   name?: string;
@@ -42,7 +43,12 @@ const routesStudentHome: Router[] = [
     path: "/home-page",
     component: StudentHome,
   },
-
+  {
+    name: "dashboard_Page",
+    key: "dashboardPage",
+    path: "/dashboardPage",
+    component: DashBoardPage,
+  },
   {
     name: "lession",
     key: "LessionPage",
@@ -56,6 +62,7 @@ const routesStudentHome: Router[] = [
     path: "/exam-test",
     component: ExamList,
   },
+
   {
     name: "examtest",
     key: "ExamTestPage",
@@ -92,69 +99,18 @@ const routesStudentHome: Router[] = [
   },
 
   {
-    name: "AddExam",
-    key: "AddExam",
-    path: "/addingExam",
-    component: AddExam,
-  },
-
-
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile
-  },
-  {
     name: "Profile",
     key: "ProfilePage",
     path: "/profile",
     component: Profile,
   },
-  {
-    name: "AddExam",
-    key: "AddExam",
-    path: "/addingExam",
-    component: AddExam
-  },
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile
-  },
 
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton
-  },
   {
     name: "Contact",
     key: "ContactPage",
     path: "/contact",
-    component: Contact
+    component: Contact,
   },
-  // {
-  //   name: "VerifyOTP",
-  //   key: "VerifyOTPPage",
-  //   path: "/verify-otp",
-  //   component: VerifyOTP
-  // },
-  // {
-  //   name: "ResetPassword",
-  //   key: "ResetPasswordPage",
-  //   path: "/reset-password",
-  //   component: ResetPassword
-  // },
-
   {
     name: "Update-Profile",
     key: "ProfilePage",
@@ -174,27 +130,15 @@ const routesLecturersHome: Router[] = [
     name: "lecturers_home",
     key: "homepage_lecturer",
     path: "/lecturer/homePage",
-    component: LecturersHomePage
+    component: LecturersHomePage,
   },
   {
     name: "AddExam",
     key: "AddExam",
     path: "/addingExam",
-    component: AddExam
-  },
-  {
-    name: "lecturers_home",
-    key: "homepage_lecturer",
-    path: "/lecturer/homePage",
-    component: LecturersHomePage,
+    component: AddExam,
   },
 
-  {
-    name: "lession",
-    key: "LessionPage",
-    path: "/lecturer/lession-course",
-    component: Lession_Lecturers,
-  },
   {
     name: "SessionDetails",
     key: "SessionDetails",
@@ -232,75 +176,59 @@ const routesLecturersHome: Router[] = [
     name: "lession",
     key: "LessionPage",
     path: "/lecturer/lession-course",
-    component: Lession_Lecturers
+    component: Lession_Lecturers,
   },
   {
     name: "Profile",
     key: "ProfilePage",
     path: "/profile",
-    component: Profile
+    component: Profile,
   },
 
   {
     name: "Update-Profile",
     key: "ProfilePage",
     path: "/edit-profile",
-    component: EditProfile
+    component: EditProfile,
   },
   {
     name: "Logout",
     key: "LogoutPage",
     path: "/logout",
-    component: LogoutButton
-  },
-
-  {
-    name: "Update-Profile",
-    key: "ProfilePage",
-    path: "/edit-profile",
-    component: EditProfile
-  },
-  {
-    name: "Logout",
-    key: "LogoutPage",
-    path: "/logout",
-    component: LogoutButton
+    component: LogoutButton,
   },
 
   {
     name: "AddExam",
     key: "AddExam",
     path: "/addingExam",
-    component: AddExam
+    component: AddExam,
   },
 
   {
     name: "manageExam",
     key: "manageExam",
     path: "/manageExam",
-    component: ManageExam
+    component: ManageExam,
   },
   {
     name: "viewExam",
     key: "viewExam",
     path: "/viewExam",
-    component: ViewExam
+    component: ViewExam,
   },
-  ,
   {
     name: "ViewDetailResult",
     key: "ViewDetailResult",
     path: "/viewDetailResult",
-    component: ViewDetailResult
-  }
-  ,
+    component: ViewDetailResult,
+  },
   {
     name: "updateExam",
     key: "updateExam",
     path: "/updateExam",
-    component: UpdateExam
-  }
-
+    component: UpdateExam,
+  },
 ];
 
 const routesStaffHome: Router[] = [
@@ -313,17 +241,32 @@ const routesStaffHome: Router[] = [
     key: "create_class",
     path: "/staff/create-class",
     component: CreatingClass,
-  }, {
+  },
+  {
     key: "AddingCourseSemester",
     path: "/AddingCourseSemester",
     component: AddingCourseSemester,
-  }, {
+  },
+  {
     key: "manage_course_semester",
     path: "/manage_course_semester",
     component: MangerCourse,
-  }
+  },
+  {
+    key: "couseras_list",
+    path: "staff/couseras_list",
+    component: CouseraList,
+  },
+  {
+    key: "manage_class",
+    path: "/staff/manage-class",
+    component: ClassManagement,
+  },
+  {
+    key: "student-details",
+    path: "/class/:classId/students",
+    component: StudentList,
+  },
 ];
-
-
 
 export { routesLecturersHome, routesStaffHome, routesStudentHome };

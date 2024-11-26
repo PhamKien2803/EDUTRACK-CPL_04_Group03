@@ -5,6 +5,8 @@ import {
 } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
 import { getClass, getParticipants } from "../../../../service/ApiService";
+import { useTranslation } from 'react-i18next';
+
 
 interface Participant {
     id: string;
@@ -35,6 +37,7 @@ interface Props {
 const StudentList: React.FC<Props> = () => {
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [classes, setClasses] = useState<Classes[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetchParticipants();
@@ -70,7 +73,7 @@ const StudentList: React.FC<Props> = () => {
                     <Box key={classRoom.ClassID} mb={4}>
                         <Typography variant="h4">Class: {classRoom.ClassName}</Typography>
                         <Typography variant="subtitle1">
-                            Number of Students: {students.length}
+                            {t('number_of_students')}: {students.length}
                         </Typography>
                         <hr style={{ border: "2px solid lightgray", margin: "8px auto" }} />
 
@@ -79,9 +82,9 @@ const StudentList: React.FC<Props> = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell></TableCell>
-                                        <TableCell><Typography fontWeight="bold">Name</Typography></TableCell>
-                                        <TableCell><Typography fontWeight="bold">ID</Typography></TableCell>
-                                        <TableCell><Typography fontWeight="bold">Email</Typography></TableCell>
+                                        <TableCell><Typography fontWeight="bold">{t('name_label')}</Typography></TableCell>
+                                        <TableCell><Typography fontWeight="bold">{t('id_label')}</Typography></TableCell>
+                                        <TableCell><Typography fontWeight="bold">{t('email_label')}</Typography></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

@@ -6,8 +6,9 @@ import App from './App';
 axios.defaults.baseURL = "http://localhost:9999";
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { persistor, store } from './redux/store';
+import './i18n/i18n';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -9,6 +9,8 @@ import {
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { slot as Slot } from "../../../../models/Interface";
+import { useTranslation } from 'react-i18next';
+
 
 interface Props {
     slots: Slot[];
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const CourseOutline: React.FC<Props> = ({ selectedSlot }) => {
+    const { t } = useTranslation();
     const [showContent, setShowContent] = useState(false);
 
     const handleToggleContent = () => {
@@ -33,13 +36,13 @@ const CourseOutline: React.FC<Props> = ({ selectedSlot }) => {
                 }}
                 endIcon={showContent ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             >
-                {showContent ? 'HIDE LESSON INFO' : 'SHOW LESSON INFO'}
+                {showContent ? t('lesson_info_hide') : t('lesson_info_show')}
             </Button>
 
             <Collapse in={showContent} timeout="auto" unmountOnExit>
                 <div>
                     <Typography variant="h5" style={{ marginTop: 16, fontWeight: 'bold' }}>
-                        Course Introduction
+                        {t('course_intro')}
                     </Typography>
 
                     <List component="nav">

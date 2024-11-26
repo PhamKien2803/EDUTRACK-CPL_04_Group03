@@ -29,26 +29,26 @@ interface Props {
     handleSubmit: () => void,
 }
 
-
 const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDisplay, setDateOfBooking, setImage, handleSubmit }) => {
-    const [checked, setChecked] = useState<boolean>(false)
-    const [imagePreView, setImagePreView] = useState<string>("")
+    const [checked, setChecked] = useState<boolean>(false);
+    const [imagePreView, setImagePreView] = useState<string>("");
 
     const handleCheked = () => {
         if (checked) {
-            setChecked(false)
-            setDateOfBooking("")
+            setChecked(false);
+            setDateOfBooking("");
         } else {
-            setChecked(true)
+            setChecked(true);
         }
-    }
+    };
+
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file && file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImage(reader.result as string);
-                setImagePreView(reader.result as string)
+                setImagePreView(reader.result as string);
             };
             reader.readAsDataURL(file);
         } else {
@@ -57,108 +57,131 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
     };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="md">
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
             <DialogTitle>
                 <Box display="flex" alignItems="center">
-                    <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-                        Great, you're almost done
+                    <Typography variant="h6" component="div" style={{ flexGrow: 1, fontWeight: 'bold' }}>
+                        Quiz Settings
                     </Typography>
                     <IconButton onClick={onClose}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
-                <Typography variant="body2">
-                    Review quiz settings and you’re good to go
+                <Typography variant="body2" color="textSecondary">
+                    Finalize your quiz settings and publish
                 </Typography>
             </DialogTitle>
-            <DialogContent dividers>
-                <Box display="flex" gap={2}>
-                    <Box flex="1">
+            <DialogContent dividers style={{ paddingTop: '24px', paddingBottom: '24px', maxHeight: '600px', overflow: 'auto' }}>
+                <Box display="flex" gap={3} flexWrap="wrap">
+                    {/* Name Input */}
+                    <Box flex="1" minWidth="250px">
                         <TextField
                             fullWidth
-                            label="Name"
+                            label="Quiz Name"
                             variant="outlined"
-                            defaultValue="heello"
+                            value="Sample Quiz"
                             margin="normal"
                             disabled
-                        />
-                        <FormControl fullWidth margin="normal" >
-                            <InputLabel>Display</InputLabel>
-                            <Select defaultValue="fasle" onChange={e => setDisplay(e.target.value === "true")}>
-                                <MenuItem value="fasle">No</MenuItem>
-                                <MenuItem value="true">Yes</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth margin="normal" >
-                            <InputLabel>View Result</InputLabel>
-                            <Select defaultValue="fasle" onChange={e => setStatus(e.target.value === "true")}>
-                                <MenuItem value="fasle">No</MenuItem>
-                                <MenuItem value="true">Yes</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                    </Box>
-                    {imagePreView ? <Box
-                        flex="1"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        border="1px dashed grey"
-                        borderRadius="8px"
-                        height="200px"
-                        position="relative"
-                    >
-                        <img style={{ height: "200px", borderRadius: "8px" }} src={imagePreView} alt="Preview" />
-                        <Button
-                            component="label"
-                            variant="outlined"
-                            startIcon={<AddPhotoAlternateIcon />}
-                            style={{
-                                position: 'absolute',
-                                top: '2px',
-                                right: '2px',
-                                background: 'white',
-
+                            InputProps={{
+                                style: { backgroundColor: '#f9f9f9', borderRadius: 8 }
                             }}
-                        >
+                        />
+                        <FormControl variant='standard' margin="normal" sx={{ minWidth: 240, marginLeft: 1.5}}>
+                            <InputLabel>Display Quiz</InputLabel>
+                            <Select
+                                defaultValue="false"
+                                onChange={e => setDisplay(e.target.value === "true")}
+                            >
+                                <MenuItem value="false">No</MenuItem>
+                                <MenuItem value="true">Yes</MenuItem>
+                            </Select>
+                        </FormControl>
 
-                            <input type="file" hidden onChange={(e) => handleImage(e)} />
-                        </Button>
-                    </Box> : <Box
+                        <FormControl variant='standard' margin="normal" sx={{ minWidth: 240, marginLeft: 1.5}}>
+                            <InputLabel>Allow Viewing Results</InputLabel>
+                            <Select
+                                defaultValue="false"
+                                onChange={e => setStatus(e.target.value === "true")}
+                            >
+                                <MenuItem value="false">No</MenuItem>
+                                <MenuItem value="true">Yes</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    {/* Image Upload */}
+                    <Box
                         flex="1"
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        border="1px dashed grey"
-                        borderRadius="8px"
-                        height="200px"
+                        border="2px dashed #d3d3d3"
+                        borderRadius="12px"
+                        position="relative"
+                        height="250px"
+                        style={{ backgroundColor: '#f9f9f9' }}
                     >
-                        <Button component="label" variant="outlined" startIcon={<AddPhotoAlternateIcon />}>
-                            Add cover image
-                            <input type="file" hidden onChange={(e) => handleImage(e)} />
-                        </Button>
-                    </Box>}
-
-
+                        {imagePreView ? (
+                            <>
+                                <img
+                                    src={imagePreView}
+                                    alt="Preview"
+                                    style={{ maxHeight: '100%', maxWidth: '100%', borderRadius: '8px' }}
+                                />
+                                <IconButton
+                                    component="label"
+                                    style={{
+                                        position: 'absolute',
+                                        top: 10,
+                                        right: 10,
+                                        backgroundColor: '#fff',
+                                        boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+                                    }}
+                                >
+                                    <AddPhotoAlternateIcon />
+                                    <input type="file" hidden onChange={(e) => handleImage(e)} />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <Button
+                                component="label"
+                                variant="outlined"
+                                startIcon={<AddPhotoAlternateIcon />}
+                                style={{ borderRadius: 8 }}
+                            >
+                                Add Cover Image
+                                <input type="file" hidden onChange={(e) => handleImage(e)} />
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
+
+                {/* Date Scheduling */}
                 <FormControlLabel
-                    control={<Switch checked={checked} onClick={() => handleCheked()} color="primary" />}
-                    label="Do you want to set a date for the exam ? "
+                    control={<Switch checked={checked} onClick={handleCheked} color="primary" />}
+                    label="Set a date for the quiz?"
+                    style={{ marginTop: '16px' }}
                 />
-                {checked &&
+                {checked && (
                     <TextField
                         fullWidth
                         onChange={e => setDateOfBooking(e.target.value)}
-                        type='datetime-local'
+                        type="datetime-local"
                         variant="outlined"
                         margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        style={{ borderRadius: 8 }}
                     />
-
-                }
+                )}
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleSubmit} variant="contained" color="primary">
-                    Publish
+            <DialogActions style={{ paddingBottom: '16px', paddingTop: '8px' }}>
+                <Button onClick={onClose} variant="outlined" style={{ marginRight: '8px' }}>
+                    Cancel
+                </Button>
+                <Button onClick={handleSubmit} variant="contained" style={{ backgroundColor: '#4caf50', color: '#fff' }}>
+                    Save
                 </Button>
             </DialogActions>
         </Dialog>

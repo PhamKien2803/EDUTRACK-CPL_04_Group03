@@ -7,10 +7,13 @@ import Content from '../lession-infor/question-content/Content';
 import StudentList from '../lession-infor/student-list/StudentList';
 import { getClass, getParticipants, getQuestionSLot, getAssignmentSlot } from "../../../service/ApiService";
 import { classRoom, participants, questionSlot, assignmentSlot } from "../../../models/Interface";
+import { useTranslation } from 'react-i18next';
+
 
 
 
 function NavTabsSession() {
+  const { t } = useTranslation();
   const [participants, setParticipants] = useState<participants[]>([]);
   const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
   const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
@@ -73,8 +76,8 @@ function NavTabsSession() {
         indicatorColor="secondary"
         aria-label="secondary tabs example"
       >
-        <Tab value="one" label="Content" />
-        <Tab value="two" label="Students List" />
+        <Tab value="one" label={t('content_label')} />
+        <Tab value="two" label={t('studentlist_label')} />
       </Tabs>
 
       {loading && <LinearProgress color="secondary" />}

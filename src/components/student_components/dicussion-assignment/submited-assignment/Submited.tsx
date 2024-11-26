@@ -8,8 +8,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot, getParticipants, deleteAnswerAssignmentSlot, getAssignmentSlot } from "../../../../service/ApiService";
 import { answerAssignmentSlot, assignmentSlot, participants } from "../../../../models/Interface";
+import { useTranslation } from 'react-i18next';
 
 const Submited: React.FC = () => {
+  const { t } = useTranslation();
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
   const [searchParams] = useSearchParams();
   const assignmentID = searchParams.get('assignmentid');
@@ -108,64 +110,13 @@ const Submited: React.FC = () => {
     }
   };
 
-
-  // Handle assignment submission
-  // const handleSubmitAssignment = async () => {
-  //   if (!file && !link) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Submission Error',
-  //       text: 'Please select a file or enter a link before submitting.',
-  //     });
-  //     return;
-  //   }
-
-  //   if (file || link) {
-  //     const submissionTimestamp = new Date().toISOString();
-  //     const newID = 'as' + Math.floor(100 + Math.random() * 900);
-  //     const formData: answerAssignmentSlot = {
-  //       id: newID,
-  //       AssignmentID: assignmentID || '',
-  //       UserID: userid,
-  //       urlfile: file ? file[0] : link,
-  //       score: 0,
-  //       Timestamped: submissionTimestamp,
-  //       Status: 1,
-  //     };
-
-  //     try {
-  //       await postAnswerAssignmentSlot(formData);
-  //       setIsSubmitted(true);
-  //       setTimestamp(submissionTimestamp);
-  //       setAssignmentSlotID(newID);
-  //       setScore(0);
-  //       setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Submitted!',
-  //         text: 'Your assignment has been submitted successfully.',
-  //       });
-  //     } catch (error) {
-  //       console.error('Error submitting assignment:', error);
-  //     }
-  //   }
-  // };
-
   const handleSubmitAssignment = async () => {
-    // if (assignmentStatus === 2) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Submission Error',
-    //     text: 'The submission deadline has passed. Your submission will be marked as Late.',
-    //   });
-    //   return;
-    // }
 
     if (!file && !link) {
       Swal.fire({
         icon: 'error',
-        title: 'Submission Error',
-        text: 'Please select a file or enter a link before submitting.',
+        title: t("submission_error"),
+        text: t("submission_error_message"),
       });
       return;
     }
@@ -191,11 +142,9 @@ const Submited: React.FC = () => {
       setSubmissionHistory((prevHistory) => [...prevHistory, formData]);
       Swal.fire({
         icon: 'success',
-        title: 'Submitted!',
+        title: t("submission_success"),
         // text: 'Your assignment has been submitted successfully.',
-        text: assignmentStatus === 2
-          ? 'Your assignment was submitted late and marked as Late Submission.'
-          : 'Your assignment has been submitted successfully.',
+        text: assignmentStatus === 2 ? t("late_submission_message") : t("submission_success_message"),
       });
     } catch (error) {
       console.error('Error submitting assignment:', error);
@@ -214,8 +163,8 @@ const Submited: React.FC = () => {
     if (!file && !link) {
       Swal.fire({
         icon: 'error',
-        title: 'Update Error',
-        text: 'Please select a file or enter a new link before updating.',
+        title: t("update_error"),
+        text: t("update_error_message"),
       });
       return;
     }
@@ -237,8 +186,8 @@ const Submited: React.FC = () => {
         );
         Swal.fire({
           icon: 'success',
-          title: 'Updated!',
-          text: 'Your submission has been updated successfully.',
+          title: t("updated_success"),
+          text: t("updated_success_message"),
         });
       } catch (error) {
         console.error('Error updating assignment:', error);
@@ -249,13 +198,13 @@ const Submited: React.FC = () => {
   // Handle deleting a submission
   const handleDeleteAssignment = async (submissionID: string) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you really want to delete this submission?',
+      title: t("delete_confirmation"),
+      text: t("delete_confirmation_message"),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: t("delete"),
     });
     if (result.isConfirmed) {
       try {
@@ -263,8 +212,8 @@ const Submited: React.FC = () => {
         setSubmissionHistory((prevHistory) => prevHistory.filter((submission) => submission.id !== submissionID));
         Swal.fire({
           icon: 'success',
-          title: 'Deleted!',
-          text: 'Your submission has been deleted successfully.',
+          title: t("delete_success"),
+          text: t("delete_success_message"),
         });
       } catch (error) {
         console.error('Error deleting assignment:', error);
@@ -276,35 +225,37 @@ const Submited: React.FC = () => {
     <Box sx={{ maxWidth: 850, mx: 'auto', mt: 4 }}>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>SUBMISSION STATUS</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{t("submission_status")}</Typography>
           <Typography variant="body2" sx={{ mt: 1 }}>
-            {assignmentStatus === 2 ? 'Late Submission' : isSubmitted ? 'Submitted' : 'Not Submitted'}
+            
+            {assignmentStatus === 2 ? t("late_submission") : isSubmitted ? t("submitted") : t("not_submitted")}
+
           </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>SUBMISSION TIME</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{t("submission_time")}</Typography>
           <Typography variant="body2" sx={{ mt: 1 }}>
             {timestamp ? new Date(timestamp).toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }) : '(GMT+07)'}
           </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>LINK/FILE ASSIGNMENT</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{t("link_file_assignment")}</Typography>
           <Box sx={{ mt: 2 }}>
             {selection === 'file' && !isSubmitted && (
               <Button variant="contained" color="primary" component="label" sx={{ fontSize: '1rem', py: 1.5, width: '100%' }}>
-                CHOOSE FILE
+                {t("choose_file")}
                 <input type="file" hidden onChange={handleFileUpload} />
               </Button>
             )}
             {file && (
               <Typography sx={{ mt: 2, fontSize: '0.9rem' }}>
-                <strong>File Upload:</strong> {fileMetadata ? fileMetadata.name : 'No file selected'}
+                <strong>{t("file_upload")}:</strong> {fileMetadata ? fileMetadata.name : 'No file selected'}
               </Typography>
             )}
           </Box>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>YOUR SCORE</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{t("your_score")}</Typography>
           <Typography variant="body2" sx={{ mt: 1 }}>
             {score !== null ? score : 'Not graded yet'}
           </Typography>
@@ -318,31 +269,19 @@ const Submited: React.FC = () => {
           sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1.2, px: 3 }}
           onClick={handleSubmitAssignment}
         >
-          SUBMIT ASSIGNMENT
+          {t("submit_assignment")}
         </Button>
       </Box>
-      {/* <Box sx={{ mt: 3 }}>
-        {assignmentStatus !== 2 && (
-          <Button
-            variant="outlined"
-            color="secondary"
-            sx={{ fontWeight: 'bold', fontSize: '1rem', py: 1.2, px: 3 }}
-            onClick={handleSubmitAssignment}
-          >
-            SUBMIT ASSIGNMENT
-          </Button>
-        )}
-      </Box> */}
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box sx={{ ...modalStyle }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>Update Your Submission</Typography>
+          <Typography variant="h6" sx={{ mb: 2 }}>{t("update_submission")}</Typography>
           <Button variant="contained" component="label" color="primary" fullWidth>
-            CHOOSE NEW FILE
+            {t("choose_file")}
             <input type="file" hidden onChange={handleFileUpload} />
           </Button>
           <Button variant="contained" sx={{ mt: 2 }} color="secondary" onClick={handleUpdateAssignment}>
-            UPDATE ASSIGNMENT
+            {t("update_assignment")}
           </Button>
         </Box>
       </Modal>
@@ -350,16 +289,16 @@ const Submited: React.FC = () => {
 
       {submissionHistory.length > 0 && (
         <Box sx={{ mt: 4 }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Submission History</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>{t("submission_history")}</Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Student Name</TableCell>
-                  <TableCell>Link/File</TableCell>
-                  <TableCell>Score</TableCell>
-                  <TableCell>Submission Time</TableCell>
-                  {assignmentStatus !== 2 && <TableCell>Actions</TableCell>}
+                  <TableCell>{t("student_name")}</TableCell>
+                  <TableCell>{t("link_file")}</TableCell>
+                  <TableCell>{t("score")}</TableCell>
+                  <TableCell>{t("submission_time_column")}</TableCell>
+                  {assignmentStatus !== 2 && <TableCell>{t("actions")}</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -372,7 +311,7 @@ const Submited: React.FC = () => {
                         color="primary"
                         onClick={() => openInNewTab(submission?.urlfile)}
                       >
-                        Your Assign
+                        {t("your_assign")}
                       </Button>
                     </TableCell>
                     <TableCell>{submission?.score}</TableCell>
@@ -384,19 +323,17 @@ const Submited: React.FC = () => {
                     {assignmentStatus !== 2 && (
                       <TableCell>
                         <Button variant="outlined" color="error" onClick={() => handleDeleteAssignment(submission?.id)}>
-                          DELETE
+                          {t("delete")}
                         </Button>
                         <Button
                           variant="outlined"
                           color="primary"
                           onClick={() => handleOpenUpdateModal(submission)}
                         >
-                          UPDATE
+                          {t("update")}
                         </Button>
                       </TableCell>
                     )}
-
-
                   </TableRow>
                 ))}
               </TableBody>
@@ -405,7 +342,6 @@ const Submited: React.FC = () => {
           </TableContainer>
         </Box>
       )}
-
     </Box>
   );
 };

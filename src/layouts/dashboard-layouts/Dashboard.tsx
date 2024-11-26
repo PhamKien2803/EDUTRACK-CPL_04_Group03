@@ -10,11 +10,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import {
-  Outlet,
-  useLocation,
-  useNavigationType,
-} from "react-router-dom";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 
@@ -26,7 +22,7 @@ const NAVIGATION: Navigation = [
     icon: <AccountCircleIcon />,
   },
   {
-    segment: "home-page",
+    segment: "dashboardPage",
     title: "Dashboard",
     icon: <DashboardIcon />,
   },
