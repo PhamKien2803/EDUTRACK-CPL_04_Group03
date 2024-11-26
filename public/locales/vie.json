@@ -206,5 +206,8 @@
     "about_me": "Về tôi",
     "studentid": "Mã sinh viên",
     "edit_profile": "Chỉnh sửa hồ sơ",
-    "save_changes": "Lưu thay đổi"
+    "save_changes": "Lưu thay đổi",
+    "filter_label": "Lọc:",
+    "search_label": "Tìm kiếm",
+    "search_placeholder": "Tìm kiếm"
 }

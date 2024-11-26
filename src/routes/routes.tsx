@@ -161,12 +161,7 @@ const routesLecturersHome: Router[] = [
     path: "/lecturer/lession-course",
     component: Lession_Lecturers,
   },
-  {
-    name: "Profile",
-    key: "ProfilePage",
-    path: "/profile",
-    component: Profile,
-  },
+  
   {
     name: "lession",
     key: "LessionPage",
