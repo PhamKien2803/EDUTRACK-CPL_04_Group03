@@ -31,6 +31,7 @@ import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
 import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
 import LectureAccountCreating from "../page/home-page/staff-home/Account Management/LectureAccountCreate";
+import changePassword from "../components/student_components/profile/changePassword";
 
 interface Router {
   name?: string;
@@ -119,6 +120,12 @@ const routesStudentHome: Router[] = [
     key: "ProfilePage",
     path: "/edit-profile",
     component: EditProfile,
+  },
+  {
+    name: "Change-Password",
+    key: "ChangePasswordPage",
+    path: "/change-password",
+    component: changePassword,
   },
   {
     name: "Logout",
