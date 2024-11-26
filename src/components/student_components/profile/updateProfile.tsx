@@ -1,8 +1,8 @@
-// components/EditProfile.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getParticipantsById, updateProfile } from "../../../service/ApiService";
 import { useTranslation } from 'react-i18next';
+import Swal from "sweetalert2";
 import {
   Box,
   Button,
@@ -12,9 +12,12 @@ import {
   Grid,
   Paper,
   Avatar,
+  IconButton,
 } from "@mui/material";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+
+
 interface Participant {
   id: string;
   UserName: string;
@@ -30,43 +33,40 @@ interface Participant {
   rating: number;
 }
 
-
-
 const EditProfile: React.FC = () => {
   const { t } = useTranslation();
   const [profile, setProfile] = useState<Participant | null>(null);
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<number>(0);
-  const [addres, setAdress] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
   const [gender, setGender] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [image, setImage] = useState<string>("");
-  const [rating, setRating] = useState<number>(0);
-  const [role, setRole] = useState<number>(0);
-  const [isOnline, setIsOnline] = useState<boolean>(false);
-  const [status, setStatus] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const user = useSelector((state: any) => state.account.account);
+  interface RootState {
+    account: {
+      account: {
+        UserID: string;
+      };
+    };
+  }
 
+  const user = useSelector((state: RootState) => state.account.account);
   const navigate = useNavigate();
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await getParticipantsById(user.UserID);
         setName(res.UserName);
         setAge(res.Age);
-        setAdress(res.Address);
+        setAddress(res.Address);
         setGender(res.Gender);
         setEmail(res.Email);
         setPassword(res.Password);
         setImage(res.Image);
-        setRating(res.rating);
-        setRole(res.Role);
-        setIsOnline(res.isOnline);
-        setStatus(res.Status);
         setProfile(res);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -87,52 +87,6 @@ const EditProfile: React.FC = () => {
     }
     setAge(newAge);
   };
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger'
-    },
-    buttonsStyling: false
-  });
-  const handleSave = () => {
-    swalWithBootstrapButtons.fire({
-      title: t('are_you_sure'),
-      text: t('you_wont_revert'),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: t('yes_save_it'),
-      cancelButtonText: t('no_cancel'),
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleConfirmSave();
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-          title: t('cancelled'),
-          text: t('your_changes_safe'),
-          icon: "error"
-        });
-      }
-    });
-  };
-
-  const handleConfirmSave = async () => {
-    const req = await updateProfile(user.UserID, name, addres, age, gender, email, password, image, rating, role, isOnline, status);
-    if (req) {
-      swalWithBootstrapButtons.fire({
-        title: t('success'),
-        text: t('changes_saved'),
-        icon: "success"
-      });
-      navigate('/profile');
-    } else {
-      swalWithBootstrapButtons.fire({
-        title: t('error'),
-        text: t('error_saving_profile'),
-        icon: "error"
-      });
-    }
-  };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -141,148 +95,181 @@ const EditProfile: React.FC = () => {
         const reader = new FileReader();
         reader.onloadend = () => {
           setImage(reader.result as string);
-
         };
         reader.readAsDataURL(file);
       }
     }
   };
 
-  const handleClick = () => {
-    fileInputRef.current?.click();
+  const handleSave = () => {
+    Swal.fire({
+      title: t("are_you_sure"),
+      text: t("you_wont_revert"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: t("yes_save_it"),
+      cancelButtonText: t("no_cancel"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleConfirmSave();
+      }
+    });
+  };
+
+  const handleConfirmSave = async () => {
+    try {
+      await updateProfile(user.UserID, name, address, age, gender, email, password, image, 0, 0, false, false);
+      Swal.fire(t("success"), t("changes_saved"), "success");
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      Swal.fire(t("error"), t("error_saving_profile"), "error");
+    }
   };
 
   return (
-    <>
+    <Box bgcolor="#f6f9fc" minHeight="100vh" p={3}>
+      {/* Back Button */}
+      <IconButton
+        onClick={() => navigate(-1)}
+        sx={{ color: "#2575fc", mb: 2 }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+
       {profile && (
         <Box
           display="flex"
           flexDirection="column"
           alignItems="center"
           p={3}
-          bgcolor="#f9f9f9"
-          borderRadius="8px"
-          boxShadow="0px 4px 10px rgba(0, 0, 0, 0.1)"
+          borderRadius="12px"
+          boxShadow="0px 8px 24px rgba(0, 0, 0, 0.1)"
+          bgcolor="#fff"
           maxWidth="800px"
           mx="auto"
-          margin="20px auto"
         >
-          <Grid container spacing={3}>
-            {/* Profile Picture Section */}
+          <Typography variant="h4" fontWeight="bold" color="#333" mb={4}>
+            {t("edit_profile")}
+          </Typography>
+          <Grid container spacing={4}>
+            {/* Profile Picture */}
             <Grid item xs={12} md={4}>
-              <Paper elevation={1} sx={{ p: 3, textAlign: 'center' }}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  textAlign: "center",
+                  borderRadius: "8px",
+                }}
+              >
                 <Typography variant="h6" fontWeight="bold">
-                  {t('profile_picture')}
+                  {t("profile_picture")}
                 </Typography>
-
-
                 <Avatar
                   src={image || profile.Image}
                   alt="Profile Picture"
-                  sx={{ width: 100, height: 100, margin: '20px auto' }}
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    mx: "auto",
+                    my: 2,
+                    border: "4px solid #2575fc",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                  }}
                 />
-
-                <Typography variant="body2" color="textSecondary">
-                  {t('jpg_or_png')}
-                </Typography>
-
-                <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleClick}>
-                  {t('upload_new_image')}
-                </Button>
-              </Paper>
-
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg, image/png"
-                style={{ display: 'none' }}
-                placeholder="Upload New Image"
-                onChange={handleImage}
-              />
-            </Grid>
-
-
-            {/* Account Details Section */}
-            <Grid item xs={12} md={8}>
-              <Paper elevation={1} sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight="bold" gutterBottom>
-                  {t('account_details')}
-                </Typography>
-                <Grid container spacing={2}>
-                  {/* Username Field */}
-                  <Grid item xs={12}>
-                    <TextField
-                      label={t('name')}
-                      value={name}
-                      onChange={e => setName(e.target.value)}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </Grid>
-
-                  {/* Age Field */}
-                  <Grid item xs={12}>
-                    <TextField
-                      label={t('age')}
-                      name="Age"
-                      value={age}
-                      onChange={handleAgeChange}
-                      type="number"
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  </Grid>
-
-                  {/* Address Field */}
-                  <Grid item xs={12}>
-                    <TextField
-                      label={t('address')}
-                      name="Address"
-                      defaultValue={profile.Address}
-                      onChange={e => setAdress(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  </Grid>
-
-                  {/* Gender Field */}
-                  <Grid item xs={12}>
-                    <TextField
-                      label={t('gender')}
-                      select
-                      value={gender.toString()}
-                      onChange={e => setGender(e.target.value === "true")}
-                      fullWidth
-                      variant="outlined"
-                    >
-                      <MenuItem value="true">{t('male')}</MenuItem>
-                      <MenuItem value="false">{t('female')}</MenuItem>
-                    </TextField>
-                  </Grid>
-                </Grid>
-
-                {/* Save Button */}
                 <Button
                   variant="contained"
                   color="primary"
-                  sx={{ mt: 3, fontWeight: 'bold', borderRadius: '8px', textAlign: 'center', alignItems: 'center' }}
+                  sx={{
+                    textTransform: "capitalize",
+                    background: "linear-gradient(45deg, #6a11cb, #2575fc)",
+                    "&:hover": {
+                      background: "linear-gradient(45deg, #5b10ba, #1e66e1)",
+                    },
+                  }}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {t("upload_new_image")}
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg, image/png"
+                  style={{ display: "none" }}
+                  onChange={handleImage}
+                />
+              </Paper>
+            </Grid>
+
+            {/* Form Fields */}
+            <Grid item xs={12} md={8}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  borderRadius: "8px",
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold" mb={2}>
+                  {t("account_details")}
+                </Typography>
+                <TextField
+                  label={t("name")}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label={t("age")}
+                  value={age}
+                  onChange={handleAgeChange}
+                  type="number"
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label={t("address")}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  label={t("gender")}
+                  select
+                  value={gender.toString()}
+                  onChange={(e) => setGender(e.target.value === "true")}
+                  fullWidth
+                  sx={{ mb: 2 }}
+                >
+                  <MenuItem value="true">{t("male")}</MenuItem>
+                  <MenuItem value="false">{t("female")}</MenuItem>
+                </TextField>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    mt: 3,
+                    textTransform: "capitalize",
+                    background: "linear-gradient(45deg, #6a11cb, #2575fc)",
+                    "&:hover": {
+                      background: "linear-gradient(45deg, #5b10ba, #1e66e1)",
+                    },
+                  }}
                   onClick={handleSave}
                 >
-                  {t('save')}
+                  {t("save_changes")}
                 </Button>
               </Paper>
             </Grid>
           </Grid>
         </Box>
       )}
-    </>
+    </Box>
   );
-
 };
-
-
 
 export default EditProfile;

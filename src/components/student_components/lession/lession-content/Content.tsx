@@ -77,24 +77,42 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
         <Box>
             {paginatedSlots.map((sl, index) => {
                 const currentSlot = slot.find((s) => s.id === sl);
-
                 return (
                     <Box
                         key={`slot-${index}`}
                         mb={2}
                         p={2}
-                        border={1}
                         borderRadius={2}
-                        borderColor="grey.300"
-                        boxShadow={2}
+                        sx={{
+                            border: visibleSlots[sl] ? '2px solid purple' : '1px solid #ddd',
+                            boxShadow: visibleSlots[sl]
+                                ? '0 6px 12px rgba(0, 0, 0, 0.1)'
+                                : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease-in-out',
+                            '&:hover': {
+                                borderColor: 'purple',
+                                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
+                            },
+                        }}
                         ref={(el: HTMLDivElement | null) => (slotRefs.current[sl] = el)}
                         onClick={() => toggleVisibility(sl)}
                     >
                         <Box bgcolor="grey.100" borderRadius="8px" p={2}>
                             <Box display="flex" justifyContent="space-between" alignItems="center">
-                                <Typography variant="h6" component="div" bgcolor={"lightpink"} borderRadius={2} p={0.5}>
-                                    {currentSlot?.SlotName || `Slot ${index + 1}`}
-                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: 'inline-block',
+                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                        borderRadius: 2.5,
+                                        padding: '8px 16px',
+                                        backgroundColor: '#b39ddb',
+                                    }}
+                                >
+                                    <Typography variant="subtitle2" color="black" fontSize={15}>
+                                        {currentSlot?.SlotName || `Slot ${index + 1}`}
+                                    </Typography>
+                                </Box>
                                 <Box display="flex" alignItems="center" gap={2}>
                                     <Typography variant="body2" color="textSecondary">
                                         {currentSlot?.TimeStart} - {currentSlot?.TimeEnd}
@@ -110,97 +128,129 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                     </Button>
                                 </Box>
                             </Box>
-                            <Typography variant="body1" color="textSecondary" mt={1} mb={1} fontWeight={"bold"}>
+                            <Typography
+                                variant="body1"
+                                color="textSecondary"
+                                mt={1}
+                                mb={1}
+                                fontWeight="bold"
+                            >
                                 {currentSlot?.Description.split('\n').map((line, index) => (
-                                    <span key={index}>
+                                    <React.Fragment key={index}>
                                         {line}
                                         <br />
-                                    </span>
+                                    </React.Fragment>
                                 ))}
                             </Typography>
                         </Box>
 
-                        <hr style={{ border: '1px solid lightgray', margin: '8px auto' }} />
+                        <Divider sx={{ my: 2 }} />
 
-                        {/* Questions Collapse */}
+                        {/* Questions and Assignments */}
                         <Collapse in={visibleSlots[sl]}>
-                            <Divider sx={{ my: 2 }} />
                             <Typography variant="subtitle1" color="primary" gutterBottom>
-                            {t('questions')}
+                                {t('questions')}
                             </Typography>
                             <List>
-                                {/* Hiển thị các câu hỏi (Question) chỉ khi Status là On-Going */}
                                 {questionSlot
                                     .filter((qs) => qs.Slotid === sl)
                                     .map((qs, qIndex) => (
                                         <ListItem
                                             key={`qs-${qIndex}`}
-                                            component="li"
-                                            onClick={() => qs.Status !== 0 && handleClicktoDiscussion(qs.QuestionID, sl)} // Chỉ xử lý khi Status != 0
                                             sx={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                cursor: qs.Status !== 0 ? 'pointer' : 'not-allowed', // Không cho click nếu Status = 0
-                                                opacity: qs.Status !== 0 ? 1 : 0.5, // Làm mờ nếu Status = 0
-                                                '&:hover': qs.Status !== 0 && {
+                                                cursor: qs.Status !== 0 ? 'pointer' : 'not-allowed',
+                                                opacity: qs.Status !== 0 ? 1 : 0.5,
+                                                '&:hover': qs.Status !== 0 ? {
                                                     backgroundColor: 'rgba(0, 123, 255, 0.1)',
                                                     transform: 'scale(1.02)',
-                                                },
+                                                } : {},
                                                 transition: 'background-color 0.3s, transform 0.3s',
                                             }}
+                                            onClick={() =>
+                                                qs.Status !== 0 &&
+                                                handleClicktoDiscussion(qs.QuestionID, sl)
+                                            }
                                         >
                                             <ListItemIcon>
                                                 <HelpOutlineIcon color="action" />
                                             </ListItemIcon>
                                             <ListItemText
-                                                primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                secondary={qs.Status === 0 ? t('not_started1') : t('on_going')}
+                                                primary={`Q${qIndex + 1}: ${qs.content.substring(
+                                                    0,
+                                                    50
+                                                )}...`}
+                                                secondary={
+                                                    qs.Status === 0
+                                                        ? t('not_started1')
+                                                        : t('on_going')
+                                                }
                                                 secondaryTypographyProps={{
-                                                    color: qs.Status === 0 ? 'error' : 'success', // Phân biệt màu sắc
+                                                    color: qs.Status === 0 ? 'error' : 'success',
                                                     fontWeight: 'bold',
                                                 }}
                                             />
-                                            {qs.Status !== 0 && <ArrowForwardIosIcon fontSize="small" color="action" />}
+                                            {qs.Status !== 0 && (
+                                                <ArrowForwardIosIcon
+                                                    fontSize="small"
+                                                    color="action"
+                                                />
+                                            )}
                                         </ListItem>
                                     ))}
-                                {/* Hiển thị phần bài tập (Assignment) không thay đổi */}
-                                {assignmentSlot?.filter((as) => as?.Slotid === sl)?.map((as, index) => (
-                                    <ListItem
-                                        key={`as-${index}`}
-                                        onClick={() => as.Status !== 0 && handleClickToAssignment(as.AssignmentID, sl)} // Chỉ xử lý khi Status != 0
-                                        component="li"
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            cursor: as.Status !== 0 ? 'pointer' : 'not-allowed', // Không cho click nếu Status = 0
-                                            opacity: as.Status !== 0 ? 1 : 0.5, // Làm mờ nếu Status = 0
-                                            '&:hover': as.Status !== 0 && {
-                                                backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                                                transform: 'scale(1.02)',
-                                            },
-                                            transition: 'background-color 0.3s, transform 0.3s',
-                                        }}
-                                    >
-                                        <ListItemIcon>
-                                            <AssignmentIcon color="action" />
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary={`Assignment ${index + 1}: ${as.title.substring(0, 50)}...`}
-                                            secondary={as.Status !== 0 ? t('on_going') : t('not_started1')}
-                                            secondaryTypographyProps={{
-                                                color: as.Status !== 0 ? 'success' : 'error',
-                                                fontWeight: 'bold',
-                                            }}
-                                        />
-                                        {as.Status !== 0 && <ArrowForwardIosIcon fontSize="small" color="action" />}
-                                    </ListItem>
-                                ))}
-                            </List>
 
+                                {assignmentSlot
+                                    ?.filter((as) => as?.Slotid === sl)
+                                    ?.map((as, index) => (
+                                        <ListItem
+                                            key={`as-${index}`}
+                                            onClick={() =>
+                                                as.Status !== 0 &&
+                                                handleClickToAssignment(as.AssignmentID, sl)
+                                            }
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                cursor: as.Status !== 0 ? 'pointer' : 'not-allowed',
+                                                opacity: as.Status !== 0 ? 1 : 0.5,
+                                                '&:hover': as.Status !== 0 ? {
+                                                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                                    transform: 'scale(1.02)',
+                                                } : {},
+                                                transition: 'background-color 0.3s, transform 0.3s',
+                                            }}
+                                        >
+                                            <ListItemIcon>
+                                                <AssignmentIcon color="action" />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={`Assignment ${index + 1}: ${as.title.substring(
+                                                    0,
+                                                    50
+                                                )}...`}
+                                                secondary={
+                                                    as.Status !== 0 ? t('on_going') : t('not_started1')
+                                                }
+                                                secondaryTypographyProps={{
+                                                    color: as.Status !== 0 ? 'success' : 'error',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            />
+                                            {as.Status !== 0 && (
+                                                <ArrowForwardIosIcon
+                                                    fontSize="small"
+                                                    color="action"
+                                                />
+                                            )}
+                                        </ListItem>
+                                    ))}
+                            </List>
                         </Collapse>
                     </Box>
-                );
-            })}
+                )
+            }
+            )}
 
             {/* Pagination */}
             <Pagination
@@ -211,6 +261,11 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                 sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}
             />
         </Box>
+
+
+
+
+
     );
 };
 
