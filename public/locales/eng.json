@@ -206,5 +206,8 @@
     "success": "Success!",
     "changes_saved": "Your changes have been saved.",
     "error_saving_profile": "There was an error saving your profile.",
-    "about_me": "About Me"
+    "about_me": "About Me",
+    "filter_label": "Filter",
+    "search_label": "Search",
+    "search_placeholder": "Search"
 }
