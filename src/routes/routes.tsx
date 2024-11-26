@@ -30,6 +30,7 @@ import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList"
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
 import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
+import LectureAccountCreating from "../page/home-page/staff-home/Account Management/LectureAccountCreate";
 
 interface Router {
   name?: string;
@@ -279,6 +280,11 @@ const routesStaffHome: Router[] = [
     key: "create-account",
     path: "/staff/create-account-student",
     component: StudentAccountCreating ,
+  },
+  {
+    key: "create-account-staff",
+    path: "/staff/create-account-lecture",
+    component: LectureAccountCreating ,
   },
   {
     name: "Profile",
