@@ -73,7 +73,7 @@ export const ViewExam = () => {
     };
 
     return (
-        <Grid container spacing={3} padding={3}>
+        <Grid container spacing={3} padding={3} width={"100%"}>
             {/* Tiêu đề */}
             <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>Back</Button>
 
@@ -135,8 +135,6 @@ export const ViewExam = () => {
                                                         View detais
                                                     </Button>
                                                 </Link>
-
-
                                             </TableCell>
                                         </TableRow>
                                     ))}

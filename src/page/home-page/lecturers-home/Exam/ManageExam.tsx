@@ -24,6 +24,7 @@ import {
 } from "../../../../service/ApiService";
 import { deleteExam } from "../../../../service/ExamApi";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
 const ManageExam: React.FC = () => {
     const [page, setPage] = useState(0);
@@ -110,9 +111,9 @@ const ManageExam: React.FC = () => {
     };
 
     return (
-        <Grid container spacing={3} padding={3}>
+        <Grid container spacing={3} padding={3} width={'100%'}>
             {/* Tiêu đề */}
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
                 <Button
                     startIcon={<ReplyAllIcon />}
                     onClick={() => navigate(-1)}
@@ -121,6 +122,15 @@ const ManageExam: React.FC = () => {
                     style={{ marginBottom: "20px" }}
                 >
                     Back
+                </Button>
+                <Button
+                    startIcon={<LibraryAddIcon />}
+                    onClick={() => navigate(`/addingExam?csID=${csID}`)}
+                    variant="outlined"
+                    color="success"
+                    style={{ marginBottom: "20px" }}
+                >
+                    Adding Exam
                 </Button>
             </Grid>
 

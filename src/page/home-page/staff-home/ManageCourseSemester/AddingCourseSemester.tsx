@@ -171,16 +171,24 @@ export const AddingCourseSemester = () => {
                 }}>
                     <Card>
                         <CardContent>
-                            <Typography variant="subtitle1">Setting lession</Typography>
+                            <Typography variant="subtitle1">Setting Lesson</Typography>
                             <Divider sx={{ my: 1 }} />
-                            <Select defaultValue="1" size="small" sx={{ mx: 1 }} onChange={e => setTypeSearch(e.target.value)}>
+
+                            {/* Dropdown to select Lecturer/Class/Course */}
+                            <Select
+                                defaultValue="1"
+                                size="small"
+                                fullWidth
+                                onChange={e => setTypeSearch(e.target.value)}
+                            >
                                 <MenuItem value="1">Lecturer</MenuItem>
                                 <MenuItem value="2">Class</MenuItem>
                                 <MenuItem value="3">Course</MenuItem>
                             </Select>
                             <Divider sx={{ my: 1 }} />
 
-                            <Box display={'flex'}>
+                            {/* Autocomplete & Button for Selection */}
+                            <Box display="flex" flexDirection="column" gap={2}>
                                 <Autocomplete
                                     options={
                                         typeSearch === "1" ? participants :
@@ -208,7 +216,7 @@ export const AddingCourseSemester = () => {
                                             placeholder={`Search ${typeSearch === "1" ? "lecturer" : typeSearch === "2" ? "class" : "course"}`}
                                         />
                                     )}
-                                    style={{ width: 400 }}
+                                    fullWidth
                                 />
 
                                 <Button
@@ -218,53 +226,68 @@ export const AddingCourseSemester = () => {
                                         if (typeSearch === "2") setClassId(tempClassId);
                                         if (typeSearch === "3") setCourseId(tempCourseId);
                                     }}
+                                    sx={{ width: "100%" }}
                                 >
                                     Enter
                                 </Button>
-
-
                             </Box>
 
                             <Divider sx={{ my: 1 }} />
 
-                            <Button variant="text" startIcon={<ContactEmergencyIcon />}>
-                                Lecturer:
-                            </Button>
-                            {participants?.find(item => item.id === lecturerId)?.UserName}
-                            {lecturerId && (
-                                <IconButton onClick={() => setLecturerId('')}>
-                                    <ClearIcon color="error" />
-                                </IconButton>
-                            )}
+                            {/* Display Selected Lecturer */}
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Button variant="text" startIcon={<ContactEmergencyIcon />}>
+                                    Lecturer:
+                                </Button>
+                                <Typography variant="body2">
+                                    {participants?.find(item => item.id === lecturerId)?.UserName}
+                                </Typography>
+                                {lecturerId && (
+                                    <IconButton onClick={() => setLecturerId('')}>
+                                        <ClearIcon color="error" />
+                                    </IconButton>
+                                )}
+                            </Box>
 
                             <Divider sx={{ my: 1 }} />
-                            <Button variant="text" startIcon={<ClassIcon />}>
-                                Class:
-                            </Button>
-                            {dataClass?.find(item => item.ClassID === classId)?.ClassName}
-                            {classId && (
-                                <IconButton onClick={() => setClassId('')}>
-                                    <ClearIcon color="error" />
-                                </IconButton>
-                            )}
+
+                            {/* Display Selected Class */}
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Button variant="text" startIcon={<ClassIcon />}>
+                                    Class:
+                                </Button>
+                                <Typography variant="body2">
+                                    {dataClass?.find(item => item.ClassID === classId)?.ClassName}
+                                </Typography>
+                                {classId && (
+                                    <IconButton onClick={() => setClassId('')}>
+                                        <ClearIcon color="error" />
+                                    </IconButton>
+                                )}
+                            </Box>
 
                             <Divider sx={{ my: 1 }} />
-                            <Button variant="text" startIcon={<FolderIcon />}>
-                                Course:
-                            </Button>
-                            {dataCourse?.find(item => item.id === courseId)?.CourseName}
-                            {courseId && (
-                                <IconButton onClick={() => setCourseId('')}>
-                                    <ClearIcon color="error" />
-                                </IconButton>
-                            )}
 
-
+                            {/* Display Selected Course */}
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Button variant="text" startIcon={<FolderIcon />}>
+                                    Course:
+                                </Button>
+                                <Typography variant="body2">
+                                    {dataCourse?.find(item => item.id === courseId)?.CourseName}
+                                </Typography>
+                                {courseId && (
+                                    <IconButton onClick={() => setCourseId('')}>
+                                        <ClearIcon color="error" />
+                                    </IconButton>
+                                )}
+                            </Box>
 
                             <Divider sx={{ my: 1 }} />
                         </CardContent>
                     </Card>
                 </Grid>
+
                 <Grid item xs={12} md={9}>
                     <Card>
                         <CardContent>
