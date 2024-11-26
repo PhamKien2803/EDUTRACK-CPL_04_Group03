@@ -146,7 +146,7 @@
     "exam_action_exam": "THI",
     "no_exams_title": "Không có kỳ thi",
     "no_exams_message": "Hiện tại không có kỳ thi nào để hiển thị. Vui lòng kiểm tra lại sau hoặc liên hệ với giảng viên nếu bạn nghĩ đây là một sai sót.",
-    "view_slot": "Xem đợt",
+    "view_slot": "Thông tin",
     "questions": "Câu hỏi:",
     "not_started1": "Chưa bắt đầu",
     "on_going": "Đang tiến hành",
@@ -202,5 +202,9 @@
     "your_changes_safe": "Thay đổi của bạn đã được lưu :)",
     "success": "Thành công!",
     "changes_saved": "Thay đổi của bạn đã được lưu.",
-    "error_saving_profile": "Đã xảy ra lỗi khi lưu hồ sơ của bạn."
+    "error_saving_profile": "Đã xảy ra lỗi khi lưu hồ sơ của bạn.",
+    "about_me": "Về tôi",
+    "studentid": "Mã sinh viên",
+    "edit_profile": "Chỉnh sửa hồ sơ",
+    "save_changes": "Lưu thay đổi"
 }
