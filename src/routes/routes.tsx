@@ -28,6 +28,7 @@ import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
+import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
 
 interface Router {
   name?: string;
@@ -166,7 +167,7 @@ const routesLecturersHome: Router[] = [
     path: "/lecturer/lession-course",
     component: Lession_Lecturers,
   },
-  
+
   {
     name: "lession",
     key: "LessionPage",
@@ -261,6 +262,11 @@ const routesStaffHome: Router[] = [
     key: "student-details",
     path: "/class/:classId/students",
     component: StudentList,
+  },
+  {
+    key: "manage_semester",
+    path: "/staff/manage-semesters",
+    component: SemesterForm,
   },
 ];
 

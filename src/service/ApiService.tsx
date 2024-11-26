@@ -1,7 +1,17 @@
 import { update } from "@react-spring/web";
-import { UserAnswer, answerAssignmentSlot, answerQuestionSlot, assignmentSlot, classRoom, participants, questionSlot, replies } from "../models/Interface"
-import axios from "../utils/axiosCustomiz"
-
+import {
+  NewSemester,
+  Semester,
+  UserAnswer,
+  answerAssignmentSlot,
+  answerQuestionSlot,
+  assignmentSlot,
+  classRoom,
+  participants,
+  questionSlot,
+  replies,
+} from "../models/Interface";
+import axios from "../utils/axiosCustomiz";
 
 const getDataExam = () => {
   return axios.get("QuestionExam");
@@ -91,7 +101,7 @@ const getClass = () => {
 };
 
 export const updateClass = (id: string, updatedData: { ClassName: string }) => {
-  return axios.patch(`/Class/${id}`, updatedData); 
+  return axios.patch(`/Class/${id}`, updatedData);
 };
 
 export const updateClassStatus = (id: string, status: boolean) => {
@@ -100,7 +110,7 @@ export const updateClassStatus = (id: string, status: boolean) => {
 
 export const updateAccountStatus = (id: string, newStatus: boolean) => {
   return axios.patch(`/Participants/${id}`, { Status: newStatus });
-}
+};
 const getCourseSemesterByUserId = (clasId: string) => {
   return axios.get(`CourseSemester?ClassID=${clasId}`);
 };
@@ -111,6 +121,27 @@ const getCourseSemesterByLecturersID = (LecturersID: string) => {
 
 const getSemester = () => {
   return axios.get("Semester");
+};
+
+export const updateSemester = (
+  id: string,
+  updatedData: { SemesterName: string; StartDate: string; EndDate: string }
+) => {
+  return axios.patch(`/Semester/${id}`, updatedData);
+};
+
+export const updateSemesterStatus = (id: string, status: boolean) => {
+  return axios.patch(`/Semester/${id}`, { Status: status });
+};
+
+export const createNewSemester = (newSemester: NewSemester) => {
+  return axios.post("Semester", {
+    SemesterID: newSemester.SemesterID,
+    SemesterName: newSemester.SemesterName,
+    StartDate: newSemester.StartDate,
+    EndDate: newSemester.EndDate,
+    Status: "true",
+  });
 };
 
 const updateProfile = (
@@ -143,13 +174,13 @@ const updateProfile = (
 };
 
 export const addCourse = (course: courses) => {
-  return axios.post('Course', { ...course });
+  return axios.post("Course", { ...course });
 };
 
 export const updateCourse = async (id: string, updatedCourse: courses) => {
   const response = await fetch(`http://localhost:9999/Course/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updatedCourse),
   });
   return response.json();
@@ -157,10 +188,9 @@ export const updateCourse = async (id: string, updatedCourse: courses) => {
 
 export const deleteCourse = async (id: string) => {
   await fetch(`http://localhost:9999/Course/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 };
-
 
 export const resetPassword = (id: string, password: string) => {
   return axios.patch(`Participants/${id}`, {
@@ -176,7 +206,10 @@ export const createClass = (newClass: classRoom) => {
     Status: newClass.Status,
   });
 };
-export const updateClassByClassID = (ClassID: string, data: { ClassName: string; Status: boolean }) => {
+export const updateClassByClassID = (
+  ClassID: string,
+  data: { ClassName: string; Status: boolean }
+) => {
   return axios.patch(`/Class/${ClassID}`, data);
 };
 
