@@ -28,6 +28,8 @@ import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
+import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
+import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
 
 interface Router {
   name?: string;
@@ -224,6 +226,12 @@ const routesLecturersHome: Router[] = [
     path: "/updateExam",
     component: UpdateExam,
   },
+  {
+    name: "Contact",
+    key: "ContactPage",
+    path: "/contact",
+    component: Contact,
+  },
 ];
 
 const routesStaffHome: Router[] = [
@@ -249,7 +257,7 @@ const routesStaffHome: Router[] = [
   },
   {
     key: "couseras_list",
-    path: "staff/couseras_list",
+    path: "/staff/couseras_list",
     component: CouseraList,
   },
   {
@@ -261,6 +269,40 @@ const routesStaffHome: Router[] = [
     key: "student-details",
     path: "/class/:classId/students",
     component: StudentList,
+  },
+  {
+    key: "account-management",
+    path: "/staff/account-management",
+    component: AccountManagement ,
+  },
+  {
+    key: "create-account",
+    path: "/staff/create-account-student",
+    component: StudentAccountCreating ,
+  },
+  {
+    name: "Profile",
+    key: "ProfilePage",
+    path: "/profile",
+    component: Profile,
+  },
+  {
+    name: "Update-Profile",
+    key: "ProfilePage",
+    path: "/edit-profile",
+    component: EditProfile,
+  },
+  {
+    name: "Contact",
+    key: "ContactPage",
+    path: "/contact",
+    component: Contact,
+  },
+  {
+    name: "Logout",
+    key: "LogoutPage",
+    path: "/logout",
+    component: LogoutButton,
   },
 ];
 
