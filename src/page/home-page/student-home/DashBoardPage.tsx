@@ -5,19 +5,18 @@ import {
   Grid,
   Card,
   CardContent,
-  Divider,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
+  Icon,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-
+import Confetti from "react-confetti";
 import dataCarousel from "../../../../database.json";
 import Carousel from "react-bootstrap/Carousel";
 import {
-  getAnswerQuestionSlot,
   getAnswerQuestionSlotByUserId,
   getClass,
   getCourse,
@@ -35,22 +34,9 @@ import {
   Semester,
   slot,
 } from "../../../models/Interface";
-import { log } from "console";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-interface DashBoardPageProps {
-  CourseName: string;
-  ClassName: string;
-  LecturerDate: string;
-  progress: string;
-  TotalSlot: string;
-  CompletedSlot: string;
-  TotalQuestion: string;
-  CompletedQuestion: string;
-  TotalAssignment: string;
-  CompletedAssignment: string;
-}
 
 function DashBoardPage() {
   const { t } = useTranslation();
@@ -61,18 +47,23 @@ function DashBoardPage() {
   const [dataClass, setDataClass] = useState<classRoom[]>([]);
   const [data, setData] = useState<CourseSemester[]>([]);
   const [dataSlot, setSlot] = useState<slot[]>([]);
+  console.log("dataSlot", dataSlot);
   const [dataQuestion, setQuestion] = useState<questionSlot[]>([]);
   const [dataAnswer, setAnswer] = useState<answerQuestionSlot[]>([]);
 
-  const account = useSelector((state: any) => state.account.account);
-  const isAuthenticated = useSelector(
-    (state: any) => state.account.isAuthenticated
-  );
+  interface RootState {
+    account: {
+      account: {
+        UserID: string;
+        UserName: string;
+        Image: string;
+      };
+      isAuthenticated: boolean;
+    };
+  }
 
-  console.log("data", data);
+  const account = useSelector((state: RootState) => state.account.account);
 
-  // console.log(account);
-  // console.log(isAuthenticated);
 
   useEffect(() => {
     fetchCourse();
@@ -84,8 +75,6 @@ function DashBoardPage() {
   }, []);
 
   useEffect(() => {
-    // console.log('hello');
-
     if (semesterId) fetchCourseSemester();
   }, [semesterId]);
   const fetchCourseSemester = async () => {
@@ -137,12 +126,6 @@ function DashBoardPage() {
     return count;
   };
 
-  console.log("Total answerSlot: ", countAnswer("cs13"));
-
-  console.log("data", data);
-
-  console.log("Total Slot: ", countTotalSlot("cs13"));
-
   const fetchSlot = async () => {
     const res = await getSLot();
     if (Array.isArray(res) && res.length > 0) {
@@ -164,17 +147,13 @@ function DashBoardPage() {
     }
   };
 
-  // console.log(data);
-
   const fetchClassByUserid = async () => {
     const res = await getClass();
-    // console.log(res);
 
     if (Array.isArray(res)) {
       const filteredData = res.filter((item) =>
         item.Student.includes(account.UserID)
       );
-      // console.log(filteredData);
       setDataClass(filteredData);
     }
   };
@@ -194,12 +173,7 @@ function DashBoardPage() {
       setDataCourse(res);
     }
   };
-  // console.log(semesterId);
 
-  // const handleSubjectClick = () => {
-  //   navigate("/lession-course");
-  // };
-  // console.log(dataSemester);
   return (
     <Box p={3} bgcolor="#f9fafb" minHeight="100vh">
       <Carousel
@@ -211,9 +185,11 @@ function DashBoardPage() {
           overflow: "hidden",
           width: "85%",
           margin: "0 auto",
+          marginBottom: "20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
         {dataCarousel.Carousel.map((item) => (
@@ -227,6 +203,7 @@ function DashBoardPage() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
+                borderRadius: "12px",
               }}
             >
               <Box>
@@ -237,6 +214,7 @@ function DashBoardPage() {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
+                    borderRadius: "8px",
                   }}
                 />
               </Box>
@@ -249,7 +227,7 @@ function DashBoardPage() {
       <Box mb={3} display="flex" alignItems="center">
         <Box
           component="img"
-          src={account.Image}
+          src={account.Image || "https://www.w3schools.com/howto/img_avatar.png"}
           alt="Profile"
           sx={{ width: 50, height: 50, borderRadius: "50%", marginRight: 2 }}
         />
@@ -257,14 +235,21 @@ function DashBoardPage() {
           <Typography
             variant="h6"
             fontWeight="bold"
-            sx={{ marginBottom: "4px" }}
+            sx={{ marginBottom: "4px", color: "#333" }}
           >
             Welcome back, {account.UserName}
           </Typography>
           <Typography
             variant="body2"
             color="primary"
-            sx={{ cursor: "pointer" }}
+            sx={{
+              cursor: "pointer",
+              fontWeight: "bold",
+              "&:hover": {
+                textDecoration: "underline",
+                color: "#007bff",
+              },
+            }}
             onClick={() => navigate(`/profile`)}
           >
             Open Profile
@@ -279,30 +264,83 @@ function DashBoardPage() {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="year"
-            sx={{ width: "100%", maxWidth: "200px", marginBottom: "30px" }}
+            sx={{
+              width: "100%",
+              maxWidth: "200px",
+              marginBottom: "30px",
+              borderRadius: "8px",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            }}
             value={semesterId}
             onChange={(e) => setSemesterId(e.target.value)}
           >
-            {dataSemester
-              ?.slice()
-              .reverse()
-              .map((item) => (
-                <MenuItem key={`se-${item.SemesterID}`} value={item.SemesterID}>
-                  {item.SemesterName}
-                </MenuItem>
-              ))}
+            {dataSemester && dataSemester.length > 0 ? (
+              dataSemester
+                ?.slice()
+                .reverse()
+                .map((item) => (
+                  <MenuItem key={`se-${item.SemesterID}`} value={item.SemesterID}>
+                    {item.SemesterName}
+                  </MenuItem>
+                ))
+            ) : (
+              <MenuItem disabled>
+                {t("No semesters available")} {/* Tùy chỉnh thông báo */}
+              </MenuItem>
+            )}
           </Select>
         </FormControl>
+        {/* Hiển thị thông báo nếu không có môn học */}
+        {semesterId &&
+          dataSemester.filter((course) => course.SemesterID === semesterId).length ===
+          0 && (
+            <Box
+              sx={{
+                textAlign: "center",
+                padding: "20px",
+                backgroundColor: "#f9f9f9",
+                borderRadius: "12px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                color: "#555",
+                marginTop: "20px",
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" sx={{ marginBottom: "8px" }}>
+                {t("No courses found")}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {t("Please select another semester or check back later.")}
+              </Typography>
+            </Box>
+          )}
       </Box>
+
 
       {/* Streak Section */}
       {data.map((item) => (
         <Box key={item.id} mb={4} sx={{ width: "100%" }}>
           {" "}
           {/* Khoảng cách giữa các card */}
-          <Card variant="outlined">
+          <Card sx={{
+            transition: "transform 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              transform: "scale(1.02)",
+              boxShadow: "0 10px 20px rgba(160, 50, 160, 0.6)",
+            },
+            background: "linear-gradient(135deg, #f9f9f9, #ffffff)",
+            borderRadius: "12px",
+            padding: "15px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          }}
+            variant="outlined">
             <CardContent>
-              <Grid container spacing={2} alignItems="center">
+              <Grid sx={{
+                animation: "fadeIn 0.8s ease-in-out",
+                "@keyframes fadeIn": {
+                  from: { opacity: 0, transform: "translateY(20px)" },
+                  to: { opacity: 1, transform: "translateY(0)" },
+                },
+              }} container spacing={2} alignItems="center">
                 {/* Title */}
                 <Grid item xs={12} md={4}>
                   <Typography variant="h6" fontWeight="bold" mb={1}>
@@ -318,8 +356,8 @@ function DashBoardPage() {
                     }
                   </Typography>
                 </Grid>
-
                 {/* Progress Circle */}
+
                 <Grid item xs={12} md={4}>
                   <Box
                     sx={{
@@ -333,6 +371,53 @@ function DashBoardPage() {
                       justifyContent: "center",
                     }}
                   >
+                    {countTotalSlot(item.id) !== 0 && countAnswer(item.id) / countTotalSlot(item.id) === 1 && (
+                      <>
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "-40px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            zIndex: 3,
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                            color: "black",
+                            textAlign: "center",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          Congratulations! 🎉 You've completed the course.
+                        </Box>
+
+                        {/* Confetti*/}
+                        <Confetti
+                          width={200}
+                          height={200}
+                          recycle={false}
+                          numberOfPieces={150}
+                          gravity={0.4}
+                          initialVelocityY={10}
+                          colors={["#f59c0b", "#ff6347", "#ffd700", "#adff2f"]}
+                          confettiSource={{ x: 38, y: 45, w: 0, h: 0 }}
+                        />
+                      </>
+                    )}
+
+                    {/* Background Circle */}
+                    <svg
+                      width={80}
+                      height={80}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
+                    >
+                      <circle cx={40} cy={40} r={36} fill="none" stroke="#e0e0e0" strokeWidth={6} />
+                    </svg>
+
+                    {/* Progress Circle */}
                     <svg
                       width={80}
                       height={80}
@@ -347,30 +432,26 @@ function DashBoardPage() {
                         cy={40}
                         r={36}
                         fill="none"
-                        stroke="#e0e0e0"
-                        strokeWidth={6}
-                      />
-                      <circle
-                        cx={40}
-                        cy={40}
-                        r={36}
-                        fill="none"
                         stroke="#f59c0b"
                         strokeWidth={6}
                         strokeDasharray={2 * Math.PI * 36}
                         strokeDashoffset={
-                          2 * Math.PI * 36 -
+                          2 *
+                          Math.PI *
+                          36 -
                           (countTotalSlot(item.id) === 0
                             ? 0
-                            : countAnswer(item.id) / countTotalSlot(item.id)) *
-                            2 *
-                            Math.PI *
-                            36
+                            : (countAnswer(item.id) / countTotalSlot(item.id)) * 2 * Math.PI * 36)
                         }
                         strokeLinecap="round"
                         transform="rotate(-90 40 40)"
+                        style={{
+                          animation: "progress 1s ease-out forwards",
+                        }}
                       />
                     </svg>
+
+                    {/* Progress Text */}
                     <Typography
                       variant="h6"
                       fontWeight="bold"
@@ -379,18 +460,40 @@ function DashBoardPage() {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
+                        color: "black",
+                        zIndex: 2,
                       }}
                     >
                       {countTotalSlot(item.id) === 0
                         ? 0
-                        : Math.round(
-                            (countAnswer(item.id) / countTotalSlot(item.id)) *
-                              100
-                          )}
+                        : Math.round((countAnswer(item.id) / countTotalSlot(item.id)) * 100)}
                       %
                     </Typography>
                   </Box>
+
+                  <style>
+                    {`
+                     @keyframes shake {
+                         0% {
+                  transform: translateX(-50%) rotate(0deg);
+                      }
+                   25% {
+                   transform: translateX(-50%) rotate(10deg);
+                        }
+                           50% {
+                   transform: translateX(-50%) rotate(-10deg);
+                        }
+                      75% {
+                   transform: translateX(-50%) rotate(10deg);
+                   }
+                        100% {
+                   transform: translateX(-50%) rotate(0deg);
+                   }  
+                        }
+                    `}
+                  </style>
                 </Grid>
+
                 <Grid item xs={12} md={1}></Grid>
                 {/* Course Info */}
                 <Grid item xs={12} md={3}>
@@ -495,36 +598,31 @@ function DashBoardPage() {
 
                     {/* Button */}
                     <Button
-                      variant="contained"
-                      size="medium"
-                      style={{
-                        alignSelf: "flex-start",
-                        backgroundColor: "#16a28b",
-                        color: "#fff",
-                        textTransform: "capitalize",
-                        borderRadius: "8px",
-                        padding: "6px 16px",
-                        fontWeight: "bold",
-                        fontSize: "14px",
-                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                        transition: "transform 0.2s, box-shadow 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.05)";
-                        e.currentTarget.style.boxShadow =
-                          "0 6px 10px rgba(0, 0, 0, 0.15)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                        e.currentTarget.style.boxShadow =
-                          "0 4px 6px rgba(0, 0, 0, 0.1)";
-                      }}
                       onClick={() =>
                         navigate(`/lession-course?subjectId=${item.id}`)
                       }
+                      variant="contained"
+                      startIcon={<Icon>activity</Icon>}
+                      size="medium"
+                      sx={{
+                        background: "linear-gradient(90deg, #16a28b, #20c997)",
+                        color: "#fff",
+                        borderRadius: "20px",
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          background: "linear-gradient(90deg, #20c997, #16a28b)",
+                          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
+                        },
+                        "&:active": {
+                          transform: "scale(0.95)",
+                          boxShadow: "inset 0 4px 8px rgba(0, 0, 0, 0.2)",
+                        },
+                      }}
                     >
-                      See all activity
+                      See All Activity
                     </Button>
+
                   </Box>
                 </Grid>
               </Grid>
@@ -532,6 +630,8 @@ function DashBoardPage() {
           </Card>
         </Box>
       ))}
+
+
     </Box>
   );
 }

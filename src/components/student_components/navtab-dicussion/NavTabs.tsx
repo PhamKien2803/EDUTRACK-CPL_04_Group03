@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Dicussion from '../dicussion-question/comment/Dicussion';
 import { useTranslation } from 'react-i18next';
+import FeedBack from './FeedBack';
 
 
 function NavTabs() {
@@ -40,6 +41,9 @@ function NavTabs() {
         <Box sx={{ marginTop: '20px' }}>
           {value === 'one' && (
             <Dicussion />
+          )}
+          {value == 'two' && (
+            <FeedBack />
           )}
         </Box>
       )}

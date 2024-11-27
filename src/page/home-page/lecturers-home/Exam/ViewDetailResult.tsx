@@ -5,7 +5,6 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, FormGroup, Grid, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ResultExam } from "../../../../models/Interface";
@@ -116,7 +115,7 @@ export const ViewDetailResult = () => {
     };
 
     const handleChecked = (qid: string, id: string) => {
-        let answer = userAnswer.find(item => item.QuestionID === qid)
+        const answer = userAnswer.find(item => item.QuestionID === qid)
         if (answer) {
             return answer.answer.some(item => item === id)
         }
@@ -184,17 +183,11 @@ export const ViewDetailResult = () => {
                                                     <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
                                                     <Box display="flex" alignItems="center">
                                                         {handleCheckIsCorrect(qs) ? (
-                                                            <CheckBoxOutlinedIcon color="success" />
+                                                            <CheckBoxOutlinedIcon sx={{width: '30px', height: '30px'}} color="success" />
                                                         ) : (
-                                                            <CancelPresentationOutlinedIcon color="error" />
+                                                            <CancelPresentationOutlinedIcon  sx={{width: '30px', height: '30px'}} color="error" />
                                                         )}
-
-
-
-
                                                     </Box>
-
-
                                                 </Box>
                                                 <Typography sx={{ textAlign: 'center' }} variant="h5">{qs.content}</Typography>
                                                 <Divider sx={{ my: 1 }} />
@@ -220,7 +213,7 @@ export const ViewDetailResult = () => {
                                                         ))}
                                                     </FormGroup>
                                                 </Box>
-                                                <Typography sx={{ backgroundColor: '#fcefdc', display: "block", unicodeBidi: "isolate", border: "1px solid rgba(0, 0, 0, .125)", padding: '15px', borderRadius: "5px" }}>
+                                                <Typography sx={{ backgroundColor: '#c5e1a5', display: "block", unicodeBidi: "isolate", border: "1px solid rgba(0, 0, 0, .125)", padding: '15px', borderRadius: "5px" }}>
                                                     The correct answer is:{qs?.answer?.map((item, itemIndex) => (
                                                         <span key={itemIndex}>{answerQs.find(as => as.id === item)?.isCorrect && <span>{itemIndex + 1}.{answerQs.find(as => as.id === item)?.content} </span>}</span>
                                                     ))}</Typography>
@@ -276,48 +269,68 @@ export const ViewDetailResult = () => {
                         </Card>
                         <Card sx={{ marginTop: '10px' }}>
                             <CardContent>
-                                <Typography variant="subtitle1">Number of Answers/Questions</Typography>
+                                <Typography variant="subtitle1" align="center">
+                                    Number of Answers/Questions
+                                </Typography>
                                 <Divider sx={{ my: 1 }} />
                                 <Box display="flex" flexWrap="wrap" justifyContent="center">
-                                    {userAnswer && questionEx?.map((data, index) => (
-                                        <Box
-                                            key={index + 1}
-                                            display="flex"
-                                            flexDirection="column"
-                                            alignItems="center"
-                                            sx={{ margin: '4px', minWidth: '40px' }}
-                                        >
-                                            <Button
-                                                variant={
-                                                    userAnswer?.find(item => item.QuestionID === data.id)?.answer?.length > 0
-                                                        ? 'contained'
-                                                        : 'outlined'
-                                                }
-                                                onClick={() => handleNavigation(index)}
-                                                color="primary"
-                                                sx={{ minWidth: '40px' }}
-                                                className={`navigation-button navigation-button-contained `}
-                                            >
-                                                {index + 1}
-                                            </Button>
-                                            <Box mt={1}>
-                                                {handleCheckIsCorrect(data) ? (
-                                                    <CheckBoxOutlinedIcon color="success" fontSize="small" />
-                                                ) : (
-                                                    <CancelPresentationOutlinedIcon color="error" fontSize="small" />
-                                                )}
-                                            </Box>
-                                        </Box>
-                                    ))}
+                                    {userAnswer && questionEx?.map((data, index) => {
+                                        const isAnswered =
+                                            (userAnswer?.find(item => item.QuestionID === data.id)?.answer?.length ?? 0) > 0;
+                                        const isCorrect = handleCheckIsCorrect(data);
 
+                                        return (
+                                            <Box
+                                                key={index + 1}
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                sx={{
+                                                    margin: '8px',
+                                                    minWidth: '50px',
+                                                    borderRadius: '8px',
+                                                    padding: '4px',
+                                                    backgroundColor: isCorrect ? '#e8f5e9' : '#ffebee',
+                                                    boxShadow: `0 4px 8px rgba(0, 0, 0, 0.1)`,
+                                                    transition: 'transform 0.2s ease-in-out',
+                                                    '&:hover': {
+                                                        transform: 'scale(1.1)',
+                                                        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                                                    },
+                                                }}
+                                            >
+                                                <Button
+                                                    variant={isAnswered ? 'contained' : 'outlined'}
+                                                    onClick={() => handleNavigation(index)}
+                                                    color={isCorrect ? 'success' : 'error'}
+                                                    sx={{
+                                                        minWidth: '40px',
+                                                        backgroundColor: isCorrect ? '#4caf50' : '#f44336',
+                                                        color: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: isCorrect ? '#388e3c' : '#d32f2f',
+                                                        },
+                                                    }}
+                                                    className={`navigation-button ${isCorrect ? 'correct' : 'wrong'}`}
+                                                >
+                                                    {index + 1}
+                                                </Button>
+                                                <Box mt={1} display="flex" alignItems="center">
+                                                    {isCorrect ? (
+                                                        <CheckBoxOutlinedIcon color="success" fontSize="small" />
+                                                    ) : (
+                                                        <CancelPresentationOutlinedIcon color="error" fontSize="small" />
+                                                    )}
+                                                </Box>
+                                            </Box>
+                                        );
+                                    })}
                                 </Box>
                                 <Divider sx={{ my: 1 }} />
                             </CardContent>
                         </Card>
-
                     </Grid>
                 </Grid>
-
             </Box >
         </ThemeProvider>
     );

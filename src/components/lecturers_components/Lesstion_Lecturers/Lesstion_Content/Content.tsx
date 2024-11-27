@@ -217,8 +217,8 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 </List>
                             </div>
                             <Link href={`/manageExam?csID=${lession.id}`}>
-                                <Button variant="contained" color="primary" fullWidth>
-                                    Exam List
+                                <Button variant="contained" color="secondary" fullWidth>
+                                    Exam Management
                                 </Button>
                             </Link>
                         </Card>

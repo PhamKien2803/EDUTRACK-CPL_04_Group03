@@ -146,7 +146,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <BadgeIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("studentid")}:
+            {t("studentid")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.id}
@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <MailIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("email")}:
+            {t("email")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Email}
@@ -165,7 +165,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <CakeIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("age")}:
+            {t("age")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Age}
@@ -174,7 +174,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <LocationOnIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("address")}:
+            {t("address")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Address}
@@ -183,7 +183,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <WcIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("gender")}:
+            {t("gender")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Gender ? t("male") : t("female")}

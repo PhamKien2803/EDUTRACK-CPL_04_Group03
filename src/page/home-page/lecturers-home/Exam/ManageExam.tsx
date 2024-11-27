@@ -1,5 +1,6 @@
 import { Delete, Edit, Visibility } from "@mui/icons-material";
 import {
+    Box,
     Button,
     Grid,
     Paper,
@@ -25,6 +26,7 @@ import {
 import { deleteExam } from "../../../../service/ExamApi";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import { CheckCircle, Cancel as CancelIcon } from '@mui/icons-material';
 
 const ManageExam: React.FC = () => {
     const [page, setPage] = useState(0);
@@ -34,6 +36,7 @@ const ManageExam: React.FC = () => {
     const [course, setCourse] = useState<courses[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
     const [loading, setLoading] = useState(false);
+    console.log(loading);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -111,32 +114,34 @@ const ManageExam: React.FC = () => {
     };
 
     return (
-        <Grid container spacing={3} padding={3} width={'100%'}>
+        <Grid container spacing={2} padding={2}>
             {/* Tiêu đề */}
-            <Grid item xs={12} style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-                <Button
-                    startIcon={<ReplyAllIcon />}
-                    onClick={() => navigate(-1)}
-                    variant="outlined"
-                    color="primary"
-                    style={{ marginBottom: "20px" }}
-                >
-                    Back
-                </Button>
-                <Button
-                    startIcon={<LibraryAddIcon />}
-                    onClick={() => navigate(`/addingExam?csID=${csID}`)}
-                    variant="outlined"
-                    color="success"
-                    style={{ marginBottom: "20px" }}
-                >
-                    Adding Exam
-                </Button>
+            <Grid item xs={12} container spacing={1}>
+                <Grid item>
+                    <Button
+                        startIcon={<ReplyAllIcon />}
+                        onClick={() => navigate(-1)}
+                        variant="outlined"
+                        color="secondary"
+                    >
+                        Back
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        startIcon={<LibraryAddIcon />}
+                        onClick={() => navigate(`/addingExam?csID=${csID}`)}
+                        variant="contained"
+                        color="success"
+                    >
+                        Adding Exam
+                    </Button>
+                </Grid>
             </Grid>
 
             {/* Thông tin chi tiết */}
             <Grid item xs={12}>
-                <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+                <Paper elevation={4} sx={{ padding: 2 }}>
                     <Typography variant="h6" gutterBottom>
                         <strong>Class:</strong>{" "}
                         {classes.find((item) => item.ClassID === courseSemester?.ClassID)?.ClassName}
@@ -153,9 +158,9 @@ const ManageExam: React.FC = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table>
-                            <TableHead style={{ backgroundColor: "#f5f5f5" }}>
+                            <TableHead>
                                 <TableRow>
-                                    <TableCell>Index</TableCell>
+                                    <TableCell>#</TableCell>
                                     <TableCell>Image</TableCell>
                                     <TableCell>Content</TableCell>
                                     <TableCell>Created At</TableCell>
@@ -171,22 +176,53 @@ const ManageExam: React.FC = () => {
                                         <TableRow key={index} hover>
                                             <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                                             <TableCell>
-                                                {exam.image && (
-                                                    <img
-                                                        src={exam.image}
-                                                        alt="Thumbnail"
-                                                        style={{
-                                                            borderRadius: "5px",
-                                                            width: "50px",
-                                                            height: "50px",
-                                                        }}
-                                                    />
-                                                )}
+                                                <Box
+                                                    component="img"
+                                                    src={exam.image ? exam.image : 'https://via.placeholder.com/100'}
+                                                    alt="exam"
+                                                    sx={{
+                                                        borderRadius: "4px",
+                                                        width: 65,
+                                                        height: 65,
+                                                    }}
+                                                />
                                             </TableCell>
+
                                             <TableCell>{exam.examContent}</TableCell>
                                             <TableCell>{exam.createdAt}</TableCell>
                                             <TableCell>{exam.display ? "Yes" : "No"}</TableCell>
-                                            <TableCell>{exam.status ? "Active" : "Inactive"}</TableCell>
+                                            <TableCell>
+                                                <Box display="flex" alignItems="center">
+                                                    {exam.status ? (
+                                                        <>
+                                                            <CheckCircle sx={{ color: "green", marginRight: 1 }} />
+                                                            <Typography
+                                                                variant="body2"
+                                                                sx={{
+                                                                    color: "green",
+                                                                    fontWeight: "bold",
+                                                                }}
+                                                            >
+                                                                Active
+                                                            </Typography>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <CancelIcon sx={{ color: "red", marginRight: 1 }} /> 
+                                                            <Typography
+                                                                variant="body2"
+                                                                sx={{
+                                                                    color: "red",
+                                                                    fontWeight: "bold",
+                                                                }}
+                                                            >
+                                                                Inactive
+                                                            </Typography>
+                                                        </>
+                                                    )}
+                                                </Box>
+                                            </TableCell>
+
                                             <TableCell align="center">
                                                 <Link to={`/viewExam?exID=${exam.examID}`}>
                                                     <Button
@@ -194,9 +230,9 @@ const ManageExam: React.FC = () => {
                                                         color="success"
                                                         size="small"
                                                         startIcon={<Visibility />}
-                                                        style={{ marginRight: "10px" }}
+                                                        sx={{ marginRight: 1 }}
                                                     >
-                                                        View Result
+                                                        View
                                                     </Button>
                                                 </Link>
                                                 <Link to={`/updateExam?exID=${exam.examID}`}>
@@ -205,12 +241,11 @@ const ManageExam: React.FC = () => {
                                                         color="primary"
                                                         size="small"
                                                         startIcon={<Edit />}
-                                                        style={{ marginRight: "10px" }}
+                                                        sx={{ marginRight: 1 }}
                                                     >
                                                         Update
                                                     </Button>
                                                 </Link>
-
                                                 <Button
                                                     variant="contained"
                                                     color="error"
@@ -234,11 +269,32 @@ const ManageExam: React.FC = () => {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            padding: "8px 16px",
+                            "& .MuiTablePagination-toolbar": {
+                                minHeight: "48px",
+                            },
+                            "& .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+                                margin: 0,
+                                lineHeight: "1.5",
+                            },
+                            "& .MuiTablePagination-select": {
+                                fontSize: "14px",
+                                marginRight: "8px",
+                            },
+                        }}
                     />
+
                 </Paper>
             </Grid>
         </Grid>
     );
+
+
+
 };
 
 export default ManageExam;

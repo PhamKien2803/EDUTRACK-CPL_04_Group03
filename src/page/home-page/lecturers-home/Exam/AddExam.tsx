@@ -9,13 +9,13 @@ import _ from 'lodash';
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import QuizSettingsModal from "./QuizSettingsModal";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCourseSemesterById } from "../../../../service/ApiService";
 import { CourseSemester } from "../../../../models/Interface";
 import { postAnswerQs, postExam, postQuestion } from "../../../../service/ExamApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import  ReplyAllIcon  from '@mui/icons-material/ReplyAll';
 
 
 
@@ -246,7 +246,7 @@ export const AddExam = () => {
                 }
                 toast.success('Update success')
                 return setTimeout(() => {
-                    nav('/lecturer/lession-course')
+                    nav('/manageExam?csID=' + courseSemester.id)
                 }, 1500)
             }
         }
@@ -262,20 +262,16 @@ export const AddExam = () => {
                     gap: 1,
                 }}
             >
-                <IconButton
-                    onClick={() => navigate(-1)}
-                    size="small"
-                    sx={{
-                        bgcolor: "primary.light",
-                        color: "primary.main",
-                        "&:hover": { bgcolor: "primary.main", color: "white" },
-                    }}
-                >
-                    <ArrowBackIcon />
-                </IconButton>
-                <Typography variant="h6" fontWeight="bold" color="primary.main">
-                    Session Home
-                </Typography>
+                 <Grid item>
+                    <Button
+                        startIcon={<ReplyAllIcon />}
+                        onClick={() => navigate(-1)}
+                        variant="outlined"
+                        color="secondary"
+                    >
+                        Back
+                    </Button>
+                </Grid>
             </Box>
             {/* Header */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
