@@ -15,6 +15,7 @@ import LecturerDashboardLayout from "./layouts/dashboard-layouts/LecturerDashboa
 import StaffDashboardLayout from "./layouts/dashboard-layouts/StaffDashboardLayout";
 import VerifyOTP from "./page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "./page/Auth/forgot-password/ResetPassword";
+import CheckPoint from "./page/home-page/staff-home/Exam/CheckPoint";
 
 function App() {
   interface RootState {
@@ -48,6 +49,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/staff/exam/check-point" element={<CheckPoint />} />
 
         {/* Private routes */}
         {account && (

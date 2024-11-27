@@ -28,6 +28,7 @@ import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
+import CheckPoint from "../page/home-page/staff-home/Exam/CheckPoint";
 
 interface Router {
   name?: string;
@@ -166,7 +167,7 @@ const routesLecturersHome: Router[] = [
     path: "/lecturer/lession-course",
     component: Lession_Lecturers,
   },
-  
+
   {
     name: "lession",
     key: "LessionPage",
@@ -251,6 +252,11 @@ const routesStaffHome: Router[] = [
     key: "couseras_list",
     path: "staff/couseras_list",
     component: CouseraList,
+  },
+  {
+    key: "check_point",
+    path: "staff/exam/check-point",
+    component: CheckPoint,
   },
   {
     key: "manage_class",
