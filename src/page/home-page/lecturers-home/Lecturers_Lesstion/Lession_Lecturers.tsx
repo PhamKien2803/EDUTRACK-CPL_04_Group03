@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../../../components/lecturers_components/Lesstion_Lecturers/Lesstion_Header/Header';
 import Content from '../../../../components/lecturers_components/Lesstion_Lecturers/Lesstion_Content/Content';
-import { getAssignmentSlot, getClass, getCourse, getCourseSemesterById, getCouseraInLecturers, getParticipants, getQuestionSLot, getSLot } from '../../../../service/ApiService';
+import { getAssignmentSlot, getClass, getCourse, getCouseraInLecturers, getParticipants, getQuestionSLot, getSLot } from '../../../../service/ApiService';
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ function Lession_Lecturers() {
     const [course, setGetCourse] = useState<courses[]>([]);
     const [assignmentSlot, setAssignmentSlot] = useState<assignmentSlot[]>([]);
     const [classes, setClasses] = useState<classRoom[]>([]);
-    const [slotSelected, setSlotSelected] = useState<string>();
     const [classId, setclassId] = useState<string>("");
 
     const location = useLocation();
@@ -24,14 +23,15 @@ function Lession_Lecturers() {
     const sID = param.get('semesterId');
 
     // console.log(cID, sID);
-    const account = useSelector((state: any) => state.account.account);
+    interface RootState {
+        account: {
+            account: {
+                UserID: string;
+            };
+        };
+    }
 
-    // console.log(account);
-
-
-    console.log(classId);
-
-
+    const account = useSelector((state: RootState) => state.account.account);
 
     useEffect(() => {
 
@@ -48,26 +48,17 @@ function Lession_Lecturers() {
 
     }, [classId])
 
-    console.log(lessionData);
-
     const getLession = async () => {
         const res = await getCouseraInLecturers(cID, sID, account.UserID);
-        // console.log(res);
-
         if (Array.isArray(res)) {
             if (classId) {
                 setLession(res.find(item => item.ClassID === classId));
 
             } else {
                 setLession(res[0]);
-
             }
-
         }
     }
-
-
-
 
     const getParticipant = async () => {
         const res = await getParticipants();
@@ -92,8 +83,6 @@ function Lession_Lecturers() {
 
     const getCourses = async () => {
         const res = await getCourse();
-        // console.log("res", res);
-
         if (Array.isArray(res)) {
             setGetCourse(res);
         }

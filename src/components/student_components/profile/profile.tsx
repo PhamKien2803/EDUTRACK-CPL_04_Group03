@@ -167,7 +167,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <BadgeIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("studentid")}:
+            {t("studentid")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.id}

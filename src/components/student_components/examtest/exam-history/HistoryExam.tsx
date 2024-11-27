@@ -6,13 +6,14 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, FormGroup, Grid, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ResultExam } from "../../../../models/Interface";
 import { getAnswerByUserId, getAnswerForQuestionExam, getExamList, getQuestionByExID } from "../../../../service/ApiService";
 import { getResultExam } from "../../../../service/ExamApi";
 import { ToHHMMSS } from "../../../../utils/Timer/ToHHMMSS";
 import { theme } from "./HisTheme";
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import { useTranslation } from 'react-i18next';
 
 
@@ -52,8 +53,16 @@ export const HistoryExam = () => {
     const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
     const [result, setResult] = useState<ResultExam>()
 
-    const account = useSelector((state: any) => state.account.account);
+    interface RootState {
+        account: {
+            account: {
+                UserID: string;
+            };
+        };
+    }
 
+    const account = useSelector((state: RootState) => state.account.account);
+    const navigate = useNavigate();
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const exId = param.get('exID');
@@ -116,7 +125,7 @@ export const HistoryExam = () => {
     };
 
     const handleChecked = (qid: string, id: string) => {
-        let answer = userAnswer.find(item => item.QuestionID === qid)
+        const answer = userAnswer.find(item => item.QuestionID === qid)
         if (answer) {
             return answer.answer.some(item => item === id)
         }
@@ -155,6 +164,9 @@ export const HistoryExam = () => {
 
     return (
         <ThemeProvider theme={theme}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>Back</Button>
+            </Box>
             <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
                 {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -185,13 +197,11 @@ export const HistoryExam = () => {
                                                     <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
                                                     <Box display="flex" alignItems="center">
                                                         {handleCheckIsCorrect(qs) ? (
-                                                            <CheckBoxOutlinedIcon color="success" />
+                                                            <CheckBoxOutlinedIcon sx={{ width: '30px', height: '30px' }} color="success" />
                                                         ) : (
-                                                            <CancelPresentationOutlinedIcon color="error" />
+                                                            <CancelPresentationOutlinedIcon sx={{ width: '30px', height: '30px' }} color="error" />
                                                         )}
-
                                                     </Box>
-
                                                 </Box>
                                                 <Typography sx={{ textAlign: 'center' }} variant="h5">{qs.content}</Typography>
                                                 <Divider sx={{ my: 1 }} />
@@ -277,36 +287,57 @@ export const HistoryExam = () => {
 
                                 <Divider sx={{ my: 1 }} />
                                 <Box display="flex" flexWrap="wrap" justifyContent="center">
-                                    {userAnswer && questionEx?.map((data, index) => (
-                                        <Box
-                                            key={index + 1}
-                                            display="flex"
-                                            flexDirection="column"
-                                            alignItems="center"
-                                            sx={{ margin: '4px', minWidth: '40px' }}
-                                        >
-                                            <Button
-                                                variant={
-                                                    userAnswer?.find(item => item.QuestionID === data.id)?.answer?.length > 0
-                                                        ? 'contained'
-                                                        : 'outlined'
-                                                }
-                                                onClick={() => handleNavigation(index)}
-                                                color="primary"
-                                                sx={{ minWidth: '40px' }}
-                                                className={`navigation-button navigation-button-contained `}
+                                    {userAnswer && questionEx?.map((data, index) => {
+                                        const isAnswered =
+                                            (userAnswer?.find(item => item.QuestionID === data.id)?.answer?.length ?? 0) > 0;
+                                        const isCorrect = handleCheckIsCorrect(data);
+
+                                        return (
+                                            <Box
+                                                key={index + 1}
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="center"
+                                                sx={{
+                                                    margin: '8px',
+                                                    minWidth: '50px',
+                                                    borderRadius: '8px',
+                                                    padding: '4px',
+                                                    backgroundColor: isCorrect ? '#e8f5e9' : '#ffebee',
+                                                    boxShadow: `0 4px 8px rgba(0, 0, 0, 0.1)`,
+                                                    transition: 'transform 0.2s ease-in-out',
+                                                    '&:hover': {
+                                                        transform: 'scale(1.1)',
+                                                        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                                                    },
+                                                }}
                                             >
-                                                {index + 1}
-                                            </Button>
-                                            <Box mt={1}>
-                                                {handleCheckIsCorrect(data) ? (
-                                                    <CheckBoxOutlinedIcon color="success" fontSize="small" />
-                                                ) : (
-                                                    <CancelPresentationOutlinedIcon color="error" fontSize="small" />
-                                                )}
+                                                <Button
+                                                    variant={isAnswered ? 'contained' : 'outlined'}
+                                                    onClick={() => handleNavigation(index)}
+                                                    color={isCorrect ? 'success' : 'error'}
+                                                    sx={{
+                                                        minWidth: '40px',
+                                                        backgroundColor: isCorrect ? '#4caf50' : '#f44336',
+                                                        color: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: isCorrect ? '#388e3c' : '#d32f2f',
+                                                        },
+                                                    }}
+                                                    className={`navigation-button ${isCorrect ? 'correct' : 'wrong'}`}
+                                                >
+                                                    {index + 1}
+                                                </Button>
+                                                <Box mt={1} display="flex" alignItems="center">
+                                                    {isCorrect ? (
+                                                        <CheckBoxOutlinedIcon color="success" fontSize="small" />
+                                                    ) : (
+                                                        <CancelPresentationOutlinedIcon color="error" fontSize="small" />
+                                                    )}
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    ))}
+                                        );
+                                    })}
 
                                 </Box>
                                 <Divider sx={{ my: 1 }} />

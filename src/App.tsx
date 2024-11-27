@@ -15,6 +15,7 @@ import LecturerDashboardLayout from "./layouts/dashboard-layouts/LecturerDashboa
 import StaffDashboardLayout from "./layouts/dashboard-layouts/StaffDashboardLayout";
 import VerifyOTP from "./page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "./page/Auth/forgot-password/ResetPassword";
+import EduTrackHome from "./page/landing_page/EduTrackHome";
 
 function App() {
   interface RootState {
@@ -44,6 +45,7 @@ function App() {
       {/* Routes */}
       <Routes>
         {/* Public routes */}
+        <Route path="/landing-page" element={<EduTrackHome />} />
         <Route path="/" element={<Layout />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />

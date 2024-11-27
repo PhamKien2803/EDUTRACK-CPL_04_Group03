@@ -144,11 +144,28 @@ export const ViewExam = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 15]}
                         component="div"
-                        count={result.length}
+                        count={exams.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            padding: "8px 16px",
+                            "& .MuiTablePagination-toolbar": {
+                                minHeight: "48px",
+                            },
+                            "& .MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+                                margin: 0,
+                                lineHeight: "1.5",
+                            },
+                            "& .MuiTablePagination-select": {
+                                fontSize: "14px",
+                                marginRight: "8px",
+                            },
+                        }}
                     />
                 </Paper>
             </Grid>

@@ -124,7 +124,7 @@ const Login: React.FC = () => {
           nav("/home-page");
         }, 1000);
         case 0: return setTimeout(() => {
-          nav("/home-page");
+          nav("/dashboardPage");
         }, 1000);
         case 1: return setTimeout(() => {
           nav("/lecturer/homePage");

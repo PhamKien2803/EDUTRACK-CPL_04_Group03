@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Exam, ResultExam } from '../../../models/Interface';
 import { getExamListByID, getResultExamListByUserId } from '../../../service/ExamApi';
 import { ToHHMMSS } from '../../../utils/Timer/ToHHMMSS';
@@ -17,10 +17,12 @@ import { useTranslation } from 'react-i18next';
 import QuizIcon from '@mui/icons-material/Quiz';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 
 export const ExamList = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [examList, setExamList] = useState<Exam[]>([]);
     const [examListClone, setExamListClone] = useState<Exam[]>([]);
     const [result, setResult] = useState<ResultExam[]>([])
@@ -106,6 +108,9 @@ export const ExamList = () => {
 
     return (
         <Container>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Button sx={{marginTop: "1rem"}} variant='outlined' color='secondary' startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>Back</Button>
+            </Box>
             {examListClone && examListClone.length ? (
                 <Box mt={2}>
                     {/* Filter Section */}
@@ -164,10 +169,14 @@ export const ExamList = () => {
                     <TableContainer
                         component={Paper}
                         sx={{
-                            transition: 'all 0.3s',
+                            border: '1px solid purple',
+                            boxShadow:
+                                '0 6px 12px rgba(0, 0, 0, 0.1)',
+
+                            transition: 'all 0.3s ease-in-out',
                             '&:hover': {
-                                boxShadow: '0 4px 10px rgba(106, 27, 154, 0.5)',
-                                borderColor: '#6a1b9a',
+                                borderColor: 'purple',
+                                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
                             },
                         }}
                     >
@@ -189,13 +198,6 @@ export const ExamList = () => {
                                     compareTime(exam.dateOfBooking) && (
                                         <TableRow
                                             key={index}
-                                            hover
-                                            sx={{
-                                                '&:hover': {
-                                                    backgroundColor: '#ede7f6',
-                                                    boxShadow: '0 4px 6px rgba(106, 27, 154, 0.3)',
-                                                },
-                                            }}
                                         >
                                             <TableCell align="center">{index + 1}</TableCell>
                                             <TableCell align="center">
