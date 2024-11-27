@@ -17,6 +17,7 @@ import CakeIcon from "@mui/icons-material/Cake";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WcIcon from "@mui/icons-material/Wc";
 import BadgeIcon from '@mui/icons-material/Badge';
+import { Lock } from "@mui/icons-material";
 
 interface Participant {
   id: string;
@@ -107,24 +108,44 @@ const Profile: React.FC = () => {
         <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
           {t("role")}: {profile.Role === 1 ? t("Staff") : t("Student")}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<EditIcon />}
-          onClick={() => navigate("/edit-profile")}
-          sx={{
-            mt: 2,
-            textTransform: "capitalize",
-            borderRadius: "30px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
-            background: "linear-gradient(45deg, #6a11cb, #2575fc)",
-            "&:hover": {
-              background: "linear-gradient(45deg, #5b10ba, #1e66e1)",
-            },
-          }}
+        <Box
+          display="flex"
+          justifyContent="center"
+          gap={2}
+          mt={2}
         >
-          {t("update_profile")}
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
+            onClick={() => navigate("/edit-profile")}
+            sx={{
+              textTransform: "capitalize",
+              borderRadius: "30px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+              background: "linear-gradient(45deg, #6a11cb, #2575fc)",
+              "&:hover": {
+                background: "linear-gradient(45deg, #5b10ba, #1e66e1)",
+              },
+            }}
+          >
+            {t("update_profile")}
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<Lock />}
+            onClick={() => navigate("/change-password")}
+            sx={{
+              textTransform: "capitalize",
+              borderRadius: "30px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+            }}
+          >
+            {t("change password")}
+          </Button>
+        </Box>
       </Box>
 
       {/* About Section */}
@@ -156,7 +177,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <MailIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("email")}:
+            {t("email")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Email}
@@ -165,7 +186,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <CakeIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("age")}:
+            {t("age")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Age}
@@ -174,7 +195,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <LocationOnIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("address")}:
+            {t("address")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Address}
@@ -183,7 +204,7 @@ const Profile: React.FC = () => {
         <Box display="flex" alignItems="center" mb={2}>
           <WcIcon sx={{ color: "#2575fc", mr: 1 }} />
           <Typography color="black" sx={{ flex: 1 }}>
-            {t("gender")}:
+            {t("gender")}
           </Typography>
           <Typography fontWeight="bold" color="#555">
             {profile.Gender ? t("male") : t("female")}

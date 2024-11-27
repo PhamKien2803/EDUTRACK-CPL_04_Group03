@@ -1,81 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, RadioGroup, FormControlLabel, Radio, FormLabel, FormControl, Typography } from '@mui/material';
-import { createStudent, getParticipants } from '../../../../service/ApiService';
+import { createStudent,getParticipants } from '../../../../service/ApiService';
 import emailjs from 'emailjs-com';
 import { AccountCircle, ArrowBack, CalendarToday, Email, Female, Home, Lock, Male } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const StudentAccountCreating = () => {
+const LectureAccountCreating = () => {
   const navigate = useNavigate()
-  const [students, setStudents] = useState<any[]>([]);
-  const [newStudent, setNewStudent] = useState({
+  const [lecture, setLecture] = useState<any[]>([]);
+  const [newlectures, setNewlectures] = useState({
     id: '',
     UserName: 'EDUTRACK',
     Email: '',
-    Age: '20',
+    Age: '30',
     Gender: true,
     Address: 'Hà Nội',
     Password: '1223@',
     Image: '',
-    Role: 0,
+    Role: 1,
     isOnline: true,
     Status: 'true',
     createAt: ''
   });
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchlecture = async () => {
       const data = await getParticipants();
-      setStudents(data);
+      setLecture(data);
     };
-    fetchStudents();
+    fetchlecture();
   }, []);
 
-  const generateStudentId = () => {
-    const filteredStudents = students.filter((student) => student.Role === 1);
-    if (filteredStudents.length === 0) return 'he170001';
-
-    const lastStudentId = filteredStudents[students.length - 1].id;
-    const lastIdNumber = parseInt(lastStudentId.substring(2));
+  const generateLecturesId = () => {
+    const filteredlecture = lecture.filter((lectures) => lectures.Role === 1);
+    if (filteredlecture.length === 0) return 'lt100001';
+    
+    const lastLecturesId = filteredlecture[filteredlecture.length - 1].id;
+    const lastIdNumber = parseInt(lastLecturesId.substring(2));
     const newIdNumber = lastIdNumber + 1;
-    return `he17${newIdNumber.toString().padStart(4, '0')}`;
+    return `lt${newIdNumber.toString().padStart(6, '0')}`;
   };
 
   const isEmailUnique = (email: string) => {
-    return !students.some((student: any) => student.Email === email);
+    return !lecture.some((lectures: any) => lectures.Email === email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isEmailUnique(newStudent.Email)) {
+    if (!isEmailUnique(newlectures.Email)) {
       alert('Email already exists!');
       return;
     }
 
-    const studentId = generateStudentId();
-    const studentData = { ...newStudent,
-       id: studentId,
+    const lecturesId = generateLecturesId();
+    const lecturesData = { ...newlectures,
+       id: lecturesId,
        createAt: new Date().toISOString()
       
       };
 
     try {
-      await createStudent(studentData);
+      await createStudent(lecturesData);
 
       
       const emailData = {
-        contact_number: studentId,
+        contact_number: lecturesId,
         from_name: 'EduTrack',
-        from_email: newStudent.Email,
+        from_email: newlectures.Email,
         subject: 'Account Created Successfully',
         html_message: `
-          Hello ${newStudent.UserName},
-          Your student account has been created successfully. Here are your account details:
-          Email: ${newStudent.Email}
-          Student ID: ${studentId}
-          Password: ${newStudent.Password}
+          Hello ${newlectures.UserName},
+          Your lectures account has been created successfully. Here are your account details:
+          Email: ${newlectures.Email}
+          lectures ID: ${lecturesId}
+          Password: ${newlectures.Password}
           Thank you for registering with EduTrack!
           
          
@@ -88,7 +88,7 @@ const StudentAccountCreating = () => {
         console.log('Email sent successfully:', result.text);
         Swal.fire({
           title: 'Success!',
-          text: `Account created successfully! A confirmation email has been sent to ${newStudent.Email}`,
+          text: `Account created successfully! A confirmation email has been sent to ${newlectures.Email}`,
           icon: 'success',
           confirmButtonText: 'OK'
         });
@@ -105,7 +105,7 @@ const StudentAccountCreating = () => {
       });
 
      
-      setNewStudent({
+      setNewlectures({
         id: '',
         UserName: 'EDUTRACK',
         Email: '',
@@ -114,7 +114,7 @@ const StudentAccountCreating = () => {
         Address: 'Hà Nội',
         Password: '1223@',
         Image: '',
-        Role: 0,
+        Role: 1,
         isOnline: true,
         Status: 'true',
         createAt: ''
@@ -126,7 +126,7 @@ const StudentAccountCreating = () => {
   };
 
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewStudent({ ...newStudent, Gender: event.target.value === 'true' });
+    setNewlectures({ ...newlectures, Gender: event.target.value === 'true' });
   };
   const handleBackClick = () => {
     navigate('/staff/account-management'); 
@@ -137,13 +137,13 @@ const StudentAccountCreating = () => {
       <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff', marginTop: '10px' }}>
         
         <Typography variant="h4" gutterBottom align="center" style={{ marginBottom: '20px' }}>
-          Create Account for Student
+          Create Account for lectures
         </Typography>
   
         <TextField
           label="UserName"
-          value={newStudent.UserName}
-          onChange={(e) => setNewStudent({ ...newStudent, UserName: e.target.value })}
+          value={newlectures.UserName}
+          onChange={(e) => setNewlectures({ ...newlectures, UserName: e.target.value })}
           fullWidth
           variant="outlined"
           sx={{ borderRadius: 2, marginBottom: 2 }}
@@ -154,8 +154,8 @@ const StudentAccountCreating = () => {
         
         <TextField
           label="Email"
-          value={newStudent.Email}
-          onChange={(e) => setNewStudent({ ...newStudent, Email: e.target.value })}
+          value={newlectures.Email}
+          onChange={(e) => setNewlectures({ ...newlectures, Email: e.target.value })}
           fullWidth
           variant="outlined"
           sx={{ borderRadius: 2, marginBottom: 2 }}
@@ -166,8 +166,8 @@ const StudentAccountCreating = () => {
         
         <TextField
           label="Age"
-          value={newStudent.Age}
-          onChange={(e) => setNewStudent({ ...newStudent, Age: e.target.value })}
+          value={newlectures.Age}
+          onChange={(e) => setNewlectures({ ...newlectures, Age: e.target.value })}
           fullWidth
           variant="outlined"
           sx={{ borderRadius: 2, marginBottom: 2 }}
@@ -178,8 +178,8 @@ const StudentAccountCreating = () => {
         
         <TextField
           label="Address"
-          value={newStudent.Address}
-          onChange={(e) => setNewStudent({ ...newStudent, Address: e.target.value })}
+          value={newlectures.Address}
+          onChange={(e) => setNewlectures({ ...newlectures, Address: e.target.value })}
           fullWidth
           variant="outlined"
           sx={{ borderRadius: 2, marginBottom: 2 }}
@@ -191,7 +191,7 @@ const StudentAccountCreating = () => {
         <FormControl component="fieldset" sx={{ marginBottom: 2, gap: 1,  }}>
           <FormLabel component="legend">Gender</FormLabel>
           <RadioGroup
-            value={newStudent.Gender ? 'true' : 'false'}
+            value={newlectures.Gender ? 'true' : 'false'}
             onChange={handleGenderChange}
 
           >
@@ -202,8 +202,8 @@ const StudentAccountCreating = () => {
   
         <TextField
           label="Password"
-          value={newStudent.Password}
-          onChange={(e) => setNewStudent({ ...newStudent, Password: e.target.value })}
+          value={newlectures.Password}
+          onChange={(e) => setNewlectures({ ...newlectures, Password: e.target.value })}
           fullWidth
           variant="outlined"
           sx={{ borderRadius: 2, marginBottom: 2 }}
@@ -241,4 +241,4 @@ const StudentAccountCreating = () => {
   );
 };
 
-export default StudentAccountCreating;
+export default LectureAccountCreating;
