@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
@@ -24,14 +25,9 @@ const NAVIGATION: Navigation = [
     icon: <AccountCircleIcon />,
   },
   {
-    segment: "Assignments",
-    title: "Assignments",
-    icon: <AssignmentIcon />,
-  },
-  {
-    segment: "Upcoming",
-    title: "UpcomingSlots",
-    icon: <UpcomingIcon />,
+    segment: "lecturer/homePage",
+    title: "Dashboard",
+    icon: <DashboardIcon />,
   },
   {
     segment: "Upcoming",

@@ -198,6 +198,11 @@ export const resetPassword = (id: string, password: string) => {
   });
 };
 
+export const changePassword = async (id: string, data: { Password: string }) => {
+  const response = await axios.patch(`Participants/${id}`, data);
+  return response.data;
+};
+
 export const createClass = (newClass: classRoom) => {
   return axios.post("Class", {
     ClassID: newClass.ClassID,

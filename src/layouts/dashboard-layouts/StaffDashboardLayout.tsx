@@ -26,19 +26,35 @@ const NAVIGATION: Navigation = [
     icon: <AccountCircleIcon />,
   },
   {
-    segment: "home-page",
+    segment: "staff/homePage",
     title: "Dashboard",
     icon: <DashboardIcon />,
   },
   {
-    segment: "Assignments",
-    title: "Assignments",
+    title: "Management",
     icon: <AssignmentIcon />,
-  },
-  {
-    segment: "Upcoming",
-    title: "UpcomingSlots",
-    icon: <UpcomingIcon />,
+    children: [
+      {
+        segment: "localhost:5173/staff/manage-class",
+        title: "Manage Class",
+        icon: <SchoolIcon />,
+      },
+      {
+        segment: "localhost:5173/staff/account-management",
+        title: "Manage Account",
+        icon: <AccountCircleIcon />,
+      },
+      {
+        segment: "localhost:5173/manage_course_semester",
+        title: "Manage Courses",
+        icon: <AssignmentIcon />,
+      },
+      {
+        segment: "manage_exam",
+        title: "Manage Exam",
+        icon: <AssignmentIcon />,
+      },
+    ],
   },
   {
     segment: "Upcoming",

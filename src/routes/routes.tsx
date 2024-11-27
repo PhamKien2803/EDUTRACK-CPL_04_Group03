@@ -30,6 +30,10 @@ import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList"
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
 import DashboardStaff from "../page/home-page/staff-home/DashboardStaff";
+import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
+import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
+import LectureAccountCreating from "../page/home-page/staff-home/Account Management/LectureAccountCreate";
+import changePassword from "../components/student_components/profile/changePassword";
 
 interface Router {
   name?: string;
@@ -118,6 +122,12 @@ const routesStudentHome: Router[] = [
     key: "ProfilePage",
     path: "/edit-profile",
     component: EditProfile,
+  },
+  {
+    name: "Change-Password",
+    key: "ChangePasswordPage",
+    path: "/change-password",
+    component: changePassword,
   },
   {
     name: "Logout",
@@ -226,6 +236,12 @@ const routesLecturersHome: Router[] = [
     path: "/updateExam",
     component: UpdateExam,
   },
+  {
+    name: "Contact",
+    key: "ContactPage",
+    path: "/contact",
+    component: Contact,
+  },
 ];
 
 const routesStaffHome: Router[] = [
@@ -235,7 +251,7 @@ const routesStaffHome: Router[] = [
     component: StaffHomePage,
   },
   {
-    key: "dashboard_staff",
+    key: "dashboard_Staff",
     path: "/staff/dashboardStaff",
     component: DashboardStaff,
   },
@@ -256,7 +272,7 @@ const routesStaffHome: Router[] = [
   },
   {
     key: "couseras_list",
-    path: "staff/couseras_list",
+    path: "/staff/couseras_list",
     component: CouseraList,
   },
   {
@@ -273,6 +289,45 @@ const routesStaffHome: Router[] = [
     key: "manage_semester",
     path: "/staff/manage-semesters",
     component: SemesterForm,
+  },
+  {
+    key: "account-management",
+    path: "/staff/account-management",
+    component: AccountManagement,
+  },
+  {
+    key: "create-account",
+    path: "/staff/create-account-student",
+    component: StudentAccountCreating,
+  },
+  {
+    key: "create-account-staff",
+    path: "/staff/create-account-lecture",
+    component: LectureAccountCreating,
+  },
+  {
+    name: "Profile",
+    key: "ProfilePage",
+    path: "/profile",
+    component: Profile,
+  },
+  {
+    name: "Update-Profile",
+    key: "ProfilePage",
+    path: "/edit-profile",
+    component: EditProfile,
+  },
+  {
+    name: "Contact",
+    key: "ContactPage",
+    path: "/contact",
+    component: Contact,
+  },
+  {
+    name: "Logout",
+    key: "LogoutPage",
+    path: "/logout",
+    component: LogoutButton,
   },
 ];
 
