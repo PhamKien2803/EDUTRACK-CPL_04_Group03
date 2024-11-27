@@ -29,6 +29,7 @@ import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassMan
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
+import DashboardStaff from "../page/home-page/staff-home/DashboardStaff";
 
 interface Router {
   name?: string;
@@ -232,6 +233,11 @@ const routesStaffHome: Router[] = [
     key: "homepage_staff",
     path: "/staff/homePage",
     component: StaffHomePage,
+  },
+  {
+    key: "dashboard_Staff",
+    path: "/staff/dashboardStaff",
+    component: DashboardStaff,
   },
   {
     key: "create_class",
