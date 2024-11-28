@@ -13,10 +13,15 @@ import {
   Typography,
   Autocomplete,
   IconButton,
+  Box,
+  Grid,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; 
+import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useNavigate } from "react-router-dom";
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 interface Participant {
   UserName: string;
@@ -31,11 +36,12 @@ interface Participant {
 }
 
 const CreatingClass: React.FC = () => {
+  const navigate = useNavigate();
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [className, setClassName] = useState<string>("");
   const [selectedParticipants, setSelectedParticipants] = useState<Participant[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(2); // Số lượng học sinh mỗi trang
+  const [itemsPerPage] = useState<number>(5); // Số lượng học sinh mỗi trang
 
   useEffect(() => {
     getParticipants()
@@ -80,14 +86,14 @@ const CreatingClass: React.FC = () => {
     };
 
     createClass(newClass)
-      .then((response) => {
+      .then(() => {
         Swal.fire({
           icon: "success",
           title: "Class created successfully!",
           text: `Class ${className} has been created.`,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           icon: "error",
           title: "Failed to create class",
@@ -95,7 +101,6 @@ const CreatingClass: React.FC = () => {
         });
       });
   };
-
 
   const indexOfLastParticipant = currentPage * itemsPerPage;
   const indexOfFirstParticipant = indexOfLastParticipant - itemsPerPage;
@@ -105,64 +110,102 @@ const CreatingClass: React.FC = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div style={{ padding: "20px", borderRadius: "10px" }}>
-      <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <Typography variant="h2" style={{ color: "#62825D", fontWeight: "bold" }}>
+    <>
+      <Box
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.paper,
+          borderRadius: "8px",
+          p: 4,
+          boxShadow: 3,
+        }}
+      >
+        <Grid item>
+          <Button
+            startIcon={<ReplyAllIcon />}
+            onClick={() => navigate("/staff/manage_class")}
+            variant="outlined"
+            color="primary"
+          >
+            Back
+          </Button>
+        </Grid>
+        {/* Title */}
+        <Typography
+          variant="h4"
+          sx={{
+            textAlign: "center",
+            fontWeight: 700,
+            color: (theme) => theme.palette.text.primary,
+            mb: 3,
+          }}
+        >
           Create Class
         </Typography>
-      </div>
 
-      <TextField
-        label="Enter Name of Class"
-        variant="outlined"
-        fullWidth
-        value={className}
-        onChange={(e) => setClassName(e.target.value)}
-        style={{
-          marginBottom: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "5px",
-          padding: "5px",
-        }}
-      />
+        {/* Class Name Input */}
+        <TextField
+          label="Class Name"
+          variant="outlined"
+          fullWidth
+          value={className}
+          onChange={(e) => setClassName(e.target.value)}
+          sx={{
+            mb: 3,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: (theme) => theme.palette.background.default,
+            },
+          }}
+        />
 
-      <div style={{ marginBottom: "20px" }}>
+        {/* Participant Autocomplete */}
         <Autocomplete
           options={participants}
           getOptionLabel={(option) => `${option.UserName} (${option.id})`}
-          renderInput={(params) => <TextField {...params} label="Search and Select Students" variant="outlined" />}
+          renderInput={(params) => (
+            <TextField {...params} label="Search Students" variant="outlined" />
+          )}
           onChange={(event, value) => handleAddParticipant(value)}
-          style={{ backgroundColor: "#fff", borderRadius: "5px" }}
+          sx={{ mb: 3 }}
         />
-      </div>
 
-      <Typography variant="body1" style={{ marginBottom: "20px", color: "#526E48", textDecoration: "underline" }}>
-        Selected Participants: {selectedParticipants.length}
-      </Typography>
+        {/* Selected Participants Table */}
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: 1, color: (theme) => theme.palette.text.secondary }}
+        >
+          Selected Participants: {selectedParticipants.length}
+        </Typography>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead style={{ backgroundColor: "#62825D", color: "#fff" }}>
-            <TableRow>
-              <TableCell><strong>Remove</strong></TableCell>
-              <TableCell><strong>ID</strong></TableCell>
-              <TableCell><strong>Name</strong></TableCell>
-              <TableCell><strong>Age</strong></TableCell>
-              <TableCell><strong>Gender</strong></TableCell>
-              <TableCell><strong>Address</strong></TableCell>
-              <TableCell><strong>Email</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentParticipants.length > 0 ? (
-              currentParticipants.map((participant) => (
-                <TableRow key={participant.id} style={{ backgroundColor: "#F3F9F3" }}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead sx={(theme) => ({
+              backgroundColor: theme.palette.mode === "dark" ? "#2C2C3E" : "#2C3E50",
+              color: "#FFFFFF",
+              fontWeight: 600,
+              fontSize: "14px",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              borderBottom: theme.palette.mode === "dark" ? "1px solid #383850" : "1px solid #DADCE0",
+            })}>
+              <TableRow>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Remove</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>ID</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Name</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Age</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Gender</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Address</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Email</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {currentParticipants.map((participant) => (
+                <TableRow key={participant.id}>
                   <TableCell>
                     <IconButton
                       onClick={() => handleRemoveParticipant(participant.id)}
-                      style={{
-                        backgroundColor: "#62825D",
-                        color: "#fff",
+                      sx={{
+                        color: "error.main",
+                        "&:hover": { bgcolor: "error.light" },
                       }}
                     >
                       <DeleteIcon />
@@ -175,71 +218,65 @@ const CreatingClass: React.FC = () => {
                   <TableCell>{participant.Address}</TableCell>
                   <TableCell>{participant.Email}</TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} align="center">
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    No student in class. Please choose at least one student in class!
-                  </Typography>
-                </TableCell>
-              </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <Button
-          variant="contained"
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={{ backgroundColor: "#9EDF9C", color: "#fff", marginRight: "10px" }}
+        {/* Pagination */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mt: 3,
+            gap: 1,
+          }}
         >
-          Previous
-        </Button>
-        {Array.from({ length: totalPages }, (_, index) => (
           <Button
-            key={index}
             variant="outlined"
-            onClick={() => paginate(index + 1)}
-            style={{
-              marginLeft: "5px",
-              backgroundColor: currentPage === index + 1 ? "#62825D" : "#fff",
-              color: currentPage === index + 1 ? "#fff" : "#000",
-            }}
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
           >
-            {index + 1}
+            Previous
           </Button>
-        ))}
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <Button
+              key={index}
+              variant={currentPage === index + 1 ? "contained" : "outlined"}
+              onClick={() => paginate(index + 1)}
+            >
+              {index + 1}
+            </Button>
+          ))}
+          <Button
+            variant="outlined"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </Box>
+
+        {/* Create Class Button */}
         <Button
           variant="contained"
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          style={{ backgroundColor: "#9EDF9C", color: "#fff", marginLeft: "10px" }}
+          onClick={handleCreateClass}
+          sx={{
+            mt: 3,
+            bgcolor: "success.main",
+            "&:hover": { bgcolor: "success.dark" },
+          }}
+          startIcon={<CheckCircleOutlineIcon />}
         >
-          Next
+          Create Class
         </Button>
-      </div>
+      </Box>
+    </>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCreateClass}
-        style={{
-          display: "block",
-          margin: "20px auto",
-          backgroundColor: "#62825D",
-          color: "#fff",
-          padding: "10px 20px",
-          fontSize: "16px",
-        }}
-      >
-        Create Class
-      </Button>
-    </div>
   );
+
+
 };
 
 export default CreatingClass;

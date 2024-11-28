@@ -5,11 +5,9 @@ import Profile from "../components/student_components/profile/profile";
 import EditProfile from "../components/student_components/profile/updateProfile";
 import { AddExam } from "../page/home-page/lecturers-home/Exam/AddExam";
 import LecturersHomePage from "../page/home-page/lecturers-home/LecturersHomePage";
-import StaffHomePage from "../page/home-page/staff-home/StaffHomePage";
 import DicussionPage from "../page/home-page/student-home/DicussionPage";
 import Lession from "../page/home-page/student-home/Lession";
 import LessionInfor from "../page/home-page/student-home/LessionInfor";
-import StudentHome from "../page/home-page/student-home/StudentHome";
 import Lession_Lecturers from "../page/home-page/lecturers-home/Lecturers_Lesstion/Lession_Lecturers";
 import SessionDicussion from "../page/home-page/lecturers-home/Session/SessionDicussion";
 import SessionAssignment from "../page/home-page/lecturers-home/Session/SessionAssignment";
@@ -36,6 +34,7 @@ import LectureAccountCreating from "../page/home-page/staff-home/Account Managem
 import changePassword from "../components/student_components/profile/changePassword";
 import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
 import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
+import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 
 
 interface Router {
@@ -46,12 +45,7 @@ interface Router {
 }
 
 const routesStudentHome: Router[] = [
-  {
-    name: "student_home",
-    key: "StudentHomePage",
-    path: "/home-page",
-    component: StudentHome,
-  },
+ 
   {
     name: "dashboard_Page",
     key: "dashboardPage",
@@ -249,14 +243,14 @@ const routesLecturersHome: Router[] = [
 
 const routesStaffHome: Router[] = [
   {
-    key: "homepage_staff",
-    path: "/staff/homePage",
-    component: StaffHomePage,
-  },
-  {
     key: "dashboard_Staff",
     path: "/staff/dashboardStaff",
     component: DashboardStaff,
+  },
+  {
+    key: "manage_class",
+    path: "/staff/manage_class",
+    component: ClassManagement,
   },
   {
     key: "create_class",
@@ -270,7 +264,7 @@ const routesStaffHome: Router[] = [
   },
   {
     key: "manage_course_semester",
-    path: "/manage_course_semester",
+    path: "/staff/manage_course_semester",
     component: MangerCourse,
   },
   {
@@ -335,12 +329,7 @@ const routesStaffHome: Router[] = [
     path: "/edit-profile",
     component: EditProfile,
   },
-  {
-    name: "Contact",
-    key: "ContactPage",
-    path: "/contact",
-    component: Contact,
-  },
+  
   {
     name: "Logout",
     key: "LogoutPage",

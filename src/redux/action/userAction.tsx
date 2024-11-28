@@ -14,6 +14,7 @@ interface Participant {
 }
 export const doLogin = (data: Participant) => {
   console.log('data', data);
+  localStorage.removeItem("user");
 
   return {
     type: USER_LOGIN_SUCCESS,
