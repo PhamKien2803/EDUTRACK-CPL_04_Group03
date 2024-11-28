@@ -157,7 +157,7 @@ const DashboardStaff: React.FC = () => {
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataUser.filter((user: any) => user.Role === 0).length}
               </Typography>
-              <Typography color="textSecondary">10% change</Typography>
+              <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -168,7 +168,7 @@ const DashboardStaff: React.FC = () => {
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataUser.filter((user: any) => user.Role === 1).length}
               </Typography>
-              <Typography color="textSecondary">10% change</Typography>
+              <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -179,7 +179,7 @@ const DashboardStaff: React.FC = () => {
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataCourseSemester.length}
               </Typography>
-              <Typography color="textSecondary">10% change</Typography>
+              <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -190,7 +190,7 @@ const DashboardStaff: React.FC = () => {
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataClass.length}
               </Typography>
-              <Typography color="textSecondary">10% change</Typography>
+              <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
