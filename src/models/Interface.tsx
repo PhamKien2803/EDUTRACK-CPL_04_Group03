@@ -18,19 +18,19 @@ export interface slot {
 }
 
 export interface participants {
-    id: string,
-    UserName: string,
-    Age: number,
-    Gender: true,
-    Address: string,
-    Email: string,
-    Password: string,
-    Image: string,
-    rating: number,
-    Role: number,
-    isOnline: boolean,
-    Status: boolean,
-    createdAt: string
+  id: string;
+  UserName: string;
+  Age: number;
+  Gender: true;
+  Address: string;
+  Email: string;
+  Password: string;
+  Image: string;
+  rating: number;
+  Role: number;
+  isOnline: boolean;
+  Status: boolean;
+  createdAt: string;
 }
 
 export interface questionSlot {
@@ -152,4 +152,11 @@ export interface Semester {
   EndDate: string;
   Status: boolean;
   id: string;
+}
+
+export interface NewSemester {
+  SemesterID: string;
+  SemesterName: string;
+  StartDate: string;
+  EndDate: string;
 }

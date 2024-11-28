@@ -28,7 +28,11 @@ import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
-import CheckPoint from "../page/home-page/staff-home/Exam/CheckPoint";
+import { CheckPoint } from "../page/home-page/staff-home/Exam/CheckPoint";
+import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
+import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
+import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
+
 
 interface Router {
   name?: string;
@@ -259,14 +263,29 @@ const routesStaffHome: Router[] = [
     component: CheckPoint,
   },
   {
-    key: "manage_class",
-    path: "/staff/manage-class",
-    component: ClassManagement,
+    key: "view_result_manager",
+    path: "/staff/viewResultManager",
+    component: ViewResultManager,
+  },
+  {
+    key: "AddingCourseSemester",
+    path: "/AddingCourseSemester",
+    component: AddingCourseSemester,
+  },
+  {
+    key: "manage_exam_point",
+    path: "/staff/manage-exam-point",
+    component: ExamTest,
   },
   {
     key: "student-details",
     path: "/class/:classId/students",
     component: StudentList,
+  },
+  {
+    key: "manage_semester",
+    path: "/staff/manage-semesters",
+    component: SemesterForm,
   },
 ];
 
