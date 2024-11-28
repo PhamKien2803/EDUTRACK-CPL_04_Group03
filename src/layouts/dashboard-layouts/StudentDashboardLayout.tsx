@@ -55,12 +55,12 @@ function StudentDashboardLayout() {
   );
   const location = useLocation();
   const navigationType = useNavigationType();
-  let unreadCount = 0;
+  const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const { userData } = useContext(AppContext);
   useEffect(() => {
     getCountMesNotSeen();
-  }, [])
+  }, [userData])
   const getCountMesNotSeen = async () => {
     const userChatRef = doc(db, 'chats', userData.id)
     const userChatsSnapShot = await getDoc(userChatRef);
@@ -68,7 +68,10 @@ function StudentDashboardLayout() {
     console.log('check data', userChatsData.chatsData);
     userChatsData.chatsData.forEach(item => {
       if (item.messageSeen === false) {
-        unreadCount++;
+
+        setUnreadCount(unreadCount + 1);
+        console.log('count', unreadCount);
+
       }
     });
 

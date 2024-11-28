@@ -32,6 +32,7 @@ import { participants } from '../../models/Interface';
 import { getParticipants } from '../../service/ApiService';
 import { log } from 'console';
 import { ModalAddChat } from './ModalAddChat';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const style = {
     position: 'absolute',
@@ -132,7 +133,7 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
     }
 
     useEffect(() => {
-        if (chatData && userData) {
+        if (chatData && userData && partticipaint) {
             setLoadding(false)
         }
         if (messageId) {
@@ -141,7 +142,7 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                 console.log(res.data().message);
             })
         }
-    }, [chatData, userData, messageId])
+    }, [chatData, userData, messageId, partticipaint])
 
     const inputHandler = async (e) => {
         try {
@@ -306,12 +307,10 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
             mode: mode,
         },
     });
-    console.log(partticipaint);
 
 
 
 
-    console.log(userData);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -352,7 +351,8 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                             }}
                             onClick={() => setChat(item)}
                         >
-                            {partticipaint.find(p => p.uid == item.userData.id)?.Image ? <Avatar src={partticipaint.find(p => p.uid == item.userData.id)?.Image} sx={{ marginRight: '10px' }}></Avatar> :
+                            {partticipaint.find(p => p.uid == item.userData.id)?.Image ?
+                                <Avatar src={partticipaint.find(p => p.uid == item.userData.id)?.Image} sx={{ marginRight: '10px' }}></Avatar> :
                                 <Avatar sx={{ marginRight: '10px' }}>{item.userData.name.charAt(0).toUpperCase()}</Avatar>
                             }
                             <Box>
@@ -402,138 +402,139 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
     );
     return (
         <>
-            <Dialog fullScreen open={open} onClose={toggleModal}
-                sx={{
-                    "& .MuiDialog-paper": {
-                        width: "66.666%",
-                        height: "auto",
-                    },
-                }}>
-                <DialogTitle>
-                    Chat Application
-                    <Button onClick={toggleModal} sx={{ float: "right" }}>
-                        Close
-                    </Button>
-                </DialogTitle>
-                <DialogContent>
-                    <ThemeProvider theme={customTheme}>
-                        <CssBaseline />
-                        <Container maxWidth="lg"
-                            sx={{
-                                width: "100%",
-                                height: "90vh", // Chiều cao giới hạn
-                                padding: { xs: 0, md: 2 },
-                            }}>
-                            <StyledChatContainer>
-
-                                <SidePanel elevation={2}>{contactsList}</SidePanel>
-
-                                {chatUser ? <ChatArea elevation={2}>
-                                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-
-                                            {partticipaint.find(p => p.uid == chatUser.userData.id)?.Image ? <Avatar src={partticipaint.find(p => p.uid == chatUser.userData.id)?.Image} sx={{ marginRight: '10px' }}></Avatar> :
-                                                <Avatar sx={{ marginRight: '10px' }}>{chatUser.userData.name.charAt(0).toUpperCase()}</Avatar>
-                                            }
-                                            <Typography variant="h6">{partticipaint.find(p => p.uid == chatUser.userData.id)?.UserName}</Typography>
-                                            {
-                                                Date.now() - chatUser.userData.lastSeen < 300000 ? (  // 5 minutes 
-                                                    <FiberManualRecordIcon sx={{ fontSize: 17 }} color="success" />
-                                                ) : null
-                                            }
-                                        </Box>
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            flex: 1,
-                                            overflowY: "auto",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            gap: 1,
-                                            mb: 2,
-                                            p: 1,
-                                        }}
-                                    >
-                                        {messages.map((message, index) => (
-
-                                            <MessageContainer key={index} sent={message.sId == userData.id}>
-                                                <MessageBubble sent={message.sId == userData.id}>
-                                                    <Typography variant="body1">{message.text}</Typography>
-                                                    <Typography
-                                                        variant="caption"
-                                                        sx={{ display: "block", mt: 0.5, opacity: 0.7 }}
-                                                    >
-                                                        {convertTimestamp(message.createdAt)}
-                                                    </Typography>
-                                                </MessageBubble>
-                                            </MessageContainer>
-                                        ))}
-                                    </Box>
-
-                                    <Box sx={{ display: "flex", gap: 1 }}>
-                                        <TextField
-                                            fullWidth
-                                            placeholder="Type a message"
-                                            value={input}
-                                            onChange={e => setInput(e.target.value)}
-                                            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                                        />
-                                        <IconButton
-                                            color="primary"
-                                            sx={{ width: '80px' }}
-                                            onClick={() => sendMessage()}
-                                            aria-label="send message"
-                                        >
-                                            <IoSend />
-                                        </IconButton>
-                                    </Box>
-                                </ChatArea> : <>hello</>}
-                            </StyledChatContainer>
-                        </Container>
-                    </ThemeProvider>
-                </DialogContent>
-                <Modal
-                    open={opens}
-                    onClose={handleChangeOpen}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={style}>
-                        <TextField
-                            variant="standard"
-                            fullWidth
-                            placeholder='Enter The Email'
-                            onChange={(e) => inputHandler(e)}
-                        />
-                        {showSearch && user ? (
-                            <Box
-
+            {loading ? <CircularProgress /> :
+                <Dialog fullScreen open={open} onClose={toggleModal}
+                    sx={{
+                        "& .MuiDialog-paper": {
+                            width: "66.666%",
+                            height: "auto",
+                        },
+                    }}>
+                    <DialogTitle>
+                        Chat Application
+                        <Button onClick={toggleModal} sx={{ float: "right" }}>
+                            Close
+                        </Button>
+                    </DialogTitle>
+                    <DialogContent>
+                        <ThemeProvider theme={customTheme}>
+                            <CssBaseline />
+                            <Container maxWidth="lg"
                                 sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 2,
-                                    cursor: "pointer",
-                                    p: 1,
-                                    borderRadius: 1,
-                                    "&:hover": { backgroundColor: theme.palette.action.hover },
-                                }}
-                                onClick={() => addChat()}
-                            >
-                                {partticipaint.find(p => p.uid == user.id)?.Image ? <Avatar sx={{ marginRight: '10px' }} src={partticipaint.find(p => p.uid == user.id)?.Image}>
-                                </Avatar> : <Avatar sx={{ marginRight: '10px' }}>
-                                    {user?.name?.charAt(0).toUpperCase()}
-                                </Avatar>}
-                                <Box>
-                                    <Typography variant="subtitle1" fontWeight="bold">
-                                        {user?.name || 'Unknown'}
-                                    </Typography>
+                                    width: "100%",
+                                    height: "90vh", // Chiều cao giới hạn
+                                    padding: { xs: 0, md: 2 },
+                                }}>
+                                <StyledChatContainer>
 
+                                    <SidePanel elevation={2}>{contactsList}</SidePanel>
+
+                                    {chatUser ? <ChatArea elevation={2}>
+                                        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+
+                                                {partticipaint.find(p => p.uid == chatUser.userData.id)?.Image ? <Avatar src={partticipaint.find(p => p.uid == chatUser.userData.id)?.Image} sx={{ marginRight: '10px' }}></Avatar> :
+                                                    <Avatar sx={{ marginRight: '10px' }}>{chatUser.userData.name.charAt(0).toUpperCase()}</Avatar>
+                                                }
+                                                <Typography variant="h6">{partticipaint.find(p => p.uid == chatUser.userData.id)?.UserName}</Typography>
+                                                {
+                                                    Date.now() - chatUser.userData.lastSeen < 300000 ? (  // 5 minutes 
+                                                        <FiberManualRecordIcon sx={{ fontSize: 17 }} color="success" />
+                                                    ) : null
+                                                }
+                                            </Box>
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                flex: 1,
+                                                overflowY: "auto",
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                gap: 1,
+                                                mb: 2,
+                                                p: 1,
+                                            }}
+                                        >
+                                            {messages.map((message, index) => (
+
+                                                <MessageContainer key={index} sent={message.sId == userData.id}>
+                                                    <MessageBubble sent={message.sId == userData.id}>
+                                                        <Typography variant="body1">{message.text}</Typography>
+                                                        <Typography
+                                                            variant="caption"
+                                                            sx={{ display: "block", mt: 0.5, opacity: 0.7 }}
+                                                        >
+                                                            {convertTimestamp(message.createdAt)}
+                                                        </Typography>
+                                                    </MessageBubble>
+                                                </MessageContainer>
+                                            ))}
+                                        </Box>
+
+                                        <Box sx={{ display: "flex", gap: 1 }}>
+                                            <TextField
+                                                fullWidth
+                                                placeholder="Type a message"
+                                                value={input}
+                                                onChange={e => setInput(e.target.value)}
+                                                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                                            />
+                                            <IconButton
+                                                color="primary"
+                                                sx={{ width: '80px' }}
+                                                onClick={() => sendMessage()}
+                                                aria-label="send message"
+                                            >
+                                                <IoSend />
+                                            </IconButton>
+                                        </Box>
+                                    </ChatArea> : <>hello</>}
+                                </StyledChatContainer>
+                            </Container>
+                        </ThemeProvider>
+                    </DialogContent>
+                    <Modal
+                        open={opens}
+                        onClose={handleChangeOpen}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <TextField
+                                variant="standard"
+                                fullWidth
+                                placeholder='Enter The Email'
+                                onChange={(e) => inputHandler(e)}
+                            />
+                            {showSearch && user ? (
+                                <Box
+
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 2,
+                                        cursor: "pointer",
+                                        p: 1,
+                                        borderRadius: 1,
+                                        "&:hover": { backgroundColor: theme.palette.action.hover },
+                                    }}
+                                    onClick={() => addChat()}
+                                >
+                                    {partticipaint.find(p => p.uid == user.id)?.Image ? <Avatar sx={{ marginRight: '10px' }} src={partticipaint.find(p => p.uid == user.id)?.Image}>
+                                    </Avatar> : <Avatar sx={{ marginRight: '10px' }}>
+                                        {user?.name?.charAt(0).toUpperCase()}
+                                    </Avatar>}
+                                    <Box>
+                                        <Typography variant="subtitle1" fontWeight="bold">
+                                            {user?.name || 'Unknown'}
+                                        </Typography>
+
+                                    </Box>
                                 </Box>
-                            </Box>
-                        ) : <>Not found</>}
-                    </Box>
-                </Modal>
-            </Dialog>
+                            ) : <>Not found</>}
+                        </Box>
+                    </Modal>
+                </Dialog>}
         </>
 
     );
