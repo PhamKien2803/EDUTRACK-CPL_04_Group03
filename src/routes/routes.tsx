@@ -25,7 +25,6 @@ import { ViewDetailResult } from "../page/home-page/lecturers-home/Exam/ViewDeta
 import { UpdateExam } from "../page/home-page/lecturers-home/Exam/UpdateExam";
 import CreatingClass from "../page/home-page/staff-home/CreatingClass/CreatingClass";
 import CouseraList from "../page/home-page/staff-home/CouseraList/CoursesList";
-import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import StudentList from "../page/home-page/staff-home/CreatingClass/StudentList";
 import DashBoardPage from "../page/home-page/student-home/DashBoardPage";
 import { CheckPoint } from "../page/home-page/staff-home/Exam/CheckPoint";
