@@ -104,6 +104,18 @@ export const updateClass = (id: string, updatedData: { ClassName: string }) => {
   return axios.patch(`/Class/${id}`, updatedData);
 };
 
+// Cập nhật danh sách học sinh của lớp
+export const updateClassStudents = (classId: string, updatedStudents: string[]) => {
+  return axios.patch(`/Class/${classId}`, {
+    Student: updatedStudents,
+  });
+};
+
+export const deleteStudentinClass = (id: string, updatedClass: classRoom) => {
+  return axios.patch(`Class/${id}`, updatedClass);
+};
+
+
 export const updateClassStatus = (id: string, status: boolean) => {
   return axios.patch(`/Class/${id}`, { Status: status });
 };
