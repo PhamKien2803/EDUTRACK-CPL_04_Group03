@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { doLogout } from "../../../redux/action/userAction";
 import Swal from "sweetalert2";
@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 const LogoutButton: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const account = useSelector((state: { account: { account: { Role: number } } }) => state.account.account);
+
 
   const handleLogout = () => {
     Swal.fire({
@@ -20,20 +22,27 @@ const LogoutButton: React.FC = () => {
       cancelButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(doLogout()); 
-        
-        navigate("/login"); 
-      } else {
-        navigate("/home-page");
+        dispatch(doLogout());
+
+        navigate("/login");
+      }
+      if (!result.isConfirmed) {
+        if (account.Role === 0) {
+          navigate("/dashboardPage");
+        } else if (account.Role === 1) {
+          navigate("/lecturer/homePage");
+        } else if (account.Role === 2) {
+          navigate("/staff/dashboardStaff");
+        }
       }
     });
   };
 
   React.useEffect(() => {
-    handleLogout(); 
+    handleLogout();
   }, []);
 
-  return null; 
+  return null;
 };
 
 export default LogoutButton;

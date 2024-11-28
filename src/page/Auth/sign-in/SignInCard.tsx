@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import {
   Box,
   Button,
@@ -13,16 +11,13 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-
 import { useNavigate } from "react-router-dom";
 import { getParticipants } from "../../../service/ApiService";
 import ForgotPassword from "../forgot-password/Forgot";
 import { GoogleIcon, SitemarkIcon } from "../icons/CustomIcon";
-
 import SchoolIcon from "@mui/icons-material/School";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-
 import { useDispatch } from "react-redux";
 import { doLogin } from "../../../redux/action/userAction";
 

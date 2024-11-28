@@ -1,37 +1,72 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Pagination } from "@mui/material";
-import { getParticipants, updateAccountStatus } from "../../../../service/ApiService";
-import { Search as SearchIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  IconButton,
+  Pagination,
+  Box,
+  Typography,
+  Modal,
+  useMediaQuery,
+} from "@mui/material";
+import { Search as SearchIcon, Delete as DeleteIcon, } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import {  Modal, Box, Typography } from "@mui/material";
+import { getParticipants, updateAccountStatus } from "../../../../service/ApiService";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PersonIcon from '@mui/icons-material/Person';
+import SchoolIcon from '@mui/icons-material/School';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Cancel } from "@mui/icons-material";
+
+import { participants } from "../../../../models/Interface";
+
 const AccountManagement: React.FC = () => {
-  const currentUsers = useSelector((state: any) => state.account.account); 
-  const [participants, setParticipants] = useState<any[]>([]);
-  const [filteredParticipants, setFilteredParticipants] = useState<any[]>([]); 
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [page, setPage] = useState(1); 
-  const [rowsPerPage] = useState(5); 
-  const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  interface RootState {
+    account: {
+      account: {
+        UserID: string;
+      };
+    };
+  }
+
+  const currentUsers = useSelector((state: RootState) => state.account.account);
+  const [participants, setParticipants] = useState<participants[]>([]);
+  const [filteredParticipants, setFilteredParticipants] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(5);
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const fetchParticipants = async () => {
     try {
-      const response = await getParticipants(); 
-      const filteredParticipants = response?.filter((participant: any) => participant.id !== currentUsers.UserID);
-      setParticipants(filteredParticipants); 
-      setFilteredParticipants(filteredParticipants); 
+      const response = await getParticipants();
+      const filteredParticipants = response?.filter(
+        (participant: any) => participant.id !== currentUsers.UserID
+      );
+      setParticipants(filteredParticipants);
+      setFilteredParticipants(filteredParticipants);
     } catch (error) {
       console.error("Error fetching participants:", error);
     }
   };
 
   useEffect(() => {
-    fetchParticipants(); 
+    fetchParticipants();
   }, []);
 
-  
   const handleUpdateStatus = async (id: string, currentStatus: "true" | "false") => {
     if (id === currentUsers.UserID) {
       alert("You cannot change your own status!");
@@ -40,76 +75,87 @@ const AccountManagement: React.FC = () => {
 
     try {
       const newStatus = currentStatus === "true" ? "false" : "true";
-      await updateAccountStatus(id, newStatus); 
+      await updateAccountStatus(id, newStatus);
       fetchParticipants();
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
-  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value); 
+    setSearchTerm(e.target.value);
   };
 
- 
   useEffect(() => {
     const result = participants.filter((participant) => {
       return (
         participant.UserName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        participant.Email.toLowerCase().includes(searchTerm.toLowerCase()) 
+        participant.Email.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
-    setFilteredParticipants(result); 
-  }, [searchTerm, participants]); 
+    setFilteredParticipants(result);
+  }, [searchTerm, participants]);
 
   const handleChangePage = (event: any, value: number) => {
     setPage(value);
   };
 
-  const paginatedParticipants = filteredParticipants.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const paginatedParticipants = filteredParticipants.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const handleCreateAccountStudent = () => {
     navigate("/staff/create-account-student");
-    handleCloseModal(); 
+    handleCloseModal();
   };
 
- 
   const handleCreateAccountLecturer = () => {
-    navigate("/staff/create-account-lecture"); 
-    handleCloseModal(); 
+    navigate("/staff/create-account-lecture");
+    handleCloseModal();
   };
+
   return (
-    <div>
-      
-      <div>
-      <h2 style={{ textAlign: "center", flexGrow: 1 , marginBottom: "20px",}}>Manage Account</h2>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px", alignItems: "center" }}>
-       
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenModal} 
-        >
+    <Box
+      sx={{
+        p: 3,
+        bgcolor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+        minHeight: "100vh",
+      }}
+    >
+      {/* Header */}
+      <Typography
+        variant={isMobile ? "h5" : "h4"}
+        sx={{ textAlign: "center", mb: 4 }}
+      >
+        Manage Account
+      </Typography>
+
+      {/* Toolbar */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+          mb: 4,
+        }}
+      >
+        <Button variant="contained" color="secondary" onClick={handleOpenModal}>
           Create Account
         </Button>
-
         <TextField
           label="Search"
           variant="outlined"
           value={searchTerm}
           onChange={handleSearch}
-          fullWidth
-          style={{ maxWidth: "300px" }} 
+          fullWidth={isMobile}
+          sx={{ maxWidth: isMobile ? "100%" : "300px" }}
           InputProps={{
             endAdornment: (
               <IconButton>
@@ -118,84 +164,239 @@ const AccountManagement: React.FC = () => {
             ),
           }}
         />
-      </div>
+      </Box>
 
-      <TableContainer component={Paper}>
-        <Table size="small" style={{ width: "90%", alignItems: "center"}}> 
-          <TableHead>
+      {/* Table */}
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: "hidden" }}>
+        <Table>
+          <TableHead sx={(theme) => ({
+            backgroundColor: theme.palette.mode === "dark" ? "#2C2C3E" : "#2C3E50",
+            color: "#FFFFFF",
+            fontWeight: 600,
+            fontSize: "14px",
+            textTransform: "uppercase",
+            letterSpacing: "0.5px",
+            borderBottom: theme.palette.mode === "dark" ? "1px solid #383850" : "1px solid #DADCE0",
+          })}>
             <TableRow>
-              <TableCell>UserName</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={{ textAlign: "center", color: "#fff" }}>UserName</TableCell>
+              <TableCell sx={{ textAlign: "center", color: "#fff" }}>Email</TableCell>
+              <TableCell sx={{ textAlign: "center", color: "#fff" }}>Role</TableCell>
+              <TableCell sx={{ textAlign: "center", color: "#fff" }}>Status</TableCell>
+              <TableCell sx={{ textAlign: "center", color: "#fff" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedParticipants.map((participant) => (
               <TableRow key={participant.id}>
-                <TableCell>{participant.UserName}</TableCell>
-                <TableCell>{participant.Email}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{participant.UserName}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{participant.Email}</TableCell>
                 <TableCell>
-                  {participant.Role === 0
-                    ? "Student"
-                    : participant.Role === 1
-                    ? "Lecturer"
-                    : "Admin"}
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: "center" }}>
+                    {participant.Role === 0 && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          padding: "5px 10px",
+                          borderRadius: "20px",
+                          bgcolor: "rgba(0, 123, 255, 0.1)",
+                        }}
+                      >
+                        <SchoolIcon
+                          fontSize="small"
+                          sx={{ color: "rgb(0, 123, 255)" }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgb(0, 123, 255)",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Student
+                        </Typography>
+                      </Box>
+                    )}
+                    {participant.Role === 1 && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          padding: "5px 10px",
+                          borderRadius: "20px",
+                          bgcolor: "rgba(40, 167, 69, 0.1)",
+                        }}
+                      >
+                        <PersonIcon
+                          fontSize="small"
+                          sx={{ color: "rgb(40, 167, 69)" }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgb(40, 167, 69)",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Lecturer
+                        </Typography>
+                      </Box>
+                    )}
+                    {participant.Role === 2 && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          padding: "5px 10px",
+                          borderRadius: "20px",
+                          bgcolor: "rgba(220, 53, 69, 0.1)",
+                        }}
+                      >
+                        <AdminPanelSettingsIcon
+                          fontSize="small"
+                          sx={{ color: "rgb(220, 53, 69)" }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgb(220, 53, 69)",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Admin
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
                 </TableCell>
-                <TableCell>{participant.Status === "true" ? "Active" : "Inactive"}</TableCell>
+
+
                 <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                      padding: "5px 10px",
+                      borderRadius: "20px",
+                      transition: "background-color 0.4s ease, color 0.4s ease",
+                      bgcolor:
+                        participant.Status === "true"
+                          ? "rgba(40, 167, 69, 0.1)"
+                          : "rgba(220, 53, 69, 0.1)",
+                    }}
+                  >
+                    {participant.Status === "true" ? (
+                      <>
+                        <CheckCircleIcon
+                          fontSize="small"
+                          sx={{
+                            color: "rgb(40, 167, 69)",
+                            transition: "color 0.4s ease",
+                          }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgb(40, 167, 69)",
+                            fontWeight: "bold",
+                            transition: "color 0.4s ease",
+                          }}
+                        >
+                          Active
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Cancel
+                          fontSize="small"
+                          sx={{
+                            color: "rgb(220, 53, 69)",
+                            transition: "color 0.4s ease",
+                          }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgb(220, 53, 69)",
+                            fontWeight: "bold",
+                            transition: "color 0.4s ease",
+                          }}
+                        >
+                          Inactive
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
+                </TableCell>
+
+
+                <TableCell sx={{ alignItems: "center", textAlign: "center" }}>
                   <Button
                     variant="contained"
-                    color={participant.Status === "true" ? "secondary" : "primary"}
                     onClick={() => handleUpdateStatus(participant.id, participant.Status)}
-                    startIcon={participant.Status === "true" ? <DeleteIcon /> : null} 
+                    startIcon={
+                      participant.Status === "true" ? <Cancel /> : <CheckCircleIcon />
+                    }
+                    sx={{
+                      color: "white",
+                      bgcolor: participant.Status === "true" ? "error.main" : "success.main",
+                      "&:hover": {
+                        bgcolor: participant.Status === "true" ? "error.dark" : "success.dark",
+                      },
+                      textTransform: "capitalize",
+                      fontWeight: "bold",
+                      borderRadius: "8px",
+                      padding: "6px 16px",
+                    }}
                   >
-                    {participant.Status === "true" ? "Deactivate" : "Activate"}
+                    {participant.Status === "true" ? "Inactive" : "Activate"}
                   </Button>
                 </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
+      {/* Pagination */}
       <Pagination
         count={Math.ceil(filteredParticipants.length / rowsPerPage)}
         page={page}
         onChange={handleChangePage}
         color="primary"
-        style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
+        sx={{ mt: 4, display: "flex", justifyContent: "center" }}
       />
 
-<Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
+      {/* Modal */}
+      <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: 4,
+            bgcolor: "background.paper",
             borderRadius: 2,
+            p: 4,
             boxShadow: 24,
             textAlign: "center",
           }}
         >
-          <Typography id="modal-title" variant="h6" component="h2">
+          <Typography variant="h6" sx={{ mb: 3 }}>
             You want to create an account for?
           </Typography>
-          <div style={{ margin: "20px 0" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             <Button
               variant="contained"
               color="secondary"
               onClick={handleCreateAccountStudent}
-              style={{ marginRight: "10px" }}
             >
               Student
             </Button>
@@ -206,20 +407,17 @@ const AccountManagement: React.FC = () => {
             >
               Lecturer
             </Button>
-          </div>
-
-          <div>
-            <Button
-              variant="outlined"
-              onClick={handleCloseModal} 
-              style={{ marginRight: "10px" }}
-            >
-              Cancel
-            </Button>
-          </div>
+          </Box>
+          <Button
+            variant="outlined"
+            onClick={handleCloseModal}
+            sx={{ mt: 3 }}
+          >
+            Cancel
+          </Button>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

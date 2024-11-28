@@ -2,13 +2,13 @@ import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import SchoolIcon from "@mui/icons-material/School";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {
   Outlet,
   useLocation,
@@ -30,41 +30,32 @@ const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
   },
   {
-    title: "Management",
-    icon: <AssignmentIcon />,
-    children: [
-      {
-        segment: "localhost:5173/staff/manage-class",
-        title: "Manage Class",
-        icon: <SchoolIcon />,
-      },
-      {
-        segment: "localhost:5173/staff/account-management",
-        title: "Manage Account",
-        icon: <AccountCircleIcon />,
-      },
-      {
-        segment: "localhost:5173/manage_course_semester",
-        title: "Manage Courses",
-        icon: <AssignmentIcon />,
-      },
-      {
-        segment: "manage_exam",
-        title: "Manage Exam",
-        icon: <AssignmentIcon />,
-      },
-    ],
+    segment: "staff/manage_class",
+    title: "Management Class",
+    icon: <SchoolIcon />,
   },
+  {
+    segment: "staff/account-management",
+    title: "Management Account",
+    icon: <SupervisorAccountIcon />,
+  },
+  {
+    segment: "staff/manage_course_semester",
+    title: "Management Courses",
+    icon: <AssignmentIcon />,
+  },
+  {
+    segment: "staff/manage-exam-point",
+    title: "Management Exam",
+    icon: <AssignmentIcon />,
+  },
+
   {
     segment: "Upcoming",
     title: "Read user guide",
     icon: <PictureAsPdfIcon />,
   },
-  {
-    segment: "Contact",
-    title: "Contact Support",
-    icon: <SupportAgentIcon />,
-  },
+
   {
     segment: "FQA",
     title: "FQA",
@@ -140,9 +131,9 @@ function StaffDashboardLayout() {
         isMenuExpanded={isMenuExpanded}
         onToggleMenu={handleToggleMenu}
         sx={{
-          display: "flex", // Sử dụng Flexbox
-          flexDirection: "row", // Layout theo chiều ngang
-          height: "100vh", // Đảm bảo chiều cao đầy đủ của màn hình
+          display: "flex", 
+          flexDirection: "row", 
+          height: "100vh", 
         }}
       >
         <Box
@@ -150,10 +141,9 @@ function StaffDashboardLayout() {
             flex: 1,
             overflow: "auto",
             display: "flex",
-            flexDirection: "column", // Đảm bảo các phần tử nằm theo cột
+            flexDirection: "column",
           }}
         >
-          {/* CircularProgress chỉ xuất hiện khi đang tải */}
           {loading && (
             <Box position="fixed" top={0} left={0} right={0} zIndex={1101}>
               <CircularProgress color="secondary" />

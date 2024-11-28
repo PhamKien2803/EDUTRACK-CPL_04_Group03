@@ -11,6 +11,10 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+import PeopleIcon from '@mui/icons-material/People';
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import ClassIcon from '@mui/icons-material/Class';
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -43,18 +47,42 @@ interface Sale {
 }
 
 const DashboardStaff: React.FC = () => {
-  const [chartData, setChartData] = useState<any>({
+  interface ChartData {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor: string;
+      borderColor: string;
+      borderWidth: number;
+    }[];
+  }
+
+  const [chartData, setChartData] = useState<ChartData>({
     labels: [],
     datasets: [],
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [dataUser, setDataUser] = useState<any>([]);
-  const [dataClass, setDataClass] = useState<any>([]);
-  const [dataCourseSemester, setDataCourseSemester] = useState<any>([]);
+  interface User {
+    Role: number;
+  }
+
+  const [dataUser, setDataUser] = useState<User[]>([]);
+  interface Class {
+    id: number;
+    name: string;
+  }
+
+  const [dataClass, setDataClass] = useState<Class[]>([]);
+  const [dataCourseSemester, setDataCourseSemester] = useState<CourseSemester[]>([]);
 
   // Hàm xử lý dữ liệu API thành dữ liệu biểu đồ
-  const processChartData = (data: any) => {
-    const semesterCounts = data.reduce((acc: any, item: any) => {
+  interface CourseSemester {
+    SemesterID: number;
+  }
+
+  const processChartData = (data: CourseSemester[]) => {
+    const semesterCounts = data.reduce((acc: { [key: number]: number }, item: CourseSemester) => {
       acc[item.SemesterID] = (acc[item.SemesterID] || 0) + 1;
       return acc;
     }, {});
@@ -127,7 +155,7 @@ const DashboardStaff: React.FC = () => {
     },
   };
 
-  const recentSales: Sale[] = [
+  const TopStudent: Sale[] = [
     {
       name: "Nguyễn Trung Nghĩa",
       email: "nghianthe170569@fpt.edu.vn",
@@ -148,33 +176,55 @@ const DashboardStaff: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+
+
       <Grid container spacing={3}>
-        {/* Thống kê tổng quan */}
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            transition: "transform 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0 4px 20px rgba(128, 0, 128, 0.5)",
+            },
+          }}>
             <CardContent>
+              <PeopleIcon sx={{ color: "red" }} />
               <Typography variant="h6">Student</Typography>
               <Typography variant="h4" sx={{ my: 1 }}>
-                {dataUser.filter((user: any) => user.Role === 0).length}
+                {dataUser.filter((user: User) => user.Role === 0).length}
               </Typography>
               <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            transition: "transform 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0 4px 20px rgba(128, 0, 128, 0.5)",
+            },
+          }} >
             <CardContent>
+              <ContactEmergencyIcon sx={{ color: "purple" }} />
               <Typography variant="h6">Lecturer</Typography>
               <Typography variant="h4" sx={{ my: 1 }}>
-                {dataUser.filter((user: any) => user.Role === 1).length}
+                {dataUser.filter((user: User) => user.Role === 1).length}
               </Typography>
               <Typography color="textSecondary"></Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            transition: "transform 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0 4px 20px rgba(128, 0, 128, 0.5)",
+            },
+          }} >
             <CardContent>
+              <AnalyticsIcon sx={{ color: "green" }} />
               <Typography variant="h6">Course</Typography>
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataCourseSemester.length}
@@ -184,8 +234,15 @@ const DashboardStaff: React.FC = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{
+            transition: "transform 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              transform: "scale(1.05)",
+              boxShadow: "0 4px 20px rgba(128, 0, 128, 0.5)",
+            },
+          }} >
             <CardContent>
+              <ClassIcon sx={{ color: "blue" }} />
               <Typography variant="h6">Class</Typography>
               <Typography variant="h4" sx={{ my: 1 }}>
                 {dataClass.length}
@@ -195,6 +252,8 @@ const DashboardStaff: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+
+
 
       <Grid container spacing={3} sx={{ mt: 3 }}>
         {/* Biểu đồ */}
@@ -216,15 +275,15 @@ const DashboardStaff: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* Recent Sales */}
+        {/* Danh sách học sinh */}
         <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2 }}>
-                talented students
+                Talented students
               </Typography>
               <List>
-                {recentSales.map((sale, index) => (
+                {TopStudent.map((sale, index) => (
                   <ListItem key={index} divider>
                     <ListItemAvatar>
                       <Avatar>{sale.name[0]}</Avatar>

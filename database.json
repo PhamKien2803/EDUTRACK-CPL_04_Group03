@@ -4,7 +4,8 @@
       "ClassID": "c123",
       "ClassName": "SE222",
       "Student": [
-        "he173077",
+        "he170569",
+        "he170155",
         "he171694"
       ],
       "Status": true,
@@ -29,6 +30,15 @@
       ],
       "Status": true,
       "id": "e049"
+    },
+    {
+      "id": "757f",
+      "ClassID": "be54ac64-07e3-4666-a6a6-268d6aafb3c0",
+      "ClassName": "SE1817",
+      "Student": [
+        "he170155"
+      ],
+      "Status": true
     }
   ],
   "AnswerQuestionExam": [
