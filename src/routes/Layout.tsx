@@ -7,7 +7,7 @@ export const Layout = () => {
 
     if (isAuthenticated) {
         switch (account.Role) {
-            case 2: return <Navigate to={"home-page"} />
+            case 2: return <Navigate to={"/staff/dashboardStaff"} />
             case 0: return <Navigate to={"/dashboardPage"} />
             case 1: return <Navigate to={"/lecturer/homePage"} />
         }

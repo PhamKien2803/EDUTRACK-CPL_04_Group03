@@ -1,7 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import UpcomingIcon from "@mui/icons-material/Upcoming";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
@@ -26,7 +25,7 @@ const NAVIGATION: Navigation = [
     icon: <AccountCircleIcon />,
   },
   {
-    segment: "staff/homePage",
+    segment: "staff/dashboardStaff",
     title: "Dashboard",
     icon: <DashboardIcon />,
   },

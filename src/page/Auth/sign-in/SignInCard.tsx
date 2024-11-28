@@ -121,7 +121,7 @@ const Login: React.FC = () => {
       toast.success("Login successful");
       switch (user.Role) {
         case 2: return setTimeout(() => {
-          nav("/home-page");
+          nav("/staff/dashboardStaff");
         }, 1000);
         case 0: return setTimeout(() => {
           nav("/dashboardPage");
