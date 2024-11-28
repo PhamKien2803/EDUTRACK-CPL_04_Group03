@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { Outlet, useLocation, useNavigationType } from "react-router-dom";
-import { Box, CircularProgress } from "@mui/material";
+import { Badge, Box, CircularProgress, IconButton } from "@mui/material";
+import MessageIcon from '@mui/icons-material/Message';
+
 import {
   AccountCircle as AccountCircleIcon,
   Dashboard as DashboardIcon,
@@ -14,6 +16,10 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import SchoolIcon from "@mui/icons-material/School";
+import ChatUI from "../../page/Chart/ChapApp";
+import { AppContext } from "../../context/AppContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../Config/firebase";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
@@ -49,6 +55,25 @@ function StudentDashboardLayout() {
   );
   const location = useLocation();
   const navigationType = useNavigationType();
+  let unreadCount = 0;
+  const [open, setOpen] = useState(false);
+  const { userData } = useContext(AppContext);
+  useEffect(() => {
+    getCountMesNotSeen();
+  }, [])
+  const getCountMesNotSeen = async () => {
+    const userChatRef = doc(db, 'chats', userData.id)
+    const userChatsSnapShot = await getDoc(userChatRef);
+    const userChatsData = userChatsSnapShot.data();
+    console.log('check data', userChatsData.chatsData);
+    userChatsData.chatsData.forEach(item => {
+      if (item.messageSeen === false) {
+        unreadCount++;
+      }
+    });
+
+
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +88,7 @@ function StudentDashboardLayout() {
   const handleToggleMenu = () => {
     setIsMenuExpanded((prev) => !prev);
   };
+  const toggleModal = () => setOpen(!open);
 
   return (
     <>
@@ -107,8 +133,32 @@ function StudentDashboardLayout() {
               </Box>
             )}
             <Outlet />
+            <Box
+              sx={{
+                position: 'fixed',
+                bottom: 20,
+                right: 20,
+                zIndex: 1000,
+              }}
+            >
+              <IconButton aria-label="Open Messenger" onClick={toggleModal}>
+                <Badge
+                  badgeContent={unreadCount}
+                  color="error"
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MessageIcon sx={{ fontSize: 40 }} />
+                </Badge>
+              </IconButton>
+            </Box>
+
           </Box>
+
         </DashboardLayout>
+        <ChatUI open={open} toggleModal={toggleModal} />
       </AppProvider>
     </>
   );

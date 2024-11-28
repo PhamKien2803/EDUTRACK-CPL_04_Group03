@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { doLogout } from "../../../redux/action/userAction";
 import Swal from "sweetalert2";
+import { logout } from "../../../Config/firebase";
 
 const LogoutButton: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,20 +21,18 @@ const LogoutButton: React.FC = () => {
       cancelButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(doLogout()); 
-        
-        navigate("/login"); 
-      } else {
-        navigate("/home-page");
+        dispatch(doLogout());
+        logout()
+        navigate("/login");
       }
     });
   };
 
   React.useEffect(() => {
-    handleLogout(); 
+    handleLogout();
   }, []);
 
-  return null; 
+  return null;
 };
 
 export default LogoutButton;

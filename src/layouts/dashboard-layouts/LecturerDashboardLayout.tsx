@@ -113,9 +113,9 @@ function LecturerDashboardLayout() {
         isMenuExpanded={isMenuExpanded}
         onToggleMenu={handleToggleMenu}
         sx={{
-          display: "flex", 
+          display: "flex",
           flexDirection: "row",
-          height: "100vh", 
+          height: "100vh",
         }}
       >
         <Box

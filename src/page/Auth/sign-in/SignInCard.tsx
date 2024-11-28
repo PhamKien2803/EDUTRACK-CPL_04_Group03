@@ -25,6 +25,7 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch } from "react-redux";
 import { doLogin } from "../../../redux/action/userAction";
+import { login } from "../../../Config/firebase";
 
 interface Participant {
   id: string;
@@ -117,6 +118,7 @@ const Login: React.FC = () => {
     );
 
     if (user) {
+      login(email, password)
       dispatch(doLogin(user));
       toast.success("Login successful");
       switch (user.Role) {
@@ -201,7 +203,7 @@ const Login: React.FC = () => {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <ForgotPassword open={open} handleClose={handleClose} user = {userList} />
+        <ForgotPassword open={open} handleClose={handleClose} user={userList} />
         <Button
           variant="contained"
           fullWidth

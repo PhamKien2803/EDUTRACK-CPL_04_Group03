@@ -31,6 +31,7 @@ export interface participants {
   isOnline: boolean;
   Status: boolean;
   createdAt: string;
+  uid: string
 }
 
 export interface questionSlot {

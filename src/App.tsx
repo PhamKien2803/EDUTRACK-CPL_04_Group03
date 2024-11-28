@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import LanguageSelector from "./i18n/LanguageSelector";
 import LoginPage from "./page/Auth/login/Login";
@@ -17,6 +17,11 @@ import VerifyOTP from "./page/Auth/forgot-password/VerifyOTP";
 import ResetPassword from "./page/Auth/forgot-password/ResetPassword";
 import EduTrackHome from "./page/landing_page/EduTrackHome";
 import CheckPoint from "./page/home-page/staff-home/Exam/CheckPoint";
+import { useContext, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./Config/firebase";
+import { AppContext } from "./context/AppContext";
+import ChatUI from "./page/Chart/ChapApp";
 
 function App() {
   interface RootState {
@@ -39,6 +44,26 @@ function App() {
   //   localStorage.setItem("language", JSON.stringify(lang));
   // };
 
+  const navigate = useNavigate();
+
+  const { loadUserData } = useContext(AppContext);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await loadUserData(user.uid)
+        switch (account.Role) {
+          case 2: return <Navigate to={"/staff/dashboardStaff"} />
+          case 0: return <Navigate to={"/dashboardPage"} />
+          case 1: return <Navigate to={"/lecturer/homePage"} />
+        }
+
+      } else {
+        navigate('/login')
+      }
+    })
+  }, [])
+
   return (
     <>
 
@@ -52,7 +77,7 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/staff/exam/check-point" element={<CheckPoint />} />
-
+        <Route path='/chatapp' element={<ChatUI />} />
         {/* Private routes */}
         {account && (
           <Route element={<PrivateRoute />}>

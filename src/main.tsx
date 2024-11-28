@@ -9,15 +9,18 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { persistor, store } from './redux/store';
 import './i18n/i18n';
+import AppContextProvider from './context/AppContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/*" element={<App />} />
-          </Routes>
+          <AppContextProvider>
+            <Routes>
+              <Route path="/*" element={<App />} />
+            </Routes>
+          </AppContextProvider>
         </BrowserRouter>
       </PersistGate>
     </Provider>
