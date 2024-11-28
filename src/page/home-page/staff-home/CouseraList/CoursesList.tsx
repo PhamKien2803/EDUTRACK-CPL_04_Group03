@@ -29,12 +29,12 @@ const CouseraList: React.FC = () => {
         CourseName: '',
         Status: true,
     });
+    const [filterStatus, setFilterStatus] = useState<string>("all");
 
     useEffect(() => {
         getCourse()
             .then((response: Course[]) => {
-                const filteredCourses = response.filter((course) => course.Status === true);
-                setCourses(filteredCourses);
+                setCourses(response); // Không lọc theo Status
             })
             .catch((error) => {
                 console.error("Error fetching courses:", error);
@@ -85,9 +85,15 @@ const CouseraList: React.FC = () => {
         }
     };
 
-    const filteredCourses = courses.filter(course =>
-        course.CourseName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredCourses = courses.filter(course => {
+        const matchesSearchTerm = course.CourseName.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesStatus =
+            filterStatus === "all" ||
+            (filterStatus === "true" && course.Status) ||
+            (filterStatus === "false" && !course.Status);
+        return matchesSearchTerm && matchesStatus;
+    });
+
 
     return (
         <div>
@@ -113,7 +119,16 @@ const CouseraList: React.FC = () => {
                             ),
                         }}
                     />
-
+                    <Select
+                        value={filterStatus}
+                        onChange={(e) => setFilterStatus(e.target.value)}
+                        style={{ marginLeft: "10px", width: "150px" }}
+                        size="small"
+                    >
+                        <MenuItem value="all">All</MenuItem>
+                        <MenuItem value="true">Active</MenuItem>
+                        <MenuItem value="false">Inactive</MenuItem>
+                    </Select>
                     <Button variant="contained" onClick={handleOpenAddDialog} style={{ marginLeft: "10px" }}>
                         Add Course
                     </Button>
