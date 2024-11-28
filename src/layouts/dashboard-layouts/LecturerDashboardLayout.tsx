@@ -15,8 +15,12 @@ import {
   useLocation,
   useNavigationType,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Badge, Box, CircularProgress, IconButton } from "@mui/material";
+import { AppContext } from "../../context/AppContext";
+import MessageIcon from '@mui/icons-material/Message';
+import { db } from "../../Config/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const NAVIGATION: Navigation = [
   {
@@ -75,6 +79,14 @@ function LecturerDashboardLayout() {
   );
   const location = useLocation();
   const navigationType = useNavigationType();
+  const [unreadCount, setUnreadCount] = useState(0);
+  const { userData } = useContext(AppContext);
+  const [open, setOpen] = useState(false);
+
+
+  useEffect(() => {
+    getCountMesNotSeen();
+  }, [userData])
 
   useEffect(() => {
     setLoading(true);
@@ -90,6 +102,22 @@ function LecturerDashboardLayout() {
   const handleToggleMenu = () => {
     setIsMenuExpanded((prev) => !prev);
   };
+  const getCountMesNotSeen = async () => {
+    const userChatRef = doc(db, 'chats', userData.id)
+    const userChatsSnapShot = await getDoc(userChatRef);
+    const userChatsData = userChatsSnapShot.data();
+    console.log('check data', userChatsData.chatsData);
+
+    userChatsData.chatsData.forEach(item => {
+      if (item.messageSeen === false) {
+
+        setUnreadCount(unreadCount + 1);
+        console.log('count', unreadCount);
+
+      }
+    });
+  }
+  const toggleModal = () => setOpen(!open);
 
   return (
     <AppProvider
@@ -132,6 +160,27 @@ function LecturerDashboardLayout() {
             </Box>
           )}
           <Outlet />
+          <Box
+            sx={{
+              position: 'fixed',
+              bottom: 20,
+              right: 20,
+              zIndex: 1000,
+            }}
+          >
+            <IconButton aria-label="Open Messenger" onClick={toggleModal}>
+              <Badge
+                badgeContent={unreadCount}
+                color="error"
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MessageIcon sx={{ fontSize: 40 }} />
+              </Badge>
+            </IconButton>
+          </Box>
         </Box>
       </DashboardLayout>
     </AppProvider>
