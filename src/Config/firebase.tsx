@@ -10,14 +10,20 @@ import { toast } from "react-toastify";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDrSlfeHordSZNJ1tGZlL0Ab1IQ6C5_SR4",
-    authDomain: "chat-b8997.firebaseapp.com",
-    projectId: "chat-b8997",
-    storageBucket: "chat-b8997.firebasestorage.app",
-    messagingSenderId: "229099324840",
-    appId: "1:229099324840:web:f48bf3fb2ad425a2d1499d",
-    measurementId: "G-LCFPHMRPJW"
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID, // Đảm bảo không bỏ sót
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDERID,
+    appId: import.meta.env.VITE_APP_ID,
+    measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
+
+if (import.meta.env.MODE === 'development') {
+    console.log(import.meta.env);
+}
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
