@@ -59,7 +59,7 @@ function App() {
         }
 
       } else {
-        navigate('/landing-page')
+        navigate('/login')
       }
     })
   }, [])
