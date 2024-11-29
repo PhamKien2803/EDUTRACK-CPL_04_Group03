@@ -37,7 +37,7 @@ const StudentAccountCreating = () => {
     const newIdNumber = lastIdNumber + 1;
     return `he17${newIdNumber.toString().padStart(6, '0')}`;
   };
-  
+
 
   const isEmailUnique = (email: string) => {
     return !students.some((student: any) => student.Email === email);
@@ -46,6 +46,16 @@ const StudentAccountCreating = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const { UserName, Email, Age, Address, Password } = newStudent;
+    if (!UserName || !Email || !Age || !Address || !Password) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'All fields must be filled out.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
     if (!isEmailUnique(newStudent.Email)) {
       alert('Email already exists!');
       return;
@@ -75,26 +85,26 @@ const StudentAccountCreating = () => {
       };
 
       emailjs
-      .send('service_k7tjo7o', 'template_afnxci2', emailData, 'BEG8X3EKg9_bLjfCn')
-      .then((result) => {
-        console.log('Email sent successfully:', result.text);
-        Swal.fire({
-          title: 'Success!',
-          text: `Account created successfully! A confirmation email has been sent to ${newStudent.Email}`,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      },
-      
-      (error) => {
-        console.error('Error sending email:', error.text);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Error sending confirmation email. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      });
+        .send('service_k7tjo7o', 'template_afnxci2', emailData, 'BEG8X3EKg9_bLjfCn')
+        .then((result) => {
+          console.log('Email sent successfully:', result.text);
+          Swal.fire({
+            title: 'Success!',
+            text: `Account created successfully! A confirmation email has been sent to ${newStudent.Email}`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+        },
+
+          (error) => {
+            console.error('Error sending email:', error.text);
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error sending confirmation email. Please try again.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          });
 
 
       setNewStudent({

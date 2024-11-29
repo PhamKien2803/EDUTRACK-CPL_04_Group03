@@ -225,38 +225,41 @@ const CreatingClass: React.FC = () => {
 
         {/* Pagination */}
         <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 3,
-            gap: 1,
-          }}
-        >
-          <Button
-            variant="outlined"
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <Button
-              key={index}
-              variant={currentPage === index + 1 ? "contained" : "outlined"}
-              onClick={() => paginate(index + 1)}
-            >
-              {index + 1}
-            </Button>
-          ))}
-          <Button
-            variant="outlined"
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </Box>
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    mt: 3,
+    gap: 1,
+  }}
+>
+  <Button
+    variant="outlined"
+    onClick={() => paginate(currentPage - 1)}
+    disabled={currentPage === 1 || selectedParticipants.length === 0} // Disable nếu không có dữ liệu hoặc đang ở trang đầu tiên
+  >
+    Previous
+  </Button>
+  {Array.from({ length: totalPages }).map((_, index) => (
+    <Button
+      key={index}
+      variant={currentPage === index + 1 ? "contained" : "outlined"}
+      onClick={() => paginate(index + 1)}
+    >
+      {index + 1}
+    </Button>
+  ))}
+  <Button
+    variant="outlined"
+    onClick={() => paginate(currentPage + 1)}
+    disabled={
+      currentPage === totalPages || selectedParticipants.length === 0
+    } // Disable nếu không có dữ liệu hoặc đang ở trang cuối
+  >
+    Next
+  </Button>
+</Box>
+
 
         {/* Create Class Button */}
         <Button
