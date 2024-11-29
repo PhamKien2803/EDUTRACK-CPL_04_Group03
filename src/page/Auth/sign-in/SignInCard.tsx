@@ -108,40 +108,42 @@ const Login: React.FC = () => {
       setEmailError(false);
       setEmailErrorMessage("");
     }
+  
     const user = userList.find(
-      (u) => u.Email === email && u.Password === password
+      (u) => u.Email === email && u.Password === password && u.Status === "true"
     );
-
+  
     if (user) {
-      login(email, password)
+      login(email, password);
       dispatch(doLogin(user));
       toast.success("Login successful");
       switch (user.Role) {
-        case 2: return setTimeout(() => {
-          nav("/staff/dashboardStaff");
-        }, 1000);
-        case 0: return setTimeout(() => {
-          nav("/dashboardPage");
-        }, 1000);
-        case 1: return setTimeout(() => {
-          nav("/lecturer/homePage");
-        }, 1000);
+        case 2:
+          return setTimeout(() => {
+            nav("/staff/dashboardStaff");
+          }, 1000);
+        case 0:
+          return setTimeout(() => {
+            nav("/dashboardPage");
+          }, 1000);
+        case 1:
+          return setTimeout(() => {
+            nav("/lecturer/homePage");
+          }, 1000);
       }
-
-
     } else {
       setEmail("");
       setPassword("");
-
       toast.error(
-        "Invalid email, password or status is not active! Please try again"
+        "Invalid email, password or account is inactive! Please try again"
       );
     }
   };
+  
 
   return (
     <Card variant="outlined">
-      {/* Nội dung giao diện đăng nhập */}
+   
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <SitemarkIcon />
       </Box>
@@ -228,7 +230,7 @@ const Login: React.FC = () => {
         </Button>
       </Box>
 
-      {/* Đặt ToastContainer ngay đây */}
+      
       <ToastContainer
         position="top-right"
         autoClose={5000}

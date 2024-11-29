@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, RadioGroup, FormControlLabel, Radio, FormLabel, FormControl, Typography } from '@mui/material';
+import { TextField, Button, RadioGroup, FormControlLabel, Radio, FormLabel, FormControl, InputAdornment, Box, Typography } from '@mui/material';
 import { createStudent, getParticipants } from '../../../../service/ApiService';
 import emailjs from 'emailjs-com';
-import { AccountCircle, ArrowBack, CalendarToday, Email, Female, Home, Lock, Male } from '@mui/icons-material';
+import { AccountCircle, Email, Cake, Home, Lock, Wc } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-
 const StudentAccountCreating = () => {
-  const navigate = useNavigate()
   const [students, setStudents] = useState<any[]>([]);
   const [newStudent, setNewStudent] = useState({
     id: '',
@@ -33,14 +30,14 @@ const StudentAccountCreating = () => {
   }, []);
 
   const generateStudentId = () => {
-    const filteredStudents = students.filter((student) => student.Role === 1);
+    const filteredStudents = students.filter((student) => student.role === 0);
     if (filteredStudents.length === 0) return 'he170001';
-
-    const lastStudentId = filteredStudents[students.length - 1].id;
+    const lastStudentId = filteredStudents[filteredStudents.length - 1].id;
     const lastIdNumber = parseInt(lastStudentId.substring(2));
     const newIdNumber = lastIdNumber + 1;
-    return `he17${newIdNumber.toString().padStart(4, '0')}`;
+    return `he17${newIdNumber.toString().padStart(6, '0')}`;
   };
+  
 
   const isEmailUnique = (email: string) => {
     return !students.some((student: any) => student.Email === email);
@@ -55,16 +52,11 @@ const StudentAccountCreating = () => {
     }
 
     const studentId = generateStudentId();
-    const studentData = { ...newStudent,
-       id: studentId,
-       createAt: new Date().toISOString()
-      
-      };
+    const studentData = { ...newStudent, id: studentId };
 
     try {
       await createStudent(studentData);
 
-      
       const emailData = {
         contact_number: studentId,
         from_name: 'EduTrack',
@@ -73,12 +65,12 @@ const StudentAccountCreating = () => {
         html_message: `
           Hello ${newStudent.UserName},
           Your student account has been created successfully. Here are your account details:
+          Username: ${newStudent.UserName}
           Email: ${newStudent.Email}
           Student ID: ${studentId}
           Password: ${newStudent.Password}
           Thank you for registering with EduTrack!
           
-         
         `,
       };
 
@@ -104,7 +96,7 @@ const StudentAccountCreating = () => {
         });
       });
 
-     
+
       setNewStudent({
         id: '',
         UserName: 'EDUTRACK',
@@ -128,116 +120,128 @@ const StudentAccountCreating = () => {
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewStudent({ ...newStudent, Gender: event.target.value === 'true' });
   };
-  const handleBackClick = () => {
-    navigate('/staff/account-management'); 
-  };
-
 
   return (
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff', marginTop: '10px' }}>
-        
-        <Typography variant="h4" gutterBottom align="center" style={{ marginBottom: '20px' }}>
-          Create Account for Student
-        </Typography>
-  
+    <Box
+      sx={{
+        maxWidth: 400,
+        margin: 'auto',
+        padding: 3,
+        border: '1px solid #ccc',
+        borderRadius: 2,
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#f9f9f9',
+      }}
+    >
+      <Typography variant="h5" align="center" gutterBottom>
+        Create Account for Student
+      </Typography>
+      <form onSubmit={handleSubmit}>
         <TextField
           label="UserName"
           value={newStudent.UserName}
           onChange={(e) => setNewStudent({ ...newStudent, UserName: e.target.value })}
-          fullWidth
-          variant="outlined"
-          sx={{ borderRadius: 2, marginBottom: 2 }}
           InputProps={{
-            startAdornment: <AccountCircle sx={{ marginRight: 1 }} />
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            ),
           }}
+          fullWidth
+          margin="normal"
         />
-        
         <TextField
           label="Email"
           value={newStudent.Email}
           onChange={(e) => setNewStudent({ ...newStudent, Email: e.target.value })}
-          fullWidth
-          variant="outlined"
-          sx={{ borderRadius: 2, marginBottom: 2 }}
           InputProps={{
-            startAdornment: <Email sx={{ marginRight: 1 }} />
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
           }}
+          fullWidth
+          margin="normal"
         />
-        
         <TextField
           label="Age"
           value={newStudent.Age}
           onChange={(e) => setNewStudent({ ...newStudent, Age: e.target.value })}
-          fullWidth
-          variant="outlined"
-          sx={{ borderRadius: 2, marginBottom: 2 }}
           InputProps={{
-            startAdornment: <CalendarToday sx={{ marginRight: 1 }} />
+            startAdornment: (
+              <InputAdornment position="start">
+                <Cake />
+              </InputAdornment>
+            ),
           }}
+          fullWidth
+          margin="normal"
         />
-        
         <TextField
           label="Address"
           value={newStudent.Address}
           onChange={(e) => setNewStudent({ ...newStudent, Address: e.target.value })}
-          fullWidth
-          variant="outlined"
-          sx={{ borderRadius: 2, marginBottom: 2 }}
           InputProps={{
-            startAdornment: <Home sx={{ marginRight: 1 }} />
+            startAdornment: (
+              <InputAdornment position="start">
+                <Home />
+              </InputAdornment>
+            ),
           }}
+          fullWidth
+          margin="normal"
         />
-  
-        <FormControl component="fieldset" sx={{ marginBottom: 2, gap: 1,  }}>
+        <FormControl component="fieldset" margin="normal" fullWidth>
           <FormLabel component="legend">Gender</FormLabel>
           <RadioGroup
+            row
             value={newStudent.Gender ? 'true' : 'false'}
             onChange={handleGenderChange}
-
           >
-            <FormControlLabel value="true" control={<Radio />} label={<><Male sx={{ marginRight: 1 }} /> Male</>} /> 
-            <FormControlLabel value="false" control={<Radio /> } label={<><Female sx={{ marginRight: 1 }} /> Female</>} />
+            <FormControlLabel
+              value="true"
+              control={<Radio />}
+              label={
+                <>
+                  <Wc style={{ marginRight: '4px' }} />
+                  Male
+                </>
+              }
+            />
+            <FormControlLabel
+              value="false"
+              control={<Radio />}
+              label={
+                <>
+                  <Wc style={{ marginRight: '4px', transform: 'rotate(90deg)' }} />
+                  Female
+                </>
+              }
+            />
           </RadioGroup>
         </FormControl>
-  
         <TextField
           label="Password"
+          type="password"
           value={newStudent.Password}
           onChange={(e) => setNewStudent({ ...newStudent, Password: e.target.value })}
-          fullWidth
-          variant="outlined"
-          sx={{ borderRadius: 2, marginBottom: 2 }}
           InputProps={{
-            startAdornment: <Lock sx={{ marginRight: 1 }} />
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock />
+              </InputAdornment>
+            ),
           }}
-          type="password"
-        />
-  
-  <div style={{ display: 'flex', gap: '10px' }}>  
-        <Button
-          type="submit"
           fullWidth
-          variant="contained"
-          color="primary"
-          sx={{ borderRadius: 2, padding: '10px', flex: 1 }}  
-          startIcon={<AccountCircle />}  
-        >
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
           Create Account
         </Button>
-
- 
-        <Button
-          onClick={handleBackClick}
-          fullWidth
-          variant="outlined"
-          color="secondary"
-          sx={{ borderRadius: 2, padding: '10px', flex: 1 }} 
-          startIcon={<ArrowBack />} 
-        >
-          Back
-        </Button>
-        </div>
       </form>
+    </Box>
   );
 };
 

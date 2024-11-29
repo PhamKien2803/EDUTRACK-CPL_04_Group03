@@ -391,7 +391,7 @@ const StudentList: React.FC = () => {
                 <TableCell>{student.id}</TableCell>
                 <TableCell>{student.UserName}</TableCell>
                 <TableCell>{student.Age}</TableCell>
-                <TableCell>{student.Gender ? 'Nam' : 'Nữ'}</TableCell>
+                <TableCell>{student.Gender ? 'Male' : 'Female'}</TableCell>
                 <TableCell>{student.Address}</TableCell>
                 <TableCell>{student.Email}</TableCell>
                 <TableCell>

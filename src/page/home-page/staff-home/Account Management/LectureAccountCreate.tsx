@@ -20,7 +20,7 @@ const LectureAccountCreating = () => {
     Image: '',
     Role: 1,
     isOnline: true,
-    Status: 'true',
+    Status: "true",
     createAt: ''
   });
 
@@ -116,7 +116,7 @@ const LectureAccountCreating = () => {
         Image: '',
         Role: 1,
         isOnline: true,
-        Status: 'true',
+        Status: "true",
         createAt: ''
       });
 
