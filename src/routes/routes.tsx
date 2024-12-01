@@ -35,6 +35,7 @@ import changePassword from "../components/student_components/profile/changePassw
 import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
 import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
+import { ViewCourseSm } from "../page/home-page/staff-home/ManageCourseSemester/ViewCourseSm";
 
 
 interface Router {
@@ -45,7 +46,7 @@ interface Router {
 }
 
 const routesStudentHome: Router[] = [
- 
+
   {
     name: "dashboard_Page",
     key: "dashboardPage",
@@ -318,6 +319,11 @@ const routesStaffHome: Router[] = [
     component: LectureAccountCreating,
   },
   {
+    key: "create-account-staff",
+    path: "/staff/viewCourse",
+    component: ViewCourseSm,
+  },
+  {
     name: "Profile",
     key: "ProfilePage",
     path: "/profile",
@@ -329,7 +335,7 @@ const routesStaffHome: Router[] = [
     path: "/edit-profile",
     component: EditProfile,
   },
-  
+
   {
     name: "Logout",
     key: "LogoutPage",

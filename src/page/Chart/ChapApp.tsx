@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { IoSearch, IoSend } from "react-icons/io5";
 import { db } from "../../Config/firebase";
 import { AppContext } from "../../context/AppContext";
@@ -115,7 +115,16 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
     const [loading, setLoadding] = useState(true);
     const [input, setInput] = useState("");
     const [image, setImage] = useState('');
-    const [opens, setOpen] = React.useState(false);
+    const [opens, setOpen] = useState(false);
+
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+
     const handleChangeOpen = () => {
         setOpen(!opens);
         setShowSearch(false)
@@ -154,7 +163,10 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                 const querySnap = await getDocs(q);
                 if (!querySnap.empty && userData && querySnap.docs[0].data().id !== userData.id) {
                     let userExit = false;
-                    setUser(querySnap.docs[0].data());
+                    if (chatData.find(e => e.rID !== querySnap.docs[0].data().id)) {
+                        setUser(querySnap.docs[0].data());
+                    }
+
                 } else {
                     setUser(null);
                 }
@@ -206,6 +218,7 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                 }),
             });
             setInput('')
+            handleChangeOpen()
             console.log("Chat added successfully.");
         } catch (error) {
             console.error("Error in addChat:", error);
@@ -456,7 +469,6 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                                             }}
                                         >
                                             {messages.map((message, index) => (
-
                                                 <MessageContainer key={index} sent={message.sId == userData.id}>
                                                     <MessageBubble sent={message.sId == userData.id}>
                                                         <Typography variant="body1">{message.text}</Typography>
@@ -469,7 +481,9 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                                                     </MessageBubble>
                                                 </MessageContainer>
                                             ))}
+                                            <div ref={messagesEndRef}></div>
                                         </Box>
+
 
                                         <Box sx={{ display: "flex", gap: 1 }}>
                                             <TextField
