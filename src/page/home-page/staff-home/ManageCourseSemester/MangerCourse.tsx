@@ -153,7 +153,11 @@ export const MangerCourse = () => {
                                 <TableCell>{ls.CourseID}</TableCell>
                                 <TableCell>{ls.SemesterID.toUpperCase()}</TableCell>
                                 <TableCell>{dataClass.find(item => item.ClassID === ls.ClassID)?.ClassName}</TableCell>
-                                <TableCell><Button variant="contained">VIEW</Button></TableCell>
+                                <TableCell>
+                                    <Link to={`/staff/viewCourse?ls=${ls.id}`}>
+                                        <Button variant="contained">VIEW</Button>
+                                    </Link>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

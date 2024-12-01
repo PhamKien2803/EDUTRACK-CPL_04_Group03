@@ -348,18 +348,6 @@
       "display": true,
       "status": true,
       "createdAt": "22/11/2024"
-    },
-    {
-      "id": "1bcc",
-      "examID": "f824556d-b6e9-4f50-9937-2566ff7842ec",
-      "examContent": "Test Quiz",
-      "courseSemesterID": "cs13",
-      "timeLimit": "900",
-      "image": "",
-      "dateOfBooking": "2024-11-25T12:46",
-      "display": true,
-      "status": true,
-      "createdAt": "25/11/2024"
     }
   ],
   "UserAnswer": [
@@ -607,8 +595,8 @@
       "QuestionID": "q128",
       "Status": 2,
       "content": "Question 1",
-      "TimeStart": "11:40:00",
-      "TimeEnd": "00:40:00",
+      "TimeStart": "14:07:00",
+      "TimeEnd": "14:07:00",
       "Slotid": "s11",
       "SettingStatus": 0,
       "id": "d448"
@@ -616,7 +604,17 @@
   ],
   "AssignmentSlot": [],
   "AnswerAssignmentSlot": [],
-  "AnswerQuestionSlot": [],
+  "AnswerQuestionSlot": [
+    {
+      "id": "49db",
+      "comment": "dasda",
+      "QuestionID": "q128",
+      "UserID": "he170155",
+      "Rating": 0,
+      "Replies": [],
+      "Timestamped": "2024-11-29T07:08:48.460Z"
+    }
+  ],
   "Replies": [],
   "Carousel": [
     {
