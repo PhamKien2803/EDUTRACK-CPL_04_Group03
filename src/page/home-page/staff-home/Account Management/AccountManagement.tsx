@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { Search as SearchIcon, Delete as DeleteIcon, } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { getParticipants, updateAccountStatus } from "../../../../service/ApiService";
+import { deleteParticipant, getParticipants, updateAccountStatus } from "../../../../service/ApiService";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
@@ -28,6 +28,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Cancel } from "@mui/icons-material";
 
 import { participants } from "../../../../models/Interface";
+import Swal from "sweetalert2";
 
 const AccountManagement: React.FC = () => {
   interface RootState {
@@ -117,6 +118,48 @@ const AccountManagement: React.FC = () => {
     navigate("/staff/create-account-lecture");
     handleCloseModal();
   };
+
+  const handleDeleteParticipant = async (id: string) => {
+    if (id === currentUsers.UserID) {
+      Swal.fire({
+        icon: "warning",
+        title: "Action Denied!",
+        text: "You cannot delete your own account!",
+      });
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to delete this account? This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteParticipant(id);
+        await fetchParticipants();
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "The account has been successfully deleted.",
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "There was an error deleting the account. Please try again.",
+        });
+        console.error("Error deleting participant:", error);
+      }
+    }
+  };
+
 
   return (
     <Box
@@ -336,7 +379,7 @@ const AccountManagement: React.FC = () => {
                 </TableCell>
 
 
-                <TableCell sx={{ alignItems: "center", textAlign: "center" }}>
+                <TableCell sx={{ alignItems: "center", textAlign: "center", display: "flex" }}>
                   <Button
                     variant="contained"
                     onClick={() => handleUpdateStatus(participant.id, participant.Status)}
@@ -353,11 +396,36 @@ const AccountManagement: React.FC = () => {
                       fontWeight: "bold",
                       borderRadius: "8px",
                       padding: "6px 16px",
+                      mr: 1,
                     }}
                   >
                     {participant.Status === "true" ? "Inactive" : "Activate"}
                   </Button>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDeleteParticipant(participant.id)}
+                    sx={{
+                      border: "1px solid red",
+                      borderRadius: "8px",
+                      padding: "6px 8px",
+                      fontSize: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      color: "red",
+                      "& .MuiSvgIcon-root": {
+                        fontSize: "16px",
+                      },
+                      "&:hover": {
+                        backgroundColor: "rgba(255,0,0,0.1)",
+                      },
+                    }}
+                  >
+                    <DeleteIcon /> Delete
+                  </IconButton>
+
                 </TableCell>
+
 
               </TableRow>
             ))}

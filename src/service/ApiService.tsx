@@ -246,7 +246,15 @@ export const createStudent = (newStudent: participants) => {
     createAt: new Date().toISOString(),
   });
 };
-
+export const deleteParticipant = async (id: string) => {
+  try {
+    const response = await axios.delete(`/Participants/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting participant:", error);
+    throw error;
+  }
+};
 const postAnswer = (ua: UserAnswer) => {
   return axios.post("UserAnswer", {
     answer: ua.answer,
