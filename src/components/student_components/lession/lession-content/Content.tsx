@@ -25,9 +25,11 @@ interface Props {
     questionSlot: QuestionSlot[];
     assignmentSlot: assignmentSlot[];
     slotSelected: string;
+    setclassId: (id: string) => void;
+    classId: string;
 }
 
-const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot, slotSelected }) => {
+const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot, slotSelected, classId }) => {
     const { t } = useTranslation();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -119,7 +121,7 @@ const Content: React.FC<Props> = ({ lession, slot, questionSlot, assignmentSlot,
                                     </Typography>
                                     <Button
                                         component={Link}
-                                        to={`/lession-infor/details/${sl}`}
+                                        to={`/lession-infor/details?Slotid=${sl}&classid=${classId}`}
                                         variant="outlined"
                                         color="secondary"
                                         size="small"

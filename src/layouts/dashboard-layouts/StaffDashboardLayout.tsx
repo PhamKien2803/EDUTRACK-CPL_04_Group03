@@ -2,7 +2,6 @@ import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import SchoolIcon from "@mui/icons-material/School";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -15,7 +14,7 @@ import {
   useNavigationType,
 } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
@@ -45,7 +44,7 @@ const NAVIGATION: Navigation = [
     icon: <AssignmentIcon />,
   },
   {
-    segment: "staff/manage-exam-point",
+    segment: "staff/exam-check-point",
     title: "Management Exam",
     icon: <AssignmentIcon />,
   },
@@ -56,11 +55,6 @@ const NAVIGATION: Navigation = [
     icon: <PictureAsPdfIcon />,
   },
 
-  {
-    segment: "FQA",
-    title: "FQA",
-    icon: <LiveHelpIcon />,
-  },
   {
     segment: "Logout",
     title: "Logout",
@@ -115,14 +109,20 @@ function StaffDashboardLayout() {
       branding={{
         logo: (
           <Box display="flex" alignItems="center">
-            <SchoolIcon sx={{ fontSize: "2.5rem" }} />
-            <img
-              src="https://th.bing.com/th/id/OIP.yQVfminp9JifX-QE4swlHwAAAA?rs=1&pid=ImgDetMain"
-              alt="EduTrack logo"
-              style={{ marginRight: 8 }}
-            />
+            <SchoolIcon sx={{ fontSize: "2.5rem", marginRight: "8px", color: "black" }} />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: "black",
+                textTransform: "uppercase"
+              }}
+            >
+              Staff Dashboard
+            </Typography>
           </Box>
         ),
+
         title: "",
       }}
       theme={demoTheme}
@@ -131,9 +131,9 @@ function StaffDashboardLayout() {
         isMenuExpanded={isMenuExpanded}
         onToggleMenu={handleToggleMenu}
         sx={{
-          display: "flex", 
-          flexDirection: "row", 
-          height: "100vh", 
+          display: "flex",
+          flexDirection: "row",
+          height: "100vh",
         }}
       >
         <Box

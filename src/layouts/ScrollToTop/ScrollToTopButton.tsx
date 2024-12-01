@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Fab } from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Fab, Tooltip } from '@mui/material';
 
 const ScrollToTopButton: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const toggleVisibility = () => {
-            console.log("Current ScrollY:", window.scrollY); 
-            if (window.scrollY > 50) {
+            console.log("Current ScrollY:", window.scrollY);
+            if (window.scrollY > 1900) {
                 setIsVisible(true);
             } else {
                 setIsVisible(false);
@@ -28,7 +27,7 @@ const ScrollToTopButton: React.FC = () => {
 
     return (
         <Fab
-            color="primary"
+            color="secondary"
             size="small"
             onClick={scrollToTop}
             sx={{
@@ -39,7 +38,10 @@ const ScrollToTopButton: React.FC = () => {
                 zIndex: 1000,
             }}
         >
-            <KeyboardArrowUpIcon />
+            <Tooltip title="Scroll to top">
+                <span style={{ fontSize: 20 }}>↑</span>
+            </Tooltip>
+
         </Fab>
     );
 };

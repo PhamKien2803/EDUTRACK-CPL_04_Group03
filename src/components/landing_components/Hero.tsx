@@ -1,13 +1,11 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import InputLabel from "@mui/material/InputLabel";
-import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { useTranslation } from 'react-i18next';
+
 
 // Styled components cho carousel
 const Card = styled(Box)(() => ({
@@ -30,7 +28,9 @@ const Card = styled(Box)(() => ({
   },
 }));
 
-
+interface HeroProps {
+  scrollToFooter: () => void;
+}
 
 const CardImage = styled(Box)({
   height: "180px",
@@ -49,7 +49,8 @@ const Carousel = styled(Box)({
   transition: "transform 0.5s ease-in-out", // Hiệu ứng chuyển động mượt
 });
 
-export default function Hero() {
+export default function Hero({ scrollToFooter }: HeroProps) {
+  const { t } = useTranslation();
   const sentences = [
     "Welcome to EduTrack 🎉",
     "Manage Your Learning",
@@ -173,9 +174,9 @@ export default function Hero() {
         }}
       >
         <Stack
-          spacing={2}
+          spacing={4}
           useFlexGap
-          sx={{ alignItems: "center", width: { xs: "100%", sm: "70%" } }}
+          sx={{ alignItems: "center", width: { xs: "100%", sm: "70%" }, marginBottom: "2rem" }}
         >
           <Typography
             variant="h1"
@@ -210,56 +211,17 @@ export default function Hero() {
               monitor progress, and achieve your academic goals effortlessly through
               our intuitive dashboard.</strong>
           </Typography>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={1}
-            useFlexGap
-            sx={{ pt: 2, width: { xs: "100%", sm: "350px" } }}
-          >
-            <InputLabel htmlFor="email-hero" sx={{ display: "none" }}>
-              Email
-            </InputLabel>
-            <TextField
-              id="email-hero"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              fullWidth
-              slotProps={{
-                htmlInput: {
-                  autoComplete: "off",
-                  "aria-label": "Enter your email address",
-                },
-              }}
-            />
-            <Button
-              size="small"
-              sx={{
-                minWidth: "fit-content",
-                backgroundColor: "#2196f3",
-                border: "1px solid #9575cd",
-                padding: "6px 16px",
-                fontWeight: "bold",
-                color: "black",
-              }}
+          <Typography>
+            <strong>{t("hero.getStarted")}</strong>{" "}
+            <Box
+              component="span"
+              sx={{ color: "primary.main", cursor: "pointer", textDecoration: "underline", fontSize: "1.1rem" }}
+              onClick={scrollToFooter}
             >
-              Get Started
-            </Button>
-
-          </Stack>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ textAlign: "center" }}
-          >
-            By clicking &quot;Get Started&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
+              {t("hero.getStartedLink")}
+            </Box>
           </Typography>
+
         </Stack>
 
         {/* Carousel Section */}

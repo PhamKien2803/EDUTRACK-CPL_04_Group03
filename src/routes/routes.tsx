@@ -76,7 +76,7 @@ const routesStudentHome: Router[] = [
   {
     name: "lession_infor",
     key: "LessionInforPage",
-    path: "/lession-infor/details/:id",
+    path: "/lession-infor/details",
     component: LessionInfor,
   },
 
@@ -274,7 +274,7 @@ const routesStaffHome: Router[] = [
   },
   {
     key: "check_point",
-    path: "staff/exam/check-point",
+    path: "staff/exam-check-point",
     component: CheckPoint,
   },
   {

@@ -59,7 +59,7 @@ function App() {
         }
 
       } else {
-        navigate('/login')
+        navigate('/landing-page')
       }
     })
   }, [])
@@ -76,7 +76,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/staff/exam/check-point" element={<CheckPoint />} />
         <Route path='/chatapp' element={<ChatUI />} />
         {/* Private routes */}
         {account && (

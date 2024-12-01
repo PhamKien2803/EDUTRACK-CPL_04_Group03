@@ -30,7 +30,7 @@ interface Props {
   courses: Course[];
 }
 
-const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, questionSlot, courses, participants }) => {
+const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, participants }) => {
   const { t } = useTranslation();
   const [activityFilter, setActivityFilter] = useState('All Activities');
   console.log(activityFilter);
@@ -57,22 +57,6 @@ const Header: React.FC<Props> = ({ slot, lession, classes, setSelected, question
     setIsVisible(!isVisible);
   };
 
-  const filterSlotName = (slotid: string): string | undefined => {
-    const slotName = slot.find((s) => s.id === questionSlot.find((q) => q.Slotid === slotid)?.Slotid)?.SlotName;
-    return slotName;
-  }
-
-  const filterSlotName2 = (slotId: string): string | undefined => {
-    const question = questionSlot.find(q => q.Slotid === slotId);
-    if (question) {
-      const slotFound = slot.find(s => s.id === question.Slotid);
-      return slotFound ? slotFound.SlotName : undefined; // Trả về SlotName hoặc undefined
-    }
-    return undefined; // Nếu không tìm thấy câu hỏi
-  };
-  console.log(filterSlotName2("s11"));
-
-  console.log(filterSlotName("s11"));
 
   return (
     <Box p={3}>

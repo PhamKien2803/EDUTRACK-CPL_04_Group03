@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { slot as Slot, questionSlot, assignmentSlot } from "../../../../models/Interface";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn"
 import { useTranslation } from 'react-i18next';
@@ -16,10 +16,12 @@ interface Props {
 const Content: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { id: SlotId } = useParams<{ id: string }>();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const Slotid = queryParams.get("Slotid");
 
-    const filteredQuestions = questionSlot.filter(qs => qs.Slotid === SlotId);
-    const filteredAssignments = assignmentSlot.filter(asm => asm.Slotid === SlotId);
+    const filteredQuestions = questionSlot.filter(qs => qs.Slotid === Slotid);
+    const filteredAssignments = assignmentSlot.filter(asm => asm.Slotid === Slotid);
     const handleClickToDiscussion = (questionId: string, slotId: string) => {
         navigate(`/dicussion-page/question?slotID=${slotId}&questionid=${questionId}`);
 

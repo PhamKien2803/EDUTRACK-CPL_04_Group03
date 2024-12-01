@@ -1,18 +1,15 @@
 import { Add, Delete } from "@mui/icons-material";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, Box, Button, Card, CardContent, Divider, Grid, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Card, CardContent, Divider, Grid, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Semester, classRoom, courses, participants, slot } from "../../../../models/Interface";
+import { classRoom, courses, participants, slot } from "../../../../models/Interface";
 import { getClass, getCourse, getCourseSemester, getParticipants } from "../../../../service/ApiService";
 import ClearIcon from '@mui/icons-material/Clear';
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
-import ClassIcon from '@mui/icons-material/Class';
-import FolderIcon from '@mui/icons-material/Folder';
+import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { postCourseSemester, postSlot } from "../../../../service/ExamApi";
 import { useNavigate } from "react-router-dom";
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 export const AddingCourseSemester = () => {
     const [participants, setParticipants] = useState<participants[]>([])
@@ -109,8 +106,6 @@ export const AddingCourseSemester = () => {
         } if (type === "status") {
             // console.log(value);
             const check = value === true
-
-
             dataClone[slotIndex].Status = check
         } if (type === "startDate") {
             dataClone[slotIndex].TimeStart = value;
@@ -121,261 +116,300 @@ export const AddingCourseSemester = () => {
         setSlotList(dataClone)
     }
 
-    console.log(slotList);
 
     const saveCourseSemester = async () => {
         if (!lecturerId || !classId || !courseId) {
-            alert('You must choice full information (letutare or class or course) ')
+            Swal.fire({
+                icon: 'error',
+                title: 'Incomplete Information',
+                text: 'You must choose full information (Lecturer, Class, and Course).',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
         } else {
-            const arr: string[] = []
-            slotList.forEach(item => arr.push(item.id))
+            const arr = slotList.map(item => item.id);
             const data = {
                 id: uuidv4(),
                 SemesterID: dataSemesterID,
                 SlotID: arr,
                 CourseID: courseId,
-                LecturersID: classId,
+                LecturersID: lecturerId,
                 ClassID: classId,
-            }
+            };
+
             if (data) {
-                // console.log(data);
-                // console.log(slotList);
+                const result = await Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to save this course semester?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!',
+                    cancelButtonText: 'Cancel',
+                });
 
-                await postCourseSemester(data)
-                slotList.forEach(async (item) => {
-                    await postSlot(item)
-                })
-                nav('/manageCourseSmester')
+                if (result.isConfirmed) {
+                    try {
+                        await postCourseSemester(data);
 
+                        await Promise.all(slotList.map(async (item) => await postSlot(item)));
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'The course semester has been saved successfully.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6',
+                        }).then(() => {
+                            nav('/staff/manage_course_semester');
+                        });
+                    } catch (error) {
+                        console.error('Error saving course semester:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while saving the data. Please try again.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33',
+                        });
+                    }
+                }
             }
         }
-    }
-
+    };
 
     return (
-        <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
-            {/* Header */}
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5">Adding course  </Typography>
-                <Box>
-                    <Button variant="contained" color="primary" onClick={() => saveCourseSemester()}>Save</Button>
-                </Box>
-            </Box>
+        <Box p={3} sx={{ backgroundColor: "#edf2f7", minHeight: "100vh" }}>
+            {/* Navigation and Header */}
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                        <Button
+                            startIcon={<ReplyAllIcon />}
+                            onClick={() => nav(-1)}
+                            variant="outlined"
+                            color="secondary"
+                            sx={{
+                                borderRadius: "8px",
+                                boxShadow: "0px 2px 4px rgba(0,0,0,0.1)"
+                            }}
+                        >
+                            Back
+                        </Button>
+                        <Typography variant="h4" fontWeight="600">
+                            Adding Course
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#283593",
+                                marginRight: "16px",
+                                padding: "8px 20px",
+                                boxShadow: "0px 4px 8px rgba(0,0,0,0.15)"
+                            }}
+                            onClick={() => saveCourseSemester()}
+                        >
+                            Save
+                        </Button>
+                    </Box>
+                </Grid>
+            </Grid>
 
-            {/* Bulk update and search */}
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={3} sx={{
-                    position: "sticky",
-                    top: "20px",
-                    padding: "10px",
-                }}>
-                    <Card>
+            {/* Main Content */}
+            <Grid container spacing={3} mt={3}>
+                {/* Sidebar Settings */}
+                <Grid item xs={12} md={4}>
+                    <Card sx={{ boxShadow: "0px 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <CardContent>
-                            <Typography variant="subtitle1">Setting Lesson</Typography>
-                            <Divider sx={{ my: 1 }} />
+                            <Typography variant="h6" fontWeight="500">
+                                Setting Lesson
+                            </Typography>
+                            <Divider sx={{ my: 2 }} />
 
-                            {/* Dropdown to select Lecturer/Class/Course */}
+                            {/* Dropdown */}
                             <Select
                                 defaultValue="1"
                                 size="small"
                                 fullWidth
-                                onChange={e => setTypeSearch(e.target.value)}
+                                onChange={(e) => setTypeSearch(e.target.value)}
+                                sx={{ marginBottom: "16px" }}
                             >
                                 <MenuItem value="1">Lecturer</MenuItem>
                                 <MenuItem value="2">Class</MenuItem>
                                 <MenuItem value="3">Course</MenuItem>
                             </Select>
-                            <Divider sx={{ my: 1 }} />
 
-                            {/* Autocomplete & Button for Selection */}
-                            <Box display="flex" flexDirection="column" gap={2}>
-                                <Autocomplete
-                                    options={
-                                        typeSearch === "1" ? participants :
-                                            typeSearch === "2" ? dataClass :
-                                                dataCourse
+                            {/* Search Autocomplete */}
+                            <Autocomplete
+                                options={
+                                    typeSearch === "1" ? participants :
+                                        typeSearch === "2" ? dataClass :
+                                            dataCourse
+                                }
+                                getOptionLabel={(option) => {
+                                    if (typeSearch === "1") {
+                                        return option.UserName;
+                                    } else if (typeSearch === "2") {
+                                        return option.ClassName;
+                                    } else {
+                                        return option.CourseName;
                                     }
-                                    getOptionLabel={(option) => {
-                                        if (typeSearch === "1") {
-                                            return option.UserName;
-                                        } else if (typeSearch === "2") {
-                                            return option.ClassName;
-                                        } else {
-                                            return option.CourseName;
-                                        }
-                                    }}
-                                    onChange={(event, value) => {
-                                        if (typeSearch === "1") setTempLecturerId(value?.id || "");
-                                        if (typeSearch === "2") setTempClassId(value?.ClassID || "");
-                                        else setTempCourseId(value?.id || "");
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            size="small"
-                                            placeholder={`Search ${typeSearch === "1" ? "lecturer" : typeSearch === "2" ? "class" : "course"}`}
-                                        />
+                                }}
+                                onChange={(event, value) => {
+                                    if (typeSearch === "1") setTempLecturerId(value?.id || "");
+                                    if (typeSearch === "2") setTempClassId(value?.ClassID || "");
+                                    else setTempCourseId(value?.id || "");
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        size="small"
+                                        placeholder={`Search ${typeSearch === "1" ? "lecturer" : typeSearch === "2" ? "class" : "course"}`}
+                                    />
+                                )}
+                                fullWidth
+                                sx={{ marginBottom: "16px" }}
+                            />
+
+                            <Button
+                                variant="outlined"
+                                fullWidth
+                                color="error"
+                                onClick={() => {
+                                    if (typeSearch === "1") setLecturerId(tempLecturerId);
+                                    if (typeSearch === "2") setClassId(tempClassId);
+                                    if (typeSearch === "3") setCourseId(tempCourseId);
+                                }}
+                                sx={{
+                                    padding: "10px",
+                                    borderRadius: "8px"
+                                }}
+                            >
+                                Add Selection
+                            </Button>
+
+                            <Divider sx={{ my: 2 }} />
+
+                            {/* Display Selections */}
+                            {[
+                                { label: "Lecturer", value: participants?.find((item) => item.id === lecturerId)?.UserName, clear: () => setLecturerId("") },
+                                { label: "Class", value: dataClass?.find((item) => item.ClassID === classId)?.ClassName, clear: () => setClassId("") },
+                                { label: "Course", value: dataCourse?.find((item) => item.id === courseId)?.CourseName, clear: () => setCourseId("") }
+                            ].map(({ label, value, clear }) => (
+                                <Box key={label} display="flex" alignItems="center" justifyContent="space-between" sx={{ marginBottom: "12px" }}>
+                                    <Typography variant="body2" fontWeight="500">{label}:</Typography>
+                                    <Typography variant="body2">{value || "Not selected"}</Typography>
+                                    {value && (
+                                        <IconButton onClick={clear}>
+                                            <ClearIcon color="error" />
+                                        </IconButton>
                                     )}
-                                    fullWidth
-                                />
-
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => {
-                                        if (typeSearch === "1") setLecturerId(tempLecturerId);
-                                        if (typeSearch === "2") setClassId(tempClassId);
-                                        if (typeSearch === "3") setCourseId(tempCourseId);
-                                    }}
-                                    sx={{ width: "100%" }}
-                                >
-                                    Enter
-                                </Button>
-                            </Box>
-
-                            <Divider sx={{ my: 1 }} />
-
-                            {/* Display Selected Lecturer */}
-                            <Box display="flex" alignItems="center" justifyContent="space-between">
-                                <Button variant="text" startIcon={<ContactEmergencyIcon />}>
-                                    Lecturer:
-                                </Button>
-                                <Typography variant="body2">
-                                    {participants?.find(item => item.id === lecturerId)?.UserName}
-                                </Typography>
-                                {lecturerId && (
-                                    <IconButton onClick={() => setLecturerId('')}>
-                                        <ClearIcon color="error" />
-                                    </IconButton>
-                                )}
-                            </Box>
-
-                            <Divider sx={{ my: 1 }} />
-
-                            {/* Display Selected Class */}
-                            <Box display="flex" alignItems="center" justifyContent="space-between">
-                                <Button variant="text" startIcon={<ClassIcon />}>
-                                    Class:
-                                </Button>
-                                <Typography variant="body2">
-                                    {dataClass?.find(item => item.ClassID === classId)?.ClassName}
-                                </Typography>
-                                {classId && (
-                                    <IconButton onClick={() => setClassId('')}>
-                                        <ClearIcon color="error" />
-                                    </IconButton>
-                                )}
-                            </Box>
-
-                            <Divider sx={{ my: 1 }} />
-
-                            {/* Display Selected Course */}
-                            <Box display="flex" alignItems="center" justifyContent="space-between">
-                                <Button variant="text" startIcon={<FolderIcon />}>
-                                    Course:
-                                </Button>
-                                <Typography variant="body2">
-                                    {dataCourse?.find(item => item.id === courseId)?.CourseName}
-                                </Typography>
-                                {courseId && (
-                                    <IconButton onClick={() => setCourseId('')}>
-                                        <ClearIcon color="error" />
-                                    </IconButton>
-                                )}
-                            </Box>
-
-                            <Divider sx={{ my: 1 }} />
+                                </Box>
+                            ))}
                         </CardContent>
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={9}>
-                    <Card>
+                {/* Slot Management */}
+                <Grid item xs={12} md={8}>
+                    <Card sx={{ boxShadow: "0px 4px 12px rgba(0,0,0,0.1)", borderRadius: "12px" }}>
                         <CardContent>
+                            <Typography variant="h6" fontWeight="500" mb={3}>
+                                Setting Slots
+                            </Typography>
 
-                            <Typography variant="subtitle1"> Total Slots:</Typography>
-
-                            {/* Question Items */}
-                            <Box mt={2}>
+                            <Box
+                                sx={{
+                                    maxHeight: "400px",
+                                    overflowY: "auto",
+                                    overflowX: "hidden",
+                                    paddingRight: "8px",
+                                    maxWidth: "100%",
+                                }}
+                            >
                                 {slotList && slotList.map((slot, index) => (
-                                    <Card sx={{ mb: 2 }}>
-                                        <CardContent>
-                                            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                                                <Typography variant="body1">{index + 1}. Slot {index + 1}</Typography>
-                                                <TextField
-                                                    select
-                                                    label='Status'
-                                                    value={slot.Status}
-                                                    size='small'
-                                                    variant='outlined'
-                                                    onChange={e => handleUpdateSlot("status", e.target.value, slot.id)}
-                                                >
-                                                    <MenuItem value={true}>Start Slot</MenuItem>
-                                                    <MenuItem value={false}>Not Start</MenuItem>
-                                                </TextField>
-                                                <Box display="flex" alignItems="center" gap={2}>
-
-                                                    <TextField
-                                                        label='Start'
-                                                        type='date'
-                                                        size='small'
-                                                        onChange={(e) => handleUpdateSlot('startDate', e.target.value, slot.id)}
-                                                        value={slot.TimeStart}
-                                                    />
-                                                    <TextField
-                                                        label='End'
-                                                        type='date'
-                                                        size='small'
-                                                        onChange={(e) => handleUpdateSlot('endDate', e.target.value, slot.id)}
-                                                        value={slot.TimeEnd}
-                                                    />
-
-                                                    <IconButton onClick={() => handleSlot('Remove', slot.id)}>
-                                                        <Delete />
-                                                    </IconButton>
-                                                </Box>
-                                            </Box>
+                                    <Card
+                                        key={slot.id}
+                                        sx={{
+                                            mb: 2,
+                                            padding: "16px",
+                                            border: "1px solid #e0e0e0",
+                                            borderRadius: "12px",
+                                            backgroundColor: "#f9f9f9"
+                                        }}
+                                    >
+                                        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                                            <Typography variant="subtitle1">{index + 1}. Slot {index + 1}</Typography>
                                             <TextField
-                                                placeholder="Comment descriprion slot here ..."
-                                                multiline
-                                                rows={10}
+                                                select
+                                                label="Status"
+                                                size="small"
+                                                value={slot.Status}
+                                                onChange={(e) => handleUpdateSlot("status", e.target.value, slot.id)}
+                                                sx={{ minWidth: "150px" }}
+                                            >
+                                                <MenuItem value={true}>Start Slot</MenuItem>
+                                                <MenuItem value={false}>Not Start</MenuItem>
+                                            </TextField>
+                                        </Box>
+
+                                        <Box display="flex" gap={2} mb={2}>
+                                            <TextField
+                                                label="Start"
+                                                type="date"
+                                                size="small"
                                                 fullWidth
-                                                onChange={e => handleUpdateSlot('description', e.target.value, slot.id)}
-                                                value={slot.Description}
-                                                variant="outlined"
-                                                sx={{
-                                                    marginBottom: "20px",
-                                                    borderRadius: "12px",
-                                                    backgroundColor: "#f4f6f8",
-                                                    "& .MuiOutlinedInput-root": {
-                                                        "& fieldset": {
-                                                            borderColor: "#b0bec5",
-                                                        },
-                                                        "&:hover fieldset": {
-                                                            borderColor: "#3f51b5",
-                                                        },
-                                                        "&.Mui-focused fieldset": {
-                                                            borderColor: "#3f51b5",
-                                                        },
-                                                    },
-                                                }}
+                                                onChange={(e) => handleUpdateSlot("startDate", e.target.value, slot.id)}
+                                                value={slot.TimeStart}
                                             />
-                                            <Divider sx={{ my: 1 }} />
-                                        </CardContent>
+                                            <TextField
+                                                label="End"
+                                                type="date"
+                                                size="small"
+                                                fullWidth
+                                                onChange={(e) => handleUpdateSlot("endDate", e.target.value, slot.id)}
+                                                value={slot.TimeEnd}
+                                            />
+                                            <Tooltip title="Delete Slots"><IconButton onClick={() => handleSlot("Remove", slot.id)}>
+                                                <Delete sx={{ color: "red" }} />
+                                            </IconButton></Tooltip>
+
+                                        </Box>
+
+                                        <TextField
+                                            placeholder="Comment description slot here ..."
+                                            multiline
+                                            rows={3}
+                                            fullWidth
+                                            onChange={(e) => handleUpdateSlot("description", e.target.value, slot.id)}
+                                            value={slot.Description}
+                                            sx={{ backgroundColor: "#fff", borderRadius: "8px" }}
+                                        />
                                     </Card>
-
                                 ))}
-
-
                             </Box>
 
-                            {/* Add question button */}
-                            <Box textAlign="center" mt={2}>
-                                <Button variant="outlined" onClick={() => handleSlot("Add", "1")} startIcon={<Add />}>Add slot</Button>
+                            <Box textAlign="center">
+                                <Button
+                                    variant="contained"
+                                    size="medium"
+                                    onClick={() => handleSlot("Add", "1")}
+                                    startIcon={<Add />}
+                                    sx={{backgroundColor: "#263238"}}
+                                >
+                                    Add More Slot
+                                </Button>
                             </Box>
                         </CardContent>
                     </Card>
                 </Grid>
+
+
+
             </Grid>
+
+            {/* Toast Notifications */}
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -388,6 +422,8 @@ export const AddingCourseSemester = () => {
                 pauseOnHover
                 theme="colored"
             />
-        </Box >
+        </Box>
     );
+
+
 }

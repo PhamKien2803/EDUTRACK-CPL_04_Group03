@@ -208,21 +208,6 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   const [file, setFile] = useState<string[]>([]); // Lưu Base64 của tệp
   const [fileName, setFileName] = useState<string>("");
 
-  // Hàm xử lý thay đổi tệp
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = event.target.files ? event.target.files[0] : null;
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       const base64File = reader.result as string;
-  //       // Lưu Base64 vào sessionStorage
-  //       sessionStorage.setItem("uploadedFile", base64File);
-  //       setFile([base64File]); 
-  //       setFileName(selectedFile.name);
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Content from "../../../components/student_components/lession/lession-content/Content";
 import Header from "../../../components/student_components/lession/lession-header/Header";
-import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot, getAssignmentSlot, getCourse } from "../../../service/ApiService";
+import { getClass, getCourseSemesterById, getParticipants, getQuestionSLot, getSLot, getAssignmentSlot, getCourse, getCouseraInLecturers } from "../../../service/ApiService";
 import { classRoom, lession, participants, questionSlot, slot, assignmentSlot, courses } from "../../../models/Interface";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Lession() {
     const [lessionData, setLession] = useState<lession>();
@@ -17,9 +18,21 @@ function Lession() {
     const location = useLocation();
     const param = new URLSearchParams(location.search);
     const sID = param.get('subjectId');
+    const [classId, setclassId] = useState<string>("");
+    const cID = param.get('CourseID');
+    interface RootState {
+        account: {
+            account: {
+                UserID: string;
+            };
+        };
+    }
+    const account = useSelector((state: RootState) => state.account.account);
+
+
 
     useEffect(() => {
-        getLession();
+        // getLession();
         getParticipant();
         getSlot();
         fetchQuestionSlot();
@@ -28,6 +41,11 @@ function Lession() {
         getCourses();
 
     }, []);
+
+    useEffect(() => {
+        getLession();
+
+    }, [classId])
 
     const getLession = async () => {
         if (typeof (sID) === 'string') {
@@ -74,10 +92,15 @@ function Lession() {
     }
 
     const fetchClass = async () => {
+        const resCourse = await getCouseraInLecturers(cID, sID, account.UserID);
         const res = await getClass();
-        if (Array.isArray(res)) {
-            setClasses(res);
+        let class2: classRoom[];
+        if (Array.isArray(res) && Array.isArray(resCourse)) {
+            const updatedClasses = resCourse.map(item => res.find(cl => cl.ClassID === item.ClassID));
+            setClasses(updatedClasses)
+            setclassId(res[0].ClassID)
         }
+
     }
 
     return (
@@ -94,7 +117,7 @@ function Lession() {
                             classes={classes}
                             setSelected={setSlotSelected}
                         />
-                        <Content lession={lessionData} slot={slot} questionSlot={questionSlot} assignmentSlot={assignmentSlot} slotSelected={slotSelected || ''} />
+                        <Content setclassId={setclassId} classId={classId} lession={lessionData} slot={slot} questionSlot={questionSlot} assignmentSlot={assignmentSlot} slotSelected={slotSelected || ''} />
                     </div> :
                     <div>
                         LOADING...

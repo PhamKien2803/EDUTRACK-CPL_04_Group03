@@ -1,119 +1,168 @@
-import React, { useState, useEffect } from "react";
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-    Avatar, Typography, Box
-} from "@mui/material";
-import GroupIcon from "@mui/icons-material/Group";
-import { getClass, getParticipants } from "../../../../service/ApiService";
-import { useTranslation } from 'react-i18next';
-
-
-interface Participant {
-    id: string;
-    UserName: string;
-    Age: number;
-    Gender: true;
-    Address: string;
-    Email: string;
-    Password: string;
-    Image: string;
-    Role: number;
-    isOnline: boolean;
-    Status: boolean;
-}
-
-interface Classes {
-    ClassID: string;
-    ClassName: string;
-    Student: string[];
-    Status: boolean;
-}
-
-interface Props {
-    participants: Participant[];
-    classes: Classes[];
-}
-
-const StudentList: React.FC<Props> = () => {
-    const [participants, setParticipants] = useState<Participant[]>([]);
-    const [classes, setClasses] = useState<Classes[]>([]);
-    const { t } = useTranslation();
-
-    useEffect(() => {
-        fetchParticipants();
-        fetchClasses();
-    }, []);
-
-    const fetchParticipants = async () => {
-        const res = await getParticipants();
-        if (Array.isArray(res)) {
-            setParticipants(res);
-        }
+    Avatar, Typography, Box, Divider
+  } from "@mui/material";
+  import GroupIcon from "@mui/icons-material/Group";
+  import { useLocation } from "react-router-dom";
+  import { participants, classRoom } from "../../../../models/Interface";
+  
+  interface Props {
+    participants: participants[];
+    classes: classRoom[];
+  }
+  const List: React.FC<Props> = ({ participants, classes }) => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const classid = queryParams.get("classid");
+  
+    const getStudentsInClass = (classRoom: classRoom) => {
+      return participants.filter(participant => classRoom.Student.includes(participant.id));
     };
-
-    const fetchClasses = async () => {
-        const res = await getClass();
-        if (Array.isArray(res)) {
-            setClasses(res);
-        }
-    };
-
-    const getStudentsInClass = (classRoom: Classes) => {
-        return participants.filter(participant =>
-            classRoom.Student.includes(participant.id)
-        );
-    };
-
+  
+    const filteredClasses = classid
+      ? classes.filter(classRoom => classRoom.ClassID === classid)
+      : classes;
+  
     return (
-        <div className="container">
-            {classes.map((classRoom) => {
-                const students = getStudentsInClass(classRoom);
-
-                return (
-                    <Box key={classRoom.ClassID} mb={4}>
-                        <Typography variant="h4">Class: {classRoom.ClassName}</Typography>
-                        <Typography variant="subtitle1">
-                            {t('number_of_students')}: {students.length}
+      <Box sx={{ padding: 3 }}>
+        {filteredClasses.map((classRoom) => {
+          const students = getStudentsInClass(classRoom);
+          return (
+            <Box
+              key={classRoom.ClassID}
+              mb={4}
+              sx={{
+                bgcolor: "background.paper",
+                borderRadius: 4,
+                p: 3,
+                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+                },
+              }}
+            >
+              {/* Class Header */}
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h5" fontWeight="bold" color="primary.main">
+                  Class: {classRoom.ClassName}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  fontWeight="bold"
+                  sx={{
+                    color: "text.secondary",
+                    bgcolor: "primary.light",
+                    px: 2,
+                    py: 0.5,
+                    borderRadius: 2,
+                  }}
+                >
+                  {students.length} Students
+                </Typography>
+              </Box>
+  
+              <Divider sx={{ my: 2, borderColor: "divider" }} />
+  
+              {/* Student Table */}
+              <TableContainer
+                component={Paper}
+                elevation={3}
+                sx={{
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  bgcolor: "background.default",
+                }}
+              >
+                <Table stickyHeader aria-label="student table">
+                  <TableHead>
+                    <TableRow
+                      sx={{
+                        bgcolor: "primary.main",
+                        "& .MuiTableCell-root": {
+                          color: "common.white",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <TableCell></TableCell>
+                      <TableCell>
+                        <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                          Name
                         </Typography>
-                        <hr style={{ border: "2px solid lightgray", margin: "8px auto" }} />
-
-                        <TableContainer component={Paper} sx={{ maxHeight: 400, marginTop: 2 }}>
-                            <Table stickyHeader aria-label="student table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell></TableCell>
-                                        <TableCell><Typography fontWeight="bold">{t('name_label')}</Typography></TableCell>
-                                        <TableCell><Typography fontWeight="bold">{t('id_label')}</Typography></TableCell>
-                                        <TableCell><Typography fontWeight="bold">{t('email_label')}</Typography></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {students.map((student) => (
-                                        <TableRow key={student.id}>
-                                            <TableCell>
-                                                <Avatar src={student.Image || ""} sx={{ bgcolor: "#3f51b5", width: 30, height: 30 }}>
-                                                    {!student.Image && <GroupIcon fontSize="small" />}
-                                                </Avatar>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography>{student.UserName}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography>{student.id}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography>{student.Email}</Typography>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Box>
-                );
-            })}
-        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                          ID
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography color="common.black" variant="subtitle2" fontWeight="bold">
+                          Email
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {students.map((student) => (
+                      <TableRow
+                        key={student.id}
+                        hover
+                        sx={{
+                          "&:hover": {
+                            bgcolor: "action.hover",
+                          },
+                        }}
+                      >
+                        <TableCell width="5%">
+                          <Avatar
+                            src={student.Image || ""}
+                            sx={{
+                              bgcolor: "primary.light",
+                              width: 32,
+                              height: 32,
+                              fontSize: "14px",
+                            }}
+                          >
+                            {!student.Image && <GroupIcon fontSize="small" />}
+                          </Avatar>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" fontWeight="medium">
+                            {student.UserName}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" color="text.secondary">
+                            {student.id}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" color="text.secondary">
+                            {student.Email}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          );
+  
+  
+        })}
+      </Box>
     );
-};
-
-export default StudentList;
+  };
+  
+  export default List;
+  
