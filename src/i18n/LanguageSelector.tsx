@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Tooltip, IconButton, Menu, MenuItem } from "@mui/material";
+import i18n from "i18next"; 
 
 type LanguageSelectorProps = {
-  currentLanguage: "eng" | "vie"; // Chỉ cho phép "eng" hoặc "vie"
+  currentLanguage: "eng" | "vie"; 
   onLanguageChange: (lang: "eng" | "vie") => void; 
 };
 
@@ -19,7 +20,10 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const handleLanguageClose = (selectedLanguage: "eng" | "vie" | null) => {
     setAnchorEl(null);
     if (selectedLanguage && selectedLanguage !== currentLanguage) {
-      onLanguageChange(selectedLanguage);
+      i18n.changeLanguage(selectedLanguage).then(() => {
+        onLanguageChange(selectedLanguage);
+        localStorage.setItem("language", JSON.stringify(selectedLanguage));
+      });
     }
   };
 

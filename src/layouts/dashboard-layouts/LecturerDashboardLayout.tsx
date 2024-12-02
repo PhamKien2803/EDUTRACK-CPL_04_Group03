@@ -19,6 +19,7 @@ import { AppContext } from "../../context/AppContext";
 import MessageIcon from '@mui/icons-material/Message';
 import { db } from "../../Config/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import LanguageSelector from "../../i18n/LanguageSelector";
 
 const NAVIGATION: Navigation = [
   {
@@ -80,6 +81,16 @@ function LecturerDashboardLayout() {
   const [unreadCount, setUnreadCount] = useState(0);
   const { userData } = useContext(AppContext);
   const [open, setOpen] = useState(false);
+
+  // State để lưu ngôn ngữ hiện tại
+  const [language, setLanguage] = useState<"eng" | "vie">(
+    JSON.parse(localStorage.getItem("language") || '"eng"') as "eng" | "vie"
+  );
+
+  const handleLanguageChange = (lang: "eng" | "vie") => {
+    setLanguage(lang);
+    localStorage.setItem("language", JSON.stringify(lang));
+  };
 
 
   useEffect(() => {
@@ -144,6 +155,20 @@ function LecturerDashboardLayout() {
           height: "100vh",
         }}
       >
+
+        <Box
+          sx={{
+            position: "absolute",
+            top: 70,
+            right: 25,
+            transform: "scale(1.5)",
+          }}
+        >
+          <LanguageSelector
+            currentLanguage={language}
+            onLanguageChange={handleLanguageChange}
+          />
+        </Box>
         <Box
           sx={{
             flex: 1,
