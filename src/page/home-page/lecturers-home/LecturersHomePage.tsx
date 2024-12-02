@@ -23,8 +23,8 @@ import {
   getCourseSemesterByLecturersID,
   getSemester,
 } from "../../../service/ApiService";
-
-interface CourseSemester {
+import { useTranslation } from 'react-i18next';
+    interface CourseSemester {
   id: string;
   SemesterID: string;
   SlotID: string[];
@@ -50,6 +50,7 @@ interface course {
 // Mock data with multiple courses
 
 function LecturersHomePage() {
+  const { t } = useTranslation();
   const [data, setData] = useState<CourseSemester[]>([]);
   const [semesterId, setSemesterId] = useState<string>("");
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
@@ -117,11 +118,11 @@ function LecturersHomePage() {
         }}
       >
         <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: 600 }}>
-          Course
+          {t('Course')}
         </Typography>
         <Box sx={{ minWidth: 120, mb: 2 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Semester</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t('Semester')}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -146,7 +147,7 @@ function LecturersHomePage() {
         </Box>
         {/* Smaller search bar */}
         <TextField
-          label="Search by Course ID"
+          label={t('search_by_course_id')}
           variant="outlined"
           sx={{ mb: 2, maxWidth: "300px" }}
           // value={searchTerm}
@@ -231,7 +232,7 @@ function LecturersHomePage() {
                         bgcolor: "rgba(25, 118, 210, 0.08)",
                       }}
                     >
-                      {dataCourse[0]?.CourseName || "Course Name"}
+                      {dataCourse[0]?.CourseName || "{t('course_name')}"}
                     </Typography>
                   </Link>
                   <Tooltip title="27%" placement="top">

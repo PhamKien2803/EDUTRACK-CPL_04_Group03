@@ -1,10 +1,12 @@
-import {Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddActivity from "../../../../components/lecturers_components/session-details/add-activity/AddActivity";
 import TabSession from "../../../../components/lecturers_components/session-details/tab-details/TabSession";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 function SessionDetails() {
+  const { t } = useTranslation(); 
   const navigate = useNavigate();
 
   return (
@@ -39,7 +41,7 @@ function SessionDetails() {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h6" fontWeight="bold" color="primary.main">
-          Session Home
+          {t('discussion_home')} 
         </Typography>
       </Box>
       <div>

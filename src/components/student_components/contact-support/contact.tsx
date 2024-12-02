@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 function Contact() {
     const { t } = useTranslation();
     const [statusMessage, setStatusMessage] = React.useState<{ type: 'success' | 'error', message: string } | null>(null);
-    const [isSubmitting, setIsSubmitting] = React.useState(false); // Trạng thái loading khi gửi email
+    const [isSubmitting, setIsSubmitting] = React.useState(false); 
 
     const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

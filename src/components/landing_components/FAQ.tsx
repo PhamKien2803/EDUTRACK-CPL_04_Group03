@@ -6,10 +6,12 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function FAQ() {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
@@ -39,7 +41,7 @@ export default function FAQ() {
           textAlign: { sm: 'left', md: 'center' },
         }}
       >
-        Frequently Asked Questions
+        {t('title')}
       </Typography>
       <Box sx={{ width: '100%' }}>
         <Accordion
@@ -52,7 +54,7 @@ export default function FAQ() {
             id="panel1d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              How do I set up my EduTrack account?
+              {t('setup_account')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -61,8 +63,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Setting up your EduTrack account is simple. Visit our{' '}
-              <Link href="/signup">signup page</Link>, fill in the required details, and verify your email. Once verified, you can log in and start exploring EduTrack’s features.
+              {t('setup_account_answer')}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -76,7 +77,7 @@ export default function FAQ() {
             id="panel2d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Can I track multiple students under one account?
+              {t('multiple_students')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -85,7 +86,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Yes! EduTrack allows you to manage and monitor the progress of multiple students from a single account. Simply add students under the "Manage Students" section of your dashboard.
+              {t('multiple_students_answer')}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -99,7 +100,7 @@ export default function FAQ() {
             id="panel3d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              What features does EduTrack offer to enhance learning?
+              {t('features')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -108,7 +109,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              EduTrack offers progress tracking, personalized learning plans, performance analytics, and parent-teacher communication tools to streamline and enhance the educational experience for students and educators.
+              {t('features_answer')}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -122,7 +123,7 @@ export default function FAQ() {
             id="panel4d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Is there a mobile app for EduTrack?
+              {t('mobile_app')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -131,7 +132,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Yes, EduTrack is available as a mobile app on both iOS and Android platforms. Download it from the App Store or Google Play to access all features on the go.
+              {t('mobile_app_answer')}
             </Typography>
           </AccordionDetails>
         </Accordion>

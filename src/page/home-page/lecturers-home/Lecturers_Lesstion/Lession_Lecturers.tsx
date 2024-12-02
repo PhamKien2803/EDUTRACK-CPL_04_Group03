@@ -6,7 +6,8 @@ import { assignmentSlot, classRoom, courses, lession, participants, questionSlot
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useTranslation } from 'react-i18next';
+   
 function Lession_Lecturers() {
     const [lessionData, setLession] = useState<lession>();
     const [slot, setSlot] = useState<slot[]>([]);
@@ -21,7 +22,7 @@ function Lession_Lecturers() {
     const param = new URLSearchParams(location.search);
     const cID = param.get('CourseID');
     const sID = param.get('semesterId');
-
+    const { t } = useTranslation();
     // console.log(cID, sID);
     interface RootState {
         account: {
@@ -131,7 +132,7 @@ function Lession_Lecturers() {
                         />
                     </div> :
                     <div>
-                        LOADING...
+                        {t("loading")}
                     </div>
             }
         </div>
