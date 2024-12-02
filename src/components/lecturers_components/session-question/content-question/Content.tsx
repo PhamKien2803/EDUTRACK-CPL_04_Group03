@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box, Grid, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { slot as Slot, questionSlot } from "../../../../models/Interface";
 import { useSearchParams } from 'react-router-dom';
 import { updateStatusQuestionSLot } from '../../../../service/ApiService';
+import { useNavigate } from 'react-router-dom';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const Content: React.FC<Props> = ({ questionSlot }) => {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const slotID = searchParams.get('Slotid');
     const questionID = searchParams.get('questionId');
@@ -20,18 +23,41 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
     const filteredQuestions = questionSlot.filter(qs => qs.Slotid === slotID && qs.QuestionID === questionID);
 
     return (
-        <div style={{ marginTop: "3rem" }}>
-            <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
-            {filteredQuestions.length ? (
-                filteredQuestions.map((question, index) => (
-                    <QuestionCard key={index} question={question} />
-                ))
-            ) : (
-                <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
-                    No questions available for this slot.
-                </Typography>
-            )}
-        </div>
+        <>
+            <div style={{ marginTop: "3rem" }}>
+
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    mb={2}
+                    sx={{
+                        gap: 1,
+                    }}
+                >
+                    <Grid item>
+                        <Button
+                            startIcon={<ReplyAllIcon />}
+                            onClick={() => navigate(-1)}
+                            variant="outlined"
+                            color="secondary"
+                        >
+                            Back
+                        </Button>
+                    </Grid>
+                </Box>
+                <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
+                {filteredQuestions.length ? (
+                    filteredQuestions.map((question, index) => (
+                        <QuestionCard key={index} question={question} />
+                    ))
+                ) : (
+                    <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
+                        No questions available for this slot.
+                    </Typography>
+                )}
+            </div>
+        </>
+
     );
 };
 
@@ -141,36 +167,40 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
     };
 
     return (
-        <Card style={{
-            border: "1px solid lightgray",
-            borderRadius: "20px",
-            maxWidth: "850px",
-            marginBottom: "1rem",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            transition: "transform 0.3s ease-in-out",
-            overflow: "hidden"
-        }}
-        >
-            <CardContent style={{
-                backgroundColor: "rgb(250, 246, 246)",
-                padding: "16px",
-                fontFamily: "'Poppins', sans-serif"
-            }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
-                        Content
-                    </Typography>
-                    <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
-                        {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
-                    </Typography>
-                </Box>
-                <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />
+        <>
 
-                <Typography variant="body2" style={{ color: "#555", fontSize: "14px", marginBottom: "8px" }}>
-                    {question.content}
-                </Typography>
-            </CardContent>
-        </Card>
+            <Card style={{
+                border: "1px solid lightgray",
+                borderRadius: "20px",
+                maxWidth: "850px",
+                marginBottom: "1rem",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                transition: "transform 0.3s ease-in-out",
+                overflow: "hidden"
+            }}
+            >
+                <CardContent style={{
+                    backgroundColor: "rgb(250, 246, 246)",
+                    padding: "16px",
+                    fontFamily: "'Poppins', sans-serif"
+                }}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
+                            Content
+                        </Typography>
+                        <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
+                            {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
+                        </Typography>
+                    </Box>
+                    <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />
+
+                    <Typography variant="body2" style={{ color: "#555", fontSize: "14px", marginBottom: "8px" }}>
+                        {question.content}
+                    </Typography>
+                </CardContent>
+            </Card>
+        </>
+
     );
 };
 
