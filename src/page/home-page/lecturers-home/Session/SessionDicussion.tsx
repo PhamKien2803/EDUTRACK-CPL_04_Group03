@@ -5,15 +5,17 @@ import { getQuestionSLot, getSLotById, getQuestionSlotBySlotId } from "../../../
 import { slot as Slot, questionSlot } from "../../../../models/Interface";
 import { useSearchParams } from 'react-router-dom';
 import Summary from '../../../../components/lecturers_components/session-question/summary-question/Summary';
-function SessionDicussion() {
+import { useTranslation } from 'react-i18next';
 
+function SessionDicussion() {
+  const { t } = useTranslation(); 
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('slotID');
   const questionID = searchParams.get('id');
   const [questionSlot, setQuestionSlot] = useState<questionSlot[]>([]);
   const [slots, setSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  console.log(questionSlot)
+  
   useEffect(() => {
     if (slotID) {
       getSlotById(slotID);
@@ -53,6 +55,7 @@ function SessionDicussion() {
       setQuestionSlot(res);
     }
   }
+
   return (
     <div>
       <div style={{ width: '98%' }} className='container-fluid'>
@@ -67,7 +70,7 @@ function SessionDicussion() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SessionDicussion
+export default SessionDicussion;

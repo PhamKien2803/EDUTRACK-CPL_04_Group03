@@ -14,7 +14,7 @@ const resources = {
 };
 
 // Get the language from localStorage, default to 'eng' if not found
-let language = JSON.parse(localStorage.getItem("language") || '"eng"');
+let language = JSON.parse(localStorage.getItem("language") || '"vie"');
 
 if (!['eng', 'vie'].includes(language)) {
   language = 'eng';

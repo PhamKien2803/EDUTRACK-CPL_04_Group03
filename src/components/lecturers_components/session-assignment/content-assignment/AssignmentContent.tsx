@@ -5,7 +5,8 @@ import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import  ReplyAllIcon  from '@mui/icons-material/ReplyAll';
-
+import { useTranslation } from 'react-i18next';
+    
 interface Props {
   assignmentSlot: assignmentSlot[];
   assignmentID: string | null;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('Slotid');
@@ -120,7 +122,7 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
             variant="outlined"
             color="secondary"
           >
-            Back
+            {t('Back')}
           </Button>
         </Grid>
       </Box>
@@ -132,26 +134,26 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
             </Typography>
 
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 2 }}>
-              Content
+              {t('Content')}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
-              {assignment.description || 'No description provided.'}
+              {assignment.description || '{t("no_description_provided")}' }
             </Typography>
 
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 1 }}>
-              Additional files:
+              {t('Additional_files')}
             </Typography>
             {assignment.urlfile && assignment.urlfile.length > 0 ? (
               assignment.urlfile.map((file, index) => (
                 <Typography variant="body2" key={index} sx={{ color: 'primary.main', mb: 1 }}>
                   <a href={file} target="_blank" rel="noopener noreferrer">
-                    Assignment File
+                    {t('assignment_file')}
                   </a>
                 </Typography>
               ))
             ) : (
               <Typography variant="body2" color="textSecondary">
-                No additional files available.
+                {t('no_additional_files')}
               </Typography>
             )}
 
@@ -173,10 +175,10 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
               }}
             >
               {status === 0
-                ? 'Not Started'
+                ? '{t("Not_started")}'
                 : status === 1
-                  ? `Time remaining: ${formatTime(timeRemaining ?? 0)}`
-                  : 'Discussion Time is over'}
+                  ? `{t("Time_remaining")} ${formatTime(timeRemaining ?? 0)}`
+                  : '{t("discussion_time_over")}'}
             </Typography>
 
             <Divider sx={{ mb: 2 }} />
@@ -189,7 +191,7 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
           </>
         ) : (
           <Typography variant="body1" color="textSecondary">
-            No assignment found for the specified SlotID and AssignmentID.
+            {t("no_assignment_found")}
           </Typography>
         )}
       </Paper>
