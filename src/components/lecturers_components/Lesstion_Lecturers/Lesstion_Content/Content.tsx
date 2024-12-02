@@ -24,7 +24,6 @@ interface Props {
 const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { t } = useTranslation();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
     console.log(setUpdatedQuestions)
