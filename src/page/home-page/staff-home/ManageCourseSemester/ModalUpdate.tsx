@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(
 interface Props {
     open2: boolean,
     handleClickModal2: () => void,
-    slotUpdate: slot,
+    slotUpdate?: slot,
 }
 
 export const ModalUpdate: React.FC<Props> = ({ open2, handleClickModal2, slotUpdate }) => {
