@@ -7,6 +7,7 @@ import {
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
@@ -72,7 +74,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             }}
                                         >
                                             <Typography variant="subtitle2" color="black" fontSize={15}>
-                                                Slot {index + 1}
+                                                {t('Slot')} {index + 1}
                                             </Typography>
                                         </Box>
 

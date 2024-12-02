@@ -20,6 +20,7 @@ import ChatUI from "../../page/Chart/ChapApp";
 import { AppContext } from "../../context/AppContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Config/firebase";
+import LanguageSelector from "../../i18n/LanguageSelector";
 
 //navigation structure with type annotations
 const NAVIGATION: Navigation = [
@@ -91,6 +92,16 @@ function StudentDashboardLayout() {
   };
   const toggleModal = () => setOpen(!open);
 
+  // State để lưu ngôn ngữ hiện tại
+  const [language, setLanguage] = useState<"eng" | "vie">(
+    JSON.parse(localStorage.getItem("language") || '"eng"') as "eng" | "vie"
+  );
+
+  const handleLanguageChange = (lang: "eng" | "vie") => {
+    setLanguage(lang);
+    localStorage.setItem("language", JSON.stringify(lang));
+  };
+
   return (
     <>
       <AppProvider
@@ -107,6 +118,7 @@ function StudentDashboardLayout() {
             </Box>
           ),
           title: "",
+
         }}
         theme={demoTheme}
       >
@@ -119,6 +131,20 @@ function StudentDashboardLayout() {
             height: "100vh",
           }}
         >
+          <Box
+            sx={{
+              position: "absolute",
+              top: 70,
+              right: 25,
+              transform: "scale(1.5)",
+            }}
+          >
+            <LanguageSelector
+              currentLanguage={language}
+              onLanguageChange={handleLanguageChange}
+            />
+          </Box>
+
           {/* Main Content */}
           <Box
             sx={{
@@ -155,10 +181,10 @@ function StudentDashboardLayout() {
                 </Badge>
               </IconButton>
             </Box>
-
           </Box>
 
         </DashboardLayout>
+
         <ChatUI open={open} toggleModal={toggleModal} />
       </AppProvider>
     </>
