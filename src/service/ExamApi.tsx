@@ -46,4 +46,14 @@ export const getExamByCourseSemesterID = (id: any) => {
 }
 export const deleteExam = (exam: Exam) => {
     return axios.delete(`Examination/${exam.id}`);
-};  
+};
+
+export const deleteSlot = (id: any) => {
+    return axios.delete(`Slot/${id}`)
+}
+
+export const addSlotInLession = (id: any, slot: string[]) => {
+    return axios.patch(`CourseSemester/${id}`, {
+        SlotID: slot
+    })
+}

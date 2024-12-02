@@ -173,18 +173,21 @@ export const MangerCourse = () => {
                                     <TableCell align="center">{ls.SemesterID.toUpperCase()}</TableCell>
                                     <TableCell align="center">{dataClass.find(item => item.ClassID === ls.ClassID)?.ClassName}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            size='medium'
-                                            startIcon={<VisibilityIcon />}
-                                            sx={{
-                                                textTransform: 'none',
-                                                borderRadius: '8px',
-                                            }}
-                                        >
-                                            View
-                                        </Button>
+                                        <Link to={`/staff/viewCourse?ls=${ls.id}`}>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                size='medium'
+                                                startIcon={<VisibilityIcon />}
+                                                sx={{
+                                                    textTransform: 'none',
+                                                    borderRadius: '8px',
+                                                }}
+                                            >
+                                                View
+                                            </Button>
+
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             ))}

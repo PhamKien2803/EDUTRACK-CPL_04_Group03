@@ -22,6 +22,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Config/firebase";
 import { AppContext } from "./context/AppContext";
 import ChatUI from "./page/Chart/ChapApp";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 function App() {
   interface RootState {
@@ -128,7 +130,18 @@ function App() {
           </Route>
         )}
       </Routes>
-
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }
