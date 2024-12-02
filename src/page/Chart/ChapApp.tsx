@@ -678,9 +678,6 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                                         <Box
                                             sx={{
                                                 display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                height: '100%',
                                                 color: '#757575',
                                                 fontSize: '1.25rem',
                                                 fontWeight: 'bold',
@@ -688,7 +685,7 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                                                 borderRadius: 2,
                                             }}
                                         >
-                                            Start a conversation by selecting a contact!
+                                            <span style={{ marginLeft: "2erm" }}>Start a conversation by selecting a contact!</span>
                                         </Box>
                                     )}
                                 </StyledChatContainer>
