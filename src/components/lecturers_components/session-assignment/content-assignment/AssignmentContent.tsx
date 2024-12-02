@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Paper, Divider } from '@mui/material';
+import { Box, Typography, Paper, Divider, Grid, Button } from '@mui/material';
 import { assignmentSlot, slot } from '../../../../models/Interface';
 import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import  ReplyAllIcon  from '@mui/icons-material/ReplyAll';
 
 interface Props {
   assignmentSlot: assignmentSlot[];
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const slotID = searchParams.get('Slotid');
   const assignmentID = searchParams.get('assignmentid');
@@ -102,6 +105,25 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
 
   return (
     <Box sx={{ maxWidth: 850, mx: 'auto', mt: 4 }}>
+      <Box
+        display="flex"
+        alignItems="center"
+        mb={2}
+        sx={{
+          gap: 1,
+        }}
+      >
+        <Grid item>
+          <Button
+            startIcon={<ReplyAllIcon />}
+            onClick={() => navigate(-1)}
+            variant="outlined"
+            color="secondary"
+          >
+            Back
+          </Button>
+        </Grid>
+      </Box>
       <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
         {assignment ? (
           <>
@@ -159,11 +181,11 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
 
             <Divider sx={{ mb: 2 }} />
 
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button variant="contained" color="secondary">
+            {/* <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button disabled variant="contained" color="secondary">
                 Export Submissions
               </Button>
-            </Box>
+            </Box> */}
           </>
         ) : (
           <Typography variant="body1" color="textSecondary">

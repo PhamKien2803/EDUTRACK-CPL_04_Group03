@@ -6,7 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
-import { updateStatusQuestionSLot, updateStatusAssignmentSlot, deleteQuestionSlot, deleteAssignmentSlot } from "../../../../../service/ApiService";
+import { updateStatusQuestionSLot, updateStatusAssignmentSlot, deleteQuestionSlot, deleteAssignmentSlot, getQuestionSLot, getAssignmentSlot } from "../../../../../service/ApiService";
 import { assignmentSlot, questionSlot, slot } from "../../../../../models/Interface";
 import QuestionSlotUpdate from "./update-session/QuestionSlotUpdate";
 import AssignmentSlotUpdateModal from "./update-session/AssignmentSlotUpdate";
@@ -23,6 +23,9 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
   const queryParams = new URLSearchParams(location.search);
   const Slotid = queryParams.get("Slotid");
 
+  const [questionSlots, setQuestionSlots] = useState<questionSlot[]>([]);
+  const [assignmentSlots, setAssignmentSlots] = useState<assignmentSlot[]>([]);
+
   const [questionsslotStatus, setQuestionsslotStatus] = useState<questionSlot[]>(questionSlot);
   const [assignmentsslotStatus, setAssignmentsslotStatus] = useState<assignmentSlot[]>(assignmentSlot);
 
@@ -36,6 +39,21 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     setQuestionsslotStatus(questionSlot);
     setAssignmentsslotStatus(assignmentSlot);
   }, [questionSlot, assignmentSlot]);
+
+  const fetchQuestionSlot = async () => {
+    const res = await getQuestionSLot();
+    if (Array.isArray(res)) { setQuestionSlots(res); }
+  };
+
+  const fetchAssignmentSlot = async () => {
+    const res = await getAssignmentSlot();
+    if (Array.isArray(res)) { setAssignmentSlots(res); }
+  };
+
+  useEffect(() => {
+    fetchQuestionSlot();
+    fetchAssignmentSlot();
+  }, [questionSlots, assignmentSlots]);
 
   const handleClickToDiscussion = (questionId: string, slotId: string) => {
     navigate(`/lecturer/session-question?Slotid=${slotId}&questionId=${questionId}`);
@@ -79,10 +97,6 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     if (currentStatus === 1) {
       await Swal.fire("Không thể xóa", "Vui lòng dừng trước khi xóa.", "warning");
       return;
-      // } else if (currentStatus === 2) {
-      //   await Swal.fire("Không thể xóa", "Không thể xóa vì đã hoàn thành.", "error");
-      //   return;
-      // }
     }
 
     else if (currentStatus === 2) {

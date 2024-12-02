@@ -29,8 +29,6 @@ import { CheckPoint } from "../page/home-page/staff-home/Exam/CheckPoint";
 import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
 import DashboardStaff from "../page/home-page/staff-home/DashboardStaff";
 import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
-import StudentAccountCreating from "../page/home-page/staff-home/Account Management/StudentAccountCreating";
-import LectureAccountCreating from "../page/home-page/staff-home/Account Management/LectureAccountCreate";
 import changePassword from "../components/student_components/profile/changePassword";
 import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
 import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
@@ -307,16 +305,6 @@ const routesStaffHome: Router[] = [
     key: "account-management",
     path: "/staff/account-management",
     component: AccountManagement,
-  },
-  {
-    key: "create-account",
-    path: "/staff/create-account-student",
-    component: StudentAccountCreating,
-  },
-  {
-    key: "create-account-staff",
-    path: "/staff/create-account-lecture",
-    component: LectureAccountCreating,
   },
   {
     key: "create-account-staff",

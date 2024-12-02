@@ -17,18 +17,22 @@ import {
   Typography,
   Modal,
   useMediaQuery,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem, SelectChangeEvent,
 } from "@mui/material";
 import { Search as SearchIcon, Delete as DeleteIcon, } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import { deleteParticipant, getParticipants, updateAccountStatus } from "../../../../service/ApiService";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Cancel } from "@mui/icons-material";
-
 import { participants } from "../../../../models/Interface";
 import Swal from "sweetalert2";
+import StudentAccountCreating from "./StudentAccountCreating";
+import LectureAccountCreating from "./LectureAccountCreate";
 
 const AccountManagement: React.FC = () => {
   interface RootState {
@@ -45,17 +49,37 @@ const AccountManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(5);
-  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [accountType, setAccountType] = useState('');
+
+  // Handle select change
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    setAccountType(event.target.value);
+  };
+
+  // Open Modal function
+  const handleOpenModals = () => {
+    if (!accountType) {
+      Swal.fire({ icon: 'warning', title: 'Oops!', text: 'Please select an account type first!', confirmButtonText: 'OK' });
+    } else {
+      setOpenModal(true);
+    }
+  };
+
+  // Close Modal function
+  const handleCloseModals = () => {
+    setOpenModal(false);
+    setAccountType('');
+  };
+
 
   const fetchParticipants = async () => {
     try {
       const response = await getParticipants();
       const filteredParticipants = response?.filter(
-        (participant: any) => participant.id !== currentUsers.UserID
+        (participant: participants) => participant.id !== currentUsers.UserID
       );
       setParticipants(filteredParticipants);
       setFilteredParticipants(filteredParticipants);
@@ -66,7 +90,7 @@ const AccountManagement: React.FC = () => {
 
   useEffect(() => {
     fetchParticipants();
-  }, []);
+  }, [fetchParticipants]);
 
   const handleUpdateStatus = async (id: string, currentStatus: "true" | "false") => {
     if (id === currentUsers.UserID) {
@@ -106,18 +130,18 @@ const AccountManagement: React.FC = () => {
     page * rowsPerPage
   );
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  // const handleOpenModal = () => setOpenModal(true);
+  // const handleCloseModal = () => setOpenModal(false);
 
-  const handleCreateAccountStudent = () => {
-    navigate("/staff/create-account-student");
-    handleCloseModal();
-  };
+  // const handleCreateAccountStudent = () => {
+  //   navigate("/staff/create-account-student");
+  //   handleCloseModal();
+  // };
 
-  const handleCreateAccountLecturer = () => {
-    navigate("/staff/create-account-lecture");
-    handleCloseModal();
-  };
+  // const handleCreateAccountLecturer = () => {
+  //   navigate("/staff/create-account-lecture");
+  //   handleCloseModal();
+  // };
 
   const handleDeleteParticipant = async (id: string) => {
     if (id === currentUsers.UserID) {
@@ -173,7 +197,21 @@ const AccountManagement: React.FC = () => {
       {/* Header */}
       <Typography
         variant={isMobile ? "h5" : "h4"}
-        sx={{ textAlign: "center", mb: 4 }}
+        style={{
+          textAlign: "center",
+          color: "inherit",
+          fontFamily: "'Roboto', sans-serif",
+          fontWeight: "700",
+          fontSize: "36px",
+          letterSpacing: "1.5px",
+          textTransform: "uppercase",
+          margin: "20px 0",
+          padding: "5px",
+          position: "relative",
+        }}
+        sx={(theme) => ({
+          color: theme.palette.mode === 'dark' ? 'white' : 'black',
+        })}
       >
         Manage Account
       </Typography>
@@ -185,29 +223,74 @@ const AccountManagement: React.FC = () => {
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-between",
           alignItems: "center",
-          gap: 2,
+          gap: isMobile ? 2 : 4,
           mb: 4,
         }}
       >
-        <Button variant="contained" color="secondary" onClick={handleOpenModal}>
-          Create Account
-        </Button>
-        <TextField
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-          fullWidth={isMobile}
-          sx={{ maxWidth: isMobile ? "100%" : "300px" }}
-          InputProps={{
-            endAdornment: (
-              <IconButton>
-                <SearchIcon />
-              </IconButton>
-            ),
+        {/* Account Type and Create Account */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: "center",
+            gap: 2,
           }}
-        />
+        >
+          {/* Account Type Select */}
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel id="account-type-label">Select Role</InputLabel>
+            <Select
+              labelId="account-type-label"
+              value={accountType}
+              onChange={handleSelectChange}
+              label="Account Type"
+              sx={{ width: 150 }}
+            >
+              <MenuItem value="Student">Student</MenuItem>
+              <MenuItem value="Lecturer">Lecturer</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Create Account Button */}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleOpenModals}
+            size="large"
+            sx={{ textTransform: "capitalize", px: 3 }}
+          >
+            Create Account
+          </Button>
+        </Box>
+
+        {/* Search Box */}
+        <Box
+          sx={{
+            flex: isMobile ? "1 0 100%" : "0 0 auto", // To adjust width on smaller screens
+            display: "flex",
+            justifyContent: "flex-end", // Align search to the right
+          }}
+        >
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            onChange={handleSearch}
+            fullWidth={isMobile}
+            sx={{
+              maxWidth: isMobile ? "100%" : "300px",
+            }}
+            InputProps={{
+              endAdornment: (
+                <IconButton>
+                  <SearchIcon />
+                </IconButton>
+              ),
+            }}
+          />
+        </Box>
       </Box>
+
 
       {/* Table */}
       <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: "hidden" }}>
@@ -379,7 +462,7 @@ const AccountManagement: React.FC = () => {
                 </TableCell>
 
 
-                <TableCell sx={{ alignItems: "center", textAlign: "center", display: "flex" }}>
+                <TableCell sx={{ display: "flex", justifyContent: "center" }}>
                   <Button
                     variant="contained"
                     onClick={() => handleUpdateStatus(participant.id, participant.Status)}
@@ -409,8 +492,6 @@ const AccountManagement: React.FC = () => {
                       borderRadius: "8px",
                       padding: "6px 8px",
                       fontSize: "16px",
-                      display: "flex",
-                      alignItems: "center",
                       gap: "4px",
                       color: "red",
                       "& .MuiSvgIcon-root": {
@@ -442,51 +523,31 @@ const AccountManagement: React.FC = () => {
         sx={{ mt: 4, display: "flex", justifyContent: "center" }}
       />
 
-      {/* Modal */}
-      <Modal open={openModal} onClose={handleCloseModal}>
+
+      <Modal open={openModal} onClose={handleCloseModals}>
         <Box
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
             borderRadius: 2,
             p: 4,
             boxShadow: 24,
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
-          <Typography variant="h6" sx={{ mb: 3 }}>
-            You want to create an account for?
-          </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleCreateAccountStudent}
-            >
-              Student
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleCreateAccountLecturer}
-            >
-              Lecturer
-            </Button>
-          </Box>
-          <Button
-            variant="outlined"
-            onClick={handleCloseModal}
-            sx={{ mt: 3 }}
-          >
-            Cancel
-          </Button>
+          {/* Conditional Rendering of Form */}
+          {accountType === 'Student' && <StudentAccountCreating handleCloseModals={handleCloseModals} />}
+          {accountType === 'Lecturer' && <LectureAccountCreating handleCloseModals={handleCloseModals} />}
         </Box>
       </Modal>
+
     </Box>
   );
+
+
 };
 
 export default AccountManagement;
