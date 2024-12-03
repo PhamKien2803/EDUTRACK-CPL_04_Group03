@@ -191,7 +191,7 @@ const ManageExam: React.FC = () => {
 
                                             <TableCell>{exam.examContent}</TableCell>
                                             <TableCell>{exam.createdAt}</TableCell>
-                                            <TableCell>{exam.display ? t("yes") : t("no")}</TableCell>
+                                            <TableCell>{exam.display ? t("yes") : t("no1")}</TableCell>
                                             <TableCell>
                                                 <Box display="flex" alignItems="center">
                                                     {exam.status ? (
