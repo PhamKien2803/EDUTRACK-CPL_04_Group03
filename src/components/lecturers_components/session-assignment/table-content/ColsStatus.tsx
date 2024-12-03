@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Typography, Grid, Paper, Accordion, AccordionSummary, AccordionDetails, Divider } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import { useTranslation } from 'react-i18next';
+    
 interface Assignment {
     title: string;
     dueDate: string;
@@ -17,29 +18,29 @@ const assignments: Assignment[] = [
 ];
 
 const ColsStatus: React.FC = () => {
-
+    const { t } = useTranslation();
     return (
         <Box sx={{ padding: 3 }}>
             <Divider/>
             <Typography variant="h6" sx={{ marginTop: 3, fontWeight: 'bold', color: '#1976d2' }}>
-                Assignment Breakdown
+                {t('total_assignments')}
             </Typography>
             <Grid container spacing={3}>
-                {['Completed', 'Pending', 'Overdue'].map(status => (
+                {[t('Completed Assignments'), t('Pending Assignments'), t('Overdue Assignments')].map(status => (
                     <Grid item xs={12} key={status}>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${status}-content`} id={`${status}-header`}>
-                                <Typography variant="h6">{status} Assignments</Typography>
+                                <Typography variant="h6">{status} </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 {assignments.filter(a => a.status === status).length === 0 ? (
-                                    <Typography>No assignments in this status.</Typography>
+                                    <Typography>{t('No assignments in this status.')}</Typography>
                                 ) : (
                                     <Box>
                                         {assignments.filter(a => a.status === status).map((assignment, index) => (
                                             <Paper sx={{ padding: 1, marginBottom: 1, boxShadow: 1 }} key={index}>
                                                 <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{assignment.title}</Typography>
-                                                <Typography variant="body2">Due Date: {assignment.dueDate}</Typography>
+                                                <Typography variant="body2">{t('Due Date')} {assignment.dueDate}</Typography>
                                             </Paper>
                                         ))}
                                     </Box>

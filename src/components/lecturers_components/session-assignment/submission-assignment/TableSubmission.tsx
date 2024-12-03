@@ -7,13 +7,15 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { answerAssignmentSlot, participants } from '../../../../models/Interface';
 import { updateScoreAssignmentSlot } from "../../../../service/ApiService";
-
+import { useTranslation } from 'react-i18next';
+    
 interface Props {
   answerAssignmentSlot: answerAssignmentSlot[];
   participants: participants[];
 }
 
 const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }) => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const assignmentID = searchParams.get('assignmentid');
   const [latestSubmissions, setLatestSubmissions] = useState<(answerAssignmentSlot & { studentName: string })[]>([]);
@@ -93,17 +95,17 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
           `<iframe src="${fullBase64}" frameborder="0" style="width:100%;height:100%;"></iframe>`
         );
       } else {
-        alert("Failed to open a new tab. Please allow pop-ups for this site.");
+        alert("{t('allow_popups')}");
       }
     } else {
-      alert("Invalid Base64 data.");
+      alert("{t('invalid_base64')}");
     }
   };
 
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-        Latest Submissions for Each Student
+        {t('latest_submissions_title')}
       </Typography>
 
       <TableContainer
@@ -118,13 +120,13 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
         <Table>
           <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>No.</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Student</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Submission Status</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Time Submitted</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Link/File Assignment</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Score</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>Update Score</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('no')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('student')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('table_submission_status')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('time_submitted')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('table_link_file_assignment')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('table_score')}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#1976d2' }}>{t('update_score')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -147,12 +149,12 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                     textAlign: 'center',
                   }}
                 >
-                  {submission.Status === 1 ? "Submitted" : "Submitted Late"}
+                  {submission.Status === 1 ? "{t('table_submitted')}" : "{t('submitted_late')}"}
                 </TableCell>
                 <TableCell>{new Date(submission?.Timestamped).toLocaleString()}</TableCell>
 
                 <TableCell>
-                  <Link href={submission?.urlfile} onClick={() => openInNewTab(submission?.urlfile)} target="_blank" rel="noopener noreferrer">Assignment Link</Link>
+                  <Link href={submission?.urlfile} onClick={() => openInNewTab(submission?.urlfile)} target="_blank" rel="noopener noreferrer">{t('assignment_link')}</Link>
                 </TableCell>
 
                 <TableCell>
@@ -179,7 +181,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                         size="small"
                         onClick={() => handleSaveClick(index)}
                       >
-                        Save
+                        {t('Save')}
                       </Button>
                       <Button
                         variant="outlined"
@@ -187,7 +189,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                         size="small"
                         onClick={handleCancelClick}
                       >
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </>
                   ) : (
@@ -197,7 +199,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                       size="small"
                       onClick={() => handleEditClick(index, submission.score?.toString() || '')}
                     >
-                      Edit
+                      {t('Edit')}
                     </Button>
                   )}
                 </TableCell>

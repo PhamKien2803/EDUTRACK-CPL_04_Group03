@@ -7,6 +7,7 @@ import {
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
@@ -72,9 +74,9 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             }}
                                         >
                                             <Typography variant="subtitle2" color="black" fontSize={15}>
-                                                Slot {index + 1}
+                                                {t('Slot')} {index + 1}
                                             </Typography>
-                                        </Box>
+                                        </Box>{t('Questions')}
 
                                         <Box display="flex" alignItems="center" gap={2}>
                                             <Typography variant="body2" color="textSecondary">
@@ -82,7 +84,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             </Typography>
                                             <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
                                                 <Button variant="outlined" color="secondary" size="small">
-                                                    Update Slot
+                                                {t('UpdateSlot')}
                                                 </Button>
                                             </Link>
                                         </Box>
@@ -99,7 +101,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 <Divider sx={{ my: 2 }} />
                                 <Collapse in={visibleSlots[item]}>
                                     <Typography variant="subtitle1" color="primary" gutterBottom>
-                                        Questions:
+                                    {t('Questions')}:
                                     </Typography>
                                     <List>
                                         {updatedQuestions
@@ -127,7 +129,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                     >
                                                         <ListItemText
                                                             primary={`Q${qIndex + 1}: ${qs.content.substring(0, 50)}...`}
-                                                            secondary={qs.Status === 0 ? 'Not started' : 'On-Going'}
+                                                            secondary={qs.Status === 0 ? t("NotStarted") : t("OnGoing")}
                                                             secondaryTypographyProps={{
                                                                 color: qs.Status === 0 ? 'error' : 'success',
                                                                 fontWeight: 'bold',
@@ -140,7 +142,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     </List>
                                     <Divider sx={{ my: 2 }} />
                                     <Typography variant="subtitle1" color="primary" gutterBottom>
-                                        Assignments:
+                                    {t('Assignments')}
                                     </Typography>
                                     <List>
                                         {slot
@@ -168,7 +170,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                     >
                                                         <ListItemText
                                                             primary={`Assignment ${slIndex + 1}`}
-                                                            secondary="Click to view details"
+                                                            secondary={t('ClickToViewDetails')}
                                                             secondaryTypographyProps={{
                                                                 color: 'primary',
                                                                 fontWeight: 'bold',
@@ -187,7 +189,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                     {/* Right Panel */}
                     <Grid item xs={12} md={4}>
                         <Card variant="outlined" sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
-                            <Typography variant="h6">Class</Typography>
+                            <Typography variant="h6">{t('Class')}</Typography>
                             <Select
                                 variant="outlined"
                                 sx={{ minWidth: 200 }}
@@ -203,22 +205,22 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 ))}
                             </Select>
                             <Divider sx={{ my: 2 }} />
-                            <Typography variant="body2">20 students</Typography>
-                            <Typography variant="body2">20 slots</Typography>
+                            <Typography variant="body2">20 {t('Students')}</Typography>
+                            <Typography variant="body2">20 {t('Slots')}</Typography>
                             <Divider style={{ margin: '10px 0' }} />
                             <Typography variant="body2">
 
-                                Start date: 17:00 02/01/2023</Typography>
+                                {t('StartDate')} 17:00 02/01/2023</Typography>
 
                             <div style={{ marginTop: '20px' }}>
-                                <Typography variant="body1">Lecturer:</Typography>
+                                <Typography variant="body1">{t('Lecturer')}:</Typography>
                                 <List>
                                     <ListItem>{participants.find(pr => pr.id === lession.LecturersID)?.Email}</ListItem>
                                 </List>
                             </div>
                             <Link href={`/manageExam?csID=${lession.id}`}>
                                 <Button variant="contained" color="secondary" fullWidth>
-                                    Exam Management
+                                    {t('ExamManagement')}
                                 </Button>
                             </Link>
                         </Card>

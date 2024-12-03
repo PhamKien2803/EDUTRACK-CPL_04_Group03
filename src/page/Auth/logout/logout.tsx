@@ -24,8 +24,9 @@ const LogoutButton: React.FC = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(doLogout());
-        logout()
         navigate("/login");
+        logout()
+        
       }
       if (!result.isConfirmed) {
         if (account.Role === 0) {

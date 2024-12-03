@@ -238,6 +238,12 @@ const routesLecturersHome: Router[] = [
     path: "/contact",
     component: Contact,
   },
+  {
+    name: "Change-Password",
+    key: "ChangePasswordPage",
+    path: "/change-password",
+    component: changePassword,
+  },
 ];
 
 const routesStaffHome: Router[] = [
@@ -329,6 +335,12 @@ const routesStaffHome: Router[] = [
     key: "LogoutPage",
     path: "/logout",
     component: LogoutButton,
+  },
+  {
+    name: "Change-Password",
+    key: "ChangePasswordPage",
+    path: "/change-password",
+    component: changePassword,
   },
 ];
 
