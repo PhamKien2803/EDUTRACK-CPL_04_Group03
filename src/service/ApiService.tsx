@@ -97,7 +97,7 @@ const getRepliesContent = () => {
 };
 
 const getClass = () => {
-  return axios.get("Class");
+  return axios.get(`Class`);
 };
 
 export const updateClass = (id: string, updatedData: { ClassName: string }) => {

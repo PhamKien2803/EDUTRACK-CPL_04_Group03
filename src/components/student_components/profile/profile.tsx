@@ -17,7 +17,6 @@ import CakeIcon from "@mui/icons-material/Cake";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WcIcon from "@mui/icons-material/Wc";
 import BadgeIcon from '@mui/icons-material/Badge';
-import { Lock } from "@mui/icons-material";
 
 interface Participant {
   id: string;
@@ -62,7 +61,7 @@ const Profile: React.FC = () => {
   if (!profile) return <Typography variant="h6" color="textSecondary">{t("loading")}</Typography>;
 
   return (
-    <Box bgcolor="#f6f9fc" minHeight="100vh" pb={5}>
+    <Box bgcolor="#f6f9fc" minHeight="130vh" pb={5}>
       {/* Cover Photo */}
       <Box
         sx={{
@@ -132,19 +131,7 @@ const Profile: React.FC = () => {
             {t("update_profile")}
           </Button>
 
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<Lock />}
-            onClick={() => navigate("/change-password")}
-            sx={{
-              textTransform: "capitalize",
-              borderRadius: "30px",
-              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
-            }}
-          >
-            {t("change password")}
-          </Button>
+          
         </Box>
       </Box>
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, IconButton } from "@mui/material";
+import { Box, TextField, Button, Typography, IconButton, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getParticipants, changePassword } from "../../../service/ApiService";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { Lock, Visibility, VisibilityOff, VpnKey  } from "@mui/icons-material";
+import { Lock, Visibility, VisibilityOff, VpnKey } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { participants } from "../../../models/Interface";
 
@@ -61,7 +61,7 @@ const ChangePassword: React.FC = () => {
         title: t("Success_titles"),
         text: t("success_password_updated"),
       }).then(() => {
-        navigate("/profile"); 
+        navigate("/profile");
       });
     } catch (err) {
       console.error(err);
@@ -74,28 +74,21 @@ const ChangePassword: React.FC = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#f3f4f6"
+    <Paper
+      elevation={3}
     >
       <Box
         bgcolor="white"
         borderRadius="16px"
         boxShadow="0 4px 20px rgba(0, 0, 0, 0.1)"
         p={4}
-        width="400px"
-        display="flex"
         flexDirection="column"
-        alignItems="center"
+        sx={{ marginTop: "3rem" }}
       >
         <Typography
           variant="h5"
           mb={3}
           fontWeight="600"
-          color="primary"
           textAlign="center"
         >
           {t("change_password")}
@@ -103,6 +96,7 @@ const ChangePassword: React.FC = () => {
 
         {/* Old Password */}
         <TextField
+          placeholder="•••••••"
           label={t("old_password")}
           type={showOldPassword ? "text" : "password"}
           value={oldPassword}
@@ -127,6 +121,7 @@ const ChangePassword: React.FC = () => {
 
         {/* New Password */}
         <TextField
+          placeholder="•••••••"
           label={t("new_password")}
           type={showNewPassword ? "text" : "password"}
           value={newPassword}
@@ -151,6 +146,7 @@ const ChangePassword: React.FC = () => {
 
         {/* Confirm Password */}
         <TextField
+          placeholder="•••••••"
           label={t("confirm_password")}
           type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
@@ -191,7 +187,7 @@ const ChangePassword: React.FC = () => {
           {t("save_changes")}
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 
 };

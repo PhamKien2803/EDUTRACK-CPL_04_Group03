@@ -29,7 +29,6 @@ import { CheckPoint } from "../page/home-page/staff-home/Exam/CheckPoint";
 import SemesterForm from "../page/home-page/staff-home/Semester Management/SemesterForm";
 import DashboardStaff from "../page/home-page/staff-home/DashboardStaff";
 import AccountManagement from "../page/home-page/staff-home/Account Management/AccountManagement";
-import changePassword from "../components/student_components/profile/changePassword";
 import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
 import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
@@ -119,12 +118,7 @@ const routesStudentHome: Router[] = [
     path: "/edit-profile",
     component: EditProfile,
   },
-  {
-    name: "Change-Password",
-    key: "ChangePasswordPage",
-    path: "/change-password",
-    component: changePassword,
-  },
+
   {
     name: "Logout",
     key: "LogoutPage",
@@ -238,12 +232,7 @@ const routesLecturersHome: Router[] = [
     path: "/contact",
     component: Contact,
   },
-  {
-    name: "Change-Password",
-    key: "ChangePasswordPage",
-    path: "/change-password",
-    component: changePassword,
-  },
+
 ];
 
 const routesStaffHome: Router[] = [
@@ -336,12 +325,7 @@ const routesStaffHome: Router[] = [
     path: "/logout",
     component: LogoutButton,
   },
-  {
-    name: "Change-Password",
-    key: "ChangePasswordPage",
-    path: "/change-password",
-    component: changePassword,
-  },
+
 ];
 
 export { routesLecturersHome, routesStaffHome, routesStudentHome };
