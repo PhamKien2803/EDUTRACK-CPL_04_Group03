@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { answerQuestionSlot, participants } from '../../../../models/Interface';
 import { getAnswerQuestionSlot, getParticipants } from '../../../../service/ApiService';
+import { useTranslation } from 'react-i18next';
 
 function TabsDicussion() {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
@@ -18,7 +19,7 @@ function TabsDicussion() {
 
   const [value, setValue] = useState<string>('one');
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setLoading(true);
     setValue(newValue);
@@ -53,7 +54,7 @@ function TabsDicussion() {
 
   const getUsernameById = (userID: string) => {
     const user = participants.find((participant) => participant.id === userID);
-    return user ? user.UserName : "Unknown User";
+    return user ? user.UserName : t('Unknown User', { defaultValue: 'Unknown User' });
   };
 
   const filterCommentQuestion = answerQuestionSlots.filter(
@@ -70,9 +71,9 @@ function TabsDicussion() {
         indicatorColor="secondary"
         aria-label="secondary tabs example"
       >
-        <Tab value="one" label="Discussion" />
-        <Tab value="two" label="Score" />
-        <Tab value="three" label="Message to student" />
+        <Tab value="one" label={t('Discussion', { defaultValue: 'Discussion' })} />
+        <Tab value="two" label={t('Score', { defaultValue: 'Score' })} />
+        <Tab value="three" label={t('Message to student', { defaultValue: 'Message to student' })} />
       </Tabs>
 
       {loading && <LinearProgress color="secondary" />}

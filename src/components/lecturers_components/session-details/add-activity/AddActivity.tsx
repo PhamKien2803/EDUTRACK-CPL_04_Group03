@@ -10,6 +10,8 @@ import { createAssignmentSlot } from '../../../../service/ApiService';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCommentSettings } from '../../../../redux/action/commentSettingsActions';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
   const [endDate, setEndDate] = useState<string>('');
   const [commentSetting1, setCommentSetting1] = useState(false);
   const [commentSetting2, setCommentSetting2] = useState(false);
+  const { t } = useTranslation();
 
   // Handle setting changes to ensure only one setting is active at a time
   const handleCommentSetting1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +48,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
 
   const handleSubmit = async () => {
     if (!content || !startDate || !endDate) {
-      Swal.fire({ icon: 'error', title: 'Missing Data', text: 'Please fill out all required fields.' });
+      Swal.fire({ icon: 'error', title: t('missing_data', { defaultValue: 'Missing Data' }), text: t('please_fill_required_fields', { defaultValue: 'Please fill out all required fields.' }) });
       return;
     }
 
@@ -70,11 +73,11 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         SettingStatus: settingStatus,
       });
 
-      Swal.fire({ icon: 'success', title: 'Success', text: 'Question slot created successfully!' });
+      Swal.fire({ icon: 'success', title: t('successl', { defaultValue: 'Success' }), text: t('question_slot_created_successfully', { defaultValue: 'Question slot created successfully!' }) });
       handleClose();
     } catch (error) {
       console.log(error);
-      Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to create question slot. Please try again.' });
+      Swal.fire({ icon: 'error', title: t('errorl', { defaultValue: 'Error' }), text: t('failed_to_create_question_slot', { defaultValue: 'Failed to create question slot. Please try again.' }) });
     }
   };
 
@@ -97,7 +100,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         {/* Content Field */}
         <Grid item xs={12}>
           <TextField
-            label="Content"
+            label={t('contentl', { defaultValue: 'Content' })}
             variant="outlined"
             fullWidth
             multiline
@@ -115,7 +118,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         {/* Start Date Field */}
         <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
           <TextField
-            label="Start Date"
+            label={t('start_date', { defaultValue: 'Start Date' })}
             type="datetime-local"
             fullWidth
             value={startDate}
@@ -127,7 +130,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         {/* End Date Field */}
         <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
           <TextField
-            label="End Date"
+            label={t('end_date', { defaultValue: 'End Date' })}
             type="datetime-local"
             fullWidth
             value={endDate}
@@ -139,7 +142,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
         {/* Comment Settings */}
         <Grid item xs={12}>
           <Typography variant="subtitle1" gutterBottom>
-            Comment Settings
+            {t('comment_settings', { defaultValue: 'Comment Settings' })}
           </Typography>
           <FormControlLabel
             control={
@@ -149,7 +152,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
                 color="primary"
               />
             }
-            label="Students can only see their own comments"
+            label={t('students_see_own_comments', { defaultValue: 'Students can only see their own comments' })}
           />
           <FormControlLabel
             control={
@@ -159,7 +162,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
                 color="primary"
               />
             }
-            label="Students can view all comments but cannot reply"
+            label={t('students_view_all_comments', { defaultValue: 'Students can view all comments but cannot reply' })}
           />
         </Grid>
 
@@ -177,7 +180,8 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
               color="secondary"
               sx={{ textTransform: "capitalize" }}
             >
-              Cancel
+              {t('cancell', { defaultValue: 'Cancel' })}
+
             </Button>
             <Button
               variant="contained"
@@ -185,7 +189,7 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
               color="secondary"
               sx={{ textTransform: "capitalize" }}
             >
-              Submit
+              {t('submit', { defaultValue: 'Submit' })}
             </Button>
           </Box>
         </Grid>
@@ -233,7 +237,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
   // Hàm gửi form
   const handleSubmit = async () => {
     if (!startDate || !endDate || !title || !description || !file) {
-      Swal.fire({ icon: "error", title: "Missing Data", text: "Please fill out all required fields." });
+      Swal.fire({ icon: "error", title: t('missing_data', { defaultValue: 'Missing Data' }), text: "Please fill out all required fields." });
       return;
     }
 
@@ -255,11 +259,11 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
         Status: 0,
       });
 
-      Swal.fire({ icon: "success", title: "Success", text: "Assignment created successfully!" });
+      Swal.fire({ icon: "success", title: t('successl', { defaultValue: 'Success' }), text: t('assignment_created_successfully', { defaultValue: 'Assignment created successfully!' }) });
       handleClose();
     } catch (error) {
       console.error(error);
-      Swal.fire({ icon: "error", title: "Error", text: "Failed to create assignment. Please try again." });
+      Swal.fire({ icon: "error", title: t('errorl', { defaultValue: 'Error' }), text: "Failed to create assignment. Please try again." });
     }
   };
 
@@ -281,12 +285,12 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       >
         {/* Content Field */}
         <Grid item xs={12}>
-          <TextField label="Title" variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+          <TextField label={t('title', { defaultValue: 'Title' })} variant="outlined" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
         </Grid>
 
         <Grid item xs={12}>
           <TextField
-            label="Description"
+            label={t('description', { defaultValue: 'Description' })}
             variant="outlined"
             fullWidth
             multiline
@@ -299,7 +303,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
         {/* Start Date Field */}
         <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
           <TextField
-            label="Start Date"
+            label={t('start_date', { defaultValue: 'Start Date' })}
             type="datetime-local"
             fullWidth
             value={startDate}
@@ -311,7 +315,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
         {/* End Date Field */}
         <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
           <TextField
-            label="End Date"
+            label={t('starend_date', { defaultValue: 'End Date' })}
             type="datetime-local"
             fullWidth
             value={endDate}
@@ -333,13 +337,13 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
               "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
             }}
           >
-            Upload Assignment File
+            {t('upload_assignment_file', { defaultValue: 'Upload Assignment File' })}
             <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden onChange={handleFileChange} />
           </Button>
-          <span style={{ color: "gray" }}> .pdf,.doc,.docx,.ppt,.pptx</span>
+          <span style={{ color: "gray" }}>{t('allowed_file_formats', { defaultValue: '.pdf,.doc,.docx,.ppt,.pptx' })} </span>
           {fileName && (
             <Typography mt={1} color="textSecondary">
-              File uploaded: {fileName}
+              {t('file_uploaded', { defaultValue: 'File uploaded:' })} {fileName}
             </Typography>
           )}
         </Grid>
@@ -358,7 +362,7 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
               color="secondary"
               sx={{ textTransform: "capitalize" }}
             >
-              Cancel
+              {t('cancell', { defaultValue: 'Cancel' })}
             </Button>
             <Button
               variant="contained"
@@ -366,7 +370,8 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
               color="secondary"
               sx={{ textTransform: "capitalize" }}
             >
-              Submit
+              {t('submit', { defaultValue: 'Submit' })}
+
             </Button>
           </Box>
         </Grid>
@@ -380,7 +385,7 @@ const AddActivity: React.FC = () => {
 
   const handleOpen = () => {
     if (!activityType) {
-      Swal.fire({ icon: 'warning', title: 'Oops!', text: 'Please select an activity first!', confirmButtonText: 'OK' });
+      Swal.fire({ icon: 'warning', title: t('oops', { defaultValue: 'Oops!' }), text: t('please_select_activity_first', { defaultValue: 'Please select an activity first!' }), confirmButtonText: t('ok', { defaultValue: 'OK' }) });
     } else {
       setOpen(true);
     }
@@ -395,13 +400,13 @@ const AddActivity: React.FC = () => {
     <Box>
       <Box display="flex" alignItems="center" gap={2} mb={3}>
         <FormControl fullWidth sx={{ maxWidth: 200 }}>
-          <InputLabel>Select Activity</InputLabel>
+          <InputLabel>{t('select_activity', { defaultValue: 'Select Activity' })}</InputLabel>
           <Select value={activityType} label="Select Activity" onChange={(e) => setActivityType(e.target.value)}>
-            <MenuItem value="questions">Questions</MenuItem>
-            <MenuItem value="assignments">Assignments</MenuItem>
+            <MenuItem value="questions">{t('questionsl', { defaultValue: 'Questions' })}</MenuItem>
+            <MenuItem value="assignments">{t('assignmentsl', { defaultValue: 'Assignments' })}</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="contained" color="secondary" onClick={handleOpen}>Add New Activity for Student</Button>
+        <Button variant="contained" color="secondary" onClick={handleOpen}>{t('add_new_activity_for_student', { defaultValue: 'Add New Activity for Student' })}</Button>
       </Box>
 
       <Modal open={open} onClose={handleClose} closeAfterTransition BackdropProps={{ timeout: 500 }}>
@@ -423,7 +428,7 @@ const AddActivity: React.FC = () => {
           >
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                Add New {activityType === 'questions' ? 'Question' : 'Assignment'}
+                {t('add_new', { defaultValue: 'Add New ' })} {activityType === 'questions' ? 'Question' : 'Assignment'}
               </Typography>
               <IconButton onClick={handleClose} size="small">
                 <CloseIcon />

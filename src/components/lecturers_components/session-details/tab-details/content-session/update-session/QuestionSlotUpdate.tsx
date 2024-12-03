@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { questionSlot } from "../../../../../../models/Interface";
 import { updateQuestionSLot } from "../../../../../../service/ApiService";
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
 interface QuestionSlotUpdateProps {
   question: questionSlot;
@@ -18,6 +19,8 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
   const [endDate, setEndDate] = useState(question.TimeEnd);
   const [commentSetting1, setCommentSetting1] = useState(false);
   const [commentSetting2, setCommentSetting2] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (question.SettingStatus === 1) {
@@ -58,11 +61,11 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
 
       await updateQuestionSLot(updatedQuestion);
       onSave(updatedQuestion);
-      Swal.fire("Success", "Question updated successfully!", "success");
+      Swal.fire(t('successl', { defaultValue: 'Success' }), t('Question updated successfully!', { defaultValue: 'Question updated successfully!' }), "success");
       onClose();
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "There was an error updating the question.", "error");
+      Swal.fire(t('errorl', { defaultValue: 'Error' }), t('There was an error updating the question.', { defaultValue: 'There was an error updating the question.' }), "error");
     }
   };
 
@@ -118,7 +121,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
           sx={{ pb: 1, borderBottom: '1px solid #e0e0e0' }}
         >
           <Typography variant="h6" fontWeight="bold">
-            Edit Question
+            {t('Edit Question', { defaultValue: 'Edit Question' })}
           </Typography>
           <IconButton onClick={onClose} size="small" sx={{ color: '#757575' }}>
             <CloseIcon />
@@ -147,7 +150,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
           {/* Content Field */}
           <Grid item xs={12}>
             <TextField
-              label="Content"
+              label={t('Content', { defaultValue: 'Content' })}
               variant="outlined"
               fullWidth
               multiline
@@ -165,7 +168,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
           {/* Date and Time Fields */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Start Date"
+              label={t('start_date_label', { defaultValue: 'Start Date' })}
               type="datetime-local"
               fullWidth
               value={startDate}
@@ -180,7 +183,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="End Date"
+              label={t('end_date_label', { defaultValue: 'End Date' })}
               type="datetime-local"
               fullWidth
               value={endDate}
@@ -198,7 +201,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
           <Grid item xs={12}>
             <Divider sx={{ mb: 2 }} />
             <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              Comment Settings
+              {t('Comment Settings', { defaultValue: 'Comment Settings' })}
             </Typography>
             <FormControlLabel
               control={
@@ -208,7 +211,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
                   color="primary"
                 />
               }
-              label="Students can only see their own comments"
+              label={t('Students can only see their own comments', { defaultValue: 'Students can only see their own comments' })}
             />
             <FormControlLabel
               control={
@@ -218,7 +221,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
                   color="primary"
                 />
               }
-              label="Students can view all comments but cannot reply"
+              label={t('Students can view all comments but cannot reply', { defaultValue: 'Students can view all comments but cannot reply' })}
             />
           </Grid>
         </Grid>
@@ -242,7 +245,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
             '&:hover': { backgroundColor: '#f5f5f5' },
           }}
         >
-          Cancel
+          {t('cancel_button', { defaultValue: 'Cancel' })}
         </Button>
         <Button
           onClick={handleSave}
@@ -253,7 +256,7 @@ const QuestionSlotUpdate: React.FC<QuestionSlotUpdateProps> = ({ question, open,
             fontWeight: 'bold',
           }}
         >
-          Submit
+          {t('submit_button', { defaultValue: 'Submit' })}
         </Button>
       </DialogActions>
     </Dialog>

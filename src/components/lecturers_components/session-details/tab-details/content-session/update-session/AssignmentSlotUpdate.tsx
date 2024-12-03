@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import { assignmentSlot } from "../../../../../../models/Interface";
 import { updateAssignmentSlot } from "../../../../../../service/ApiService";
 import CloseIcon from '@mui/icons-material/Close';
-
+import { useTranslation } from 'react-i18next';
 
 interface AssignmentSlotUpdateModalProps {
   assignment: assignmentSlot;
@@ -38,6 +38,8 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
   const [endDate, setEndDate] = useState(assignment.TimeEnd);
   const [file, setFile] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
+
+  const { t } = useTranslation();
 
   // Handle file change and convert to base64
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,11 +88,11 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
 
       await updateAssignmentSlot(updatedAssignment);
       onSave(updatedAssignment);
-      Swal.fire("Success", "Assignment updated successfully!", "success");
+      Swal.fire(t('successl', { defaultValue: 'Success' }), t('success_message', { defaultValue: 'Assignment updated successfully!' }), "success");
       onClose();
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "There was an error updating the assignment.", "error");
+      Swal.fire(t('errorl', { defaultValue: 'Error' }), t('error_message', { defaultValue: 'There was an error updating the assignment.' }), "error");
     }
   };
 
@@ -119,7 +121,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
           alignItems="center"
         >
           <Typography variant="h6" fontWeight="bold">
-            Edit Assignment
+            {t('edit_assignment', { defaultValue: 'Edit Assignment' })}
           </Typography>
           <IconButton onClick={onClose} size="small" sx={{ color: '#757575' }}>
             <CloseIcon />
@@ -142,7 +144,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
           {/* Title */}
           <Grid item xs={12}>
             <TextField
-              label="Title"
+              label={t('title_label', { defaultValue: 'Title' })}
               variant="outlined"
               fullWidth
               value={title}
@@ -158,7 +160,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
           {/* Description */}
           <Grid item xs={12}>
             <TextField
-              label="Description"
+              label={t('description_label', { defaultValue: 'Description' })}
               variant="outlined"
               fullWidth
               multiline
@@ -177,7 +179,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
           {/* Start Date */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Start Date"
+              label={t('start_date_label', { defaultValue: 'Start Date' })}
               type="datetime-local"
               fullWidth
               value={startDate}
@@ -196,7 +198,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
           {/* End Date */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label="End Date"
+              label={t('end_date_label', { defaultValue: 'End Date' })}
               type="datetime-local"
               fullWidth
               value={endDate}
@@ -226,7 +228,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
                 '&:hover': { backgroundColor: '#1976d2', color: '#fff' },
               }}
             >
-              Update Assignment File
+              {t('update_assignment_file', { defaultValue: 'Update Assignment File' })}
               <input
                 type="file"
                 accept=".pdf,.doc,.docx,.ppt,.pptx"
@@ -236,7 +238,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
             </Button>
             {fileName && (
               <Typography mt={1} color="textSecondary">
-                File uploaded: {fileName}
+                {t('file_uploadedl', { defaultValue: 'File uploaded:' })} {fileName}
               </Typography>
             )}
           </Grid>
@@ -263,7 +265,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
             '&:hover': { backgroundColor: '#f5f5f5' },
           }}
         >
-          Cancel
+          {t('cancel_button', { defaultValue: 'Cancel' })}
         </Button>
         <Button
           onClick={handleSave}
@@ -274,7 +276,7 @@ const AssignmentSlotUpdateModal: React.FC<AssignmentSlotUpdateModalProps> = ({
             fontWeight: 'bold',
           }}
         >
-          Submit
+          {t('submit_button', { defaultValue: 'Submit' })}
         </Button>
       </DialogActions>
     </Dialog>

@@ -3,6 +3,7 @@ import { Box, Typography, Avatar, Paper, IconButton, TextField, Menu, MenuItem, 
 import { replies as Reply } from '../../../../models/Interface';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 interface RepliesProps {
   userIds?: string;
@@ -23,6 +24,7 @@ const ReplyComment: React.FC<RepliesProps> = ({ replies, username = 'User', user
 
   const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
 
+  const { t } = useTranslation();
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, replyId: string) => {
     setAnchorEl(event.currentTarget);
     setSelectedReplyId(replyId);
@@ -47,7 +49,7 @@ const ReplyComment: React.FC<RepliesProps> = ({ replies, username = 'User', user
       setEditMode(null);
       setEditText('');
     } else {
-      alert("Reply cannot be empty.");
+      alert(t('reply_cannot_be_empty', { defaultValue: 'Reply cannot be empty.' }));
     }
   };
 
@@ -121,7 +123,7 @@ const ReplyComment: React.FC<RepliesProps> = ({ replies, username = 'User', user
                           fontSize: '0.8rem',
                         }}
                       >
-                        Save
+                        {t('save', { defaultValue: 'Save' })}
                       </Button>
                       <Button
                         variant="outlined"
@@ -134,7 +136,7 @@ const ReplyComment: React.FC<RepliesProps> = ({ replies, username = 'User', user
                           fontSize: '0.8rem',
                         }}
                       >
-                        Cancel
+                        {t('cancel', { defaultValue: 'Cancel' })}
                       </Button>
                     </Box>
                   ) : (
@@ -151,10 +153,10 @@ const ReplyComment: React.FC<RepliesProps> = ({ replies, username = 'User', user
                     }}
                   >
                     <MenuItem onClick={() => handleEdit(reply?.id, reply.ReplyContent)} sx={{ fontSize: '0.875rem' }}>
-                      Edit
+                      {t('edit', { defaultValue: 'Edit' })}
                     </MenuItem>
                     <MenuItem onClick={() => onDelete && onDelete(reply?.id)} sx={{ fontSize: '0.875rem', color: '#d32f2f' }}>
-                      Delete
+                      {t('delete', { defaultValue: 'Delete' })}
                     </MenuItem>
                   </Menu>
                 </>

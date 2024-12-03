@@ -5,6 +5,7 @@ import {
 import GroupIcon from "@mui/icons-material/Group";
 import { useLocation } from "react-router-dom";
 import { participants, classRoom } from "../../../../../models/Interface";
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   participants: participants[];
@@ -14,6 +15,8 @@ const List: React.FC<Props> = ({ participants, classes }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const classid = queryParams.get("classid");
+
+  const { t } = useTranslation();
 
   const getStudentsInClass = (classRoom: classRoom) => {
     return participants.filter(participant => classRoom.Student.includes(participant.id));
@@ -53,7 +56,7 @@ const List: React.FC<Props> = ({ participants, classes }) => {
               }}
             >
               <Typography variant="h5" fontWeight="bold" color="primary.main">
-                Class: {classRoom.ClassName}
+                {t('class', { defaultValue: 'Class:' })} {classRoom.ClassName}
               </Typography>
               <Typography
                 variant="body2"
@@ -66,7 +69,7 @@ const List: React.FC<Props> = ({ participants, classes }) => {
                   borderRadius: 2,
                 }}
               >
-                {students.length} Students
+                {students.length} {t('students', { defaultValue: 'Students' })}
               </Typography>
             </Box>
 
@@ -96,17 +99,17 @@ const List: React.FC<Props> = ({ participants, classes }) => {
                     <TableCell></TableCell>
                     <TableCell>
                       <Typography color="common.black" variant="subtitle2" fontWeight="bold">
-                        Name
+                        {t('name', { defaultValue: 'Name' })}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="common.black" variant="subtitle2" fontWeight="bold">
-                        ID
+                        {t('id', { defaultValue: 'ID' })}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography color="common.black" variant="subtitle2" fontWeight="bold">
-                        Email
+                        {t('email', { defaultValue: 'Email' })}
                       </Typography>
                     </TableCell>
                   </TableRow>

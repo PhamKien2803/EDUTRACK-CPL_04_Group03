@@ -8,6 +8,7 @@ import { getClass, getParticipants, getQuestionSLot, getAssignmentSlot } from ".
 import { classRoom, participants, questionSlot, assignmentSlot } from "../../../../models/Interface";
 import ContentSes from './content-session/ContentSes';
 import List from './student-list/List';
+import { useTranslation } from 'react-i18next';
 
 function TabSession() {
   const [participants, setParticipants] = useState<participants[]>([]);
@@ -16,7 +17,7 @@ function TabSession() {
   const [classes, setClasses] = useState<classRoom[]>([]);
   const [value, setValue] = useState<string>('one');
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   console.log(participants, questionSlot, classes, assignmentSlot);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
@@ -25,7 +26,7 @@ function TabSession() {
 
     setTimeout(() => {
       setLoading(false);
-    }, 500); 
+    }, 500);
   };
 
   useEffect(() => {
@@ -80,12 +81,12 @@ function TabSession() {
             textTransform: 'none',
           },
           '& .Mui-selected': {
-            color: 'secondary.main', 
+            color: 'secondary.main',
           },
         }}
       >
-        <Tab value="one" label="Content" />
-        <Tab value="two" label="Students List" />
+        <Tab value="one" label={t('Content', { defaultValue: "Content" })} />
+        <Tab value="two" label={t('Students List', { defaultValue: "Students List" })} />
       </Tabs>
 
       {/* Loading State */}
@@ -101,15 +102,15 @@ function TabSession() {
           {/* Content Session */}
           {value === 'one' && (
             <Box sx={{ backgroundColor: '#fafafa', borderRadius: '8px', padding: '20px' }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: 'secondary.main' }}>Content Overview</Typography>
-              <ContentSes questionSlot={questionSlot} assignmentSlot={assignmentSlot} slots={[]}/>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: 'secondary.main' }}>{t('Content Overview', { defaultValue: "Content Overview" })}</Typography>
+              <ContentSes questionSlot={questionSlot} assignmentSlot={assignmentSlot} slots={[]} />
             </Box>
           )}
 
           {/* Students List */}
           {value === 'two' && (
             <Box sx={{ backgroundColor: '#fafafa', borderRadius: '8px', padding: '20px' }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: 'secondary.main' }}>Students List</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: 'secondary.main' }}>{t('Students List', { defaultValue: "Students List" })}</Typography>
               <List participants={participants} classes={classes} />
             </Box>
           )}

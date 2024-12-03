@@ -10,6 +10,7 @@ import { updateStatusQuestionSLot, updateStatusAssignmentSlot, deleteQuestionSlo
 import { assignmentSlot, questionSlot, slot } from "../../../../../models/Interface";
 import QuestionSlotUpdate from "./update-session/QuestionSlotUpdate";
 import AssignmentSlotUpdateModal from "./update-session/AssignmentSlotUpdate";
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   questionSlot: questionSlot[];
@@ -34,6 +35,8 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
   const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<questionSlot | null>(null);
   const [selectedAssignment, setSelectedAssignment] = useState<assignmentSlot | null>(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setQuestionsslotStatus(questionSlot);
@@ -69,10 +72,10 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
 
   const handleEditQuestion = (question: questionSlot) => {
     if (question.Status === 1) {
-      Swal.fire("Cannot Update", "Please stop the question before updating.", "warning");
+      Swal.fire(t('cannot_update', { defaultValue: 'Cannot Update' }), t('stop_question_warning', { defaultValue: 'Please stop the question before updating.' }), "warning");
       return;
     } else if (question.Status === 2) {
-      Swal.fire("Cannot Update", "This question has been completed and cannot be updated.", "error");
+      Swal.fire(t('cannot_update', { defaultValue: 'Cannot Update' }), t('completed_question_warning', { defaultValue: 'This question has been completed and cannot be updated.' }), "error");
       return;
     }
 
@@ -82,10 +85,10 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
 
   const handleEditAssignment = (assignment: assignmentSlot) => {
     if (assignment.Status === 1) {
-      Swal.fire("Cannot Update", "Please stop the assignment before updating.", "warning");
+      Swal.fire(t('cannot_update', { defaultValue: 'Cannot Update' }), t('stop_assignment_warning', { defaultValue: 'Please stop the assignment before updating.' }), "warning");
       return;
     } else if (assignment.Status === 2) {
-      Swal.fire("Cannot Update", "This assignment has been completed and cannot be updated.", "error");
+      Swal.fire(t('cannot_update', { defaultValue: 'Cannot Update' }), t('completed_assignment_warning', { defaultValue: 'This assignment has been completed and cannot be updated.' }), "error");
       return;
     }
 
@@ -95,29 +98,29 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
 
   const handleDelete = async (id: string, type: "question" | "assignment", currentStatus: number) => {
     if (currentStatus === 1) {
-      await Swal.fire("Không thể xóa", "Vui lòng dừng trước khi xóa.", "warning");
+      await Swal.fire(t('cannot_delete', { defaultValue: 'Cannot Delete' }), t('stop_before_delete', { defaultValue: 'Please stop before deleting.' }), "warning");
       return;
     }
 
     else if (currentStatus === 2) {
       await Swal.fire({
-        title: "Câu hỏi đã hoàn thành, bạn có chắc chắn muốn xóa?",
-        text: "Hành động này không thể hoàn tác!",
+        title: t('delete_question_confirm', { defaultValue: 'The question is completed, are you sure you want to delete?' }),
+        text: t('irreversible_action_warning', { defaultValue: 'This action cannot be undone!' }),
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Xóa",
-        cancelButtonText: "Hủy",
+        confirmButtonText: t('deletel', { defaultValue: 'Delete' }),
+        cancelButtonText: t('cancell', { defaultValue: 'Cancel' }),
       });
       return;
     }
 
     const result = await Swal.fire({
-      title: "Bạn có chắc chắn muốn xóa?",
-      text: "Hành động này không thể hoàn tác!",
+      title: t('delete_confirm', { defaultValue: 'Are you sure you want to delete?' }),
+      text: t('irreversible_action_warning', { defaultValue: 'This action cannot be undone!' }),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Xóa",
-      cancelButtonText: "Hủy",
+      confirmButtonText: t('deletel', { defaultValue: 'Delete' }),
+      cancelButtonText: t('cancell', { defaultValue: 'Cancel' }),
     });
 
 
@@ -128,17 +131,17 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           setQuestionsslotStatus((prevQuestions) =>
             prevQuestions.filter((qs) => qs.QuestionID !== id)
           );
-          Swal.fire("Đã xóa!", "Question đã được xóa thành công.", "success");
+          Swal.fire(t('deletedl', { defaultValue: 'Deleted!' }), t('delete_success_question', { defaultValue: 'The question was successfully deleted.' }), "success");
         } else if (type === "assignment") {
           await deleteAssignmentSlot(id);
           setAssignmentsslotStatus((prevAssignments) =>
             prevAssignments.filter((asm) => asm.AssignmentID !== id)
           );
-          Swal.fire("Đã xóa!", "Assignment đã được xóa thành công.", "success");
+          Swal.fire(t('deletedl', { defaultValue: 'Deleted!' }), t('delete_success_assignment', { defaultValue: 'The assignment was successfully deleted.' }), "success");
         }
       } catch (error) {
         console.log(error);
-        Swal.fire("Lỗi", "Có lỗi xảy ra khi xóa.", "error");
+        Swal.fire(t('errorl', { defaultValue: 'Error' }), t('delete_error', { defaultValue: 'An error occurred while deleting.' }), "error");
       }
     }
   };
@@ -206,7 +209,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
     <Container sx={{ padding: "8px", maxWidth: "500px", backgroundColor: "#e8eaf6" }}>
       <Box mb={2}>
         <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
-          <InputLabel id="status-filter-label">Status Filter</InputLabel>
+          <InputLabel id="status-filter-label">{t('status_filter', { defaultValue: 'Status Filter' })}</InputLabel>
           <Select
             labelId="status-filter-label"
             id="status-filter"
@@ -215,11 +218,11 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
             label="Status Filter"
           >
             <MenuItem value="">
-              <em>All</em>
+              <em>{t('all', { defaultValue: 'All' })}</em>
             </MenuItem>
-            <MenuItem value={0}>Not Started</MenuItem>
-            <MenuItem value={1}>In Progress</MenuItem>
-            <MenuItem value={2}>Finished</MenuItem>
+            <MenuItem value={0}>{t('not_startedl', { defaultValue: 'Not Started' })}</MenuItem>
+            <MenuItem value={1}>{t('in_progress', { defaultValue: 'In Progress' })}</MenuItem>
+            <MenuItem value={2}>{t('finished', { defaultValue: 'Finished' })}</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -243,7 +246,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           <QuestionAnswerIcon sx={{ marginRight: "6px", color: "orange", fontSize: "1.5rem" }} />
           <Box flex="1">
             <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "1rem" }}>
-              Question {index + 1}
+              {t('question_title', { defaultValue: 'Question' })} {index + 1}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.875rem" }}>
               {qs.content.length > 40 ? `${qs.content.substring(0, 40)}...` : qs.content}
@@ -256,7 +259,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                 fontSize: "0.75rem",
               }}
             >
-              {qs.Status === 0 ? "Not Started" : qs.Status === 1 ? "In Progress" : "Finished"}
+              {qs.Status === 0 ? t('not_startedl', { defaultValue: 'Not Started' }) : qs.Status === 1 ? t('in_progress', { defaultValue: 'In Progress' }) : t('finished', { defaultValue: 'Finished' })}
             </Typography>
           </Box>
           <Button
@@ -268,7 +271,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
               handleStatusQuestionSLotUpdate(qs.QuestionID, qs.Status);
             }}
           >
-            {qs.Status === 0 ? "Start" : qs.Status === 1 ? "Stop" : "Restart"}
+            {qs.Status === 0 ? t('start', { defaultValue: 'Start' }) : qs.Status === 1 ? t('stop', { defaultValue: 'Stop' }) : t('restart', { defaultValue: 'Restart' })}
           </Button>
           <IconButton onClick={(e) => { e.stopPropagation(); handleEditQuestion(qs); }}>
             <EditIcon fontSize="small" />
@@ -299,7 +302,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
           <AssignmentTurnedInIcon sx={{ marginRight: "6px", color: "purple", fontSize: "1.5rem" }} />
           <Box flex="1">
             <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "1rem" }}>
-              Assignment {index + 1}
+              {t('assignment_title', { defaultValue: 'Assignment' })} {index + 1}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.875rem" }}>
               {asm.title.length > 40 ? `${asm.title.substring(0, 40)}...` : asm.title}
@@ -312,7 +315,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
                 fontSize: "0.75rem",
               }}
             >
-              {asm.Status === 0 ? "Not Started" : asm.Status === 1 ? "In Progress" : "Finished"}
+              {asm.Status === 0 ? t('not_startedl', { defaultValue: 'Not Started' }) : asm.Status === 1 ? t('in_progress', { defaultValue: 'In Progress' }) : t('finished', { defaultValue: 'Finished' })}
             </Typography>
           </Box>
           <Button
@@ -324,7 +327,7 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
               handleStatusAssignmentSlotUpdate(asm.AssignmentID, asm.Status);
             }}
           >
-            {asm.Status === 0 ? "Start" : asm.Status === 1 ? "Stop" : "Restart"}
+            {asm.Status === 0 ? t('start', { defaultValue: 'Start' }) : asm.Status === 1 ? t('stop', { defaultValue: 'Stop' }) : t('restart', { defaultValue: 'Restart' })}
           </Button>
           <IconButton onClick={(e) => { e.stopPropagation(); handleEditAssignment(asm); }}>
             <EditIcon fontSize="small" />
