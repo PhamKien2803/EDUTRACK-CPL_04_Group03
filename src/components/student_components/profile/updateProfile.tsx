@@ -268,6 +268,7 @@ const EditProfile: React.FC = () => {
           </Grid>
         </Box>
       )}
+      {/* <ChangePassword/> */}
     </Box>
   );
 };

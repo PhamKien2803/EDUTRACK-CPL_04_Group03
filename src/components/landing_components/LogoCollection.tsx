@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { useTranslation } from 'react-i18next';
 
 const techIcons = [
   'https://logowik.com/content/uploads/images/mui-material-ui9415.logowik.com.webp', // MUI
@@ -26,6 +27,7 @@ const spinStyle = `
 `;
 
 export default function TechnologyCollection() {
+  const { t } = useTranslation();
   return (
     <Box id="technologyCollection" sx={{ py: 4 }}>
       <Typography
@@ -34,7 +36,7 @@ export default function TechnologyCollection() {
         align="center"
         sx={{ color: 'text.secondary', fontSize: '1.2rem', marginBottom: 5 }}
       >
-        <strong>Technologies used in this project</strong>
+        <strong>{t('technology')}</strong>
       </Typography>
       <style>
         {spinStyle}

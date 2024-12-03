@@ -10,47 +10,42 @@ import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
-
-const items = [
-  {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Customizable Learning Paths',
-    description:
-      'Tailor learning journeys for each student, adapting to their needs and progress for maximum results.',
-  },
-  {
-    icon: <ConstructionRoundedIcon />,
-    title: 'Robust Exam Management',
-    description:
-      'Efficiently manage and schedule exams with secure online testing tools for both teachers and students.',
-  },
-  {
-    icon: <ThumbUpAltRoundedIcon />,
-    title: 'User-Friendly Interface',
-    description:
-      'Navigate easily through the platform with an intuitive design that supports both learners and educators.',
-  },
-  {
-    icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative Reporting Tools',
-    description:
-      'Access detailed reports on student performance, enabling data-driven decisions for academic improvement.',
-  },
-  {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Dedicated Support',
-    description:
-      'Get quick assistance with academic support, technical help, and inquiries via a responsive customer service team.',
-  },
-  {
-    icon: <QueryStatsRoundedIcon />,
-    title: 'Real-Time Progress Tracking',
-    description:
-      'Monitor academic progress in real-time with accurate, up-to-date stats that track achievements and areas for improvement.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function Highlights() {
+  const { t } = useTranslation();
+  const items = [
+    {
+      icon: <SettingsSuggestRoundedIcon />,
+      title: t("customizable_learning_paths_title"),
+      description: t("customizable_learning_paths_description"),
+    },
+    {
+      icon: <ConstructionRoundedIcon />,
+      title: t("robust_exam_management_title"),
+      description: t("robust_exam_management_description"),
+    },
+    {
+      icon: <ThumbUpAltRoundedIcon />,
+      title: t("user_friendly_interface_title"),
+      description: t("user_friendly_interface_description"),
+    },
+    {
+      icon: <AutoFixHighRoundedIcon />,
+      title: t("innovative_reporting_tools_title"),
+      description: t("innovative_reporting_tools_description"),
+    },
+    {
+      icon: <SupportAgentRoundedIcon />,
+      title: t("dedicated_support_title"),
+      description: t("dedicated_support_description"),
+    },
+    {
+      icon: <QueryStatsRoundedIcon />,
+      title: t("real_time_progress_tracking_title"),
+      description: t("real_time_progress_tracking_description"),
+    },
+  ];
   return (
     <Box
       id="highlights"
@@ -77,12 +72,10 @@ export default function Highlights() {
           }}
         >
           <Typography component="h2" variant="h4" gutterBottom>
-            Highlights
+            {t("highlights_title")}
           </Typography>
           <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Discover why EduTrack is the ultimate tool for managing learning and exams:
-            personalized paths, exam scheduling, real-time progress tracking, and seamless
-            support for both students and teachers.
+            {t("highlights_subtitle")}
           </Typography>
         </Box>
         <Grid container spacing={2}>
