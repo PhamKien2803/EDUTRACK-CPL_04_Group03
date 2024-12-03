@@ -113,6 +113,13 @@ export default function Hero({ scrollToFooter }: HeroProps) {
     },
   ];
 
+  // const translatedCourses = courses.map((course) => ({
+  //   ...course,
+  //   title: t(course.title), 
+  //   description: t(course.description), // Dịch mô tả
+    
+  // }));
+
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const extendedCards = [...courses, ...courses];
@@ -207,9 +214,7 @@ export default function Hero({ scrollToFooter }: HeroProps) {
               fontSize: { xs: "0.9rem", sm: "1rem" },
             }}
           >
-            <strong>Simplify learning and exam management with EduTrack. Stay organized,
-              monitor progress, and achieve your academic goals effortlessly through
-              our intuitive dashboard.</strong>
+            <strong>{t("details_hero")}</strong>
           </Typography>
           <Typography>
             <strong>{t("hero.getStarted")}</strong>{" "}

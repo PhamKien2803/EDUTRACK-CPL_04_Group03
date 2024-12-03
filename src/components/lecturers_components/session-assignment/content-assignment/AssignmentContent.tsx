@@ -4,9 +4,9 @@ import { assignmentSlot, slot } from '../../../../models/Interface';
 import { updateStatusAssignmentSlot } from "../../../../service/ApiService";
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import  ReplyAllIcon  from '@mui/icons-material/ReplyAll';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import { useTranslation } from 'react-i18next';
-    
+
 interface Props {
   assignmentSlot: assignmentSlot[];
   assignmentID: string | null;
@@ -137,7 +137,7 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
               {t('Content')}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
-              {assignment.description || '{t("no_description_provided")}' }
+              {assignment.description || '{t("no_description_provided")}'}
             </Typography>
 
             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 1 }}>
@@ -175,10 +175,11 @@ const AssignmentContent: React.FC<Props> = ({ assignmentSlot }) => {
               }}
             >
               {status === 0
-                ? '{t("Not_started")}'
+                ? t("Not_started")
                 : status === 1
-                  ? `{t("Time_remaining")} ${formatTime(timeRemaining ?? 0)}`
-                  : '{t("discussion_time_over")}'}
+                  ? `${t("Time_remaining")} ${formatTime(timeRemaining ?? 0)}`
+                  : t("discussion_time_over")}
+
             </Typography>
 
             <Divider sx={{ mb: 2 }} />

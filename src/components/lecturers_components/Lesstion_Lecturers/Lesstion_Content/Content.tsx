@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import {
     Card, Typography, Button, Grid, List, ListItem, Divider, Box,
@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useTranslation } from 'react-i18next';
+import { getAssignmentSlot, getQuestionSLot } from '../../../../service/ApiService';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -21,12 +22,12 @@ interface Props {
     classId: string;
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId, assignmentSlot }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
     const [updatedQuestions, setUpdatedQuestions] = useState(questionSlot);
-    console.log(setUpdatedQuestions)
+    const [assignmentSlots, setAssignmentSlots] = useState(assignmentSlot);
     const toggleVisibility = useCallback((slotId: string) => {
         setVisibleSlots((prev) => ({
             ...prev,
@@ -37,6 +38,27 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
     const handleClickToAssignment = (assignmentId: string, slotId: string) => {
         navigate(`/lecturer/session-assignment?Slotid=${slotId}&assignmentid=${assignmentId}`);
     };
+
+    const handleClickToDiscussion = (questionId: string, slotId: string) => {
+        navigate(`/lecturer/session-question?Slotid=${slotId}&questionId=${questionId}`);
+    };
+
+
+    const fetchQuestionSlot = async () => {
+        const res = await getQuestionSLot();
+        if (Array.isArray(res)) { setUpdatedQuestions(res); }
+    };
+
+    const fetchAssignmentSlot = async () => {
+        const res = await getAssignmentSlot();
+        if (Array.isArray(res)) { setAssignmentSlots(res); }
+    };
+
+    useEffect(() => {
+        fetchQuestionSlot();
+        fetchAssignmentSlot();
+    }, [updatedQuestions, assignmentSlots]);
+
 
     return (
         <div style={{ overflowX: 'hidden', padding: '16px', background: 'linear-gradient(to bottom, #f9f9f9, #ffffff)' }}>
@@ -67,16 +89,16 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                         <Box
                                             sx={{
                                                 display: 'inline-block',
-                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-                                                borderRadius: 2.5, 
-                                                padding: '8px 16px', 
-                                                backgroundColor: '#b39ddb', 
+                                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                                borderRadius: 2.5,
+                                                padding: '8px 16px',
+                                                backgroundColor: '#b39ddb',
                                             }}
                                         >
                                             <Typography variant="subtitle2" color="black" fontSize={15}>
                                                 {t('Slot')} {index + 1}
                                             </Typography>
-                                        </Box>{t('Questions')}
+                                        </Box>
 
                                         <Box display="flex" alignItems="center" gap={2}>
                                             <Typography variant="body2" color="textSecondary">
@@ -84,7 +106,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                             </Typography>
                                             <Link href={`/lecturer/session-details?Slotid=${item}&classid=${classId}`}>
                                                 <Button variant="outlined" color="secondary" size="small">
-                                                {t('UpdateSlot')}
+                                                    {t('UpdateSlot')}
                                                 </Button>
                                             </Link>
                                         </Box>
@@ -101,7 +123,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 <Divider sx={{ my: 2 }} />
                                 <Collapse in={visibleSlots[item]}>
                                     <Typography variant="subtitle1" color="primary" gutterBottom>
-                                    {t('Questions')}:
+                                        {t('Questions')}:
                                     </Typography>
                                     <List>
                                         {updatedQuestions
@@ -124,7 +146,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                         <HelpOutlineIcon color="action" />
                                                     </ListItemIcon>
                                                     <Link
-                                                        href={`/lecturer/session-question?slotid=${item}&Questionid=${qs.id}`}
+                                                        onClick={() => handleClickToDiscussion(qs.QuestionID, item)}
                                                         style={{ textDecoration: 'none', flexGrow: 1 }}
                                                     >
                                                         <ListItemText
@@ -142,11 +164,11 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                     </List>
                                     <Divider sx={{ my: 2 }} />
                                     <Typography variant="subtitle1" color="primary" gutterBottom>
-                                    {t('Assignments')}
+                                        {t('Assignments')}
                                     </Typography>
                                     <List>
-                                        {slot
-                                            .filter((sl) => sl.id === item)
+                                        {assignmentSlots
+                                            .filter((sl) => sl.Slotid === item)
                                             .map((sl, slIndex) => (
                                                 <ListItem
                                                     key={`assignment-${slIndex}`}
@@ -165,7 +187,7 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                                         <HelpOutlineIcon color="action" />
                                                     </ListItemIcon>
                                                     <Link
-                                                        onClick={() => handleClickToAssignment(sl.id, item)}
+                                                        onClick={() => handleClickToAssignment(sl.AssignmentID, item)}
                                                         style={{ textDecoration: 'none', flexGrow: 1 }}
                                                     >
                                                         <ListItemText

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { createStudent, getParticipants } from '../../../../service/ApiService';
 import emailjs from 'emailjs-com';
-import { AccountCircle, CalendarToday, Email, Home, Lock , Visibility, VisibilityOff} from '@mui/icons-material';
+import { AccountCircle, CalendarToday, Email, Home, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { participants } from "../../../../models/Interface"
 import MaleIcon from '@mui/icons-material/Male';
@@ -107,13 +107,19 @@ const LectureAccountCreating: React.FC<Props> = ({ handleCloseModals }) => {
             from_email: newLectures.Email,
             subject: 'Account Created Successfully',
             html_message: `
-              Hello ${newLectures.UserName},
-              Your lectures account has been created successfully. Here are your account details:
-              Email: ${newLectures.Email}
-              Lectures ID: ${lecturesId}
-              Password: ${newLectures.Password}
-              Thank you for registering with EduTrack!
-            `,
+          <html>
+            <body>
+              <p>Hello ${newLectures.UserName},</p>
+              <p>Your lectures account has been created successfully. Here are your account details:</p>
+              <ul>
+                <li><strong>Email:</strong> ${newLectures.Email}</li>
+                <li><strong>Lectures ID:</strong> ${lecturesId}</li>
+                <li><strong>Password:</strong> ${newLectures.Password}</li>
+              </ul>
+              <p>Thank you for registering with EduTrack!</p>
+            </body>
+          </html>
+        `,
           },
           'BEG8X3EKg9_bLjfCn'
         )
@@ -255,7 +261,7 @@ const LectureAccountCreating: React.FC<Props> = ({ handleCloseModals }) => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-          <TextField
+            <TextField
               label="Password"
               type={showPassword ? "text" : "password"} // Toggle between "text" and "password"
               value={newLectures.Password}
