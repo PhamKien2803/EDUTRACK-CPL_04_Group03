@@ -5,6 +5,8 @@ import { useSearchParams } from 'react-router-dom';
 import { updateStatusQuestionSLot } from '../../../../service/ApiService';
 import { useNavigate } from 'react-router-dom';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 interface Props {
     questionSlot: questionSlot[];
@@ -21,6 +23,8 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
     const questionID = searchParams.get('questionId');
 
     const filteredQuestions = questionSlot.filter(qs => qs.Slotid === slotID && qs.QuestionID === questionID);
+
+    const { t } = useTranslation();
 
     return (
         <>
@@ -41,18 +45,18 @@ const Content: React.FC<Props> = ({ questionSlot }) => {
                             variant="outlined"
                             color="secondary"
                         >
-                            Back
+                            {t('backButton', { defaultValue: 'Back' })}
                         </Button>
                     </Grid>
                 </Box>
-                <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>Questions</h1>
+                <h1 style={{ fontFamily: "sans-serif", fontWeight: "bold" }}>{t('questions', { defaultValue: 'Questions' })}</h1>
                 {filteredQuestions.length ? (
                     filteredQuestions.map((question, index) => (
                         <QuestionCard key={index} question={question} />
                     ))
                 ) : (
                     <Typography variant="body1" style={{ color: "#555", fontSize: "14px" }}>
-                        No questions available for this slot.
+                        {t('noQuestionsAvailable', { defaultValue: 'No questions available for this slot.' })}
                     </Typography>
                 )}
             </div>
@@ -186,10 +190,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
                 }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                         <Typography variant="h6" component="div" style={{ color: '#3a3a3a', marginBottom: '8px' }}>
-                            Content
+                            {t('content', { defaultValue: 'Content' })}
                         </Typography>
                         <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
-                            {timeRemaining !== null && timeRemaining > 0 ? `Time remaining: ${formatTime(timeRemaining)}` : 'Time expired'}
+                            {timeRemaining !== null && timeRemaining > 0 ? `t('timeRemaining', { defaultValue: 'Time remaining' }) ${formatTime(timeRemaining)}` : t('timeExpired', { defaultValue: 'Time expired' })}
                         </Typography>
                     </Box>
                     <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />

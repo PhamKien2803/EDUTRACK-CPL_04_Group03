@@ -14,16 +14,16 @@ const resources = {
 };
 
 // Get the language from localStorage, default to 'eng' if not found
-let language = JSON.parse(localStorage.getItem("language") || '"eng"');
+let language = JSON.parse(localStorage.getItem("language") || '"vie"');
 
 if (!['eng', 'vie'].includes(language)) {
   language = 'eng';
-  localStorage.setItem("language", '"eng"'); 
+  localStorage.setItem("language", '"eng"');
 }
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: language, 
+  lng: language,
   keySeparator: false,
   interpolation: {
     escapeValue: false,

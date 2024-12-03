@@ -6,6 +6,8 @@ import { replies as Reply, participants } from '../../../../models/Interface';
 import { getParticipants, getRepliesContent, postReply, updateReply, deleteReply, updateRating } from '../../../../service/ApiService';
 import { useSelector } from 'react-redux';
 import ReplyComment from './ReplyComment';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 interface Props {
   userIds: string;
@@ -19,16 +21,16 @@ interface Props {
 }
 
 const labels: { [index: number]: string } = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
+  0.5: t('Useless', { defaultValue: 'Useless' }),
+  1: t('Useless+', { defaultValue: 'Useless+' }),
+  1.5: t('Poor', { defaultValue: 'Poor' }),
+  2: t('Poor+', { defaultValue: 'Poor+' }),
+  2.5: t('Ok', { defaultValue: 'Ok' }),
+  3: t('Ok+', { defaultValue: 'Ok+' }),
+  3.5: t('Good', { defaultValue: 'Good' }),
+  4: t('Good+', { defaultValue: 'Good+' }),
+  4.5: t('Excellent', { defaultValue: 'Excellent' }),
+  5: t('Excellent+', { defaultValue: 'Excellent+' }),
 };
 
 const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerId, questionID, timestamp }) => {
@@ -39,7 +41,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
   const [replies, setReplies] = useState<Reply[]>([]);
   const [participants, setParticipants] = useState<participants[]>([]);
   const loggedInUserId = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (answerId) fetchReplies(answerId);
   }, [answerId]);
@@ -53,7 +55,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       const data: Reply[] = await getRepliesContent();
       setReplies(data.filter((reply) => reply.answerID === answerId));
     } catch (e) {
-      console.error("Error fetching replies:", e);
+      console.error(t('Error fetching replies:', { defaultValue: 'Error fetching replies:' }), e);
     }
   };
 
@@ -78,30 +80,30 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       setReplying(false);
       fetchReplies(answerId);
     } catch (error) {
-      console.error("Error posting reply:", error);
+      console.error(t('Error posting reply:', { defaultValue: 'Error posting reply:' }), error);
     }
   };
 
   const handleDeleteReply = async (replyId: string) => {
     if (!answerId) return;
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: "Do you really want to delete this reply?",
+      title: t('Are you sure?', { defaultValue: 'Are you sure?' }),
+      text: t('Do you really want to delete this reply?', { defaultValue: 'Do you really want to delete this reply?' }),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: t('Yes, delete it!', { defaultValue: 'Just now' }),
     });
 
     if (result.isConfirmed) {
       try {
         await deleteReply({ id: replyId } as Reply);
         fetchReplies(answerId);
-        Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+        Swal.fire(t('Deleted!', { defaultValue: 'Deleted!' }), t('Your reply has been deleted.', { defaultValue: 'Your reply has been deleted.' }), 'success');
       } catch (error) {
         console.error("Error deleting reply:", error);
-        Swal.fire('Error', 'There was an error deleting the reply.', 'error');
+        Swal.fire(t('Error', { defaultValue: 'Error' }), t('There was an error deleting the reply.', { defaultValue: 'There was an error deleting the reply.' }), 'error');
       }
     }
   };
@@ -111,7 +113,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
       await updateReply({ id: replyId, ReplyContent: newContent, UserID: userId, answerID: answerId, Timestamped: new Date().toISOString() } as Reply);
       fetchReplies(answerId);
     } catch (error) {
-      console.error("Error updating reply:", error);
+      console.error(t('Error updating reply:', { defaultValue: 'Error updating reply:' }), error);
     }
   };
 
@@ -129,7 +131,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
         Timestamped: new Date().toISOString(),
       });
     } catch (error) {
-      console.error("Error updating rating:", error);
+      console.error(t('Error updating rating:', { defaultValue: 'Error updating rating:' }), error);
     }
   };
 
@@ -141,7 +143,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
           <Typography variant="h6">{username}</Typography>
           <Typography variant="body2" color="text.secondary">{text}</Typography>
           <Typography variant="caption" color="text.secondary">
-            {timestamp ? new Date(timestamp).toLocaleString() : "Just now"}
+            {timestamp ? new Date(timestamp).toLocaleString() : t('Just now', { defaultValue: 'Just now' })}
           </Typography>
         </Box>
       </Box>
@@ -165,7 +167,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
             key={reply.id}
             userIds={reply.UserID}
             replies={[reply]}
-            timestamp={reply.Timestamped ? new Date(reply.Timestamped).toLocaleString() : "Just now"}
+            timestamp={reply.Timestamped ? new Date(reply.Timestamped).toLocaleString() : t('Just now', { defaultValue: 'Just now' })}
             username={getUsernameByID(reply.UserID)}
             answerId={reply.answerID}
             onDelete={reply.UserID === loggedInUserId ? handleDeleteReply : undefined}
@@ -176,7 +178,7 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
 
       <Box sx={{ marginTop: 2 }}>
         <Button variant="outlined" size="small" onClick={handleReplyToggle}>
-          {replying ? 'Cancel' : 'Reply'}
+          {replying ? t('Cancel', { defaultValue: 'Cancel' }) : t('Reply', { defaultValue: 'Reply' })}
         </Button>
       </Box>
 
@@ -187,13 +189,13 @@ const Comment: React.FC<Props> = ({ userIds, username, text, rating = 0, answerI
             multiline
             rows={3}
             variant="outlined"
-            label="Your Reply"
+            label={t('Your Reply', { defaultValue: 'Your Reply' })}
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
           />
           <Box sx={{ marginTop: 1 }}>
             <Button variant="contained" color="primary" onClick={handleReplySubmit} disabled={!replyText.trim()}>
-              Submit Reply
+              {t('Submit Reply', { defaultValue: 'Submit Reply' })}
             </Button>
           </Box>
         </Box>
