@@ -10,6 +10,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import LanguageSelector from "../../i18n/LanguageSelector";
 import { theme } from '../student_components/examtest/exam-history/HisTheme';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -35,6 +36,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 
 export default function AppAppBar() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [language, setLanguage] = React.useState<"eng" | "vie">(
     JSON.parse(localStorage.getItem("language") || '"eng"') as "eng" | "vie"
@@ -85,7 +87,7 @@ export default function AppAppBar() {
             }}
           >
             <Button onClick={navigatetoSignIn} color="primary" variant="contained" size="large">
-              Sign in
+              {t("Sign In")}
             </Button>
             <Box>
               <LanguageSelector
