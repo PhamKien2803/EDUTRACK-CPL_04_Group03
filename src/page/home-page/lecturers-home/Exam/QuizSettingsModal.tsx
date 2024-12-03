@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     open: boolean,
@@ -55,20 +56,21 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
             console.log("Please upload a valid image file.");
         }
     };
+    const { t } = useTranslation();
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
             <DialogTitle>
                 <Box display="flex" alignItems="center">
                     <Typography variant="h6" component="div" style={{ flexGrow: 1, fontWeight: 'bold' }}>
-                        Quiz Settings
+                        {t('quiz_settings')}
                     </Typography>
                     <IconButton onClick={onClose}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
                 <Typography variant="body2" color="textSecondary">
-                    Finalize your quiz settings and publish
+                    {t('quiz_settings_subtitle')}
                 </Typography>
             </DialogTitle>
             <DialogContent dividers style={{ paddingTop: '24px', paddingBottom: '24px', maxHeight: '600px', overflow: 'auto' }}>
@@ -77,7 +79,7 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                     <Box flex="1" minWidth="250px">
                         <TextField
                             fullWidth
-                            label="Quiz Name"
+                            label={t('quiz_name')}
                             variant="outlined"
                             value="Sample Quiz"
                             margin="normal"
@@ -86,25 +88,25 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                                 style: { backgroundColor: '#f9f9f9', borderRadius: 8 }
                             }}
                         />
-                        <FormControl variant='standard' margin="normal" sx={{ minWidth: 240, marginLeft: 1.5}}>
-                            <InputLabel>Display Quiz</InputLabel>
+                        <FormControl variant="standard" margin="normal" sx={{ minWidth: 240, marginLeft: 1.5 }}>
+                            <InputLabel>{t('display_quiz')}</InputLabel>
                             <Select
                                 defaultValue="false"
                                 onChange={e => setDisplay(e.target.value === "true")}
                             >
-                                <MenuItem value="false">No</MenuItem>
-                                <MenuItem value="true">Yes</MenuItem>
+                                <MenuItem value="false">{t('no')}</MenuItem>
+                                <MenuItem value="true">{t('yes')}</MenuItem>
                             </Select>
                         </FormControl>
 
-                        <FormControl variant='standard' margin="normal" sx={{ minWidth: 240, marginLeft: 1.5}}>
-                            <InputLabel>Allow Viewing Results</InputLabel>
+                        <FormControl variant="standard" margin="normal" sx={{ minWidth: 240, marginLeft: 1.5 }}>
+                            <InputLabel>{t('allow_view_results')}</InputLabel>
                             <Select
                                 defaultValue="false"
                                 onChange={e => setStatus(e.target.value === "true")}
                             >
-                                <MenuItem value="false">No</MenuItem>
-                                <MenuItem value="true">Yes</MenuItem>
+                                <MenuItem value="false">{t('no')}</MenuItem>
+                                <MenuItem value="true">{t('yes')}</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -125,7 +127,7 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                             <>
                                 <img
                                     src={imagePreView}
-                                    alt="Preview"
+                                    alt={t('preview')}
                                     style={{ maxHeight: '100%', maxWidth: '100%', borderRadius: '8px' }}
                                 />
                                 <IconButton
@@ -149,7 +151,7 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                                 startIcon={<AddPhotoAlternateIcon />}
                                 style={{ borderRadius: 8 }}
                             >
-                                Add Cover Image
+                                {t('add_cover_image')}
                                 <input type="file" hidden onChange={(e) => handleImage(e)} />
                             </Button>
                         )}
@@ -159,7 +161,7 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                 {/* Date Scheduling */}
                 <FormControlLabel
                     control={<Switch checked={checked} onClick={handleCheked} color="primary" />}
-                    label="Set a date for the quiz?"
+                    label={t('set_date')}
                     style={{ marginTop: '16px' }}
                 />
                 {checked && (
@@ -178,10 +180,10 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
             </DialogContent>
             <DialogActions style={{ paddingBottom: '16px', paddingTop: '8px' }}>
                 <Button onClick={onClose} variant="outlined" style={{ marginRight: '8px' }}>
-                    Cancel
+                    {t('cancel')}
                 </Button>
                 <Button onClick={handleSubmit} variant="contained" style={{ backgroundColor: '#4caf50', color: '#fff' }}>
-                    Save
+                    {t('save')}
                 </Button>
             </DialogActions>
         </Dialog>

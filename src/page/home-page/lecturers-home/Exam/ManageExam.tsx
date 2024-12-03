@@ -27,6 +27,7 @@ import { deleteExam } from "../../../../service/ExamApi";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { CheckCircle, Cancel as CancelIcon } from '@mui/icons-material';
+import { useTranslation } from "react-i18next";
 
 const ManageExam: React.FC = () => {
     const [page, setPage] = useState(0);
@@ -112,7 +113,7 @@ const ManageExam: React.FC = () => {
             }
         });
     };
-
+    const { t } = useTranslation();
     return (
         <Grid container spacing={2} padding={2}>
             {/* Tiêu đề */}
@@ -124,7 +125,7 @@ const ManageExam: React.FC = () => {
                         variant="outlined"
                         color="secondary"
                     >
-                        Back
+                        {t("back")}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -134,7 +135,7 @@ const ManageExam: React.FC = () => {
                         variant="contained"
                         color="success"
                     >
-                        Adding Exam
+                        {t("add_exam")}
                     </Button>
                 </Grid>
             </Grid>
@@ -143,11 +144,11 @@ const ManageExam: React.FC = () => {
             <Grid item xs={12}>
                 <Paper elevation={4} sx={{ padding: 2 }}>
                     <Typography variant="h6" gutterBottom>
-                        <strong>Class:</strong>{" "}
+                        <strong>{t("class")}:</strong>{" "}
                         {classes.find((item) => item.ClassID === courseSemester?.ClassID)?.ClassName}
                     </Typography>
                     <Typography variant="h6" gutterBottom>
-                        <strong>Course:</strong>{" "}
+                        <strong>{t("course")}:</strong>{" "}
                         {course.find((item) => item.id === courseSemester?.CourseID)?.CourseName}
                     </Typography>
                 </Paper>
@@ -161,12 +162,12 @@ const ManageExam: React.FC = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>#</TableCell>
-                                    <TableCell>Image</TableCell>
-                                    <TableCell>Content</TableCell>
-                                    <TableCell>Created At</TableCell>
-                                    <TableCell>Display</TableCell>
-                                    <TableCell>Status</TableCell>
-                                    <TableCell align="center">Actions</TableCell>
+                                    <TableCell>{t("image")}</TableCell>
+                                    <TableCell>{t("content")}</TableCell>
+                                    <TableCell>{t("created_at")}</TableCell>
+                                    <TableCell>{t("display")}</TableCell>
+                                    <TableCell>{t("status")}</TableCell>
+                                    <TableCell align="center">{t("actions")}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -178,7 +179,7 @@ const ManageExam: React.FC = () => {
                                             <TableCell>
                                                 <Box
                                                     component="img"
-                                                    src={exam.image ? exam.image : 'https://via.placeholder.com/100'}
+                                                    src={exam.image || "https://via.placeholder.com/100"}
                                                     alt="exam"
                                                     sx={{
                                                         borderRadius: "4px",
@@ -190,7 +191,7 @@ const ManageExam: React.FC = () => {
 
                                             <TableCell>{exam.examContent}</TableCell>
                                             <TableCell>{exam.createdAt}</TableCell>
-                                            <TableCell>{exam.display ? "Yes" : "No"}</TableCell>
+                                            <TableCell>{exam.display ? t("yes") : t("no")}</TableCell>
                                             <TableCell>
                                                 <Box display="flex" alignItems="center">
                                                     {exam.status ? (
@@ -198,25 +199,19 @@ const ManageExam: React.FC = () => {
                                                             <CheckCircle sx={{ color: "green", marginRight: 1 }} />
                                                             <Typography
                                                                 variant="body2"
-                                                                sx={{
-                                                                    color: "green",
-                                                                    fontWeight: "bold",
-                                                                }}
+                                                                sx={{ color: "green", fontWeight: "bold" }}
                                                             >
-                                                                Active
+                                                                {t("active")}
                                                             </Typography>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <CancelIcon sx={{ color: "red", marginRight: 1 }} /> 
+                                                            <CancelIcon sx={{ color: "red", marginRight: 1 }} />
                                                             <Typography
                                                                 variant="body2"
-                                                                sx={{
-                                                                    color: "red",
-                                                                    fontWeight: "bold",
-                                                                }}
+                                                                sx={{ color: "red", fontWeight: "bold" }}
                                                             >
-                                                                Inactive
+                                                                {t("inactive")}
                                                             </Typography>
                                                         </>
                                                     )}
@@ -232,7 +227,7 @@ const ManageExam: React.FC = () => {
                                                         startIcon={<Visibility />}
                                                         sx={{ marginRight: 1 }}
                                                     >
-                                                        View
+                                                        {t("view")}
                                                     </Button>
                                                 </Link>
                                                 <Link to={`/updateExam?exID=${exam.examID}`}>
@@ -243,7 +238,7 @@ const ManageExam: React.FC = () => {
                                                         startIcon={<Edit />}
                                                         sx={{ marginRight: 1 }}
                                                     >
-                                                        Update
+                                                        {t("update")}
                                                     </Button>
                                                 </Link>
                                                 <Button
@@ -253,7 +248,7 @@ const ManageExam: React.FC = () => {
                                                     startIcon={<Delete />}
                                                     onClick={() => handleDelete(exam)}
                                                 >
-                                                    Delete
+                                                    {t("delete")}
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
@@ -287,7 +282,6 @@ const ManageExam: React.FC = () => {
                             },
                         }}
                     />
-
                 </Paper>
             </Grid>
         </Grid>

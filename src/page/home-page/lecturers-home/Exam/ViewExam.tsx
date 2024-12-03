@@ -19,6 +19,7 @@ import { Exam, ResultExam, participants } from "../../../../models/Interface";
 import { getResultExam } from "../../../../service/ExamApi";
 import { getExamList, getParticipants } from "../../../../service/ApiService";
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import { useTranslation } from "react-i18next";
 
 export const ViewExam = () => {
     const [page, setPage] = useState(0);
@@ -72,22 +73,23 @@ export const ViewExam = () => {
         setPage(0);
     };
 
+    const { t } = useTranslation();
+
     return (
         <Grid container spacing={3} padding={3} width={"100%"}>
             {/* Tiêu đề */}
-            <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>Back</Button>
+            <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>
+                {t("back")}
+            </Button>
 
             {/* Thông tin chi tiết */}
             <Grid item xs={12}>
                 <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
                     <Typography variant="subtitle1">
-                        <strong>The Result of all user answer Exam
-
-                        </strong>
-
+                        <strong>{t("resultOfAllUserAnswers")}</strong>
                     </Typography>
                     <Typography variant="subtitle1">
-                        Topic :{exams.find(ex => ex.examID == exID)?.examContent}
+                        {t("topic")}: {exams.find(ex => ex.examID == exID)?.examContent}
                     </Typography>
                 </Paper>
             </Grid>
@@ -95,52 +97,59 @@ export const ViewExam = () => {
             {/* Bảng */}
             <Grid item xs={12}>
                 <Paper elevation={3}>
-                    {result.length > 0 ? <TableContainer>
-                        <Table>
-                            <TableHead style={{ backgroundColor: "#f5f5f5" }}>
-                                <TableRow>
-                                    <TableCell>Index</TableCell>
-                                    <TableCell>User Id</TableCell>
-                                    <TableCell>User Name</TableCell>
-                                    <TableCell>Points</TableCell>
-                                    <TableCell align="center">Action</TableCell>
-                                </TableRow>
-                            </TableHead>
+                    {result.length > 0 ? (
+                        <TableContainer>
+                            <Table>
+                                <TableHead style={{ backgroundColor: "#f5f5f5" }}>
+                                    <TableRow>
+                                        <TableCell>{t("index")}</TableCell>
+                                        <TableCell>{t("userId")}</TableCell>
+                                        <TableCell>{t("userName")}</TableCell>
+                                        <TableCell>{t("points")}</TableCell>
+                                        <TableCell align="center">{t("action")}</TableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                            <TableBody>
-                                {result
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((rs, index) => (
-                                        <TableRow key={index} hover>
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>
-                                                {rs.userId}
-                                            </TableCell>
-                                            <TableCell>
-                                                {users.find(user => user.id === rs.userId)?.UserName}
-                                            </TableCell>
-                                            <TableCell>
-                                                {(parseInt(rs.numberCorrect) / parseInt(rs.totalQuestion) * 10).toFixed(2)}
-                                            </TableCell>
+                                <TableBody>
+                                    {result
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((rs, index) => (
+                                            <TableRow key={index} hover>
+                                                <TableCell>{index + 1}</TableCell>
+                                                <TableCell>{rs.userId}</TableCell>
+                                                <TableCell>
+                                                    {users.find(user => user.id === rs.userId)?.UserName}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {(
+                                                        (parseInt(rs.numberCorrect) / parseInt(rs.totalQuestion)) *
+                                                        10
+                                                    ).toFixed(2)}
+                                                </TableCell>
 
-                                            <TableCell align="center">
-                                                <Link to={`/viewDetailResult?userID=${rs.userId}&exID=${rs.examId}`}>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="success"
-                                                        size="small"
-                                                        startIcon={<Visibility />}
-                                                        style={{ marginRight: "10px" }}
-                                                    >
-                                                        View detais
-                                                    </Button>
-                                                </Link>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer> : <Typography align="center" paddingTop={5}>Not Answer for exam</Typography>}
+                                                <TableCell align="center">
+                                                    <Link to={`/viewDetailResult?userID=${rs.userId}&exID=${rs.examId}`}>
+                                                        <Button
+                                                            variant="contained"
+                                                            color="success"
+                                                            size="small"
+                                                            startIcon={<Visibility />}
+                                                            style={{ marginRight: "10px" }}
+                                                        >
+                                                            {t("viewDetails")}
+                                                        </Button>
+                                                    </Link>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    ) : (
+                        <Typography align="center" paddingTop={5}>
+                            {t("notAnswered")}
+                        </Typography>
+                    )}
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 15]}
                         component="div"
@@ -170,5 +179,5 @@ export const ViewExam = () => {
                 </Paper>
             </Grid>
         </Grid>
-    )
-}
+    );
+};

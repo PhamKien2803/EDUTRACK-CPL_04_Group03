@@ -13,6 +13,7 @@ import { getResultExam } from "../../../../service/ExamApi";
 import { ToHHMMSS } from "../../../../utils/Timer/ToHHMMSS";
 import { theme } from "../../../../components/student_components/examtest/exam-history/HisTheme";
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import { useTranslation } from "react-i18next";
 
 
 interface question {
@@ -150,14 +151,14 @@ export const ViewDetailResult = () => {
         return false
     };
 
-
+    const { t } = useTranslation();
 
     return (
         <ThemeProvider theme={theme}>
             <Box p={3} sx={{ backgroundColor: "#f5f5f5" }}>
                 {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>Back</Button>
+                    <Button startIcon={<ReplyAllIcon />} onClick={() => navigate(-1)}>{t('back')}</Button>
                 </Box>
 
                 {/* Bulk update and search */}
@@ -166,12 +167,14 @@ export const ViewDetailResult = () => {
                         <Card>
                             <CardContent>
                                 <Box display="flex" alignItems="center" mb={2}>
-                                    <Typography variant="body1" ><h4>Title Examination:</h4></Typography>
+                                    <Typography variant="body1">
+                                        <h4>{t('titleExamination')}</h4>
+                                    </Typography>
                                     <h4>
                                         {exam?.examContent}
                                     </h4>
                                 </Box>
-                                <Typography variant="subtitle1">{questionEx.length} questions(10 points)</Typography>
+                                <Typography variant="subtitle1">{questionEx.length} {t('questions')} (10 {t('points')})</Typography>
 
                                 {/* Question Items */}
                                 {questionEx && questionEx.map((qs, index) => (
@@ -180,12 +183,12 @@ export const ViewDetailResult = () => {
                                         <Card sx={{ mb: 2 }}>
                                             <CardContent>
                                                 <Box display="flex" justifyContent="space-between" alignItems="center">
-                                                    <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
+                                                    <Typography variant="body1">{t('question')} {index + 1}. {t('multipleChoice')}</Typography>
                                                     <Box display="flex" alignItems="center">
                                                         {handleCheckIsCorrect(qs) ? (
-                                                            <CheckBoxOutlinedIcon sx={{width: '30px', height: '30px'}} color="success" />
+                                                            <CheckBoxOutlinedIcon sx={{ width: '30px', height: '30px' }} color="success" />
                                                         ) : (
-                                                            <CancelPresentationOutlinedIcon  sx={{width: '30px', height: '30px'}} color="error" />
+                                                            <CancelPresentationOutlinedIcon sx={{ width: '30px', height: '30px' }} color="error" />
                                                         )}
                                                     </Box>
                                                 </Box>
@@ -193,14 +196,14 @@ export const ViewDetailResult = () => {
                                                 <Divider sx={{ my: 1 }} />
 
                                                 {qs.image && (
-                                                    <Box display="flex" justifyContent="center" my={2} >
+                                                    <Box display="flex" justifyContent="center" my={2}>
                                                         <img src={qs.image} alt="Preview" style={{ height: '200px', cursor: 'pointer' }} />
                                                     </Box>
                                                 )}
-                                                <Typography variant="body2">Answer choices:</Typography>
-                                                <Box display="flex" alignItems="center" sx={{ mb: 2 }} >
+                                                <Typography variant="body2">{t('answerChoices')}</Typography>
+                                                <Box display="flex" alignItems="center" sx={{ mb: 2 }}>
                                                     {/* Checkbox */}
-                                                    <FormGroup >
+                                                    <FormGroup>
                                                         {qs?.answer?.map((item, itemIndex) => (
                                                             <FormControlLabel
                                                                 key={itemIndex}
@@ -213,10 +216,19 @@ export const ViewDetailResult = () => {
                                                         ))}
                                                     </FormGroup>
                                                 </Box>
-                                                <Typography sx={{ backgroundColor: '#c5e1a5', display: "block", unicodeBidi: "isolate", border: "1px solid rgba(0, 0, 0, .125)", padding: '15px', borderRadius: "5px" }}>
-                                                    The correct answer is:{qs?.answer?.map((item, itemIndex) => (
-                                                        <span key={itemIndex}>{answerQs.find(as => as.id === item)?.isCorrect && <span>{itemIndex + 1}.{answerQs.find(as => as.id === item)?.content} </span>}</span>
-                                                    ))}</Typography>
+                                                <Typography sx={{
+                                                    backgroundColor: '#c5e1a5',
+                                                    display: "block",
+                                                    unicodeBidi: "isolate",
+                                                    border: "1px solid rgba(0, 0, 0, .125)",
+                                                    padding: '15px',
+                                                    borderRadius: "5px"
+                                                }}>
+                                                    {t('correctAnswer')} {qs?.answer?.map((item, itemIndex) => (
+                                                        <span key={itemIndex}>{answerQs.find(as => as.id === item)?.isCorrect &&
+                                                            <span>{itemIndex + 1}. {answerQs.find(as => as.id === item)?.content} </span>}</span>
+                                                    ))}
+                                                </Typography>
                                             </CardContent>
                                         </Card>
                                     </Box>
@@ -229,9 +241,9 @@ export const ViewDetailResult = () => {
                     >
                         <Card>
                             <CardContent>
-                                <Typography variant="subtitle1">Bulk update questions</Typography>
+                                <Typography variant="subtitle1">{t('bulkUpdateQuestions')}</Typography>
                                 <Divider sx={{ my: 1 }} />
-                                <Button variant="text" startIcon={<AccessTimeIcon />}>Time:</Button>
+                                <Button variant="text" startIcon={<AccessTimeIcon />}>{t('time')}:</Button>
                                 {exam &&
                                     <Select defaultValue={exam.timeLimit} size="small" sx={{ mx: 1 }}>
                                         <MenuItem value={exam.timeLimit}><ToHHMMSS time={exam.timeLimit} /></MenuItem>
@@ -246,31 +258,30 @@ export const ViewDetailResult = () => {
                                             startIcon={<FactCheckIcon />}
                                             color="primary"
                                         >
-                                            Result:
+                                            {t('result')}:
                                         </Button>
                                         <Box mt={2} mb={2}>
                                             <Typography variant="subtitle1">
-                                                <strong>Score:</strong> {parseInt(result.totalQuestion) > 0
+                                                <strong>{t('score')}:</strong> {parseInt(result.totalQuestion) > 0
                                                     ? (parseInt(result.numberCorrect) / parseInt(result.totalQuestion) * 10).toFixed(2)
-                                                    : "N/A"} Point
+                                                    : "N/A"} {t('points')}
                                             </Typography>
                                             <Typography variant="subtitle1">
-                                                <strong>Number Correct:</strong> {result?.numberCorrect} Questions
+                                                <strong>{t('numberCorrect')}:</strong> {result?.numberCorrect} {t('questions')}
                                             </Typography>
                                             <Typography variant="subtitle1">
-                                                <strong>Total Questions:</strong> {result?.totalQuestion} Questions
+                                                <strong>{t('totalQuestions')}:</strong> {result?.totalQuestion} {t('questions')}
                                             </Typography>
                                         </Box>
                                     </>
                                 )}
                                 <Divider sx={{ my: 1 }} />
-
                             </CardContent>
                         </Card>
                         <Card sx={{ marginTop: '10px' }}>
                             <CardContent>
                                 <Typography variant="subtitle1" align="center">
-                                    Number of Answers/Questions
+                                    {t('numberAnswersQuestions')}
                                 </Typography>
                                 <Divider sx={{ my: 1 }} />
                                 <Box display="flex" flexWrap="wrap" justifyContent="center">
@@ -331,7 +342,8 @@ export const ViewDetailResult = () => {
                         </Card>
                     </Grid>
                 </Grid>
-            </Box >
+            </Box>
         </ThemeProvider>
+
     );
 }

@@ -15,7 +15,8 @@ import { CourseSemester } from "../../../../models/Interface";
 import { postAnswerQs, postExam, postQuestion } from "../../../../service/ExamApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import  ReplyAllIcon  from '@mui/icons-material/ReplyAll';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import { useTranslation } from "react-i18next";
 
 
 
@@ -251,7 +252,7 @@ export const AddExam = () => {
             }
         }
     }
-
+    const { t } = useTranslation();
     return (
         <Box p={3} sx={{ backgroundColor: "#ede7f6" }}>
             <Box
@@ -262,22 +263,24 @@ export const AddExam = () => {
                     gap: 1,
                 }}
             >
-                 <Grid item>
+                <Grid item>
                     <Button
                         startIcon={<ReplyAllIcon />}
                         onClick={() => navigate(-1)}
                         variant="outlined"
                         color="secondary"
                     >
-                        Back
+                        {t("back")}
                     </Button>
                 </Grid>
             </Box>
             {/* Header */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5">Exam Quiz</Typography>
+                <Typography variant="h5">{t("exam_quiz")}</Typography>
                 <Box>
-                    <Button onClick={() => setOpen(true)} variant="contained" color="secondary">Publish Exam</Button>
+                    <Button onClick={() => setOpen(true)} variant="contained" color="secondary">
+                        {t("publish_exam")}
+                    </Button>
                 </Box>
             </Box>
 
@@ -286,155 +289,178 @@ export const AddExam = () => {
                 <Grid item xs={12} md={3}>
                     <Card>
                         <CardContent>
-                            <Typography variant="subtitle1">Bulk update questions</Typography>
+                            <Typography variant="subtitle1">{t("bulk_update_questions")}</Typography>
                             <Divider sx={{ my: 1 }} />
-                            <Button variant="text" startIcon={<AccessTimeIcon />}>Time:</Button>
+                            <Button variant="text" startIcon={<AccessTimeIcon />}>
+                                {t("time")}
+                            </Button>
                             <Select defaultValue="900" onChange={e => setTime(e.target.value)} size="small" sx={{ mx: 1 }}>
-                                <MenuItem value="900">15 minutes</MenuItem>
-                                <MenuItem value="1800">30 minutes</MenuItem>
-                                <MenuItem value="2700">45 minutes</MenuItem>
-                                <MenuItem value="3600">60 minutes</MenuItem>
-                                <MenuItem value="5400">90 minutes</MenuItem>
-                                <MenuItem value="7200">120 minutes</MenuItem>
-                                <MenuItem value="9000">150 minutes</MenuItem>
-                                <MenuItem value="10800">180 minutes</MenuItem>
+                                <MenuItem value="900">{t("15_min")}</MenuItem>
+                                <MenuItem value="1800">{t("30_min")}</MenuItem>
+                                <MenuItem value="2700">{t("45_min")}</MenuItem>
+                                <MenuItem value="3600">{t("60_min")}</MenuItem>
+                                <MenuItem value="5400">{t("90_min")}</MenuItem>
+                                <MenuItem value="7200">{t("120_min")}</MenuItem>
+                                <MenuItem value="9000">{t("150_min")}</MenuItem>
+                                <MenuItem value="10800">{t("180_min")}</MenuItem>
                             </Select>
                             <Divider sx={{ my: 1 }} />
-
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={9}>
                     <Card>
                         <CardContent>
-                            <Typography variant="body1" ><h4>Toppic quiz</h4></Typography>
+                            <Typography variant="body1">
+                                <h4>{t("topic_quiz")}</h4>
+                            </Typography>
                             <Box display="flex" alignItems="center" mb={2}>
-                                <TextField onChange={e => setDescription(e.target.value)} fullWidth placeholder="Enter topic name" variant="outlined" size="small" />
-
+                                <TextField
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    fullWidth
+                                    placeholder={t("enter_topic_name")}
+                                    variant="outlined"
+                                    size="small"
+                                />
                             </Box>
-                            <Typography variant="subtitle1">{question.length} questions(10 points)</Typography>
+                            <Typography variant="subtitle1">
+                                {question.length} {t("questions_with_points")}
+                            </Typography>
 
                             {/* Question Items */}
                             <Box mt={2}>
-                                {question && question.map((item, index) => (
-                                    <Card key={index} sx={{ mb: 2 }}>
-                                        <CardContent>
-                                            <Box display="flex" justifyContent="space-between" alignItems="center">
-                                                <Typography variant="body1">Question {index + 1}. Multiple Choice</Typography>
-                                                <Box display="flex" alignItems="center">
-                                                    {/* Tooltip for Search Icon */}
-                                                    <Tooltip title="Add for Image" arrow>
-                                                        <IconButton>
-                                                            <ImageSearchIcon
-                                                                sx={{ color: 'green' }}
-                                                                onClick={() => handleClick(item.id)}
-                                                                style={{ cursor: 'pointer' }}
-                                                            />
-                                                        </IconButton>
-                                                    </Tooltip>
-
-                                                    {/* Tooltip for Delete Icon */}
-                                                    <Tooltip title="Delete Question" arrow>
-                                                        <IconButton>
-                                                            <Delete
-                                                                sx={{ color: 'red' }}
-                                                                onClick={() => handleQuestion('REMOVE', item.id)}
-                                                            />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </Box>
-
-                                            </Box>
-                                            <TextField
-                                                label={`Description`}
-                                                onChange={(e) => handleDescriptionQs(e.target.value, item.id)}
-                                                variant="standard"
-                                                fullWidth
-                                                sx={{ mr: 2 }}
-                                            />
-                                            <Divider sx={{ my: 1 }} />
-                                            <input
-                                                ref={el => (fileInputRefs.current[item.id] = el)}
-                                                type="file"
-                                                style={{ display: 'none' }}
-                                                onChange={e => handleImage(e)}
-                                            />
-                                            {item.image && (
-                                                <Box display="flex" justifyContent="center" my={2} >
-                                                    <img src={item.image} alt="Preview" style={{ width: '300px', cursor: 'pointer' }} />
-                                                    <ClearIcon color="error" style={{ cursor: 'pointer' }} onClick={() => hanldleDeleteImage(item.id)} />
-                                                </Box>
-                                            )}
-                                            <Typography variant="body2">Answer choices:</Typography>
-                                            {item.answer.map((data, index) => (
-                                                <Box display="flex" alignItems="center" sx={{ mb: 2 }} key={index}>
-                                                    {/* Checkbox */}
-                                                    <Checkbox
-                                                        checked={data.isCorrect}
-                                                        onChange={(e) => handleAnswerQuestion("CHECKBOX", item.id, data.id, e.target.checked, "")}
-                                                        sx={{ mr: 2 }}
-                                                    />
-
-                                                    <TextField
-                                                        type="text"
-                                                        value={data.content}
-                                                        label="Answer question"
-                                                        variant="standard"
-                                                        sx={{ width: "70%", mr: 2 }}
-                                                        onChange={(e) => handleAnswerQuestion("INPUT", item.id, data.id, data.isCorrect, e.target.value)}
-                                                    />
-
-                                                    <Box display="flex" alignItems="center" gap={"10px"}>
-                                                        {item.answer.length === 1 ? <></> :
+                                {question &&
+                                    question.map((item, index) => (
+                                        <Card key={index} sx={{ mb: 2 }}>
+                                            <CardContent>
+                                                <Box display="flex" justifyContent="space-between" alignItems="center">
+                                                    <Typography variant="body1">
+                                                        {t("question_multiple_choice", { index: index + 1 })}
+                                                    </Typography>
+                                                    <Box display="flex" alignItems="center">
+                                                        <Tooltip title={t("add_image")} arrow>
                                                             <IconButton>
-                                                                <RemoveCircleIcon
-                                                                    color="error"
-                                                                    style={{ cursor: 'pointer', marginRight: 8 }}
-                                                                    sx={{ fontSize: 30 }}
-                                                                    onClick={() => handleAnswer('REMOVE', item.id, data.id)}
+                                                                <ImageSearchIcon
+                                                                    sx={{ color: "green" }}
+                                                                    onClick={() => handleClick(item.id)}
+                                                                    style={{ cursor: "pointer" }}
                                                                 />
                                                             </IconButton>
-
-                                                        }
-                                                        <Tooltip title="Add for Answer">
+                                                        </Tooltip>
+                                                        <Tooltip title={t("delete_question")} arrow>
                                                             <IconButton>
-                                                                <AddCircleOutlineIcon
-                                                                    color="success"
-                                                                    style={{ cursor: 'pointer' }}
-                                                                    onClick={() => handleAnswer('ADD', item.id, "0")}
-                                                                    sx={{ fontSize: 30 }}
+                                                                <Delete
+                                                                    sx={{ color: "red" }}
+                                                                    onClick={() => handleQuestion("REMOVE", item.id)}
                                                                 />
                                                             </IconButton>
                                                         </Tooltip>
                                                     </Box>
                                                 </Box>
-                                            ))}
-                                        </CardContent>
-                                    </Card>
-                                ))}
+                                                <TextField
+                                                    label={t("description")}
+                                                    onChange={(e) => handleDescriptionQs(e.target.value, item.id)}
+                                                    variant="standard"
+                                                    fullWidth
+                                                    sx={{ mr: 2 }}
+                                                />
+                                                <Divider sx={{ my: 1 }} />
+                                                <input
+                                                    ref={(el) => (fileInputRefs.current[item.id] = el)}
+                                                    type="file"
+                                                    style={{ display: "none" }}
+                                                    onChange={(e) => handleImage(e)}
+                                                />
+                                                {item.image && (
+                                                    <Box display="flex" justifyContent="center" my={2}>
+                                                        <img
+                                                            src={item.image}
+                                                            alt="Preview"
+                                                            style={{ width: "300px", cursor: "pointer" }}
+                                                        />
+                                                        <ClearIcon
+                                                            color="error"
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={() => hanldleDeleteImage(item.id)}
+                                                        />
+                                                    </Box>
+                                                )}
+                                                <Typography variant="body2">{t("answer_choices")}</Typography>
+                                                {item.answer.map((data, index) => (
+                                                    <Box display="flex" alignItems="center" sx={{ mb: 2 }} key={index}>
+                                                        {/* Checkbox */}
+                                                        <Checkbox
+                                                            checked={data.isCorrect}
+                                                            onChange={(e) =>
+                                                                handleAnswerQuestion(
+                                                                    "CHECKBOX",
+                                                                    item.id,
+                                                                    data.id,
+                                                                    e.target.checked,
+                                                                    ""
+                                                                )
+                                                            }
+                                                            sx={{ mr: 2 }}
+                                                        />
+                                                        <TextField
+                                                            type="text"
+                                                            value={data.content}
+                                                            label={t("answer_question")}
+                                                            variant="standard"
+                                                            sx={{ width: "70%", mr: 2 }}
+                                                            onChange={(e) =>
+                                                                handleAnswerQuestion(
+                                                                    "INPUT",
+                                                                    item.id,
+                                                                    data.id,
+                                                                    data.isCorrect,
+                                                                    e.target.value
+                                                                )
+                                                            }
+                                                        />
+                                                        <Box display="flex" alignItems="center" gap={"10px"}>
+                                                            {item.answer.length === 1 ? null : (
+                                                                <IconButton>
+                                                                    <RemoveCircleIcon
+                                                                        color="error"
+                                                                        style={{ cursor: "pointer", marginRight: 8 }}
+                                                                        sx={{ fontSize: 30 }}
+                                                                        onClick={() => handleAnswer("REMOVE", item.id, data.id)}
+                                                                    />
+                                                                </IconButton>
+                                                            )}
+                                                            <Tooltip title={t("add_answer")}>
+                                                                <IconButton>
+                                                                    <AddCircleOutlineIcon
+                                                                        color="success"
+                                                                        style={{ cursor: "pointer" }}
+                                                                        onClick={() => handleAnswer("ADD", item.id, "0")}
+                                                                        sx={{ fontSize: 30 }}
+                                                                    />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </Box>
+                                                    </Box>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
+                                    ))}
                             </Box>
-
                             {/* Add question button */}
                             <Box textAlign="center" mt={2}>
-                                <Button onClick={() => handleQuestion('ADD', "1")} variant="outlined" startIcon={<Add />}>Add question</Button>
+                                <Button
+                                    onClick={() => handleQuestion("ADD", "1")}
+                                    variant="outlined"
+                                    startIcon={<Add />}
+                                >
+                                    {t("add_question")}
+                                </Button>
                             </Box>
                         </CardContent>
-                        <QuizSettingsModal open={open} onClose={onClose} setStatus={setStatus} setDisplay={setDisplay} setDateOfBooking={setDateOfBooking} setImage={setImage} handleSubmit={handleSubmit} />
                     </Card>
                 </Grid>
             </Grid>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
-        </Box >
+            <QuizSettingsModal open={open} onClose={onClose} setStatus={setStatus} setDisplay={setDisplay} setDateOfBooking={setDateOfBooking} setImage={setImage} handleSubmit={handleSubmit} />
+        </Box>
     );
 };

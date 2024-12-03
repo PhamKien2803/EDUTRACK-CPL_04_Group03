@@ -234,7 +234,6 @@ export const ViewCourseSm: React.FC = () => {
                 </Table>
             </TableContainer>
             <ModalAdd open={open} handleClickModal={handleClickModal} handleAddSlot={handleAddSlot} setData={setData} />
-            <ModalUpdate open2={open2} handleClickModal2={handleClickModal2} slotUpdate={slotUpdate} />
         </>
 
     );
