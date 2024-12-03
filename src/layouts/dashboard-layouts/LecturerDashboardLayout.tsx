@@ -20,6 +20,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import { db } from "../../Config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import LanguageSelector from "../../i18n/LanguageSelector";
+import ChatUI from "../../page/Chart/ChapApp";
 
 const NAVIGATION: Navigation = [
   {
@@ -206,6 +207,7 @@ function LecturerDashboardLayout() {
           </Box>
         </Box>
       </DashboardLayout>
+      <ChatUI open={open} toggleModal={toggleModal} />
     </AppProvider>
   );
 }
