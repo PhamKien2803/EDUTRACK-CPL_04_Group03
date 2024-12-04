@@ -31,7 +31,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth();
 const db = getFirestore();
 
-const signUp = async (username: string, email: string, password: string) => {
+const signUp = async (username: string, email: string, password: string, name: string) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
@@ -39,7 +39,7 @@ const signUp = async (username: string, email: string, password: string) => {
             id: user.uid,
             username: username.toLowerCase(),
             email,
-            name: "",
+            name: name,
             avatar: "",
             bio: "hey,hello ",
             lastSeen: Date.now()

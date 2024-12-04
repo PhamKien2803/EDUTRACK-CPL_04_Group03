@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { participants } from "../../../../models/Interface"
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import { signUp } from '../../../../Config/firebase';
 interface Props {
   handleCloseModals: () => void;
 }
@@ -177,7 +178,7 @@ const StudentAccountCreating: React.FC<Props> = ({ handleCloseModals }) => {
     try {
       // Gọi API tạo student
       await createStudent(studentData);
-
+      signUp(studentData.Email, studentData.Email, studentData.Password, studentData.UserName)
       // Gọi hàm đóng modal ngay sau khi tạo thành công
       handleCloseModals();
 
