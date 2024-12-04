@@ -161,16 +161,16 @@ const DashboardStaff: React.FC = () => {
       email: "nghianthe170569@fpt.edu.vn",
       amount: "10",
     },
-    { name: "Phạm Duy Kiên", email: "kienpdhe170155@fpt.edu.vn", amount: "10" },
+    { name: "Phạm Duy Kiên", email: "kienpdhe170155@fpt.edu.vn", amount: "9.9" },
     {
       name: "Do Dang Phuong",
       email: "phuongddhe173077@fpt.edu.vn",
-      amount: "10",
+      amount: "9.8",
     },
     {
       name: "Nguyen Duc Long",
       email: "longndhe171694@fpt.edu.vn",
-      amount: "10",
+      amount: "9.75",
     },
   ];
 

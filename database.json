@@ -12,6 +12,50 @@
       "id": "2a9d"
     },
     {
+      "ClassID": "a121",
+      "ClassName": "SE222",
+      "Student": [
+        "he170569",
+        "he170155",
+        "he171694"
+      ],
+      "Status": true,
+      "id": "2a9da"
+    },
+    {
+      "ClassID": "a122",
+      "ClassName": "SE222",
+      "Student": [
+        "he170569",
+        "he170155",
+        "he171694"
+      ],
+      "Status": true,
+      "id": "2a9dc"
+    },
+    {
+      "ClassID": "a123",
+      "ClassName": "SE222",
+      "Student": [
+        "he170569",
+        "he170155",
+        "he171694"
+      ],
+      "Status": true,
+      "id": "2a9dd"
+    },
+    {
+      "ClassID": "a124",
+      "ClassName": "SE222",
+      "Student": [
+        "he170569",
+        "he170155",
+        "he171694"
+      ],
+      "Status": true,
+      "id": "2a9de"
+    },
+    {
       "ClassID": "c124",
       "ClassName": "SE223",
       "Student": [
@@ -480,6 +524,22 @@
       "id": "79b9"
     },
     {
+      "SemesterID": "spring24",
+      "SemesterName": "SPRING 24",
+      "StartDate": "01/05/2024",
+      "EndDate": "30/08/2024",
+      "Status": true,
+      "id": "72b9"
+    },
+    {
+      "SemesterID": "fall23",
+      "SemesterName": "FALL 23",
+      "StartDate": "01/09/2024",
+      "EndDate": "01/12/2024",
+      "Status": true,
+      "id": "71b9"
+    },
+    {
       "SemesterID": "fall24",
       "SemesterName": "FALL 24",
       "StartDate": "01/09/2024",
@@ -531,12 +591,87 @@
       "CourseID": "FER201",
       "LecturersID": "lt12345",
       "ClassID": "c124"
+    },
+    {
+      "id": "sp12",
+      "SemesterID": "spring24",
+      "SlotID": [],
+      "CourseID": "SWP391",
+      "LecturersID": "lt12345",
+      "ClassID": "a121"
+    },
+    {
+      "id": "sp12s",
+      "SemesterID": "spring24",
+      "SlotID": [],
+      "CourseID": "SWP391",
+      "LecturersID": "lt12345",
+      "ClassID": "a121"
+    },
+    {
+      "id": "sp13",
+      "SemesterID": "spring24",
+      "SlotID": [],
+      "CourseID": "SWR302",
+      "LecturersID": "lt12345",
+      "ClassID": "a122"
+    },
+    {
+      "id": "sp14",
+      "SemesterID": "spring24",
+      "SlotID": [],
+      "CourseID": "fall24",
+      "LecturersID": "lt12345",
+      "ClassID": "a123"
+    },
+    {
+      "id": "fa14",
+      "SemesterID": "fall23",
+      "SlotID": [],
+      "CourseID": "fall24",
+      "LecturersID": "lt12345",
+      "ClassID": "a124"
     }
   ],
   "Course": [
     {
       "id": "FER201",
       "CourseName": "Front-End web development ",
+      "Status": true
+    },
+    {
+      "id": "SWP391",
+      "CourseName": "Software Programing  ",
+      "Status": true
+    },
+    {
+      "id": "SWR302",
+      "CourseName": "Software Requesment  ",
+      "Status": true
+    },
+    {
+      "id": "SWT301",
+      "CourseName": "Software Testing  ",
+      "Status": true
+    },
+    {
+      "id": "Prj301",
+      "CourseName": "Java Web Application Development",
+      "Status": true
+    },
+    {
+      "id": "SWE201c",
+      "CourseName": "Introduction to Software Engineering",
+      "Status": true
+    },
+    {
+      "id": "IOT102",
+      "CourseName": "Internet vạn vật",
+      "Status": true
+    },
+    {
+      "id": "JPD123",
+      "CourseName": "Elementary Japanese 1-A1.2",
       "Status": true
     },
     {
