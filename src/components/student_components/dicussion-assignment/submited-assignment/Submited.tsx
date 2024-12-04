@@ -8,6 +8,9 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { postAnswerAssignmentSlot, updateAnswerAssignmentSlot, getAnswerAssignmentSlot, getParticipants, deleteAnswerAssignmentSlot, getAssignmentSlot } from "../../../../service/ApiService";
 import { answerAssignmentSlot, assignmentSlot, participants } from "../../../../models/Interface";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { useTranslation } from 'react-i18next';
 
 const Submited: React.FC = () => {
@@ -226,10 +229,31 @@ const Submited: React.FC = () => {
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>{t("submission_status")}</Typography>
-          <Typography variant="body2" sx={{ mt: 1 }}>
-            
-            {assignmentStatus === 2 ? t("late_submission") : isSubmitted ? t("submitted") : t("not_submitted")}
-
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 1,
+              display: 'flex',
+              alignItems: 'center',
+              color: assignmentStatus === 2 ? 'red' : isSubmitted ? 'green' : 'grey'
+            }}
+          >
+            {assignmentStatus === 2 ? (
+              <>
+                <ErrorIcon sx={{ fontSize: 18, color: 'red', mr: 1 }} />
+                {t("late_submission")}
+              </>
+            ) : isSubmitted ? (
+              <>
+                <CheckCircleIcon sx={{ fontSize: 18, color: 'green', mr: 1 }} />
+                {t("submitted")}
+              </>
+            ) : (
+              <>
+                <HourglassEmptyIcon sx={{ fontSize: 18, color: 'grey', mr: 1 }} />
+                {t("not_submitted")}
+              </>
+            )}
           </Typography>
         </Paper>
         <Paper elevation={2} sx={{ flex: 1, p: 2, textAlign: 'center' }}>

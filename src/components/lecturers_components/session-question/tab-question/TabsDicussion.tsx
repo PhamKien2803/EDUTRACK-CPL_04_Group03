@@ -9,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { answerQuestionSlot, participants } from '../../../../models/Interface';
 import { getAnswerQuestionSlot, getParticipants } from '../../../../service/ApiService';
 import { useTranslation } from 'react-i18next';
+import { Typography } from '@mui/material';
 
 function TabsDicussion() {
   const userid = useSelector((state: { account: { account: { UserID: string } } }) => state.account.account.UserID);
@@ -78,18 +79,42 @@ function TabsDicussion() {
 
       {loading && <LinearProgress color="secondary" />}
 
-      {!loading && value === 'one' && filterCommentQuestion.map((comment) => (
-        <Box key={comment.id} sx={{ marginTop: '20px' }}>
-          <Comment
-            userIds={comment?.UserID}
-            username={getUsernameById(comment?.UserID)}
-            rating={comment?.Rating}
-            text={comment?.comment}
-            questionID={comment?.QuestionID}
-            timestamp={comment?.Timestamped}
-            answerId={comment?.id} />
-        </Box>
-      ))}
+      {!loading && value === 'one' && (
+        filterCommentQuestion.length > 0 ? (
+          filterCommentQuestion.map((comment) => (
+            <Box key={comment.id} sx={{ marginTop: '20px' }}>
+              <Comment
+                userIds={comment?.UserID}
+                username={getUsernameById(comment?.UserID)}
+                rating={comment?.Rating}
+                text={comment?.comment}
+                questionID={comment?.QuestionID}
+                timestamp={comment?.Timestamped}
+                answerId={comment?.id}
+              />
+            </Box>
+          ))
+        ) : (
+          <Box
+            sx={{
+              marginTop: '20px',
+              textAlign: 'center',
+              padding: '20px',
+              border: '1px dashed grey',
+              borderRadius: '10px',
+              backgroundColor: '#f9f9f9'
+            }}
+          >
+            <Typography variant="h6" sx={{ color: 'grey.600' }}>
+              {t("No_answer")}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'grey.500', marginTop: '10px' }}>
+              {t("Be_the_first")}
+            </Typography>
+          </Box>
+        )
+      )}
+
     </Box>
   );
 }

@@ -149,7 +149,7 @@ const TableSubmission: React.FC<Props> = ({ answerAssignmentSlot, participants }
                     textAlign: 'center',
                   }}
                 >
-                  {submission.Status === 1 ? "{t('table_submitted')}" : "{t('submitted_late')}"}
+                  {submission.Status === 1 ? t('table_submitted') : t('submitted_late')}
                 </TableCell>
                 <TableCell>{new Date(submission?.Timestamped).toLocaleString()}</TableCell>
 

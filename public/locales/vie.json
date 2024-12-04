@@ -540,5 +540,7 @@
     "error_incorrect_old_password": "Mật khẩu cũ không đúng.",
     "error_password_mismatch": "Mật khẩu mới không khớp.",
     "success_password_updated": "Đã cập nhật mật khẩu thành công!",
-    "error_password_update_failed": "Cập nhật mật khẩu thất bại. Vui lòng thử lại."
+    "error_password_update_failed": "Cập nhật mật khẩu thất bại. Vui lòng thử lại.",
+    "No_answer": "Không có câu trả lời bây giờ",
+    "Be_the_first": "Đang chờ câu trả lời đầu tiên"
 }

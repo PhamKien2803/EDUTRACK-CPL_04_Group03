@@ -132,12 +132,18 @@ const ContentSes: React.FC<Props> = ({ questionSlot, assignmentSlot }) => {
             prevQuestions.filter((qs) => qs.QuestionID !== id)
           );
           Swal.fire(t('deletedl', { defaultValue: 'Deleted!' }), t('delete_success_question', { defaultValue: 'The question was successfully deleted.' }), "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         } else if (type === "assignment") {
           await deleteAssignmentSlot(id);
           setAssignmentsslotStatus((prevAssignments) =>
             prevAssignments.filter((asm) => asm.AssignmentID !== id)
           );
           Swal.fire(t('deletedl', { defaultValue: 'Deleted!' }), t('delete_success_assignment', { defaultValue: 'The assignment was successfully deleted.' }), "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       } catch (error) {
         console.log(error);

@@ -538,5 +538,7 @@
   "error_password_mismatch": "New passwords do not match.",
   "success_password_updated": "Password updated successfully!",
   "error_password_update_failed": "Failed to update password. Please try again.",
-  "error_titles": "Error"
+  "error_titles": "Error",
+  "No_answer": "No answers yet",
+  "Be_the_first": "Waiting for the first answer"
 }

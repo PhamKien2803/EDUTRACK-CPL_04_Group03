@@ -74,6 +74,9 @@ const QuestionForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) =>
       });
 
       Swal.fire({ icon: 'success', title: t('successl', { defaultValue: 'Success' }), text: t('question_slot_created_successfully', { defaultValue: 'Question slot created successfully!' }) });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       handleClose();
     } catch (error) {
       console.log(error);
@@ -260,6 +263,9 @@ const AssignmentForm: React.FC<{ handleClose: () => void }> = ({ handleClose }) 
       });
 
       Swal.fire({ icon: "success", title: t('successl', { defaultValue: 'Success' }), text: t('assignment_created_successfully', { defaultValue: 'Assignment created successfully!' }) });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       handleClose();
     } catch (error) {
       console.error(error);

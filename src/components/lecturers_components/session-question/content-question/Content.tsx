@@ -79,36 +79,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         return hours * 3600 + minutes * 60 + seconds;
     };
 
-    // useEffect(() => {
-    //     // F5 web , call lại LocalStorage
-    //     const storedTimeRemaining = localStorage.getItem(`timeRemaining_${question.QuestionID}`);
-    //     const initialTimeRemaining = storedTimeRemaining ? parseInt(storedTimeRemaining, 10) : null;
-
-    //     if (initialTimeRemaining !== null) {
-    //         setTimeRemaining(initialTimeRemaining);
-    //     } else {
-    //         const startSeconds = parseTimeToSeconds(question.TimeStart);
-    //         const endSeconds = parseTimeToSeconds(question.TimeEnd);
-    //         const initialTimeRemaining = endSeconds - startSeconds;
-    //         setTimeRemaining(initialTimeRemaining);
-    //     }
-
-    //     const timerInterval = setInterval(() => {
-    //         setTimeRemaining((prevTime) => {
-    //             if (prevTime === null || prevTime <= 1) {
-    //                 clearInterval(timerInterval);
-    //                 localStorage.removeItem(`timeRemaining_${question.QuestionID}`);
-    //                 return 0;
-    //             }
-
-    //             localStorage.setItem(`timeRemaining_${question.QuestionID}`, (prevTime - 1).toString());
-    //             return prevTime - 1;
-    //         });
-    //     }, 1000);
-
-    //     return () => clearInterval(timerInterval);
-    // }, [question.TimeStart, question.TimeEnd, question.QuestionID]);
-
     const updateQuestionStatus = async (questionID: string, status: number) => {
         const updatedQuestion = { ...question, Status: status };
 
@@ -193,7 +163,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
                             {t('content', { defaultValue: 'Content' })}
                         </Typography>
                         <Typography variant="body2" style={{ color: 'green', fontSize: "20px", marginTop: "8px" }}>
-                            {timeRemaining !== null && timeRemaining > 0 ? `t('timeRemaining', { defaultValue: 'Time remaining' }) ${formatTime(timeRemaining)}` : t('timeExpired', { defaultValue: 'Time expired' })}
+                            {timeRemaining !== null && timeRemaining > 0
+                                ? `${t('timeRemaining', { defaultValue: 'Time remaining' })} ${formatTime(timeRemaining)}`
+                                : t('timeExpired', { defaultValue: 'Time expired' })}
+
                         </Typography>
                     </Box>
                     <hr style={{ border: "1px solid lightgray", margin: "8px auto" }} />
