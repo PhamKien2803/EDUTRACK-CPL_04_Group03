@@ -225,6 +225,76 @@
       "id": "bcb05b1c-f15d-4ccc-9349-2ecfe5d2227a",
       "content": "Node",
       "isCorrect": false
+    },
+    {
+      "id": "4de99cee-2eed-4ddd-838b-d80c80c99a49",
+      "content": "a. All of the others",
+      "isCorrect": true
+    },
+    {
+      "id": "ba4c0207-343e-48ea-a27d-24ba764f8279",
+      "content": "b. The fetch() method is modern. It is not supported by old browsers.",
+      "isCorrect": false
+    },
+    {
+      "id": "cabe61de-b233-4b8c-b1b8-52633b5dcfa5",
+      "content": "c. The fetch() function will return a promise object.",
+      "isCorrect": false
+    },
+    {
+      "id": "2df707d8-89fd-4f8b-9922-72d69b7b5e41",
+      "content": "a. Angle brackets",
+      "isCorrect": false
+    },
+    {
+      "id": "a70677df-9ec9-44e1-a055-09341f74efd1",
+      "content": "c. Curly brackets",
+      "isCorrect": true
+    },
+    {
+      "id": "b3cecd60-7bbf-423c-8dec-53baeac5b692",
+      "content": "d. Round brackets",
+      "isCorrect": false
+    },
+    {
+      "id": "e7b2b7e1-b1a1-4f4a-931d-a4c89b77aaa5",
+      "content": "a. False",
+      "isCorrect": true
+    },
+    {
+      "id": "30a06cf0-cc7c-4b9a-a9a0-2ae5c7ea594a",
+      "content": "b. True",
+      "isCorrect": false
+    },
+    {
+      "id": "51e509bb-82fd-43ad-b8fe-01bca255dff7",
+      "content": "a. false",
+      "isCorrect": false
+    },
+    {
+      "id": "6e1cd8d8-45e6-4dda-810d-eb2dd1da3611",
+      "content": "b. true",
+      "isCorrect": true
+    },
+    {
+      "id": "1813e0a5-9cae-4642-b26c-e385ac06c05d",
+      "content": "a. <div class=\"popup\">component</div>",
+      "isCorrect": false
+    },
+    {
+      "id": "1ee6b0d8-9feb-414b-ae1e-dcd2f77a8329",
+      "content": "b. <div class=\"alert\">component</div>",
+      "isCorrect": true
+    },
+    {
+      "id": "67ef02da-a81f-4017-b503-2066ce605949",
+      "content": "c. <div class=\"warning\">component</div>",
+      "isCorrect": false
+    },
+    {
+      "id": "a3781ea8-6850-4e20-a20a-73751ea915f8",
+      "content": "d. <div class=\"danger\">component</div>",
+      "isCorrect": false
     }
   ],
   "QuestionExam": [
@@ -354,6 +424,65 @@
         "bcb05b1c-f15d-4ccc-9349-2ecfe5d2227a"
       ],
       "exId": "f824556d-b6e9-4f50-9937-2566ff7842ec"
+    },
+    {
+      "id": "994b1ca3-d1b2-4b20-97e2-f6faa535f504",
+      "content": "What best option to describe the fetch() function?",
+      "image": "",
+      "answer": [
+        "4de99cee-2eed-4ddd-838b-d80c80c99a49",
+        "ba4c0207-343e-48ea-a27d-24ba764f8279",
+        "cabe61de-b233-4b8c-b1b8-52633b5dcfa5"
+      ],
+      "exId": "ebc02a3d-02df-4630-9e19-f16048ebd4af"
+    },
+    {
+      "id": "ac0c1740-4987-46e4-b2de-d9fa7a5904f8",
+      "content": "JSX expressions are wrapped in ___",
+      "image": "",
+      "imagePreview": false,
+      "answer": [
+        "2df707d8-89fd-4f8b-9922-72d69b7b5e41",
+        "e67d80a6-09e1-4774-953f-ef88f46e707a",
+        "a70677df-9ec9-44e1-a055-09341f74efd1",
+        "b3cecd60-7bbf-423c-8dec-53baeac5b692"
+      ],
+      "exId": "ebc02a3d-02df-4630-9e19-f16048ebd4af"
+    },
+    {
+      "id": "a477573c-5fd4-418e-b4e6-b6647fd98ecd",
+      "content": "React can only render elements in the root document element.",
+      "image": "",
+      "imagePreview": false,
+      "answer": [
+        "e7b2b7e1-b1a1-4f4a-931d-a4c89b77aaa5",
+        "30a06cf0-cc7c-4b9a-a9a0-2ae5c7ea594a"
+      ],
+      "exId": "ebc02a3d-02df-4630-9e19-f16048ebd4af"
+    },
+    {
+      "id": "719ec3b8-5622-4c0e-bc90-03480e8c167c",
+      "content": "To develop and run React code, Node.js is required.",
+      "image": "",
+      "imagePreview": false,
+      "answer": [
+        "51e509bb-82fd-43ad-b8fe-01bca255dff7",
+        "6e1cd8d8-45e6-4dda-810d-eb2dd1da3611"
+      ],
+      "exId": "ebc02a3d-02df-4630-9e19-f16048ebd4af"
+    },
+    {
+      "id": "e3f989b2-32f6-4944-bad4-54250798f008",
+      "content": "Which of the below is the correct syntax for adding the alert in the Bootstrap component?",
+      "image": "",
+      "imagePreview": false,
+      "answer": [
+        "1813e0a5-9cae-4642-b26c-e385ac06c05d",
+        "1ee6b0d8-9feb-414b-ae1e-dcd2f77a8329",
+        "67ef02da-a81f-4017-b503-2066ce605949",
+        "a3781ea8-6850-4e20-a20a-73751ea915f8"
+      ],
+      "exId": "ebc02a3d-02df-4630-9e19-f16048ebd4af"
     }
   ],
   "Examination": [
@@ -370,18 +499,6 @@
       "createdAt": "19/11/2024"
     },
     {
-      "id": "49cf",
-      "examID": "3225dd30-9098-4094-b2da-6ce5d66dcdf1",
-      "examContent": "Test Exam",
-      "courseSemesterID": "cs13",
-      "timeLimit": "900",
-      "image": "",
-      "dateOfBooking": "2024-11-22T16:33",
-      "display": true,
-      "status": true,
-      "createdAt": "22/11/2024"
-    },
-    {
       "id": "ef9e",
       "examID": "a0e9a083-d37c-452e-bf83-22e07ce2993f",
       "examContent": "Test Quiz",
@@ -392,6 +509,18 @@
       "display": true,
       "status": true,
       "createdAt": "22/11/2024"
+    },
+    {
+      "id": "ac1492bd-4cb0-4c2b-bd5a-59d4bdce10c7",
+      "examID": "ebc02a3d-02df-4630-9e19-f16048ebd4af",
+      "examContent": "What is React ?",
+      "courseSemesterID": "cs13",
+      "timeLimit": "900",
+      "image": "",
+      "dateOfBooking": "",
+      "display": true,
+      "status": true,
+      "createdAt": "04/12/2024"
     }
   ],
   "UserAnswer": [

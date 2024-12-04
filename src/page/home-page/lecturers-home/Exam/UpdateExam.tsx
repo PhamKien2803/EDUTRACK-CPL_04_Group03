@@ -162,7 +162,7 @@ export const UpdateExam = () => {
 
                                             <TableCell>{question.content.substring(0, 45)}</TableCell>
                                             <TableCell>{question.answer.map((a) => (
-                                                <div key={a}>{dataAnswer.find(ans => ans.id === a)?.content} {dataAnswer.find(ans => ans.id === a)?.isCorrect ? <CheckCircle color='success' /> : <CancelIcon color='error' />}</div>
+                                                <div key={a}>{dataAnswer.find(ans => ans.id === a)?.content.substring(0, 30)} {dataAnswer.find(ans => ans.id === a)?.isCorrect ? <CheckCircle color='success' /> : <CancelIcon color='error' />}</div>
                                             ))}</TableCell>
 
                                             <TableCell align="center">

@@ -21,9 +21,11 @@ interface Props {
 export const RightContent: React.FC<Props> = (props) => {
     const { t } = useTranslation();
     const { dataExam, setIndex, timer, handleFinish } = props
+
+    console.log(dataExam);
     const getClassNameQs = (item: Data): string => {
         const checkedAnswer = item.answer.every(item => item.isSelected === false)
-        return checkedAnswer ? t('checked_question') : t('question selected')
+        return checkedAnswer ? 'checked question' : 'question selected'
     }
 
     return (
