@@ -11,7 +11,6 @@ import {
   TextField,
   IconButton,
   InputAdornment,
-  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
@@ -47,7 +46,6 @@ interface course {
   CourseName: string;
   Status: boolean;
 }
-// Mock data with multiple courses
 
 function LecturersHomePage() {
   const { t } = useTranslation();
@@ -56,12 +54,16 @@ function LecturersHomePage() {
   const [dataSemester, setDataSemester] = useState<Semester[]>([]);
   const [dataCourse, setDataCourse] = useState<course[]>([]);
 
-  const account = useSelector((state: any) => state.account.account);
-  // const isAuthenticated = useSelector(
-  //   (state: any) => state.account.isAuthenticated
-  // );
+  interface RootState {
+    account: {
+      account: {
+        UserID: string;
+      };
+    };
+  }
 
-  // console.log(account);
+  const account = useSelector((state: RootState) => state.account.account);
+
 
   useEffect(() => {
     fetchCourse();
@@ -79,8 +81,6 @@ function LecturersHomePage() {
     }
   };
 
-  // console.log(data);
-
   const fetchDataSemester = async () => {
     const res = await getSemester();
     if (Array.isArray(res) && res.length > 0) {
@@ -90,8 +90,6 @@ function LecturersHomePage() {
     }
   };
 
-  // console.log(semesterId);
-
   const fetchCourse = async () => {
     const res = await getCourse();
     if (Array.isArray(res) && res.length > 0) {
@@ -99,7 +97,6 @@ function LecturersHomePage() {
     }
   };
 
-  // console.log(dataCourse);
   console.log(dataSemester);
 
   // Lọc các Course duy nhất theo CourseID
@@ -235,25 +232,6 @@ function LecturersHomePage() {
                       {dataCourse[0]?.CourseName || "{t('course_name')}"}
                     </Typography>
                   </Link>
-                  <Tooltip title="27%" placement="top">
-                    <Box
-                      sx={{
-                        mt: 1,
-                        width: "80%",
-                        height: "8px",
-                        borderRadius: "4px",
-                        bgcolor: "grey.300",
-                        overflow: "hidden",
-                        "&::before": {
-                          content: '""',
-                          display: "block",
-                          height: "100%",
-                          width: "27%", // Adjust dynamically based on progress
-                          bgcolor: "#F05123",
-                        },
-                      }}
-                    />
-                  </Tooltip>
                 </CardContent>
               </Card>
             </Grid>

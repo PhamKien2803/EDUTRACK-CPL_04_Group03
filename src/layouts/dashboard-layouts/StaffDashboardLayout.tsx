@@ -8,6 +8,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { AppProvider, type Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import {
   Outlet,
   useLocation,
@@ -27,6 +28,11 @@ const NAVIGATION: Navigation = [
     segment: "staff/dashboardStaff",
     title: "Dashboard",
     icon: <DashboardIcon />,
+  },
+  {
+    segment: "staff/manage-semesters",
+    title: "Management Semester",
+    icon: <LocalLibraryIcon />,
   },
   {
     segment: "staff/manage_class",
