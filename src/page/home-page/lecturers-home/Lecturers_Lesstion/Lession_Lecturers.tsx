@@ -5,7 +5,6 @@ import { getAssignmentSlot, getClass, getCourse, getCouseraInLecturers, getParti
 import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
    
 function Lession_Lecturers() {

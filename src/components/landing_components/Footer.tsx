@@ -187,19 +187,19 @@ export default function Footer({ footerRef }: FooterProps) {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Product
+            {t("product_section")}
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            Features
+            {t("Features")}
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Plans
+            {t("plans")}
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Tutorials
+            {t("tutorials")}
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            FAQs
+            {t("faqs")}
           </Link>
         </Box>
 
@@ -212,16 +212,16 @@ export default function Footer({ footerRef }: FooterProps) {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Company
+            {t("company_section")}
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            About Us
+            {t("about_us")}
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Careers
+            {t("careers")}
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Contact
+            {t("contact")}
           </Link>
         </Box>
       </Box>
@@ -238,11 +238,11 @@ export default function Footer({ footerRef }: FooterProps) {
       >
         <div>
           <Link color="text.secondary" variant="body2" href="#">
-            Privacy Policy
+            {t("privacy_policy")}
           </Link>
           <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>&nbsp;•&nbsp;</Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            Terms of Service
+            {t("terms_of_service")}
           </Link>
           <Copyright />
         </div>

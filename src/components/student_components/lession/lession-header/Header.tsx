@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SchoolIcon from '@mui/icons-material/School';
 import HomeIcon from '@mui/icons-material/Home';
-import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot, courses as Course } from "../../../../models/Interface";
+import { lession as Lession, participants as Participants, classRoom , slot as Slot, questionSlot as QuestionSlot, courses as Course } from "../../../../models/Interface";
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
   slot: Slot[];
   lession: Lession;
   participants: Participants[];
-  classes: ClassRoom[];
+  classes: classRoom[];
   setSelected: (id: string) => void;
   courses: Course[];
 }
@@ -36,6 +36,8 @@ const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, part
   console.log(activityFilter);
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+
+  console.log(classes);
 
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
@@ -99,7 +101,7 @@ const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, part
             variant="outlined"
             sx={{ minWidth: 160 }}
             size="small"
-            displayEmpty
+            // displayEmpty
             defaultValue="index"
           >
 

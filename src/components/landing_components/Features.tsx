@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -8,6 +8,7 @@ import { keyframes } from "@mui/system";
 import SchoolIcon from "@mui/icons-material/School";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import { useTranslation } from "react-i18next";
 
 // Define animations
 const shake = keyframes`
@@ -23,50 +24,56 @@ const bounce = keyframes`
   60% { transform: translateY(-10px); }
 `;
 
-const features = [
-  {
-    icon: (
-      <SchoolIcon
-        sx={{
-          fontSize: 48,
-          color: "#673ab7",
-          animation: `${bounce} 2s infinite`,
-        }}
-      />
-    ),
-    title: "Comprehensive Study Management",
-    description: "Organize and monitor study schedules in one centralized platform.",
-    details: "Helps manage study materials, track goals, and create organized schedules for multiple tasks efficiently.",
-  },
-  {
-    icon: (
-      <NotificationsActiveIcon
-        sx={{
-          fontSize: 48,
-          color: "#fdd835",
-          animation: `${shake} 1.5s infinite`,
-        }}
-      />
-    ),
-    title: "Timely Exam Notifications",
-    description: "Stay updated with exam schedules and deadlines.",
-    details: "Receive reminders about upcoming exams and changes to reduce the chance of missing deadlines.",
-  },
-  {
-    icon: <AssignmentIcon sx={{
-      fontSize: 48,
-      color: "#f4511e",
-      animation: `${bounce} 2s infinite`,
-    }} />,
-    title: "Exam Performance Tracking",
-    description: "Analyze exam results to optimize performance.",
-    details: "Gain insights into strengths and weaknesses using analytics to plan better for future improvements.",
-  },
-];
+
 
 export default function RedesignedFeaturesWithPopup() {
+  const { t } = useTranslation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const features = [
+    {
+      icon: (
+        <SchoolIcon
+          sx={{
+            fontSize: 48,
+            color: "#673ab7",
+            animation: `${bounce} 2s infinite`,
+          }}
+        />
+      ),
+      title: t("comprehensive_study_management_title"),
+      description: t("comprehensive_study_management_description"),
+      details: t("comprehensive_study_management_details"),
+    },
+    {
+      icon: (
+        <NotificationsActiveIcon
+          sx={{
+            fontSize: 48,
+            color: "#fdd835",
+            animation: `${shake} 1.5s infinite`,
+          }}
+        />
+      ),
+      title: t("timely_exam_notifications_title"),
+      description: t("timely_exam_notifications_description"),
+      details: t("timely_exam_notifications_details"),
+    },
+    {
+      icon: (
+        <AssignmentIcon
+          sx={{
+            fontSize: 48,
+            color: "#f4511e",
+            animation: `${bounce} 2s infinite`,
+          }}
+        />
+      ),
+      title: t("exam_performance_tracking_title"),
+      description: t("exam_performance_tracking_description"),
+      details: t("exam_performance_tracking_details"),
+    },
+  ];
   return (
     <Container sx={{ py: 8 }}>
       <Typography
@@ -78,7 +85,7 @@ export default function RedesignedFeaturesWithPopup() {
           color: "#333",
         }}
       >
-        Key Features of EduTrack
+        {t("key_features_title")}
       </Typography>
       <Box
         sx={{

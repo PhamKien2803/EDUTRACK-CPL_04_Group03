@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import ChangePassword from "./changePassword";
 
 
 interface Participant {
@@ -127,8 +128,9 @@ const EditProfile: React.FC = () => {
     }
   };
 
+ 
   return (
-    <Box bgcolor="#f6f9fc" minHeight="100vh" p={3}>
+    <Box bgcolor="#f6f9fc" minHeight="160vh" p={3}>
       {/* Back Button */}
       <IconButton
         onClick={() => navigate(-1)}
@@ -205,13 +207,13 @@ const EditProfile: React.FC = () => {
             {/* Form Fields */}
             <Grid item xs={12} md={8}>
               <Paper
-                elevation={2}
+                elevation={3}
                 sx={{
                   p: 3,
                   borderRadius: "8px",
                 }}
               >
-                <Typography variant="h6" fontWeight="bold" mb={2}>
+                <Typography textAlign="center" variant="h5" fontWeight="bold" mb={2}>
                   {t("account_details")}
                 </Typography>
                 <TextField
@@ -264,12 +266,17 @@ const EditProfile: React.FC = () => {
                   {t("save_changes")}
                 </Button>
               </Paper>
+
+              {/* Change Password Section */}
+
+              <ChangePassword />
             </Grid>
           </Grid>
         </Box>
       )}
     </Box>
   );
+
 };
 
 export default EditProfile;

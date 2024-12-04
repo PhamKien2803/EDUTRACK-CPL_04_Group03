@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, IconButton } from "@mui/material";
+import { Box, TextField, Button, Typography, IconButton, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getParticipants, changePassword } from "../../../service/ApiService";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { Lock, VpnKey,AccountCircle  } from "@mui/icons-material";
+import { Lock, Visibility, VisibilityOff, VpnKey } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
+import { participants } from "../../../models/Interface";
 
 const ChangePassword: React.FC = () => {
+  const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   interface RootState {
     account: {
@@ -19,149 +25,171 @@ const ChangePassword: React.FC = () => {
       };
     };
   }
-
   const user = useSelector((state: RootState) => state.account.account);
-
   const handleSubmit = async () => {
     try {
-      
       const participants = await getParticipants();
-      const currentUser = participants.find((participant: any) => participant.id === user.UserID);
+      const currentUser = participants.find((participant: participants) => participant.id === user.UserID);
 
       if (!currentUser) {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "User not found.",
+          title: t("error_titles"),
+          text: t("error_user_not_found"),
         });
         return;
       }
-
-      
       if (oldPassword !== currentUser.Password) {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "Old password is incorrect.",
+          title: t("error_titles"),
+          text: t("error_incorrect_old_password"),
         });
         return;
       }
-
-      
       if (newPassword !== confirmPassword) {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: "New passwords do not match.",
+          title: t("error_titles"),
+          text: t("error_password_mismatch"),
         });
         return;
       }
-
-      
       await changePassword(user.UserID, { Password: newPassword });
-
-     
       Swal.fire({
         icon: "success",
-        title: "Success",
-        text: "Password updated successfully!",
+        title: t("Success_titles"),
+        text: t("success_password_updated"),
       }).then(() => {
-        navigate("/profile"); 
+        navigate("/profile");
       });
     } catch (err) {
+      console.error(err);
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Failed to update password. Please try again.",
+        title: t("error_titles"),
+        text: t("error_password_update_failed"),
       });
     }
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      bgcolor="#f6f9fc"
+    <Paper
+      elevation={3}
     >
       <Box
         bgcolor="white"
-        borderRadius="8px"
-        boxShadow={3}
+        borderRadius="16px"
+        boxShadow="0 4px 20px rgba(0, 0, 0, 0.1)"
         p={4}
-        width="400px"
-        display="flex"
         flexDirection="column"
-        alignItems="center"
+        sx={{ marginTop: "3rem" }}
       >
-        <Typography variant="h4" mb={3} fontWeight="bold">
-          Change Password
+        <Typography
+          variant="h5"
+          mb={3}
+          fontWeight="600"
+          textAlign="center"
+        >
+          {t("change_password")}
         </Typography>
-        
+
+        {/* Old Password */}
         <TextField
-          label="Old Password"
-          type="password"
+          placeholder="•••••••"
+          label={t("old_password")}
+          type={showOldPassword ? "text" : "password"}
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
           sx={{ mb: 2, width: "100%" }}
           InputProps={{
             startAdornment: (
-              <IconButton position="start">
+              <IconButton sx={{ position: "start" }}>
                 <Lock />
+              </IconButton>
+            ),
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowOldPassword(!showOldPassword)}
+                edge="end"
+              >
+                {showOldPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             ),
           }}
         />
-        
+
+        {/* New Password */}
         <TextField
-          label="New Password"
-          type="password"
+          placeholder="•••••••"
+          label={t("new_password")}
+          type={showNewPassword ? "text" : "password"}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           sx={{ mb: 2, width: "100%" }}
           InputProps={{
             startAdornment: (
-              <IconButton position="start">
+              <IconButton sx={{ position: "start" }}>
                 <VpnKey />
+              </IconButton>
+            ),
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                edge="end"
+              >
+                {showNewPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             ),
           }}
         />
-        
+
+        {/* Confirm Password */}
         <TextField
-          label="Confirm New Password"
-          type="password"
+          placeholder="•••••••"
+          label={t("confirm_password")}
+          type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           sx={{ mb: 3, width: "100%" }}
           InputProps={{
             startAdornment: (
-              <IconButton position="start">
+              <IconButton sx={{ position: "start" }}>
                 <VpnKey />
+              </IconButton>
+            ),
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                edge="end"
+              >
+                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             ),
           }}
         />
-        
+
+        {/* Submit Button */}
         <Button
           variant="contained"
-          color="primary"
           onClick={handleSubmit}
           sx={{
+            width: "100%",
             textTransform: "capitalize",
-            borderRadius: "30px",
-            background: "linear-gradient(45deg, #6a11cb, #2575fc)",
+            borderRadius: "8px",
+            background: "linear-gradient(90deg, #667eea, #764ba2)",
             "&:hover": {
-              background: "linear-gradient(45deg, #5b10ba, #1e66e1)",
+              background: "linear-gradient(90deg, #556cd6, #5a3e94)",
             },
+            padding: "10px 16px",
           }}
         >
-          Save Changes
+          {t("save_changes")}
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
+
 };
 
 export default ChangePassword;

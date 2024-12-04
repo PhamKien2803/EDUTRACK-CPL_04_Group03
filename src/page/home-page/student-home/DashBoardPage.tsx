@@ -237,7 +237,7 @@ function DashBoardPage() {
             fontWeight="bold"
             sx={{ marginBottom: "4px", color: "#333" }}
           >
-            Welcome back, {account.UserName}
+            {t("Welcome_back")}, {account.UserName}
           </Typography>
           <Typography
             variant="body2"
@@ -252,7 +252,7 @@ function DashBoardPage() {
             }}
             onClick={() => navigate(`/profile`)}
           >
-            Open Profile
+            {t("open_profile")}
           </Typography>
         </Box>
       </Box>
@@ -387,7 +387,7 @@ function DashBoardPage() {
                             whiteSpace: "nowrap",
                           }}
                         >
-                          Congratulations! 🎉 You've completed the course.
+                          {t("completion_message")}
                         </Box>
 
                         {/* Confetti*/}
@@ -520,7 +520,7 @@ function DashBoardPage() {
                           flexShrink: 0,
                         }}
                       ></span>
-                      Questions: &nbsp;
+                      {t("questions")}: &nbsp;
                       <span style={{ fontWeight: "bold" }}>
                         {countAnswer(item.id)}/{countTotalSlot(item.id)}
                       </span>
@@ -542,7 +542,7 @@ function DashBoardPage() {
                           flexShrink: 0,
                         }}
                       ></span>
-                      visit: &nbsp;
+                      {t("visit")}: &nbsp;
                       <span style={{ fontWeight: "bold" }}>1/1</span>
                     </Typography>
 
@@ -563,7 +563,7 @@ function DashBoardPage() {
                           flexShrink: 0,
                         }}
                       ></span>
-                      Start Date: &nbsp;
+                      {t("start_date")}: &nbsp;
                       {
                         dataSemester.find(
                           (semester) => semester.SemesterID === item.SemesterID
@@ -588,7 +588,7 @@ function DashBoardPage() {
                           flexShrink: 0,
                         }}
                       ></span>
-                      End Date: &nbsp;&nbsp;
+                      {t("end_date")}: &nbsp;&nbsp;
                       {
                         dataSemester.find(
                           (semester) => semester.SemesterID === item.SemesterID
@@ -602,7 +602,7 @@ function DashBoardPage() {
                         navigate(`/lession-course?subjectId=${item.id}`)
                       }
                       variant="contained"
-                      startIcon={<Icon>activity</Icon>}
+                      startIcon={<Icon>open_in_new</Icon>}
                       size="medium"
                       sx={{
                         background: "linear-gradient(90deg, #16a28b, #20c997)",
@@ -620,7 +620,7 @@ function DashBoardPage() {
                         },
                       }}
                     >
-                      See All Activity
+                      {t("see_all_activity")}
                     </Button>
 
                   </Box>
