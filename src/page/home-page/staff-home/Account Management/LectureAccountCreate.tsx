@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 import { participants } from "../../../../models/Interface"
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import { signUp } from '../../../../Config/firebase';
 
 interface Props {
   handleCloseModals: () => void;
@@ -95,6 +96,7 @@ const LectureAccountCreating: React.FC<Props> = ({ handleCloseModals }) => {
 
     try {
       await createStudent(lecturesData);
+      signUp(lecturesData.Email, lecturesData.Email, lecturesData.Password, lecturesData.UserName)
       handleCloseModals();
 
       emailjs
@@ -107,18 +109,12 @@ const LectureAccountCreating: React.FC<Props> = ({ handleCloseModals }) => {
             from_email: newLectures.Email,
             subject: 'Account Created Successfully',
             html_message: `
-          <html>
-            <body>
-              <p>Hello ${newLectures.UserName},</p>
-              <p>Your lectures account has been created successfully. Here are your account details:</p>
-              <ul>
-                <li><strong>Email:</strong> ${newLectures.Email}</li>
-                <li><strong>Lectures ID:</strong> ${lecturesId}</li>
-                <li><strong>Password:</strong> ${newLectures.Password}</li>
-              </ul>
-              <p>Thank you for registering with EduTrack!</p>
-            </body>
-          </html>
+              Hello ${newLectures.UserName},
+             Your lectures account has been created successfully. Here are your account details:
+                <strong>Email:</strong> ${newLectures.Email}
+                <strong>Lectures ID:</strong> ${lecturesId}
+                <strong>Password:</strong> ${newLectures.Password}
+              Thank you for registering with EduTrack!
         `,
           },
           'BEG8X3EKg9_bLjfCn'

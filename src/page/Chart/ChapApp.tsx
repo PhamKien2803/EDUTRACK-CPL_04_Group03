@@ -322,7 +322,6 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
 
     const convertTimestamp = (time) => {
         const date = time.toDate();
-
         const hours = date.getHours();
         const minutes = date.getMinutes();
         if (hours > 12) {
@@ -330,7 +329,6 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
         } else {
             return `${hours}:${minutes} AM`;
         }
-
     };
 
 
@@ -715,6 +713,7 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                                         transition: 'background-color 0.3s, box-shadow 0.3s',
                                         position: 'relative',
                                     }}
+                                    onClick={addChat}
 
                                 >
                                     <Avatar
