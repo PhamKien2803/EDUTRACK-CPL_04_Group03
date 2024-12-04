@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { assignmentSlot, classRoom, courses, lession, participants, questionSlot, slot } from '../../../../models/Interface';
+import { assignmentSlot, classRoom, courses, CourseSemester, lession, participants, questionSlot, slot } from '../../../../models/Interface';
 import { useTranslation } from 'react-i18next';
 import { getAssignmentSlot, getQuestionSLot } from '../../../../service/ApiService';
 
@@ -20,9 +20,10 @@ interface Props {
     courses: courses[];
     setclassId: (id: string) => void;
     classId: string;
+    courseSemester: CourseSemester[];
 }
 
-const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId, assignmentSlot }) => {
+const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, classes, setclassId, classId, assignmentSlot, courses, courseSemester }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: boolean }>({});
@@ -227,12 +228,13 @@ const Content: React.FC<Props> = ({ questionSlot, slot, lession, participants, c
                                 ))}
                             </Select>
                             <Divider sx={{ my: 2 }} />
-                            <Typography variant="body2">20 {t('Students')}</Typography>
-                            <Typography variant="body2">20 {t('Slots')}</Typography>
-                            <Divider style={{ margin: '10px 0' }} />
                             <Typography variant="body2">
 
-                                {t('StartDate')} 17:00 02/01/2023</Typography>
+
+                                <strong>{t('Students', { defaultValue: 'Students' })}:</strong> <span >{classes?.find(cls => cls?.ClassID === classId)?.Student.length || 0}</span> </Typography>
+                            <Typography variant="body2">
+                                <strong>{t('Slots')}:</strong> <span >{lession.SlotID.length}</span></Typography>
+                            <Divider style={{ margin: '10px 0' }} />
 
                             <div style={{ marginTop: '20px' }}>
                                 <Typography variant="body1">{t('Lecturer')}:</Typography>

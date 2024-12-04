@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -19,6 +19,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import HomeIcon from '@mui/icons-material/Home';
 import { lession as Lession, participants as Participants, classRoom as ClassRoom, slot as Slot, questionSlot as QuestionSlot, courses as Course } from "../../../../models/Interface";
 import { useTranslation } from 'react-i18next';
+import { getClass } from '../../../../service/ApiService';
 
 interface Props {
   questionSlot: QuestionSlot[];
@@ -30,12 +31,21 @@ interface Props {
   courses: Course[];
 }
 
-const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, participants }) => {
+const Header: React.FC<Props> = ({ lession, classes, setSelected, courses, participants }) => {
   const { t } = useTranslation();
   const [activityFilter, setActivityFilter] = useState('All Activities');
   console.log(activityFilter);
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
+  const [class2, setclass2] = useState<ClassRoom[]>([]);
+
+  useEffect(() => {
+    const fetchClass = async () => {
+      const res = await getClass();
+      setclass2(res);
+    };
+    fetchClass();
+  }, [])
 
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
@@ -56,6 +66,7 @@ const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, part
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
+  console.log("abc", classes);
 
 
   return (
@@ -103,10 +114,14 @@ const Header: React.FC<Props> = ({  lession, classes, setSelected, courses, part
             defaultValue="index"
           >
 
+
             <MenuItem value="index">
-              {classes.find(item => item.ClassID === lession.ClassID)?.ClassName}
+              {class2.find(item => item.ClassID === lession.ClassID)?.ClassName}
+
+
             </MenuItem>
           </Select>
+
 
           {/* Exam Button */}
           <Button

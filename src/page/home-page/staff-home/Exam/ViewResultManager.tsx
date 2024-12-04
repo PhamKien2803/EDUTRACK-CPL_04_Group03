@@ -103,7 +103,7 @@ export const ViewResultManager = () => {
                                     <TableCell>User Id</TableCell>
                                     <TableCell>User Name</TableCell>
                                     <TableCell>Points</TableCell>
-                                    <TableCell align="center">Action</TableCell>
+                                    {/* <TableCell align="center">Action</TableCell> */}
                                 </TableRow>
                             </TableHead>
 
@@ -123,7 +123,7 @@ export const ViewResultManager = () => {
                                                 {(parseInt(rs.numberCorrect) / parseInt(rs.totalQuestion) * 10).toFixed(2)}
                                             </TableCell>
 
-                                            <TableCell align="center">
+                                            {/* <TableCell align="center">
                                                 <Link to={`/viewDetailResult?userID=${rs.userId}&exID=${rs.examId}`}>
                                                     <Button
                                                         variant="contained"
@@ -135,12 +135,12 @@ export const ViewResultManager = () => {
                                                         View detais
                                                     </Button>
                                                 </Link>
-                                            </TableCell>
+                                            </TableCell> */}
                                         </TableRow>
                                     ))}
                             </TableBody>
                         </Table>
-                    </TableContainer> : <Typography align="center" paddingTop={5}>Not Answer for exam</Typography>}
+                    </TableContainer> : <Typography align="center" color="red" paddingTop={5}>Not Answer for exam</Typography>}
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 15]}
                         component="div"
