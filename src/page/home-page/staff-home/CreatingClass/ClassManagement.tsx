@@ -408,16 +408,16 @@ const ClassManagement: React.FC = () => {
         sx={{
           "& .MuiDialog-paper": {
             padding: "16px",
-            backgroundColor: isDarkMode ? "#212121" : "#FFFFFF", // Nền tối hoặc sáng tùy thuộc vào theme
+            backgroundColor: isDarkMode ? "#212121" : "#FFFFFF", 
             borderRadius: "8px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Bóng nhẹ cho nền sáng
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
           },
         }}
       >
         <DialogTitle
           sx={{
             textAlign: "center",
-            color: isDarkMode ? "#FFFFFF" : "#333333", // Chữ sáng khi ở theme tối, chữ tối khi ở theme sáng
+            color: isDarkMode ? "#FFFFFF" : "#333333", 
             fontWeight: "600",
             fontSize: "1.1rem",
           }}

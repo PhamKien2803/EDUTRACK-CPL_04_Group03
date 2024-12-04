@@ -18,7 +18,6 @@ import {
   Grid,
 } from "@mui/material";
 import {
-  getClass,
   getSemester,
   updateSemester,
   updateSemesterStatus,
@@ -28,8 +27,8 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import CreateIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { ArrowBackIosNew, ArrowForwardIos, Cancel, CheckCircle } from "@mui/icons-material";
 
 interface SemesterData {
   SemesterID: string;
@@ -50,7 +49,6 @@ export interface NewSemester {
 const ClassManagement: React.FC = () => {
   const [semesterData, setSemesterData] = useState<SemesterData[]>([]);
   const [editingSemester, setEditingSemester] = useState<string | null>(null);
-  const [creatingemester, setCreateSemester] = useState<string | null>(null);
   const [semesterId, setNewSemesterId] = useState<string>("");
   const [newSemesterName, setNewSemesterName] = useState<string>("");
   const [startDate, setNewStartDate] = useState<string>("");
@@ -61,8 +59,7 @@ const ClassManagement: React.FC = () => {
   const [filteredData, setFilteredData] = useState<SemesterData[]>([]);
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const navigate = useNavigate();
-
+  console.log(setRowsPerPage)
   useEffect(() => {
     fetchSemester();
   }, []);
@@ -177,9 +174,26 @@ const ClassManagement: React.FC = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", color: "#A5B68D" }}>
+      <Typography
+        variant="h2"
+        style={{
+          textAlign: "center",
+          color: "inherit",
+          fontFamily: "'Roboto', sans-serif",
+          fontWeight: "700",
+          fontSize: "36px",
+          letterSpacing: "1.5px",
+          textTransform: "uppercase",
+          margin: "20px 0",
+          padding: "5px",
+          position: "relative",
+        }}
+        sx={(theme) => ({
+          color: theme.palette.mode === 'dark' ? 'white' : 'black',
+        })}
+      >
         Semester Management
-      </h2>
+      </Typography>
 
       <Box
         display="flex"
@@ -189,13 +203,9 @@ const ClassManagement: React.FC = () => {
       >
         <Box display="flex" alignItems="center" gap={2}>
           <Button
-            variant="contained"
+            variant="outlined"
             onClick={() => handleCreateClick()}
-            sx={{
-              backgroundColor: "#5F6F65",
-              color: "white",
-              "&:hover": { backgroundColor: "#A5B68D" },
-            }}
+            color="error"
             startIcon={<CreateIcon />}
           >
             Create Semester
@@ -205,13 +215,13 @@ const ClassManagement: React.FC = () => {
         <Box display="flex" alignItems="center" gap={1}>
           <SearchIcon sx={{ color: "#3A3A3A" }} />
           <TextField
-            label="Search"
-            variant="outlined"
+            label="Enter semester name to search"
+            variant="standard"
             value={searchQuery}
             onChange={handleSearchChange}
             sx={{
               width: "300px",
-              backgroundColor: "#C9DABF",
+              marginBottom: 2,
             }}
           />
         </Box>
@@ -219,49 +229,63 @@ const ClassManagement: React.FC = () => {
 
       <TableContainer
         component={Paper}
-        sx={{
-          maxHeight: 600,
-          backgroundColor: "#C9DABF",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+        sx={(theme) => {
+          const isDarkTheme = theme.palette.mode === "dark";
+
+          return {
+            maxHeight: 600,
+            backgroundColor: isDarkTheme ? "#1E1E2F" : "#F8F9FA",
+            border: isDarkTheme ? "1px solid #383850" : "1px solid #DADCE0",
+            borderRadius: "8px",
+            overflow: "hidden",
+            boxShadow: isDarkTheme
+              ? "0px 4px 12px rgba(0, 0, 0, 0.5)"
+              : "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          };
         }}
       >
-        <Table stickyHeader aria-label="class table">
+        <Table stickyHeader aria-label="dynamic-theme-table">
           <TableHead>
             <TableRow>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 Semester ID
               </TableCell>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 Semester Name
               </TableCell>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 Start date
               </TableCell>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 End date
               </TableCell>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 Status
               </TableCell>
               <TableCell
                 align="center"
-                style={{ backgroundColor: "#5F6F65", color: "white" }}
+                sx={{ backgroundColor: "#263238", color: "white", fontWeight: "bold", fontSize: "16px" }}
+
               >
                 Actions
               </TableCell>
@@ -277,17 +301,55 @@ const ClassManagement: React.FC = () => {
                   <TableCell align="center">{cls.StartDate}</TableCell>
                   <TableCell align="center">{cls.EndDate}</TableCell>
                   <TableCell align="center">
-                    {cls.Status ? (
-                      <span style={{ color: "green" }}>Active</span>
-                    ) : (
-                      <span style={{ color: "red" }}>Inactive</span>
-                    )}
+                    <Box
+                      sx={(theme) => ({
+                        padding: "4px 10px",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        color: "white",
+                        backgroundColor: cls.Status
+                          ? theme.palette.success.main
+                          : theme.palette.error.main,
+                        backgroundColors: cls.Status
+                          ? theme.palette.success.light
+                          : theme.palette.error.light,
+                        transition: "all 0.3s ease",
+                      })}
+                    >
+                      {cls.Status ? (
+                        <>
+                          <CheckCircle
+                            sx={{ marginRight: "5px", fontSize: "16px" }}
+                          />
+                          Active
+                        </>
+                      ) : (
+                        <>
+                          <Cancel
+                            sx={{ marginRight: "5px", fontSize: "16px" }}
+                          />
+                          Inactive
+                        </>
+                      )}
+                    </Box>
                   </TableCell>
                   <TableCell align="center">
                     <Box display="flex" justifyContent="center" gap={1}>
                       <Button
-                        variant="contained"
-                        style={{ backgroundColor: "#808D7C", color: "white" }}
+                        variant="outlined"
+                        sx={{
+                          minWidth: "80px",
+                          color: "#007BFF",
+                          border: "1px solid #007BFF",
+                          textTransform: "capitalize",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          "&:hover": { backgroundColor: "#EAF4FF" },
+                        }}
                         onClick={() =>
                           handleEditClick(cls.id, cls.SemesterName)
                         }
@@ -296,8 +358,18 @@ const ClassManagement: React.FC = () => {
                         Edit
                       </Button>
                       <Button
-                        variant="outlined"
-                        style={{ backgroundColor: "#808D7C", color: "white" }}
+                        variant="contained"
+                        sx={{
+                          minWidth: "80px",
+                          color: "white",
+                          backgroundColor: cls.Status ? "#A93226" : "#28A745",
+                          textTransform: "capitalize",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          "&:hover": {
+                            backgroundColor: cls.Status ? "#922B21" : "#218838",
+                          },
+                        }}
                         onClick={() => handleStatusChange(cls.id, cls.Status)}
                         startIcon={<DeleteIcon />}
                       >
@@ -311,34 +383,75 @@ const ClassManagement: React.FC = () => {
         </Table>
       </TableContainer>
 
+
+
+
       {/* Pagination */}
-      <Box display="flex" justifyContent="center" mt={2}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        sx={{
+          borderRadius: "5px",
+          padding: "10px",
+          backgroundColor: theme => theme.palette.background.paper,
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <Button
           onClick={handlePrevPage}
           disabled={page === 0}
           sx={{
-            backgroundColor: "#C1CFA1",
-            color: "#3A3A3A",
-            "&:hover": { backgroundColor: "#A5B68D" },
+            backgroundColor: "#6A5ACD",
+            color: "white",
+            padding: "8px 16px",
+            "&:hover": { backgroundColor: "#5A4ABF" },
+            "&:disabled": {
+              backgroundColor: "#D3D3D3",
+              color: "#9E9E9E",
+            },
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          Prev
+          <ArrowBackIosNew sx={{ fontSize: "16px", marginRight: "8px" }} /> Prev
         </Button>
-        <Typography variant="body1" sx={{ margin: "0 10px" }}>
+
+        <Typography
+          variant="body1"
+          sx={{
+            margin: "0 20px",
+            color: "#6A5ACD",
+            fontWeight: "bold",
+            fontSize: "14px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           Page {page + 1} of {Math.ceil(filteredData.length / rowsPerPage)}
         </Typography>
+
         <Button
           onClick={handleNextPage}
           disabled={page >= Math.ceil(filteredData.length / rowsPerPage) - 1}
           sx={{
-            backgroundColor: "#C1CFA1",
-            color: "#3A3A3A",
-            "&:hover": { backgroundColor: "#A5B68D" },
+            backgroundColor: "#6A5ACD",
+            color: "white",
+            padding: "8px 16px",
+            "&:hover": { backgroundColor: "#5A4ABF" },
+            "&:disabled": {
+              backgroundColor: "#D3D3D3",
+              color: "#9E9E9E",
+            },
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          Next
+          Next <ArrowForwardIos sx={{ fontSize: "16px", marginLeft: "8px" }} />
         </Button>
       </Box>
+
       {/* model update */}
       <Dialog
         open={showModalEdit}
@@ -347,57 +460,90 @@ const ClassManagement: React.FC = () => {
         fullWidth
         sx={{
           "& .MuiDialog-paper": {
-            padding: "20px",
+            padding: "24px",
+            borderRadius: "12px",
+            backgroundColor: "#f7f9fc", // Màu nền sáng, hiện đại
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.2)", // Hiệu ứng bóng mờ
           },
         }}
       >
-        <DialogTitle style={{ textAlign: "center", color: "#5F6F65" }}>
-          Update Semester Name
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+            color: "#263238",
+            mb: 2,
+          }}
+        >
+          Update Semester
         </DialogTitle>
         <DialogContent>
-          <TextField
-            label=""
-            variant="outlined"
-            fullWidth
-            value={newSemesterName}
-            onChange={(e) => setNewSemesterName(e.target.value)}
+          <Box
+            component="form"
             sx={{
-              marginBottom: 2,
-              backgroundColor: "#C9DABF",
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
             }}
-          />
+          >
+            {/* Semester Name */}
+            <TextField
+              label="Semester Name"
+              variant="standard"
+              fullWidth
+              value={newSemesterName}
+              onChange={(e) => setNewSemesterName(e.target.value)}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+              }}
+            />
+
+            {/* Start Date */}
+            <TextField
+              label="Start Date"
+              type="date"
+              fullWidth
+              value={startDate}
+              onChange={(e) => setNewStartDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+              }}
+            />
+
+            {/* End Date */}
+            <TextField
+              label="End Date"
+              type="date"
+              fullWidth
+              value={endDate}
+              onChange={(e) => setNewEndDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+              }}
+            />
+          </Box>
         </DialogContent>
-        {/* Start Date Field */}
-        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
-          <TextField
-            label="Start Date"
-            type="date" // Sử dụng type="date" để chỉ lấy ngày
-            fullWidth
-            value={startDate} // Gán giá trị ngày
-            onChange={(e) => setNewStartDate(e.target.value)} // Cập nhật ngày khi thay đổi
-            InputLabelProps={{ shrink: true }} // Đảm bảo nhãn luôn hiển thị
-          />
-        </Grid>
 
-        {/* End Date Field */}
-        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
-          <TextField
-            label="End Date"
-            type="date" // Sử dụng type="date" để chỉ lấy ngày
-            fullWidth
-            value={endDate} // Gán giá trị ngày
-            onChange={(e) => setNewEndDate(e.target.value)} // Cập nhật ngày khi thay đổi
-            InputLabelProps={{ shrink: true }} // Đảm bảo nhãn luôn hiển thị
-          />
-        </Grid>
-
-        <DialogActions>
+        <DialogActions
+          sx={{
+            justifyContent: "flex-end", 
+            gap: 1,
+          }}
+        >
           <Button
             onClick={() => setShowModalEdit(false)}
             sx={{
-              backgroundColor: "#5F6F65",
+              backgroundColor: "#6200EE", 
               color: "white",
-              "&:hover": { backgroundColor: "#5F6F65" },
+              borderRadius: "4px",
+              "&:hover": { backgroundColor: "#3700B3" }, 
+              fontWeight: "600",
             }}
           >
             Cancel
@@ -405,15 +551,21 @@ const ClassManagement: React.FC = () => {
           <Button
             onClick={handleSaveClick}
             sx={{
-              backgroundColor: "#5F6F65",
+              backgroundColor: "#4fc3f7", 
               color: "white",
-              "&:hover": { backgroundColor: "#5F6F65" },
+              borderRadius: "4px",
+              "&:hover": { backgroundColor: "#0288D1" }, 
+              fontWeight: "600",
             }}
           >
             Save Changes
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+
       {/* model create */}
       <Dialog
         open={showModalCreate}
@@ -422,73 +574,118 @@ const ClassManagement: React.FC = () => {
         fullWidth
         sx={{
           "& .MuiDialog-paper": {
-            padding: "20px",
+            padding: "24px",
+            borderRadius: "12px",
+            backgroundColor: "#f7f9fc", // Nền sáng
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.2)", // Hiệu ứng bóng mờ
           },
         }}
       >
-        <DialogTitle style={{ textAlign: "center", color: "#5F6F65" }}>
-          Semester Id
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+            color: "#263238",
+            mb: 2,
+          }}
+        >
+          Create New Semester
         </DialogTitle>
-        <DialogContent>
-          <TextField
-            label=""
-            variant="outlined"
-            fullWidth
-            value={semesterId}
-            onChange={(e) => setNewSemesterId(e.target.value)}
-            sx={{
-              marginBottom: 2,
-              backgroundColor: "#C9DABF",
-            }}
-          />
-        </DialogContent>
-        <DialogTitle style={{ textAlign: "center", color: "#5F6F65" }}>
-          Semester Name
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            label=""
-            variant="outlined"
-            fullWidth
-            value={newSemesterName}
-            onChange={(e) => setNewSemesterName(e.target.value)}
-            sx={{
-              marginBottom: 2,
-              backgroundColor: "#C9DABF",
-            }}
-          />
-        </DialogContent>
-        {/* Start Date Field */}
-        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
-          <TextField
-            label="Start Date"
-            type="date"
-            fullWidth
-            value={startDate}
-            onChange={(e) => setNewStartDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
 
-        {/* End Date Field */}
-        <Grid item xs={12} sm={6} sx={{ mt: 2, mb: 2 }}>
-          <TextField
-            label="End Date"
-            type="date"
-            fullWidth
-            value={endDate}
-            onChange={(e) => setNewEndDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
+        <DialogContent>
+          <Box
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
+          >
+            {/* Semester ID */}
+            <TextField
+              label="Semester ID"
+              variant="standard"
+              fullWidth
+              value={semesterId}
+              onChange={(e) => setNewSemesterId(e.target.value)}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+              }}
+            />
 
-        <DialogActions>
+            {/* Semester Name */}
+            <TextField
+              label="Semester Name"
+              variant="standard"
+              fullWidth
+              value={newSemesterName}
+              onChange={(e) => setNewSemesterName(e.target.value)}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+              }}
+            />
+
+            {/* Grid container for dates */}
+            <Grid container spacing={0.5} padding={1}>
+              {/* Start Date */}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Start Date"
+                  type="date"
+                  fullWidth
+                  value={startDate}
+                  onChange={(e) => setNewStartDate(e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                  sx={{
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    ".MuiInputBase-root": {
+                      height: "56px", 
+                    },
+                  }}
+                />
+              </Grid>
+
+              {/* End Date */}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="End Date"
+                  type="date"
+                  fullWidth
+                  value={endDate}
+                  onChange={(e) => setNewEndDate(e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                  sx={{
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    ".MuiInputBase-root": {
+                      height: "56px", 
+                    },
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        </DialogContent>
+
+
+        <DialogActions
+          sx={{
+            justifyContent: "flex-end", // Đưa các nút về bên phải
+            gap: 1,
+          }}
+        >
           <Button
             onClick={() => setShowModalCreate(false)}
             sx={{
-              backgroundColor: "#5F6F65",
+              backgroundColor: "#6200EE", // Màu tím đậm cho nút Cancel
               color: "white",
-              "&:hover": { backgroundColor: "#5F6F65" },
+              borderRadius: "4px",
+              "&:hover": { backgroundColor: "#3700B3" }, // Tím đậm hơn khi hover
+              fontWeight: "600",
             }}
           >
             Cancel
@@ -496,9 +693,11 @@ const ClassManagement: React.FC = () => {
           <Button
             onClick={handleCreateClickForm}
             sx={{
-              backgroundColor: "#5F6F65",
+              backgroundColor: "#4fc3f7", // Màu xanh ngọc cho nút Save
               color: "white",
-              "&:hover": { backgroundColor: "#5F6F65" },
+              borderRadius: "4px",
+              "&:hover": { backgroundColor: "#0288D1" }, // Xanh đậm khi hover
+              fontWeight: "600",
             }}
           >
             Create

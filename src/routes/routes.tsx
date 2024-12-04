@@ -252,11 +252,6 @@ const routesStaffHome: Router[] = [
     component: CreatingClass,
   },
   {
-    key: "AddingCourseSemester",
-    path: "/AddingCourseSemester",
-    component: AddingCourseSemester,
-  },
-  {
     key: "manage_course_semester",
     path: "/staff/manage_course_semester",
     component: MangerCourse,
