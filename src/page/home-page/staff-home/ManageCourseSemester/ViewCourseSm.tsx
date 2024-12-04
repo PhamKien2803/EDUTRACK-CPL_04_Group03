@@ -329,6 +329,7 @@ export const ViewCourseSm: React.FC = () => {
                     </TableFooter>
                 </Table>
             </TableContainer>
+            <ModalAdd open={open} handleClickModal={handleClickModal} handleAddSlot={handleAddSlot} setData={setData} />
 
             {/* Uncomment the below code if ModalUpdate is needed */}
             {/* <ModalUpdate open2={open2} handleClickModal2={handleClickModal2} slotUpdate={slotUpdate} /> */}

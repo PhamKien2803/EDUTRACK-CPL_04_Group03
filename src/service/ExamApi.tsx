@@ -57,3 +57,8 @@ export const addSlotInLession = (id: any, slot: string[]) => {
         SlotID: slot
     })
 }
+
+export const putExam = (exam: Exam) => {
+    console.log(exam);
+    return axios.put(`Examination/${exam.id}`, { ...exam });
+}

@@ -94,7 +94,7 @@ const QuizSettingsModal: React.FC<Props> = ({ open, onClose, setStatus, setDispl
                                 defaultValue="false"
                                 onChange={e => setDisplay(e.target.value === "true")}
                             >
-                                <MenuItem value="false">{t('no1')}</MenuItem>
+                                <MenuItem value="false">{t('no')}</MenuItem>
                                 <MenuItem value="true">{t('yes')}</MenuItem>
                             </Select>
                         </FormControl>

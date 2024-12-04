@@ -483,5 +483,6 @@
   "userName": "User Name",
   "action": "Action",
   "viewDetails": "View Details",
-  "notAnswered": "No answers for this exam"
+  "notAnswered": "No answers for this exam",
+  "answer": "answer"
 }

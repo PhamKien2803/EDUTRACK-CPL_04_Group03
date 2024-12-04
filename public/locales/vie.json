@@ -485,5 +485,6 @@
     "userName": "Tên người dùng",
     "action": "Hành động",
     "viewDetails": "Xem chi tiết",
-    "notAnswered": "Chưa có câu trả lời cho kỳ thi này"
+    "notAnswered": "Chưa có câu trả lời cho kỳ thi này",
+    "answer": "Câu trả lời "
 }

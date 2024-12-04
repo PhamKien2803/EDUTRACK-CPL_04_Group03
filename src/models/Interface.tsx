@@ -127,6 +127,7 @@ export interface Answer {
   isCorrect: boolean;
 }
 export interface Exam {
+  id: string
   examID: string;
   examContent: string;
   courseSemesterID: string;

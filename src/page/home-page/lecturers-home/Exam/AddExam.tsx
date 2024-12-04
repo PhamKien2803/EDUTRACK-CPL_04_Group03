@@ -4,19 +4,19 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import { Box, Button, Card, CardContent, Checkbox, Divider, Grid, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
-import QuizSettingsModal from "./QuizSettingsModal";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getCourseSemesterById } from "../../../../service/ApiService";
-import { CourseSemester } from "../../../../models/Interface";
-import { postAnswerQs, postExam, postQuestion } from "../../../../service/ExamApi";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuidv4 } from 'uuid';
+import { CourseSemester } from "../../../../models/Interface";
+import { getCourseSemesterById } from "../../../../service/ApiService";
+import { postAnswerQs, postExam, postQuestion } from "../../../../service/ExamApi";
+import QuizSettingsModal from "./QuizSettingsModal";
 
 
 
@@ -224,6 +224,7 @@ export const AddExam = () => {
 
         if (courseSemester) {
             const Exam = {
+                id: uuidv4(),
                 examID: Exid.current,
                 examContent: description,
                 courseSemesterID: courseSemester.id,
@@ -234,6 +235,8 @@ export const AddExam = () => {
                 status: status,
                 createdAt: formatted
             }
+
+            console.log(question);
 
             const req = await postExam(Exam)
             if (req) {

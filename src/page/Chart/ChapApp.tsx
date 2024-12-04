@@ -180,6 +180,8 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                 const querySnap = await getDocs(q);
                 if (!querySnap.empty && userData && querySnap.docs[0].data().id !== userData.id) {
                     let userExit = false;
+                    console.log(querySnap.docs[0].data().id);
+
                     if (chatData.find(e => e.rID !== querySnap.docs[0].data().id)) {
                         setUser(querySnap.docs[0].data());
                     }
@@ -695,6 +697,36 @@ const ChatUI: React.FC<Props> = ({ open, toggleModal }) => {
                     <Modal open={opens} onClose={handleChangeOpen}>
                         <Box sx={{ ...style, borderRadius: 2, backgroundColor: "#ffffff", p: 3 }}>
                             <TextField variant="standard" fullWidth placeholder="Enter The Email" onChange={(e) => inputHandler(e)} />
+                            {showSearch && user &&
+                                <Box
+
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 2,
+                                        cursor: 'pointer',
+                                        p: 2,
+                                        borderRadius: '16px',
+                                        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                                            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+                                        },
+                                        transition: 'background-color 0.3s, box-shadow 0.3s',
+                                        position: 'relative',
+                                    }}
+
+                                >
+                                    <Avatar
+                                        sx={{
+                                            backgroundColor: '#64b5f6',
+                                            color: '#ffffff',
+                                        }}
+                                    >
+                                        {user.name.charAt(0).toUpperCase()}
+                                    </Avatar>
+                                    <Typography>{user.name}</Typography>
+                                </Box>}
                         </Box>
                     </Modal>
                 </Dialog>
