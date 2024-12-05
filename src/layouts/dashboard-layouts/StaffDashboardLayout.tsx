@@ -69,19 +69,9 @@ const NAVIGATION: Navigation = [
 ];
 
 //theme structure with type annotations
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
+const fixedTheme = createTheme({
+  palette: {
+    mode: 'light', 
   },
 });
 
@@ -131,7 +121,7 @@ function StaffDashboardLayout() {
 
         title: "",
       }}
-      theme={demoTheme}
+      theme={fixedTheme}
     >
       <DashboardLayout
         isMenuExpanded={isMenuExpanded}

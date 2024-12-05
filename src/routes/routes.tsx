@@ -33,6 +33,8 @@ import ExamTest from "../page/home-page/staff-home/Exam/ExamTest";
 import { ViewResultManager } from "../page/home-page/staff-home/Exam/ViewResultManager";
 import ClassManagement from "../page/home-page/staff-home/CreatingClass/ClassManagement";
 import { ViewCourseSm } from "../page/home-page/staff-home/ManageCourseSemester/ViewCourseSm";
+import StudentGuide from "../layouts/UserGuide/StudentGuide";
+import LecturersGuide from "../layouts/UserGuide/LecturersGuide";
 
 
 interface Router {
@@ -49,6 +51,12 @@ const routesStudentHome: Router[] = [
     key: "dashboardPage",
     path: "/dashboardPage",
     component: DashBoardPage,
+  },
+  {
+    name: "student_guide",
+    key: "student_guide",
+    path: "/student-guide",
+    component: StudentGuide,
   },
   {
     name: "lession",
@@ -133,6 +141,12 @@ const routesLecturersHome: Router[] = [
     key: "homepage_lecturer",
     path: "/lecturer/homePage",
     component: LecturersHomePage,
+  },
+  {
+    name: "lecturers_guide",
+    key: "lecturers_guide",
+    path: "/lecturer/lecturers-guide",
+    component: LecturersGuide,
   },
   {
     name: "AddExam",

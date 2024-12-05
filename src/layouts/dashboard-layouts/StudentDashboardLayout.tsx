@@ -28,24 +28,15 @@ const NAVIGATION: Navigation = [
   { segment: "dashboardPage", title: "dashboard", icon: <DashboardIcon /> },
   { segment: "Assignments", title: "Assignments", icon: <AssignmentIcon /> },
   { segment: "Upcoming", title: "UpcomingSlots", icon: <UpcomingIcon /> },
-  { segment: "Upcoming", title: "Read user guide", icon: <PictureAsPdfIcon /> },
+  { segment: "/student-guide", title: "Read user guide", icon: <PictureAsPdfIcon /> },
   { segment: "Contact", title: "Contact Support", icon: <SupportAgentIcon /> },
   { segment: "Logout", title: "Logout", icon: <LogoutIcon /> },
 ];
 
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
+
+const fixedTheme = createTheme({
+  palette: {
+    mode: 'light', 
   },
 });
 
@@ -120,7 +111,7 @@ function StudentDashboardLayout() {
           title: "",
 
         }}
-        theme={demoTheme}
+        theme={fixedTheme}
       >
         <DashboardLayout
           isMenuExpanded={isMenuExpanded}
