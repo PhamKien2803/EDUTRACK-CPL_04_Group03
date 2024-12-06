@@ -3,7 +3,7 @@ import { Autocomplete, Box, Button, Card, CardContent, Divider, Grid, IconButton
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { classRoom, courses, participants, slot } from "../../../../models/Interface";
-import { getClass, getCourse, getCourseSemester, getParticipants } from "../../../../service/ApiService";
+import { getClass, getCourse, getCourseSemester, getParticipants, getSemester } from "../../../../service/ApiService";
 import ClearIcon from '@mui/icons-material/Clear';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
@@ -43,11 +43,16 @@ export const AddingCourseSemester = () => {
     }, [])
 
     const fetchSemester = async () => {
-        const res = await getCourseSemester();
+        const res = await getSemester();
         if (Array.isArray(res)) {
+            console.log(res);
+
             setDataSemesterID(res[res.length - 1].SemesterID)
         }
     }
+
+    console.log(dataSemesterID);
+
 
     const fetchParticipants = async () => {
         const res = await getParticipants();
@@ -396,7 +401,7 @@ export const AddingCourseSemester = () => {
                                     size="medium"
                                     onClick={() => handleSlot("Add", "1")}
                                     startIcon={<Add />}
-                                    sx={{backgroundColor: "#263238"}}
+                                    sx={{ backgroundColor: "#263238" }}
                                 >
                                     Add More Slot
                                 </Button>
