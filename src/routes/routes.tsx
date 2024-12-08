@@ -53,8 +53,8 @@ const routesStudentHome: Router[] = [
     component: DashBoardPage,
   },
   {
-    name: "student_guide",
-    key: "student_guide",
+    name: "student-guide",
+    key: "student-guide",
     path: "/student-guide",
     component: StudentGuide,
   },

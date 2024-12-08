@@ -28,7 +28,7 @@ const NAVIGATION: Navigation = [
   { segment: "dashboardPage", title: "dashboard", icon: <DashboardIcon /> },
   { segment: "Assignments", title: "Assignments", icon: <AssignmentIcon /> },
   { segment: "Upcoming", title: "UpcomingSlots", icon: <UpcomingIcon /> },
-  { segment: "/student-guide", title: "Read user guide", icon: <PictureAsPdfIcon /> },
+  { segment: "student-guide", title: "Read user guide", icon: <PictureAsPdfIcon /> },
   { segment: "Contact", title: "Contact Support", icon: <SupportAgentIcon /> },
   { segment: "Logout", title: "Logout", icon: <LogoutIcon /> },
 ];
